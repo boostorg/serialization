@@ -97,19 +97,11 @@ rule run-invoke ( test-name : sources * : defn * )
         ] ;
 
         if [ MATCH (.*load.*.run) : $(releasetest) ] {
-<<<<<<< Jamfile
-            DEPENDS $(releasetest) : [ SUBST $(releasetest) (.*)(load)(.*) $1save$3 ] ;
-        }
-        
-        tests += releasetest ;
-        
-=======
             DEPENDS $(releasetest) : [ SUBST $(releasetest) (.*)(load)(.*) $1save$3 ] ;
         }
 
         tests += releasetest ;
           
->>>>>>> 1.14
     }
 
     return  ;
