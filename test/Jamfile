@@ -64,10 +64,10 @@ rule run-invoke ( test-name : sources * : defn * )
     ] ;
     
     if [ MATCH (.*load.*.run) : $(tests) ] {
-	    DEPENDS $(tests) : [ SUBST $(tests) (.*)(load)(.*) $1save$3 ] ;
-	    ECHO DEPENDS $(tests) ":" [ SUBST $(tests) (.*)(load)(.*) $1save$3 ] ;
-	}
-	
+        DEPENDS $(tests) : [ SUBST $(tests) (.*)(load)(.*) $1save$3 ] ;
+        ECHO DEPENDS $(tests) ":" [ SUBST $(tests) (.*)(load)(.*) $1save$3 ] ;
+    }
+    
     # release mode tests are only run if this environment variable is set
     # "_release" is appended to the name of the test if its a realease mode 
     # test.  This permits them to appear in the same table built by
@@ -97,11 +97,11 @@ rule run-invoke ( test-name : sources * : defn * )
         ] ;
         
         if [ MATCH (.*load.*.run) : $(releasetest) ] {
-	        DEPENDS $(releasetest) : [ SUBST $(releasetest) (.*)(load)(.*) $1save$3 ] ;
-	    }
-	    
-	    tests += releasetest ;
-	    
+            DEPENDS $(releasetest) : [ SUBST $(releasetest) (.*)(load)(.*) $1save$3 ] ;
+        }
+        
+        tests += releasetest ;
+        
     }
     
     return  ;
