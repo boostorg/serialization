@@ -205,9 +205,9 @@ struct export_instance {
             is_abstract<T>,
             mpl::identity<abstract>,
             mpl::identity<not_abstract>
-        >::type type;
+        >::type typex;
         return std::pair<const void *, const void *>(
-            type::invoke(),
+            typex::invoke(),
             & guid_initializer<T>::instance
         );
     }
