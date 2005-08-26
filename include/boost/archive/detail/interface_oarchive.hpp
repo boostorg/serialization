@@ -57,7 +57,7 @@ public:
     }
 
     template<class T>
-    const basic_pointer_oserializer * register_type(const T * t = NULL){
+    const basic_pointer_oserializer * register_type(const T * = NULL){
         const basic_pointer_oserializer & bpos =
             instantiate_pointer_oserializer(
                 static_cast<Archive *>(NULL),
