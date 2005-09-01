@@ -128,7 +128,7 @@ public:
             return;
         ktmap::type::iterator i = m_self->m_map.begin();
         ktmap::type::iterator k = m_self->m_map.end();
-        while(i == k){
+        while(i != k){
             // note that the erase might invalidate i so save it here
             ktmap::type::iterator j = i++;
             if(*j == eti)

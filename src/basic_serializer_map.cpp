@@ -25,9 +25,10 @@ namespace boost {
 namespace archive {
 namespace detail {
 
-bool type_info_pointer_compare::operator()(
+BOOST_ARCHIVE_DECL(bool) 
+type_info_pointer_compare::operator()(
     const basic_serializer * lhs, const basic_serializer * rhs
-) const    {
+) const {
     return *lhs < *rhs;
 }
 
