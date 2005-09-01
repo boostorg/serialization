@@ -43,6 +43,12 @@ archive_pointer_iserializer<Archive>::find(
     );
 }
 
+template<class Archive>
+BOOST_ARCHIVE_OR_WARCHIVE_DECL(BOOST_PP_EMPTY())
+archive_pointer_iserializer<Archive>::~archive_pointer_iserializer(){
+    iserializer_map<Archive>().map.erase(this);
+}
+
 } // namespace detail
 } // namespace archive
 } // namespace boost

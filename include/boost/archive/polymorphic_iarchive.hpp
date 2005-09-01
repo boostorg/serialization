@@ -42,7 +42,12 @@ namespace std{
 #   define BOOST_NO_INTRINSIC_INT64_T
 #endif
 
-namespace boost { 
+namespace boost {
+template<class T>
+class shared_ptr;
+namespace serialization {
+    class extended_type_info;
+} // namespace serialization
 namespace archive {
 namespace detail {
     class basic_iarchive;
@@ -93,6 +98,14 @@ public:
     virtual void load_start(const char * name) = 0;
     virtual void load_end(const char * name) = 0;
     virtual void register_basic_serializer(const detail::basic_iserializer & bis) = 0;
+    virtual void lookup_basic_helper(
+        const boost::serialization::extended_type_info * const eti,
+		boost::shared_ptr<void> & sph
+    ) = 0;
+    virtual void insert_basic_helper(
+        const boost::serialization::extended_type_info * const eti,
+		boost::shared_ptr<void> & sph
+    ) = 0;
 
     // msvc and borland won't automatically pass these to the base class so
     // make it explicit here

@@ -76,6 +76,7 @@ namespace std{
 #include <boost/serialization/type_info_implementation.hpp>
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/binary_object.hpp>
+#include <boost/serialization/void_cast.hpp>
 
 namespace boost {
 

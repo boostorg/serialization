@@ -68,16 +68,16 @@ public:
 
     void lookup_helper(
         const boost::serialization::extended_type_info * const eti,
-        shared_ptr<void> & sph
+        boost::shared_ptr<void> & sph
     ){
-        this->This()->basic_iarchive::lookup_basic_helper(eti, sph);
+        this->This()->lookup_basic_helper(eti, sph);
     }
 
     void insert_helper(
         const boost::serialization::extended_type_info * const eti,
         shared_ptr<void> & sph
     ){
-        this->This()->basic_iarchive::insert_basic_helper(eti, sph);
+        this->This()->insert_basic_helper(eti, sph);
     }
     template<class T>
     Archive & operator>>(T & t){

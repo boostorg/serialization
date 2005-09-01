@@ -66,6 +66,7 @@
 #include <boost/serialization/tracking.hpp>
 #include <boost/serialization/type_info_implementation.hpp>
 #include <boost/serialization/nvp.hpp>
+#include <boost/serialization/void_cast.hpp>
 
 #include <boost/archive/archive_exception.hpp>
 

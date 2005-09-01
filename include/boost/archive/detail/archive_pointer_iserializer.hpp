@@ -75,8 +75,8 @@ public:
     find(
         const boost::serialization::extended_type_info & eti
     );
-    
-    virtual ~archive_pointer_iserializer(){}
+    virtual BOOST_ARCHIVE_OR_WARCHIVE_DECL(BOOST_PP_EMPTY()) 
+    ~archive_pointer_iserializer();
 };
 
 } // namespace detail

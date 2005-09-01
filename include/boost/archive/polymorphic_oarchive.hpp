@@ -42,6 +42,11 @@ namespace std{
 #endif
 
 namespace boost { 
+template<class T>
+class shared_ptr;
+namespace serialization {
+    class extended_type_info;
+} // namespace serialization
 namespace archive {
 namespace detail {
     class basic_oarchive;
@@ -92,6 +97,14 @@ public:
     virtual void save_start(const char * name) = 0;
     virtual void save_end(const char * name) = 0;
     virtual void register_basic_serializer(const detail::basic_oserializer & bos) = 0;
+    virtual void lookup_basic_helper(
+        const boost::serialization::extended_type_info * const eti,
+		boost::shared_ptr<void> & sph
+    ) = 0;
+    virtual void insert_basic_helper(
+        const boost::serialization::extended_type_info * const eti,
+		shared_ptr<void> & sph
+    ) = 0;
 
     virtual unsigned int get_library_version() const = 0;
     virtual void end_preamble() = 0;

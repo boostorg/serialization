@@ -33,6 +33,11 @@ namespace std{
 #include <boost/archive/detail/abi_prefix.hpp> // must be the last header
 
 namespace boost { 
+template<class T>
+class shared_ptr;
+namespace serialization {
+    class extended_type_info;
+} // namespace serialization
 namespace archive {
 namespace detail{
 
@@ -153,6 +158,18 @@ private:
     virtual void register_basic_serializer(const basic_iserializer & bis){
         ArchiveImplementation::register_basic_serializer(bis);
     }
+    virtual void lookup_basic_helper(
+    	const boost::serialization::extended_type_info * const eti,
+        boost::shared_ptr<void> & sph
+	){
+		ArchiveImplementation::lookup_basic_helper(eti, sph);
+	}
+    virtual void insert_basic_helper(
+    	const boost::serialization::extended_type_info * const eti,
+		boost::shared_ptr<void> & sph
+	){
+		ArchiveImplementation::insert_basic_helper(eti, sph);
+	}
 public:
     // the >> operator 
     template<class T>
