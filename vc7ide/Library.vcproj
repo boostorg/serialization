@@ -365,6 +365,9 @@
 				RelativePath="..\..\..\boost\serialization\traits.hpp">
 			</File>
 			<File
+				RelativePath="..\..\..\boost\serialization\traits_fwd.hpp">
+			</File>
+			<File
 				RelativePath="..\..\..\boost\serialization\type_info_implementation.hpp">
 			</File>
 			<File
@@ -614,6 +617,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\boost\serialization\void_cast.hpp">
+			</File>
+			<File
+				RelativePath="..\..\..\boost\serialization\void_cast_fwd.hpp">
 			</File>
 			<File
 				RelativePath="..\..\..\boost\archive\wcslen.hpp">
