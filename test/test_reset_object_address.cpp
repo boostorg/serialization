@@ -25,7 +25,7 @@ namespace std{
 #include <boost/archive/text_oarchive.hpp>
 
 #include <boost/serialization/access.hpp>
-
+#include <boost/serialization/split_member.hpp>
 
 // Someday, maybe all tests will be converted to the unit test framework.
 // but for now use the text execution monitor to be consistent with all
@@ -161,7 +161,7 @@ public:
 };
 BOOST_TEST_DONT_PRINT_LOG_VALUE( E )
 
-// check that moves don't move stuff pointed too
+// check that moves don't move stuff pointed to
 class F {
     friend class boost::serialization::access;
     E * m_eptr;
@@ -208,11 +208,75 @@ void test4(){
     BOOST_CHECK_EQUAL(f, f1);
 }
 
+// check that multiple moves keep track of the correct target
+class G {
+    friend class boost::serialization::access;
+    A m_a1;
+    A m_a2;
+    A *m_pa2;
+    template<class Archive>
+    void save(Archive &ar, const unsigned int file_version) const {
+        ar << m_a1;
+        ar << m_a2;
+        ar << m_pa2;
+    }
+    template<class Archive>
+    void load(Archive &ar, const unsigned int file_version){
+        A a; // temporary A
+        ar >> a;
+        m_a1 = a;
+        ar.reset_object_address(& m_a1, & a);
+        ar >> a;
+        m_a2 = a;
+        ar.reset_object_address(& m_a2, & a);
+        ar & m_pa2;
+    }
+    BOOST_SERIALIZATION_SPLIT_MEMBER()
+public:
+    bool operator==(const G &rhs) const {
+        return 
+            m_a1 == rhs.m_a1 
+            && m_a2 == rhs.m_a2
+            && *m_pa2 == *rhs.m_pa2;
+    }
+    G & operator=(const G & rhs) {
+        m_a1 = rhs.m_a1;
+        m_a2 = rhs.m_a2;
+        m_pa2 = & m_a2;
+        return *this;
+    }
+    G(){
+        m_pa2 = & m_a2;
+    }
+    G(const G & rhs){
+        *this = rhs;
+    }
+    ~G(){}
+};
+
+BOOST_TEST_DONT_PRINT_LOG_VALUE( G )
+
+void test5(){
+    std::stringstream ss;
+    const G g;
+    {
+        boost::archive::text_oarchive oa(ss);
+        oa << g;
+    }
+    G g1;
+    {
+        boost::archive::text_iarchive ia(ss);
+        ia >> g1;
+    }
+    BOOST_CHECK_EQUAL(g, g1);
+}
+
 int test_main(int /* argc */, char * /* argv */[])
 {
     test1();
     test2();
     test3();
     test4();
+    test5();
     return EXIT_SUCCESS;
 }
