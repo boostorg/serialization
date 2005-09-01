@@ -44,7 +44,6 @@
 #include <boost/archive/detail/known_archive_types.hpp>
 #include <boost/serialization/force_include.hpp>
 #include <boost/serialization/type_info_implementation.hpp>
-#include <boost/serialization/extended_type_info.hpp>
 #include <boost/serialization/is_abstract.hpp>
 
 namespace boost {
@@ -214,10 +213,47 @@ struct export_instance {
 #endif
 
 template<class T, class ASeq>
-std::pair<const void *, const void *>
-export_instantiate(T &, ASeq &){
-    return export_instance<T, ASeq>::invoke();
-}
+struct export_archives {
+    struct empty_archive_list {
+        static std::pair<const void *, const void *>
+        invoke(){
+            return std::pair<const void *, const void *>(NULL, NULL);
+        }
+    };
+    struct non_empty_archive_list {
+        static std::pair<const void *, const void *>
+        invoke(){
+            return export_instance<T, ASeq>::invoke();
+        }
+    };
+    static BOOST_DLLEXPORT std::pair<const void *, const void *> 
+    #if ! (defined(BOOST_MSVC) && (_MSC_VER <= 1300))
+    invoke() BOOST_USED;
+    #else
+    invoke() {
+        typedef BOOST_DEDUCED_TYPENAME mpl::eval_if<
+            mpl::empty<ASeq>,
+            mpl::identity<empty_archive_list>,
+            mpl::identity<non_empty_archive_list>
+        >::type typex;
+        return typex::invoke();
+    }
+    #endif
+};
+
+#if ! (defined(BOOST_MSVC) && (_MSC_VER <= 1300))
+    template<class T, class ASeq>
+    BOOST_DLLEXPORT 
+    std::pair<const void *, const void *> 
+    export_archives<T, ASeq>::invoke() {
+        typedef BOOST_DEDUCED_TYPENAME mpl::eval_if<
+            mpl::empty<ASeq>,
+            mpl::identity<empty_archive_list>,
+            mpl::identity<non_empty_archive_list>
+        >::type typex;
+        return typex::invoke();
+    }
+#endif
 
 } // namespace detail
 } // namespace archive
@@ -232,7 +268,7 @@ export_instantiate(T &, ASeq &){
         guid_initializer< T >::instance(K);                      \
     template                                                     \
     BOOST_DLLEXPORT std::pair<const void *, const void *>        \
-    export_instantiate(T &, ASEQ &);                             \
+    export_archives<T, ASEQ>::invoke();                          \
     } } }                                                        \
     /**/
 
@@ -257,7 +293,7 @@ export_instantiate(T &, ASeq &){
     /**/
 
 // the default exportable class identifier is the class name
-#define BOOST_CLASS_EXPORT_ARCHIVE_LIST(T, ASEQ)   \
+#define BOOST_CLASS_EXPORT_ARCHIVE_LIST(T, ASEQ)                 \
     BOOST_CLASS_EXPORT_GUID_ARCHIVE_LIST(T, BOOST_PP_STRINGIZE(T), A)
 
 // the default exportable class identifier is the class name
