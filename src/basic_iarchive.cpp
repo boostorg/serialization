@@ -256,8 +256,13 @@ basic_iarchive_impl::reset_object_address(
     const void * new_address, 
     const void *old_address
 ){
-    object_id_type i = moveable_objects_recent;
-    while(i < moveable_objects_end){
+    object_id_type i;
+    for(i = moveable_objects_recent; i < moveable_objects_end; ++i){
+        if(old_address == object_id_vector[i].address)
+            break;
+    }
+    for(i = moveable_objects_recent; i < moveable_objects_end; ++i){
+
         // calculate displacement from this level
         // warning - pointer arithmetic on void * is in herently non-portable
         // but expected to work on all platforms in current usage
@@ -380,7 +385,7 @@ basic_iarchive_impl::load_object(
     load_preamble(ar, co);
 
     // save the current move stack position in case we want to truncate it
-    boost::state_saver<size_t> w(moveable_objects_start);
+    boost::state_saver<object_id_type> w(moveable_objects_start);
 
     // note: extra line used to evade borland issue
     const bool tracking = co.tracking_level;
