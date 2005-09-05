@@ -261,7 +261,7 @@ basic_iarchive_impl::reset_object_address(
         if(old_address == object_id_vector[i].address)
             break;
     }
-    for(i = moveable_objects_recent; i < moveable_objects_end; ++i){
+    for(; i < moveable_objects_end; ++i){
 
         // calculate displacement from this level
         // warning - pointer arithmetic on void * is in herently non-portable
