@@ -41,7 +41,7 @@ protected:
     explicit basic_pointer_iserializer(
         const boost::serialization::extended_type_info & type_
     );
-    virtual ~basic_pointer_iserializer();
+    ~basic_pointer_iserializer();
 public:
     virtual const basic_iserializer & get_basic_serializer() const = 0;
     virtual void load_object_ptr(

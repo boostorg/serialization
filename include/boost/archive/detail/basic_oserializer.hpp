@@ -44,7 +44,7 @@ protected:
     explicit basic_oserializer(
         const boost::serialization::extended_type_info & type_
     );
-    virtual ~basic_oserializer();
+    ~basic_oserializer();
 public:
     bool serialized_as_pointer() const {
         return bpos != NULL;

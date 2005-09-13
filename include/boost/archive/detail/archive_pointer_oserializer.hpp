@@ -39,6 +39,8 @@ protected:
     archive_pointer_oserializer(
         const boost::serialization::extended_type_info & eti
     );
+    BOOST_ARCHIVE_OR_WARCHIVE_DECL(BOOST_PP_EMPTY()) 
+    ~archive_pointer_oserializer();
 public:
     // return the type_extended save pointer corresponding to a give
     // type_info.  returns NULL, if there is no such instance. This
@@ -49,8 +51,6 @@ public:
     find(
         const boost::serialization::extended_type_info & eti
     );
-    virtual BOOST_ARCHIVE_OR_WARCHIVE_DECL(BOOST_PP_EMPTY()) 
-    ~archive_pointer_oserializer();
 };
 
 } // namespace detail

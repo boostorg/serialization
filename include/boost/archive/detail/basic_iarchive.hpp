@@ -56,7 +56,7 @@ class BOOST_ARCHIVE_DECL(BOOST_PP_EMPTY()) basic_iarchive
     virtual void vload(tracking_type &t) = 0;
 protected:
     basic_iarchive(unsigned int flags);
-    virtual ~basic_iarchive();
+    ~basic_iarchive();
 public:
     // note: NOT part of the public API.
     void next_object_pointer(void *t);
