@@ -271,6 +271,85 @@ void test5(){
     BOOST_CHECK_EQUAL(g, g1);
 }
 
+// joaquin's test - this tests the case where rest_object_address
+// is applied to an item which in fact is not tracked so that 
+// the call is in fact superfluous.
+struct foo
+{
+  int x;
+
+private:
+  friend class boost::serialization::access;
+
+  template<class Archive>
+  void serialize(Archive &,const unsigned int)
+  {
+  }
+};
+
+struct bar
+{
+  foo  f[2];
+  foo* pf[2];
+
+private:
+  friend class boost::serialization::access;
+  BOOST_SERIALIZATION_SPLIT_MEMBER()
+
+  template<class Archive>
+  void save(Archive& ar,const unsigned int)const
+  {
+    for(int i=0;i<2;++i){
+      ar<<f[i].x;
+      ar<<f[i];
+    }
+    for(int j=0;j<2;++j){
+      ar<<pf[j];
+    }
+  }
+
+  template<class Archive>
+  void load(Archive& ar,const unsigned int)
+  {
+    for(int i=0;i<2;++i){
+      int x;
+      ar>>x;
+      f[i].x=x;
+      ar.reset_object_address(&f[i].x,&x);
+      ar>>f[i];
+    }
+    for(int j=0;j<2;++j){
+      ar>>pf[j];
+    }
+  }
+};
+
+int test6()
+{
+  bar b;
+  b.f[0].x=0;
+  b.f[1].x=1;
+  b.pf[0]=&b.f[0];
+  b.pf[1]=&b.f[1];
+
+  std::ostringstream oss;
+  {
+    boost::archive::text_oarchive oa(oss);
+    oa<<const_cast<const bar&>(b);
+  }
+
+  bar b1;
+  b1.pf[0]=0;
+  b1.pf[1]=0;
+
+  std::istringstream iss(oss.str());
+  boost::archive::text_iarchive ia(iss);
+  ia>>b1;
+  BOOST_CHECK(b1.pf[0]==&b1.f[0]&&b1.pf[1]==&b1.f[1]);
+
+  return 0;
+}
+
 int test_main(int /* argc */, char * /* argv */[])
 {
     test1();
@@ -278,5 +357,6 @@ int test_main(int /* argc */, char * /* argv */[])
     test3();
     test4();
     test5();
+    test6();
     return EXIT_SUCCESS;
 }
