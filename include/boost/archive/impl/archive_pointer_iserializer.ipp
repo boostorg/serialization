@@ -46,7 +46,10 @@ archive_pointer_iserializer<Archive>::find(
 template<class Archive>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL(BOOST_PP_EMPTY())
 archive_pointer_iserializer<Archive>::~archive_pointer_iserializer(){
-    iserializer_map<Archive>().map.erase(this);
+    // including this crash borland and some other compilers at runtime with DLLS
+    // I suspect that this is probably because the map is destroyed by now.
+    // if this is the case its not a problem.  To be researched
+    //iserializer_map<Archive>().erase(this);
 }
 
 } // namespace detail
