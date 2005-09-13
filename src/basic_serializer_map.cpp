@@ -38,7 +38,12 @@ basic_serializer_map::basic_serializer_map(){
 
 BOOST_ARCHIVE_DECL(bool) 
 basic_serializer_map::insert(const basic_serializer * bs){
-    return map.insert(bs).second;
+    return m_map.insert(bs).second;
+}
+
+BOOST_ARCHIVE_DECL(void) 
+basic_serializer_map::erase(basic_serializer * bs){
+    m_map.erase(bs);
 }
 
 class basic_serializer_arg : public basic_serializer {
@@ -54,8 +59,8 @@ basic_serializer_map::tfind(
 ) const {
     const basic_serializer_arg bs(eti);
     map_type::const_iterator it;
-    it = map.find(& bs);
-    if(it == map.end())
+    it = m_map.find(& bs);
+    if(it == m_map.end())
         return NULL;
     return *it;
 }
