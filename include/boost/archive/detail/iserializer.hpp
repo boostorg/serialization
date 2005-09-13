@@ -355,11 +355,11 @@ struct load_non_pointer_type {
     // and serialization level to the archive
     struct load_standard {
         static void invoke(Archive &ar, T &t){
-                        //BOOST_STATIC_ASSERT(! boost::is_const<T>::value);
-                        // borland - for some reason T is const here - even though
-                        // its not called that way - so fix it her
-                        typedef BOOST_DEDUCED_TYPENAME boost::remove_const<T>::type typex;
-                        void * x = & const_cast<typex &>(t);
+            //BOOST_STATIC_ASSERT(! boost::is_const<T>::value);
+            // borland - for some reason T is const here - even though
+            // its not called that way - so fix it her
+            typedef BOOST_DEDUCED_TYPENAME boost::remove_const<T>::type typex;
+            void * x = & const_cast<typex &>(t);
             ar.load_object(x, iserializer<Archive, T>::instantiate());
         }
     };
