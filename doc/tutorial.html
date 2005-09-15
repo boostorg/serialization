@@ -295,7 +295,7 @@ public:
 </code>
 </pre>
 Each member of the array <code style="white-space: normal">stops</code> will be serialized.
-But, remember each member is a pointer - so what can this really
+But remember each member is a pointer - so what can this really
 mean?  The whole object of this serialization is to permit
 reconstruction of the original data structures at another place
 and time.  In order to accomplish this with a pointer, it is
@@ -303,6 +303,27 @@ not sufficient to save the value of the pointer, rather the
 object it points to must be saved.  When the member is later
 loaded, a new object has to be created and a new pointer has
 to be loaded into the class member.
+<p>
+If the same pointer is serialized more than once, only one instance
+is be added to the archive.  When read back, no data is read back in.
+The only operation that occurs is for the second pointer is set equal to the first
+<p>
+Note that, in this example, the array consists of polymorphic pointers.
+That is, each array element point to one of several possible 
+kinds of bus stops.  So when the pointer is saved, some sort of class
+identifier must be saved.  When the pointer is loaded, the class
+identifier must be read and and instance of the corresponding class
+must be constructed. Finally the data can be loaded to newly created
+instance of the correct type.
+
+As can be seen in 
+<a href="../example/demo.cpp" target="demo_cpp">demo.cpp</a>,
+serialization of pointers to derived classes through a base
+clas pointer may require explicit enumeration of the derived
+classes to be serialized. This is referred to as "registration" or "export"
+of derived classes.  This requirement and the methods of
+satisfying it are explained in detail
+<a href="serialization.html#derivedpointers">here</a>
 <p>
 All this is accomplished automatically by the serialization
 library.  The above code is all that is necessary to accomplish
