@@ -51,7 +51,7 @@ rule toolset::require-wide-char-io-support ( toolset variant : subvariant-path p
         echo **** wide char i/o not supported by libcomo standard library **** ;
         properties = [ impose-requirements $(properties) : <build>no ] ;
     case "mingw*" :
-        if ! [ get-values <stlport-version> : $(properties) ] in "5.0"
+        if ! [ MATCH "^([5][.][0])$" : [ get-values <stlport-version> : $(properties) ] ]
         {
             echo **** wide char i/o not supported by the mingw standard library **** ;
             properties = [ impose-requirements $(properties) : <build>no ] ;
