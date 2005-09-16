@@ -27,352 +27,159 @@
   <dt><a href="#charactersets">Character Sets</a>
 </dl>
 
-An <strong>Archive</strong> object is a sequence of bytes created from 
-an arbitrary nested set of C++ data structures.
+There are two Archive concepts.  Given a set of C++ data structures consisting
+of <a href="serialization.html"><strong>Serializable</strong></a> types</li>, a
+Saving Archive will create a sequence of bytes.  Given a sequence of bytes
+created by a Saving Archive, a Loading Archive will reconstitute the orginal
+configuration of C++ data structures.
 
-Here we describe the <strong>Archive</strong> concept.  This is a list of
-requirements that a class must fullfill in order for a class to be used to
-save and load and arbitary nest set of C++ structures.
-
-Strictly speaking, there are two <strong>Archive</strong> concepts.  One for saving
-data and one for loading it back.  In this document we use the term
-<strong>Archive</strong> concepts for either one.  Which one we mean should be clear
-from the context.
-
-<h4><a name="saving_interface">Saving</a></h4>
-
-<h4>Associated types</h4>
-
-<Table border>
-<TR>
-<TD VAlign=top>
-<a href="../libs/mpl/doc/refmanual/bool.html">boost::mpl::bool_</a>
-</TD>
-<TD VAlign=top>
-<code>Archive::is_saving</code>
-</TD>
-<TD VAlign=top>
-<code>boost::mpl::true</code> if this is an Archive to which data can be saved.  
-<code>boost::mpl::false</code> otherwise. 
-For an example showing how this can beused, see the implementation of
-<a target="splithpp" href="../../../boost/serialization/split_free.hpp">split_free.hpp</a>.
-</TD>
-</TR>
-<TR>
-<TD VAlign=top>
-<a href="../libs/mpl/doc/refmanual/bool.html">boost::mpl::bool_</a>
-</TD>
-<TD VAlign=top>
-<code>Archive::is_loading</code>
-</TD>
-<TD VAlign=top>
-<code>boost::mpl::true</code> if this is an Archive from which data can be loaded.  
-<code>boost::mpl::false</code> otherwise. 
-</TD>
-
-
-</table>
+Both Archive concepts are derived from the more basic concept of Archive.
+<p>
 <h4>Notation</h4>
-<Table>
-<TR>
-<TD VAlign=top>
-<code>Archive</code>
-</TD>
-<TD VAlign=top>
-A type that is a model of the Archive concept.
-</TD>
-
-</TR>
-<TR>
-<TD VAlign=top>
-<code>T</code>
-</TD>
-<TD VAlign=top>
-A type that is a model of the <a target="detail" href="serialization.html">Serializable Concept</a>.
-</TD>
-</TR>
-
-
-<TR>
-<TD VAlign=top>
-<code>ar</code>
-</TD>
-<TD VAlign=top>
-Object of type <code>Archive</code>
-</TD>
-</TR>
-
-<TR>
-<TD VAlign=top>
-<code>t</code>
-</TD>
-<TD VAlign=top>
-Object of type <code>T</code>
-</TD>
-</TR>
-</table>
-
-<h3>Valid expressions</h3>
-The following expressions must be valid.
-<Table border>
-<TR>
-<TH>
-Name
-</TH>
-<TH>
-Expression
-</TH>
-<TH>
-Return type
-</TH>
-</TR>
-
-<TR>
-<TD VAlign=top>
-Save Binary
-</TD>
-<TD VAlign=top>
-<code>ar.save_binary(const void *, std::size_t)</code>
-</TD>
-<TD VAlign=top>
-void
-</TD>
-</TR>
-<TR>
-
-<TR>
-<TD VAlign=top>
-Save
-</TD>
-<TD VAlign=top>
-<code>ar &lt;&lt; t</code>
-</TD>
-<TD VAlign=top>
-Archive &amp;
-</TD>
-</TR>
-
-<TR>
-<TD VAlign=top>
-Save
-</TD>
-<TD VAlign=top>
-<code>ar &amp; t</code>
-</TD>
-\<TD VAlign=top>
-Archive &amp;
-</TD>
-</TR>
-
-<TR>
-<TD VAlign=top>
-Register type
-</TD>
-<TD VAlign=top>
-<code>ar.template register_type&lt;T&gt;()</code>
-</TD>
-<TD VAlign=top>
-void
-</TD>
-</TR>
-
-<TR>
-<TD VAlign=top>
-Library Version
-</TD>
-<TD VAlign=top>
-<code>ar.library_version()</code>
-</TD>
-<TD VAlign=top>
-unsigned int
-</TD>
-</TR>
-
-</table>
-
-<h3>Expression semantics</h3>
-<Table border>
-<TR>
-<TH>
-Name
-</TH>
-<TH>
-Expression
-</TH>
-<TH>
-Semantics
-</TH>
-</TR>
-<TR>
-<TD VAlign=top>
-Save Binary
-</TD>
-<TD VAlign=top>
-<code>ar.save_binary(const void * address, std::size_t count)</code>
-</TD>
-<TD VAlign=top>
-Appends count sequence of bytes starting at address to the archive.
-</TD>
-</TR>
-<TR>
-
-<TD VAlign=top>
-Save
-</TD>
-<TD VAlign=top>
-<code>ar &lt;&lt; t</code>
-</TD>
-<TD VAlign=top>
-Appends a sequence of bytes corresponding to the value of type T to the archive.
-</TD>
-</TR>
-
-<TD VAlign=top>
-Save
-</TD>
-<TD VAlign=top>
-<code><code>ar &amp; t</code>
-</TD>
-<TD VAlign=top>
-Appends a sequence of bytes corresponding to the value of type T to the archive.
-</TD>
-</TR>
-
-<TD VAlign=top>
-Register Type
-</TD>
-<TD VAlign=top>
-<code>ar.register_type&lt;T&gt;(T * t = NULL)</code>
-</TD>
-<TD VAlign=top>
-Appends a sequential integer to the archive. This integer becomes the "key" used
-to look up the class type when the archive is later loaded.  This process is
-referred to as "class registration".  It is only necessary to invoke this function for 
-objects of derived classes which are serialized through a base class pointer. This
-is explained in detail in
-<a href="special.html#derivedpointers">Special Considerations - Derived Pointers</a>.
-</TD>
-</TR>
-
-<TD VAlign=top>
-Library Version
-</TD>
-<TD VAlign=top>
-<code>ar.library_version()</code>
-</TD>
-<TD VAlign=top>
-Returns the version number of the serialization library that created the archive.
-This number will be incremented each time the library is altered in such a way
-that serialization could be altered for some type.  For example, suppose the type
-used for a count of collection members is changed.  The code that loads collections
-might be conditioned on the library version to make sure that libraries created by
-previous versions of the library can still be read.
-</TD>
-<TD VAlign=top>
-&nbsp;
-</TD>
-</TR>
-
-</table>
-
-<h4><a name="loading_interface">Loading</a></h4>
-
-A type that models the Archive concept is a class with the following members:
-<p>
-The template parameter <code>T</code> must correspond to a type which
-models the <a href="serialization.html"><strong>Serializable</strong></a> concept.
-<dl>
-<dt><h4><code>
-template&lt;class T&gt;<br>
-iarchive & operator&gt;&gt;(T & t);<br>
-template&lt;class T&gt;<br>
-iarchive & operator&(T & t);
-</code></h4></dt>
-<dd>
-<p>
-Retrieves an object of type T from the archive.  The object may be
+In the following descriptions, it is assumed that:
 <ul>
-    <li>A primitive data type such as int, char, float, etc.
-    <li>A class or struct for which a <code style="white-space: normal">serialize</code>
-        function has been defined.
-    <li>A pointer to a serializable object.
+  <li><code>A</code> is an Archive type</li>
+  <li><code>T</code> is an <a href="serialization.html"><strong>Serializable</strong></a> Type</li>
+  <li><code>ar</code> is an instance of type A.
+  <li><code>x</code> is an instance of type T.
+  <li><code>u</code> is an address.
 </ul>
-</dd>
 
-<dt><h4><code>
-void load_binary(void *address, std::size_t count);
-</code></h4></dt>
-<dd>
-Retrieves from the archive <code style="white-space: normal">count</code> bytes and stores
-them in memory starting at <code style="white-space: normal">address</code>.
-</dd>
+<h4>Common Type Definitions in all Archives</h4>
+<dl>
+  <dt><h4><code>
+    A::is_saving
+  </code></h4></dt>
+  <dd>
+    An integral constant of type <a href="../libs/mpl/doc/refmanual/bool.html">boost::mpl::bool_</a>.
+    Value is boost::mpl::bool_&lt;true&gt; if the Archive is a Saving Archive (see below)
+    and boost::mpl::bool_&lt;false&gt; otherwise.
+  </dd>   
+  <dt><h4><code>
+    A::is_loading
+  </code></h4></dt>
+  <dd>
+    An integral constant of type <a href="../libs/mpl/doc/refmanual/bool.html">boost::mpl::bool_</a>.
+    Value is boost::mpl::bool_&lt;true&gt; if the Archive is a Loading Archive (see below)
+    and boost::mpl::bool_&lt;false&gt; otherwise.
+  </dd>   
+</dl>
 
-<dt><h4><code>
-void delete_created_pointers();
-</code></h4></dt>
-<dd>
-Deletes all objects created by the loading of pointers.  This can be used to
-avoid memory leaks that might otherwise occur if pointers are being loaded
-and the archive load encounters an exception.
-</dd>
+<h4>Common Member Functions in all Archives</h4>
+<dl>
+  <dt><h4><code>
+    ar &amp; x
+  </code></h4></dt>
+  <dd>
+    Returns a reference to <code>ar</code>. 
+    Appends the value of <code>x</code> along with other information to <code>ar</code>.
+  </dd>
+  <dt><h4><code>
+    ar.template register_type&lt;T&gt;();<br>
+    ar.register_type(u);
+  </code></h4></dt>
+  <dd>
+    Append information about class T to the archive.  This information is used to
+    construct the correct class when a derived pointer is loaded.
+    Invocation of this member function is referred to as "class registration".  
+    This is explained in detail in
+    <a href="special.html#derivedpointers">Special Considerations - Derived Pointers</a>.
+  </dd>
+  <dt><h4><code>
+    ar.library_version()
+  </code></h4></dt>
+  <dd>
+    Returns an unsigned integer containing the version number of the serialization
+    library that created the archive. This number will be incremented each time the 
+    library is altered in such a way that serialization could be altered for some type.  
+    For example, suppose the type used for a count of collection members is changed.  
+    The code that loads collections might be conditioned on the library version to make 
+    sure that libraries created by previous versions of the library can still be read.
+  </dd>
+</dl>
 
-<dt><h4><code>
-template&lt;class T&gt;<br>
-register_type(T * t = NULL);
-</code></h4></dt>
-<dd>
-Retrieves the next integer from the archive and adds an entry to a table which
-relates the integer to the type T.  When pointers are loaded, this integer is
-used to indicate which object type should be created. This process is
-referred to as "class registration".  It is only necessary to invoke this function for 
-objects of derived classes which are serialized through a base class pointer. If this
-function is called during the saving of data to the archive, it should be called during the
-loading of the data from the archive at the same point in the serialization process.
-This is explained in detail in
-<a href="special.html#derivedpointers">Special Considerations - Derived Pointers</a>
-</dd>
+<h4><a name="saving_interface">Saving Archive</a></h4>
+A Saving Archive is a refinement of the Archive Concept.
+<h4>Notation</h4>
+In the following descriptions, it is assumed that:
+<ul>
+  <li><code>ar</code> is an instance of a Saving Archive.
+  <li><code>x</code> is an instance of a <a href="serialization.html"><strong>Serializable</strong></a> Type</li>.
+  <li><code>u</code> is an address.
+  <li><code>count</code> is an integer that can be converted to <code>std::size_t</code>.
+</ul>
 
-<dt><h4><code>
-void reset_object_address(void * new_address, void * old_address);
-</code></h4></dt>
-<dd>
-In order to facilitate loading of objects through a pointer 
-and to elminate redundant loading of objects, this system implements object address tracking. 
-Normally this is done automatically with no action required on the part of the user.  However,
-there are cases when an object must be de-serialized to a temporary location then 
-moved to its final destination.  This is common in loading collections.  
-<p>
-In such cases, reset_object_address should be invoked to communicate the final address
-of the last item loaded.  This permits the internal tables to be correctly maintained
-in these special case.
-</dd>
+<h4>Common Member Functions</h4>
+<dl>
+  <dt><h4><code>
+    ar &lt;&lt; x
+  </code></h4></dt>
+  <dd>
+    Returns a reference to <code>ar</code>. 
+    Appends the value of <code>x</code> along with other information to <code>ar</code>.
+  </dd>
+  <dt><h4><code>
+    ar.save_binary(u, count)
+  </code></h4></dt>
+  <dd>
+    Appends to the archive <code style="white-space: normal">count</code> bytes found at 
+    <code style="white-space: normal">address</code>.
+  </dd>
+</dl>
 
-<dt><h4><code>
-unsigned int library_version() const;
-</code></h4></dt>
-<dd>
-Returns the version number of the serialization library that created the archive.
-This number will be incremented each time the library is altered in such a way
-that serialization could be altered for some type.  For example, suppose the type
-used for a count of collection members is changed.  The code that loads collections
-might be conditioned on the library version to make sure that libraries created by
-previous versions of the library can still be read.
-</dd>
+<h4><a name="loading_interface">Loading Archive</a></h4>
 
-<dt><h4><code>
-typedef <a href="../libs/mpl/doc/refmanual/bool.html">boost::mpl::bool_&lt;false&gt;</a> is_saving;
-<br>
-typedef <a href="../libs/mpl/doc/refmanual/bool.html">boost::mpl::bool_&lt;true&gt;</a> is_saving;
-</code></h4></dt>
-<dd>
-These integral constants permit archive attributes to be queried at compiler
-or execution time.  They can used to generate code with boost 
-<a href="../../mpl/doc/index.html">mpl</a>
-. For and example
-showing how these can beused, see the implementation of
-<a target="splithpp" href="../../../boost/serialization/split_free.hpp">split_free.hpp</a>.
-</dd>
+<h4>Notation</h4>
+In the following descriptions, it is assumed that:
+<ul>
+  <li><code>ar</code> is an instance of a Loading Archive.
+  <li><code>x</code> is an instance of a <a href="serialization.html"><strong>Serializable</strong></a> Type</li>.
+  <li><code>u, v</code> are pointers to any type.
+  <li><code>count</code> is an integer that can be converted to <code>std::size_t</code>.
+</ul>
 
+<h4>Common Member Functions in all Archives</h4>
+<dl>
+  <dt><h4><code>
+    ar &gt;&gt; x
+  </code></h4></dt>
+  <dd>
+    Returns a reference to <code>ar</code>. 
+    Sets <code>x</code> with a value retrieved from the <code>ar</code>.
+  </dd>
+  <dt><h4><code>
+    ar.load_binary(u, count)
+  </code></h4></dt>
+  <dd>
+    Retrieves from the archive <code style="white-space: normal">count</code> bytes and stores
+    them in memory starting at <code style="white-space: normal">address</code>.
+  </dd>
+  <dt>
+  <dt><h4><code>
+    ar.reset_object_address(v, u)
+  </code></h4></dt>
+  <dd>
+    Communicates to the archive that the object originally at address u has been
+    moved to address v.
+    <p>
+    In order to facilitate loading of objects through a pointer 
+    and to elminate redundant loading of objects, this system implements object address tracking. 
+    Normally this is done automatically with no action required on the part of the user.  However,
+    there are cases when an object must be de-serialized to a temporary location then 
+    moved to its final destination.  This is common in loading collections.
+    <p>
+    In such cases, reset_object_address should be invoked to communicate the final address
+    of the last item loaded.  This permits the internal tables to be correctly maintained
+    in these special cases.
+  </dd>  
+  <dt><h4><code>
+    ar.delete_created_pointers()
+  </code></h4></dt>
+  <dd>
+    Deletes all objects created by the loading of pointers.  This can be used to
+    avoid memory leaks that might otherwise occur if pointers are being loaded
+    and the archive load encounters an exception.
+  </dd>
 </dl>
 
 There are archives based on text, binary and XML file
