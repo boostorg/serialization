@@ -41,13 +41,12 @@ inline void serialize(
     STD::pair<F, S> & p,
     const unsigned int /* file_version */
 ){
-    // note: we remove any const-ness.  The reason is that for 
-    // stl maps, the type saved is pair<const key, T).  We remove
-    // the const-ness in order to be able to loade it.
+    // note: we remove any const-ness on the first argument.  The reason is that 
+    // for stl maps, the type saved is pair<const key, T).  We remove
+    // the const-ness in order to be able to load it.
     typedef BOOST_DEDUCED_TYPENAME boost::remove_const<F>::type typef;
-    typedef BOOST_DEDUCED_TYPENAME boost::remove_const<S>::type types;
     ar & boost::serialization::make_nvp("first", const_cast<typef &>(p.first));
-    ar & boost::serialization::make_nvp("second",const_cast<types &>(p.second));
+    ar & boost::serialization::make_nvp("second", p.second);
 }
 
 } // serialization
