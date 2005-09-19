@@ -287,8 +287,12 @@ decided to use these configurations.
     feature. In order to serialize <code style="white-space: normal">shared_ptr&lt;A&gt;</code>,
     invoke the macro <code style="white-space: normal">BOOST_SERIALIZATION_SHARED_PTR(A)</code>
     in the header code.
+    <li>Lack of support for partial template specialization also creates problems for
+    serialization of <code style="white-space: normal">std::map</code>.  In order to serialize
+    instances of this type include the invocation of BOOST_BROKEN_COMPILER_TYPE_TRAITS_SPECIALIZATION
+    for the key type of the map.
 </ul>
-<h4><a name="vc6">Visual C++ 6.0</a></h4>
+<h4><a name="vc6">Visual C++ 6.5</a></h4>
 all the above issues for Visual C++ 7.0 plus:
 <ul>
     <li>Out of line template definitions are not recognized and fail with a confusing
@@ -326,7 +330,6 @@ all the above issues for Visual C++ 7.0 plus:
     <li>Code modules exceeding some undetermined size that use the library will fail with
     <i>fatal error C1204: compiler limit : internal structure overflow</i>.  This can be addressed
     by dividing the module into smaller ones.
-    <li>The library cannot be built as a DLL with this compiler.
 </ul>
 <h4><a name="borland">Borland 5.64 and 5.51</a></h4>
 <ul>
@@ -375,8 +378,8 @@ These platforms have several issues:
     <li>The dinkumware library shipped with this compiler does not change the locale facet
     of an i/o stream unless the <code style="white-space: normal">imbue</code> function is called before the the
     stream is opened.  In order to use this library with this environment to generate UTF-8
-    files, one cannot depend on the "automatic" setting of local that archives implement. The
-    stream local must be set explicitly on the stream before an archive is opened on it.  The
+    files, one cannot depend on the "automatic" setting of locale that archives implement. The
+    stream locale must be set explicitly on the stream before an archive is opened on it.  The
     archive should be opened with the <code style="white-space: normal">no_codecvt</code> flag.  Note this problem will
     occur on all compilers shipped with this library.
     <li>Other issues have been worked around in the file.
