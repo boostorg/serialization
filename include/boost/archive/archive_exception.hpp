@@ -17,8 +17,10 @@
 //  See http://www.boost.org for updates, documentation, and revision history.
 
 #include <boost/config.hpp>
+
 #ifndef BOOST_NO_EXCEPTIONS
 #include <exception>
+#endif
 
 #include <cassert>
 
@@ -28,7 +30,10 @@ namespace archive {
 //////////////////////////////////////////////////////////////////////
 // exceptions thrown by archives
 //
-class archive_exception : public virtual std::exception
+class archive_exception : 
+    #ifndef BOOST_NO_EXCEPTIONS
+    public virtual std::exception
+    #endif
 {
 public:
     typedef enum {
@@ -114,5 +119,4 @@ protected:
 }// namespace archive
 }// namespace boost
 
-#endif //BOOST_NO_EXCEPTIONS
 #endif //BOOST_ARCHIVE_ARCHIVE_EXCEPTION_HPP
