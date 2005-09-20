@@ -61,6 +61,8 @@ struct random_key {
     }
 };  
 
+BOOST_BROKEN_COMPILER_TYPE_TRAITS_SPECIALIZATION(random_key)
+
 #if defined(__LIBCOMO__) || (defined(__SGI_STL_PORT) || defined(_STLPORT_VERSION))
 
 namespace std {
