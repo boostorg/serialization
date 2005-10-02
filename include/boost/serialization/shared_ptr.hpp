@@ -203,7 +203,7 @@ inline void load(
     else    
     #endif
     {
-            ar >> boost::serialization::make_nvp("px", r);
+        ar >> boost::serialization::make_nvp("px", r);
     }
     get_helper<Archive, detail::shared_ptr_helper >(ar).reset(t,r);
 }
