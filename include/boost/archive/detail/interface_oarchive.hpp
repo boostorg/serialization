@@ -41,15 +41,8 @@ protected:
 public:
     /////////////////////////////////////////////////////////
     // archive public interface
-
-    struct is_loading {
-        typedef mpl::bool_<false> type;
-        BOOST_STATIC_CONSTANT(bool, value=false);
-    };
-    struct is_saving {
-        typedef mpl::bool_<true> type;
-        BOOST_STATIC_CONSTANT(bool, value=true);
-    };
+    typedef mpl::bool_<false> is_loading;
+    typedef mpl::bool_<true> is_saving;
 
     // return a pointer to the most derived class
     Archive * This(){

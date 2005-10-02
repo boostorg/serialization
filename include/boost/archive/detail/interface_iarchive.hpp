@@ -17,7 +17,10 @@
 //  See http://www.boost.org for updates, documentation, and revision history.
 #include <string>
 #include <boost/cstdint.hpp>
+
 #include <boost/mpl/bool.hpp>
+#include <boost/static_assert.hpp>
+#include <boost/serialization/tracking.hpp>
 
 #include <boost/archive/detail/auto_link_archive.hpp>
 #include <boost/archive/detail/abi_prefix.hpp> // must be the last header
@@ -41,14 +44,8 @@ protected:
 public:
     /////////////////////////////////////////////////////////
     // archive public interface
-    struct is_loading {
-        typedef mpl::bool_<true> type;
-        BOOST_STATIC_CONSTANT(bool, value=true);
-    };
-    struct is_saving {
-        typedef mpl::bool_<false> type;
-        BOOST_STATIC_CONSTANT(bool, value=false);
-    };
+    typedef mpl::bool_<true> is_loading;
+    typedef mpl::bool_<false> is_saving;
 
     // return a pointer to the most derived class
     Archive * This(){
@@ -65,7 +62,13 @@ public:
         this->This()->register_basic_serializer(bpis.get_basic_serializer());
         return & bpis;
     }
-
+    template<class T>
+    void reset_object_address(const T * new_address, const T * old_address){
+        this->This()->basic_reset_object_address(
+            new_address, 
+            old_address
+        );
+    }
     void lookup_helper(
         const boost::serialization::extended_type_info * const eti,
         boost::shared_ptr<void> & sph
