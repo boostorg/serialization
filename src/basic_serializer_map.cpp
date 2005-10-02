@@ -33,7 +33,15 @@ type_info_pointer_compare::operator()(
 }
 
 BOOST_ARCHIVE_DECL(BOOST_PP_EMPTY())
-basic_serializer_map::basic_serializer_map(){
+basic_serializer_map::basic_serializer_map(bool & deleted) :
+    m_deleted(deleted)
+{
+    m_deleted = false;
+}
+
+BOOST_ARCHIVE_DECL(BOOST_PP_EMPTY())
+basic_serializer_map::~basic_serializer_map(){
+    m_deleted = true;
 }
 
 BOOST_ARCHIVE_DECL(bool) 
