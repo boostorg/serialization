@@ -44,13 +44,15 @@ class BOOST_ARCHIVE_DECL(BOOST_PP_EMPTY()) basic_serializer_map
 {
     typedef std::set<const basic_serializer *, type_info_pointer_compare> map_type;
     map_type m_map;
+    bool & m_deleted;
 public:
     bool insert(const basic_serializer * bs);
     const basic_serializer * tfind(
         const boost::serialization::extended_type_info & type_
     ) const;
     void erase(basic_serializer * bs);
-    basic_serializer_map();
+    basic_serializer_map(bool & deleted);
+    ~basic_serializer_map();
 };
 
 } // namespace detail
