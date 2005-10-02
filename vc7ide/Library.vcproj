@@ -43,7 +43,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/libboost_serialization-vc71-mt-gd-1_33.lib"/>
+				OutputFile="$(OutDir)/libboost_serialization-vc71-mt-gd-1_33_1.lib"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
@@ -96,7 +96,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/libboost_serialization.lib"/>
+				OutputFile="$(OutDir)/libboost_serialization-vc71-mt-1_33_1.lib"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
@@ -147,7 +147,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/libboost_serialization.lib"/>
+				OutputFile="$(OutDir)/libboost_serialization-vc71-s-gd-1_33_1.lib"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
@@ -198,7 +198,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/libboost_serialization.lib"/>
+				OutputFile="$(OutDir)/libboost_serialization-vc71-mt-s-gd-1_33_1.lib"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
@@ -251,7 +251,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/libboost_serialization.lib"/>
+				OutputFile="$(OutDir)/libboost_serialization-vc71-s-1_33_1.lib"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
@@ -304,7 +304,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/libboost_serialization.lib"/>
+				OutputFile="$(OutDir)/libboost_serialization-vc71-mt-s-1_33_1.lib"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
@@ -363,9 +363,6 @@
 			</File>
 			<File
 				RelativePath="..\..\..\boost\serialization\traits.hpp">
-			</File>
-			<File
-				RelativePath="..\..\..\boost\serialization\traits_fwd.hpp">
 			</File>
 			<File
 				RelativePath="..\..\..\boost\serialization\type_info_implementation.hpp">
@@ -448,6 +445,9 @@
 				</File>
 				<File
 					RelativePath="..\..\..\boost\serialization\detail\shared_ptr_132.hpp">
+				</File>
+				<File
+					RelativePath="..\..\..\boost\serialization\detail\stack_constructor.hpp">
 				</File>
 			</Filter>
 		</Filter>

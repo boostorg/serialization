@@ -243,10 +243,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_not_serializable", "te
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_reset_object_address", "test_reset_object_address.vcproj", "{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_variant", "test_variant.vcproj", "{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
@@ -267,10 +263,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_const_fail", "test_con
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_zexp", "test_zexp.vcproj", "{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_shared_ptr_132", "test_shared_ptr_132.vcproj", "{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
@@ -279,8 +271,17 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_inclusion", "test_incl
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_reset_object_addr", "test_reset_object_addr.vcproj", "{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_project", "test_project\test_project.vcproj", "{978C3606-F6D4-451D-AE45-7A462F697D6C}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
 		Debug runtime-dynamic = Debug runtime-dynamic
 		Debug runtime-dynamic binary_archive = Debug runtime-dynamic binary_archive
 		Debug runtime-dynamic text_archive = Debug runtime-dynamic text_archive
@@ -299,6 +300,7 @@ Global
 		Debug runtime-static threading-multi xml_warchive = Debug runtime-static threading-multi xml_warchive
 		Debug runtime-static xml_archive = Debug runtime-static xml_archive
 		Debug runtime-static xml_warchive = Debug runtime-static xml_warchive
+		Release = Release
 		Release runtime-dynamic = Release runtime-dynamic
 		Release runtime-dynamic binary_archive = Release runtime-dynamic binary_archive
 		Release runtime-dynamic text_archive = Release runtime-dynamic text_archive
@@ -319,6 +321,8 @@ Global
 		Release runtime-static xml_warchive = Release runtime-static xml_warchive
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
+		{30E10563-960A-11D7-9FE9-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static threading-multi|Win32
+		{30E10563-960A-11D7-9FE9-525400E2CF85}.Debug.Build.0 = Debug runtime-static threading-multi|Win32
 		{30E10563-960A-11D7-9FE9-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{30E10563-960A-11D7-9FE9-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{30E10563-960A-11D7-9FE9-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic|Win32
@@ -355,6 +359,8 @@ Global
 		{30E10563-960A-11D7-9FE9-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static threading-multi|Win32
 		{30E10563-960A-11D7-9FE9-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static threading-multi|Win32
 		{30E10563-960A-11D7-9FE9-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static threading-multi|Win32
+		{30E10563-960A-11D7-9FE9-525400E2CF85}.Release.ActiveCfg = Release runtime-static threading-multi|Win32
+		{30E10563-960A-11D7-9FE9-525400E2CF85}.Release.Build.0 = Release runtime-static threading-multi|Win32
 		{30E10563-960A-11D7-9FE9-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{30E10563-960A-11D7-9FE9-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{30E10563-960A-11D7-9FE9-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic|Win32
@@ -391,6 +397,8 @@ Global
 		{30E10563-960A-11D7-9FE9-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi|Win32
 		{30E10563-960A-11D7-9FE9-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi|Win32
 		{30E10563-960A-11D7-9FE9-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -427,6 +435,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -463,6 +473,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{30E10563-960A-11D7-9FE9-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static threading-multi|Win32
+		{30E10563-960A-11D7-9FE9-525400E2CF85}.Debug.Build.0 = Debug runtime-static threading-multi|Win32
 		{30E10563-960A-11D7-9FE9-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{30E10563-960A-11D7-9FE9-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{30E10563-960A-11D7-9FE9-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic|Win32
@@ -499,6 +511,8 @@ Global
 		{30E10563-960A-11D7-9FE9-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static threading-multi|Win32
 		{30E10563-960A-11D7-9FE9-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static threading-multi|Win32
 		{30E10563-960A-11D7-9FE9-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static threading-multi|Win32
+		{30E10563-960A-11D7-9FE9-525400E2CF85}.Release.ActiveCfg = Release runtime-static threading-multi|Win32
+		{30E10563-960A-11D7-9FE9-525400E2CF85}.Release.Build.0 = Release runtime-static threading-multi|Win32
 		{30E10563-960A-11D7-9FE9-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{30E10563-960A-11D7-9FE9-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{30E10563-960A-11D7-9FE9-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic|Win32
@@ -535,6 +549,8 @@ Global
 		{30E10563-960A-11D7-9FE9-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi|Win32
 		{30E10563-960A-11D7-9FE9-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi|Win32
 		{30E10563-960A-11D7-9FE9-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -571,6 +587,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -607,6 +625,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -643,6 +663,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -679,6 +701,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -715,6 +739,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -751,6 +777,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -787,6 +815,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -823,6 +853,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -859,6 +891,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -895,6 +929,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -931,6 +967,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -967,6 +1005,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -1003,6 +1043,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -1039,6 +1081,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -1075,6 +1119,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -1111,6 +1157,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -1147,6 +1195,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -1183,6 +1233,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -1219,6 +1271,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -1255,6 +1309,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -1291,6 +1347,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -1327,6 +1385,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -1363,6 +1423,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -1399,12 +1461,14 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.Build.0 = Debug runtime-dynamic text_archive|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic text_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic text_archive.Build.0 = Debug runtime-dynamic text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic text_archive.ActiveCfg = Debug runtime-dynamic|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic text_archive.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic text_warchive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic text_warchive.Build.0 = Debug runtime-dynamic text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic xml_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -1435,6 +1499,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -1471,6 +1537,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -1507,6 +1575,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -1543,6 +1613,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -1579,6 +1651,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -1615,6 +1689,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -1651,6 +1727,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -1687,6 +1765,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -1723,6 +1803,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -1759,6 +1841,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -1795,6 +1879,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -1831,6 +1917,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -1867,6 +1955,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -1903,6 +1993,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -1939,6 +2031,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -1975,6 +2069,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -2011,6 +2107,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -2047,6 +2145,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -2083,6 +2183,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -2119,6 +2221,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -2155,6 +2259,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -2191,6 +2297,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -2227,6 +2335,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -2263,6 +2373,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -2299,6 +2411,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -2335,6 +2449,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -2371,6 +2487,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -2407,6 +2525,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -2443,6 +2563,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -2479,6 +2601,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -2515,6 +2639,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -2551,6 +2677,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -2587,6 +2715,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -2623,6 +2753,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -2659,6 +2791,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -2695,6 +2829,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -2731,6 +2867,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -2767,6 +2905,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -2803,6 +2943,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -2839,6 +2981,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -2875,6 +3019,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -2911,6 +3057,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -2947,6 +3095,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -2983,6 +3133,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -3019,6 +3171,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -3055,6 +3209,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -3091,6 +3247,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -3127,6 +3285,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -3163,6 +3323,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -3199,6 +3361,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -3235,6 +3399,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -3271,6 +3437,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -3307,6 +3475,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -3343,6 +3513,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -3379,6 +3551,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -3415,6 +3589,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -3451,6 +3627,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -3487,6 +3665,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -3523,6 +3703,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -3559,6 +3741,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -3595,6 +3779,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -3631,6 +3817,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -3667,6 +3855,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -3703,6 +3893,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -3739,6 +3931,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -3775,6 +3969,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -3811,6 +4007,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -3847,6 +4045,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -3883,6 +4083,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -3919,6 +4121,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -3955,6 +4159,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -3991,6 +4197,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -4027,6 +4235,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -4063,6 +4273,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -4099,6 +4311,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -4135,6 +4349,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -4171,6 +4387,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -4207,6 +4425,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -4243,6 +4463,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -4279,6 +4501,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -4315,6 +4539,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -4351,6 +4577,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -4387,6 +4615,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -4423,6 +4653,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -4459,6 +4691,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -4495,6 +4729,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -4531,6 +4767,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -4567,6 +4805,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -4603,6 +4843,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -4639,6 +4881,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -4675,6 +4919,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -4711,6 +4957,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -4747,6 +4995,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -4783,6 +5033,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -4819,6 +5071,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -4855,6 +5109,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -4891,6 +5147,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -4927,6 +5185,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -4963,6 +5223,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -4999,6 +5261,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -5035,6 +5299,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -5071,6 +5337,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -5107,6 +5375,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -5137,12 +5407,14 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static threading-multi text_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static threading-multi xml_archive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static threading-multi xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static threading-multi xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static threading-multi xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static threading-multi xml_warchive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static threading-multi xml_warchive.Build.0 = Debug runtime-dynamic text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -5179,6 +5451,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -5215,6 +5489,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.ActiveCfg = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic text_archive|Win32
@@ -5251,6 +5527,8 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.ActiveCfg = Release runtime-static text_archive|Win32
+		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release.Build.0 = Release runtime-static text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic text_archive|Win32
@@ -5287,78 +5565,82 @@ Global
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi text_archive|Win32
 		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi text_archive|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.ActiveCfg = Debug runtime-dynamic|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic.Build.0 = Debug runtime-dynamic|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug runtime-dynamic|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic binary_archive.Build.0 = Debug runtime-dynamic|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic text_archive.ActiveCfg = Debug runtime-dynamic|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic text_archive.Build.0 = Debug runtime-dynamic|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic text_warchive.ActiveCfg = Debug runtime-dynamic|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic text_warchive.Build.0 = Debug runtime-dynamic|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic xml_archive.ActiveCfg = Debug runtime-dynamic|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic xml_archive.Build.0 = Debug runtime-dynamic|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic xml_warchive.ActiveCfg = Debug runtime-dynamic|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-dynamic xml_warchive.Build.0 = Debug runtime-dynamic|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static.ActiveCfg = Debug runtime-static|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static.Build.0 = Debug runtime-static|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static binary_archive.ActiveCfg = Debug runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static binary_archive.Build.0 = Debug runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static text_archive.ActiveCfg = Debug runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static text_archive.Build.0 = Debug runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static text_warchive.ActiveCfg = Debug runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static text_warchive.Build.0 = Debug runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static threading-multi.ActiveCfg = Debug runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static threading-multi.Build.0 = Debug runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static threading-multi binary_archive.ActiveCfg = Debug runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static threading-multi binary_archive.Build.0 = Debug runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static threading-multi text_archive.ActiveCfg = Debug runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static threading-multi text_archive.Build.0 = Debug runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static threading-multi text_warchive.ActiveCfg = Debug runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static threading-multi text_warchive.Build.0 = Debug runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static threading-multi xml_archive.ActiveCfg = Debug runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static threading-multi xml_archive.Build.0 = Debug runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static threading-multi xml_warchive.ActiveCfg = Debug runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static threading-multi xml_warchive.Build.0 = Debug runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.ActiveCfg = Debug runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_archive.Build.0 = Debug runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.ActiveCfg = Debug runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Debug runtime-static xml_warchive.Build.0 = Debug runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.ActiveCfg = Release runtime-dynamic|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic.Build.0 = Release runtime-dynamic|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.ActiveCfg = Release runtime-dynamic|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic binary_archive.Build.0 = Release runtime-dynamic|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic text_archive.ActiveCfg = Release runtime-dynamic|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic text_archive.Build.0 = Release runtime-dynamic|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic text_warchive.ActiveCfg = Release runtime-dynamic|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic text_warchive.Build.0 = Release runtime-dynamic|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic xml_archive.ActiveCfg = Release runtime-dynamic|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic xml_archive.Build.0 = Release runtime-dynamic|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic xml_warchive.ActiveCfg = Release runtime-dynamic|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-dynamic xml_warchive.Build.0 = Release runtime-dynamic|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static.ActiveCfg = Release runtime-static|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static.Build.0 = Release runtime-static|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static binary_archive.ActiveCfg = Release runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static binary_archive.Build.0 = Release runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static text_archive.ActiveCfg = Release runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static text_archive.Build.0 = Release runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static text_warchive.ActiveCfg = Release runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static text_warchive.Build.0 = Release runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static threading-multi.ActiveCfg = Release runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static threading-multi.Build.0 = Release runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static threading-multi binary_archive.ActiveCfg = Release runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static threading-multi binary_archive.Build.0 = Release runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static threading-multi text_archive.ActiveCfg = Release runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static threading-multi text_archive.Build.0 = Release runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static threading-multi text_warchive.ActiveCfg = Release runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static threading-multi text_warchive.Build.0 = Release runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static threading-multi xml_archive.ActiveCfg = Release runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static threading-multi xml_archive.Build.0 = Release runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static threading-multi xml_warchive.ActiveCfg = Release runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static threading-multi xml_warchive.Build.0 = Release runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.ActiveCfg = Release runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_archive.Build.0 = Release runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.ActiveCfg = Release runtime-static threading-multi|Win32
-		{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}.Release runtime-static xml_warchive.Build.0 = Release runtime-static threading-multi|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Debug.ActiveCfg = Debug|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Debug.Build.0 = Debug|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Debug runtime-dynamic.ActiveCfg = Debug|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Debug runtime-dynamic.Build.0 = Debug|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Debug runtime-dynamic binary_archive.ActiveCfg = Debug|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Debug runtime-dynamic binary_archive.Build.0 = Debug|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Debug runtime-dynamic text_archive.ActiveCfg = Debug|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Debug runtime-dynamic text_archive.Build.0 = Debug|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Debug runtime-dynamic text_warchive.ActiveCfg = Debug|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Debug runtime-dynamic text_warchive.Build.0 = Debug|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Debug runtime-dynamic xml_archive.ActiveCfg = Debug|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Debug runtime-dynamic xml_archive.Build.0 = Debug|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Debug runtime-dynamic xml_warchive.ActiveCfg = Debug|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Debug runtime-dynamic xml_warchive.Build.0 = Debug|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Debug runtime-static.ActiveCfg = Debug|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Debug runtime-static.Build.0 = Debug|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Debug runtime-static binary_archive.ActiveCfg = Debug|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Debug runtime-static binary_archive.Build.0 = Debug|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Debug runtime-static text_archive.ActiveCfg = Debug|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Debug runtime-static text_archive.Build.0 = Debug|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Debug runtime-static text_warchive.ActiveCfg = Debug|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Debug runtime-static text_warchive.Build.0 = Debug|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Debug runtime-static threading-multi.ActiveCfg = Debug|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Debug runtime-static threading-multi.Build.0 = Debug|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Debug runtime-static threading-multi binary_archive.ActiveCfg = Debug|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Debug runtime-static threading-multi binary_archive.Build.0 = Debug|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Debug runtime-static threading-multi text_archive.ActiveCfg = Debug|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Debug runtime-static threading-multi text_archive.Build.0 = Debug|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Debug runtime-static threading-multi text_warchive.ActiveCfg = Debug|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Debug runtime-static threading-multi text_warchive.Build.0 = Debug|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Debug runtime-static threading-multi xml_archive.ActiveCfg = Debug|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Debug runtime-static threading-multi xml_archive.Build.0 = Debug|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Debug runtime-static threading-multi xml_warchive.ActiveCfg = Debug|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Debug runtime-static threading-multi xml_warchive.Build.0 = Debug|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Debug runtime-static xml_archive.ActiveCfg = Debug|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Debug runtime-static xml_archive.Build.0 = Debug|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Debug runtime-static xml_warchive.ActiveCfg = Debug|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Debug runtime-static xml_warchive.Build.0 = Debug|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Release.ActiveCfg = Release|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Release.Build.0 = Release|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Release runtime-dynamic.ActiveCfg = Release|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Release runtime-dynamic.Build.0 = Release|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Release runtime-dynamic binary_archive.ActiveCfg = Release|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Release runtime-dynamic binary_archive.Build.0 = Release|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Release runtime-dynamic text_archive.ActiveCfg = Release|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Release runtime-dynamic text_archive.Build.0 = Release|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Release runtime-dynamic text_warchive.ActiveCfg = Release|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Release runtime-dynamic text_warchive.Build.0 = Release|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Release runtime-dynamic xml_archive.ActiveCfg = Release|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Release runtime-dynamic xml_archive.Build.0 = Release|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Release runtime-dynamic xml_warchive.ActiveCfg = Release|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Release runtime-dynamic xml_warchive.Build.0 = Release|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Release runtime-static.ActiveCfg = Release|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Release runtime-static.Build.0 = Release|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Release runtime-static binary_archive.ActiveCfg = Release|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Release runtime-static binary_archive.Build.0 = Release|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Release runtime-static text_archive.ActiveCfg = Release|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Release runtime-static text_archive.Build.0 = Release|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Release runtime-static text_warchive.ActiveCfg = Release|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Release runtime-static text_warchive.Build.0 = Release|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Release runtime-static threading-multi.ActiveCfg = Release|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Release runtime-static threading-multi.Build.0 = Release|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Release runtime-static threading-multi binary_archive.ActiveCfg = Release|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Release runtime-static threading-multi binary_archive.Build.0 = Release|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Release runtime-static threading-multi text_archive.ActiveCfg = Release|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Release runtime-static threading-multi text_archive.Build.0 = Release|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Release runtime-static threading-multi text_warchive.ActiveCfg = Release|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Release runtime-static threading-multi text_warchive.Build.0 = Release|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Release runtime-static threading-multi xml_archive.ActiveCfg = Release|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Release runtime-static threading-multi xml_archive.Build.0 = Release|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Release runtime-static threading-multi xml_warchive.ActiveCfg = Release|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Release runtime-static threading-multi xml_warchive.Build.0 = Release|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Release runtime-static xml_archive.ActiveCfg = Release|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Release runtime-static xml_archive.Build.0 = Release|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Release runtime-static xml_warchive.ActiveCfg = Release|Win32
+		{978C3606-F6D4-451D-AE45-7A462F697D6C}.Release runtime-static xml_warchive.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection
