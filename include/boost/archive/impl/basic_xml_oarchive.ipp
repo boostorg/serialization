@@ -26,9 +26,8 @@ namespace archive {
 namespace detail {
 template<class CharType>
 struct XML_name {
-    typedef bool result_type;
     void operator()(CharType t) const{
-        unsigned char lookup_table[] = {
+        const unsigned char lookup_table[] = {
             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
             0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0, // -.
