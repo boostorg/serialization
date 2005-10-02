@@ -67,7 +67,7 @@ struct archive_input_map
         std::pair<BOOST_DEDUCED_TYPENAME Container::const_iterator, bool> result = 
             s.insert(t.reference());
         assert(result.second); // make sure we inserted a new element
-        ar.reset_object_address(& (* result.first), & t);
+        ar.reset_object_address(& (* result.first), & t.reference());
     }
 };
 
@@ -84,7 +84,7 @@ struct archive_input_set
         std::pair<BOOST_DEDUCED_TYPENAME Container::const_iterator, bool> result = 
             s.insert(t.reference());
         assert(result.second); // make sure we inserted a new element
-        ar.reset_object_address(& (* result.first), & t);
+        ar.reset_object_address(& (* result.first), & t.reference());
     }
 };
 
@@ -99,7 +99,7 @@ struct archive_input_multimap
         ar >> boost::serialization::make_nvp("item", t.reference());
         BOOST_DEDUCED_TYPENAME Container::const_iterator result 
             = s.insert(t.reference());
-        ar.reset_object_address(& (* result), & t);
+        ar.reset_object_address(& (* result), & t.reference());
     }
 };
 
@@ -115,7 +115,7 @@ struct archive_input_multiset
         ar >> boost::serialization::make_nvp("item", t.reference());
         BOOST_DEDUCED_TYPENAME Container::const_iterator result 
             = s.insert(t.reference());
-        ar.reset_object_address(& (* result), & t);
+        ar.reset_object_address(& (* result), & t.reference());
     }
 };
 
