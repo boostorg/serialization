@@ -31,8 +31,6 @@ namespace serialization {
 namespace archive {
 namespace detail {
 
-class basic_serializer_map;
-
 template<class Archive>
 class archive_pointer_oserializer : 
     public basic_pointer_oserializer {
