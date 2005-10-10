@@ -78,8 +78,11 @@ private:
     virtual unsigned int get_flags() const {
         return ArchiveImplementation::get_flags();
     }
-    virtual void reset_object_address(const void * new_address, const void * old_address){
-        ArchiveImplementation::reset_object_address(new_address, old_address);
+    virtual void basic_reset_object_address(
+        const void * new_address, 
+        const void * old_address
+    ){
+        ArchiveImplementation::basic_reset_object_address(new_address, old_address);
     }
     virtual void delete_created_pointers(){
         ArchiveImplementation::delete_created_pointers();
