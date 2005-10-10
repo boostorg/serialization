@@ -107,24 +107,28 @@ public:
 int main() {
     // create and open a character archive for output
     std::ofstream ofs("filename");
-    boost::archive::text_oarchive oa(ofs);
 
     // create class instance
     const gps_position g(35, 59, 24.567f);
-    // write class instance to archive
-    oa &lt;&lt; g;
-    // close archive
-    ofs.close();
+
+    // save data to archive
+    {
+        boost::archive::text_oarchive oa(ofs);
+        // write class instance to archive
+        oa &lt;&lt; g;
+    	// archive and stream closed when destructors are called
+    }
 
     // ... some time later restore the class instance to its orginal state
-    // create and open an archive for input
-    std::ifstream ifs("filename", std::ios::binary);
-    boost::archive::text_iarchive ia(ifs);
-    // read class state from archive
     gps_position newg;
-    ia &gt;&gt; newg;
-    // close archive
-    ifs.close();
+    {
+        // create and open an archive for input
+        std::ifstream ifs("filename", std::ios::binary);
+        boost::archive::text_iarchive ia(ifs);
+        // read class state from archive
+        ia &gt;&gt; newg;
+        // archive and stream closed when destructors are called
+    }
     return 0;
 }
 </code>
