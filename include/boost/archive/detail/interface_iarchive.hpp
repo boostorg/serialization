@@ -63,11 +63,8 @@ public:
         return & bpis;
     }
     template<class T>
-    void reset_object_address(const T * new_address, const T * old_address){
-        this->This()->basic_reset_object_address(
-            new_address, 
-            old_address
-        );
+    void reset_object_address(T * new_address, T * old_address){
+        this->This()->basic_reset_object_address(new_address,old_address);
     }
     void lookup_helper(
         const boost::serialization::extended_type_info * const eti,
