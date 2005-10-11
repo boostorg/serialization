@@ -17,11 +17,7 @@
 //  See http://www.boost.org for updates, documentation, and revision history.
 #include <string>
 #include <boost/cstdint.hpp>
-
 #include <boost/mpl/bool.hpp>
-#include <boost/static_assert.hpp>
-#include <boost/serialization/tracking.hpp>
-
 #include <boost/archive/detail/auto_link_archive.hpp>
 #include <boost/archive/detail/abi_prefix.hpp> // must be the last header
 
@@ -61,10 +57,6 @@ public:
             );
         this->This()->register_basic_serializer(bpis.get_basic_serializer());
         return & bpis;
-    }
-    template<class T>
-    void reset_object_address(T * new_address, T * old_address){
-        this->This()->basic_reset_object_address(new_address,old_address);
     }
     void lookup_helper(
         const boost::serialization::extended_type_info * const eti,

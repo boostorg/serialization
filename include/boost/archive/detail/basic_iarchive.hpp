@@ -91,7 +91,7 @@ public:
     unsigned int
     get_flags() const;
     void 
-    basic_reset_object_address(const void * new_address, const void * old_address);
+    reset_object_address(const void * new_address, const void * old_address);
     void 
     delete_created_pointers();
 };

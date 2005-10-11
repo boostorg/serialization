@@ -543,7 +543,7 @@ basic_iarchive::set_library_version(unsigned int archive_library_version){
 }
 
 BOOST_ARCHIVE_DECL(void)
-basic_iarchive::basic_reset_object_address(
+basic_iarchive::reset_object_address(
     const void * new_address, 
     const void * old_address
 ){
