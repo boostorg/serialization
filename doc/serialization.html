@@ -597,7 +597,19 @@ When loading <code style="white-space: normal">b</code> what kind of object shou
 Should it be an object of class <code style="white-space: normal">derived_one</code>,
 <code style="white-space: normal">derived_two</code>, or maybe <code style="white-space: normal">base</code>?
 <p>
-Often, this situation is resolved automatically by the serialization library.
+It turns out that the kind of object serialized depends upon whether the base class
+(<code style="white-space: normal">base</code> in this case) is polymophic or not.
+If <code style="white-space: normal">base</code> is not polymorphic, that is if it has no
+virtual functions, then an object of the type <code style="white-space: normal">base</code>
+will be serialized. Information in any derived classes will be lost. If this is what is desired
+(it usually isn't) then no other effort is required.
+<p>
+
+If the base class is polymorphic, an object of the most derived type
+(<code style="white-space: normal">derived_one</code>
+or <code style="white-space: normal">derived_two</code>
+in this case) will be serialized.  The question of which type of object is to be
+serialized is (almost) automatically handled by the library.
 <p>
 The system "registers" each class in an archive the first time an object of that
 class it is serialized and assigns a sequential number to it.  Next time an
