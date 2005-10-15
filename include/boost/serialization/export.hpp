@@ -166,7 +166,7 @@ const guid_initializer<T> guid_initializer<T>::instance;
 template<class T, class ASeq>
 struct export_instance {
     struct abstract {
-        static const void *
+        static const export_generator<T, ASeq> *
         invoke(){
             return NULL;
         }
