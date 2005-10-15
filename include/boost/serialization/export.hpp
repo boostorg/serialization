@@ -172,88 +172,57 @@ struct export_instance {
         }
     };
     struct not_abstract {
-        static const void *
+        static const export_generator<T, ASeq> *
         invoke(){
             return & export_generator<T, ASeq>::instance;
         }
     };
-    static BOOST_DLLEXPORT std::pair<const void *, const void *> 
-    #if ! (defined(BOOST_MSVC) && (_MSC_VER <= 1300))
-    invoke() BOOST_USED;
-    #else
-    invoke() {
-        typedef BOOST_DEDUCED_TYPENAME mpl::eval_if<
-            serialization::is_abstract<T>,
-            mpl::identity<abstract>,
-            mpl::identity<not_abstract>
-        >::type typex;
-        return std::pair<const void *, const void *>(
-            typex::invoke(),
-            & guid_initializer<T>::instance
-        );
-    }
-    #endif
 };
 
-#if ! (defined(BOOST_MSVC) && (_MSC_VER <= 1300))
-    template<class T, class ASeq>
-    BOOST_DLLEXPORT 
-    std::pair<const void *, const void *> 
-    export_instance<T, ASeq>::invoke() {
-        typedef BOOST_DEDUCED_TYPENAME mpl::eval_if<
-            serialization::is_abstract<T>,
-            mpl::identity<abstract>,
-            mpl::identity<not_abstract>
-        >::type typex;
-        return std::pair<const void *, const void *>(
-            typex::invoke(),
-            & guid_initializer<T>::instance
-        );
-    }
-#endif
+template<class T, class ASeq>
+BOOST_DLLEXPORT 
+std::pair<const export_generator<T, ASeq> *, const guid_initializer<T> *>
+export_instance_invoke() {
+    typedef BOOST_DEDUCED_TYPENAME mpl::eval_if<
+        serialization::is_abstract<T>,
+        mpl::identity<BOOST_DEDUCED_TYPENAME export_instance<T, ASeq>::abstract>,
+        mpl::identity<BOOST_DEDUCED_TYPENAME export_instance<T, ASeq>::not_abstract>
+    >::type typex;
+    return std::pair<const export_generator<T, ASeq> *, const guid_initializer<T> *>(
+        typex::invoke(),
+        & guid_initializer<T>::instance
+    );
+}
 
 template<class T, class ASeq>
 struct export_archives {
     struct empty_archive_list {
-        static std::pair<const void *, const void *>
+        static BOOST_DLLEXPORT 
+        std::pair<const export_generator<T, ASeq> *, const guid_initializer<T> *>
         invoke(){
-            return std::pair<const void *, const void *>(NULL, NULL);
+            return std::pair<NULL, NULL>;
         }
     };
     struct non_empty_archive_list {
-        static std::pair<const void *, const void *>
+        static BOOST_DLLEXPORT 
+        std::pair<const export_generator<T, ASeq> *, const guid_initializer<T> *>
         invoke(){
-            return export_instance<T, ASeq>::invoke();
+            return export_instance_invoke<T, ASeq>();
         }
     };
-    static BOOST_DLLEXPORT std::pair<const void *, const void *> 
-    #if ! (defined(BOOST_MSVC) && (_MSC_VER <= 1300))
-    invoke() BOOST_USED;
-    #else
-    invoke() {
-        typedef BOOST_DEDUCED_TYPENAME mpl::eval_if<
-            mpl::empty<ASeq>,
-            mpl::identity<empty_archive_list>,
-            mpl::identity<non_empty_archive_list>
-        >::type typex;
-        return typex::invoke();
-    }
-    #endif
 };
 
-#if ! (defined(BOOST_MSVC) && (_MSC_VER <= 1300))
-    template<class T, class ASeq>
-    BOOST_DLLEXPORT 
-    std::pair<const void *, const void *> 
-    export_archives<T, ASeq>::invoke() {
-        typedef BOOST_DEDUCED_TYPENAME mpl::eval_if<
-            mpl::empty<ASeq>,
-            mpl::identity<empty_archive_list>,
-            mpl::identity<non_empty_archive_list>
-        >::type typex;
-        return typex::invoke();
-    }
-#endif
+template<class T, class ASeq>
+BOOST_DLLEXPORT 
+std::pair<const export_generator<T, ASeq> *, const guid_initializer<T> *>
+export_archives_invoke(T &, ASeq &){
+    typedef BOOST_DEDUCED_TYPENAME mpl::eval_if<
+        mpl::empty<ASeq>,
+        mpl::identity<BOOST_DEDUCED_TYPENAME export_archives<T, ASeq>::empty_archive_list>,
+        mpl::identity<BOOST_DEDUCED_TYPENAME export_archives<T, ASeq>::non_empty_archive_list>
+    >::type typex;
+    return typex::invoke();
+}
 
 } // namespace detail
 } // namespace archive
@@ -267,8 +236,9 @@ struct export_archives {
     const guid_initializer< T >                                  \
         guid_initializer< T >::instance(K);                      \
     template                                                     \
-    BOOST_DLLEXPORT std::pair<const void *, const void *>        \
-    export_archives<T, ASEQ>::invoke();                          \
+    BOOST_DLLEXPORT                                              \
+    std::pair<const export_generator<T, ASEQ> *, const guid_initializer<T> *> \
+    export_archives_invoke<T, ASEQ>(T &, ASEQ &);                \
     } } }                                                        \
     /**/
 

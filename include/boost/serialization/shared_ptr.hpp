@@ -52,14 +52,14 @@
         template<class T>
         struct version< ::boost::shared_ptr<T> > {                                                                      \
             typedef mpl::integral_c_tag tag;
-            typedef mpl::int_<1> type;
+            typedef BOOST_DEDUCED_TYPENAME mpl::int_<1> type;
             BOOST_STATIC_CONSTANT(unsigned int, value = type::value);
         };
         // don't track shared pointers
         template<class T>
         struct tracking_level< ::boost::shared_ptr<T> > { 
             typedef mpl::integral_c_tag tag;
-            typedef mpl::int_< ::boost::serialization::track_never> type;
+            typedef BOOST_DEDUCED_TYPENAME mpl::int_< ::boost::serialization::track_never> type;
             BOOST_STATIC_CONSTANT(int, value = type::value);
         };
     }}
