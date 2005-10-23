@@ -5,7 +5,6 @@
 #  Boost Software License, Version 1.0. (See accompanying file 
 #  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 #
-#  See http://www.boost.org/libs/test for the library home page.
 
 subproject libs/serialization/test ;
 
@@ -46,7 +45,7 @@ rule run-template ( test-name : sources * : requirements * ) {
         : # requirements
             std::locale-support
             toolset::require-boost-spirit-support
-            <borland*><*><cxxflags>"-w-8080 -w-8071 -w-8057 -w-8062 -w-8008 -w-0018 -w-8066"
+            toolset::suppress_warnings
             $(requirements)
         : # test name
             $(test-name)
