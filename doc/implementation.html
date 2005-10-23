@@ -32,9 +32,10 @@ http://www.boost.org/LICENSE_1_0.txt)
   <dt><a href="#partialtemplatespecialization">Partial Template Specialization</a>
   <dt><a href="#othercompilerissues">Specific Compiler/Library Issues</a>
   <dl class="page-index">
-    <dt><a href="#gcc3x">GCC 3.X, 4.x</a>
+    <dt><a href="#gcc3x">GCC 3.X, 4.X</a>
     <dt><a href="#gcc295">GCC 2.95</a>
     <dt><a href="#intel80">Intel 8.0</a>
+    <dt><a href="#vc80">Visual C++ 8.0</a>
     <dt><a href="#vc71">Visual C++ 7.1</a>
     <dt><a href="#vc70">Visual C++ 7.0</a>
     <dt><a href="#vc6">Visual C++ 6.0</a>
@@ -199,11 +200,26 @@ the syntax described above.
 </ul>
 <h3><a name="othercompilerissues">Specific Compiler/Library Issues</a></h3>
 
-<h4><a name="gcc3x">GCC 3.X, 4.x</a></h4>
-GCC versions for Cygwin and MinGW fail to support wide character I/O.  
-So all tests using wide char I/O fail.  Note that if wide character I/O support
-is added with STLPort, all tests complete successfully.
-
+<h4><a name="gcc3x">GCC 3.X, 4.X</a></h4>
+<ul>
+    <li>GCC versions for Cygwin and MinGW fail to support wide character I/O.  
+    So all tests using wide char I/O fail.  Note that if wide character I/O support
+    is added with STLPort, all tests complete successfully.
+    <li>This compiler generates long warning messages related to the usage of
+    non virtual destructors in polymorphic classes.  These warnings have been
+    carfully considered and the code that generates these warning has been 
+    unchanged.  In this case the warning should should be ignored as in certain
+    usages of the library, making the destructors virtual could lead to problems.
+    As an alternative, base class destructors have been make "protected" to
+    address the concerns that motivate these warning messages.  When building
+    the serialization library and tests with bjam, these warnings are suppressed. 
+    When building one's own applications, these warnings can be suppressed by
+    adding the following to the compiler command line:
+    <pre><code>
+    -Wno-non-virtual-dtor
+    -Wno-ctor-dtor-privacy
+    </code></pre>
+</ul>
 <h4><a name="gcc295">GCC 2.95</a></h4>
 All of the above plus:<br>
 <ul>
@@ -216,6 +232,16 @@ All of the above plus:<br>
 </ul>
 <h4><a name="Intel80">Intel C++ 8.0</a></h4>
 No known issues. All tests compile and run in debug and release modes.
+
+<h4><a name="vc80">Visual C++ 8.0</a></h4>
+This compiler emits warnings for calls to functions from the standard
+library which are deemed security risks.  The serialization depends upon
+making some of these calls so programs which use the serialization library
+will get warning messages.  These messages can be suppressed from the command 
+line by including the following switch:
+    <pre><code>
+    /wd4996
+    </code></pre>
 
 <h4><a name="vc71">Visual C++ 7.1</a></h4>
 Derivation from an archive class defined in a DLL as described in ... will not work.
