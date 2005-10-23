@@ -45,7 +45,8 @@ rule run-template ( test-name : sources * : requirements * ) {
         : # requirements
             std::locale-support
             toolset::require-boost-spirit-support
-            toolset::suppress_warnings
+            toolset::suppress-warnings
+            toolset::optimizations
             $(requirements)
         : # test name
             $(test-name)
@@ -68,7 +69,7 @@ rule run-invoke ( test-name : sources * : defns * )
             # msvc stlport 4.5.3 only works with static lib
             <msvc-stlport><*><runtime-link>static
             <vc-6_5-stlport><*><runtime-link>static
-            <como><*><linkflags>"-force:multiple"
+            <como-4_3_3-vc7_1><*><linkflags>"-force:multiple"
             <define>$(defns)
             <define>BOOST_LIB_DIAGNOSTIC=1
     ] ;

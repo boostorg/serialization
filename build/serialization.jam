@@ -85,7 +85,7 @@ rule toolset::require-shared-libraries-support ( toolset variant : subvariant-pa
 }
 
 # certain tool sets display warnings which are not applicable to the serialization library
-rule toolset::suppress_warnings ( toolset variant : subvariant-path properties * )
+rule toolset::suppress-warnings ( toolset variant : subvariant-path properties * )
 {
     switch $(toolset) {
     case "vc-8*" :
@@ -101,4 +101,18 @@ rule toolset::suppress_warnings ( toolset variant : subvariant-path properties *
     }
     return $(subvariant-path) $(properties) ;
 }
+
+# set optimization switches for certain toolsets. We do it here rather than in the
+# Jamfile requirements because here we can use a regex for the compiler name.
+rule toolset::optimizations ( toolset variant : subvariant-path properties * )
+{
+    switch $(toolset) {
+    case "vc*" :
+        properties = [ impose-requirements $(properties) : <cxxflags>"-Gy" ] ;    
+    case "msvc" :
+        properties = [ impose-requirements $(properties) : <cxxflags>"-Gy" ] ;
+    }
+    return $(subvariant-path) $(properties) ;
+}
+
 

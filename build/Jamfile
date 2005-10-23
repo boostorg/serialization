@@ -61,6 +61,7 @@ template boost_serialization_base
         std::locale-support
         toolset::require-boost-spirit-support
         toolset::suppress-warnings
+        toolset::optimizations
         # the common names rule ensures that the library will
         # be named according to the rules used by the install
         # and auto-link features:
