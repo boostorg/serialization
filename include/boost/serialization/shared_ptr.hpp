@@ -50,17 +50,25 @@
     namespace boost {
     namespace serialization{
         template<class T>
-        struct version< ::boost::shared_ptr<T> > {                                                                      \
+        struct version< ::boost::shared_ptr<T> > {
             typedef mpl::integral_c_tag tag;
-            typedef BOOST_DEDUCED_TYPENAME mpl::int_<1> type;
+            typedef mpl::int_<1> type;
+#if BOOST_WORKAROUND(__BORLANDC__, BOOST_TESTED_AT(0x570))
+            BOOST_STATIC_CONSTANT(unsigned int, value = 1);
+#else
             BOOST_STATIC_CONSTANT(unsigned int, value = type::value);
+#endif
         };
         // don't track shared pointers
         template<class T>
         struct tracking_level< ::boost::shared_ptr<T> > { 
             typedef mpl::integral_c_tag tag;
-            typedef BOOST_DEDUCED_TYPENAME mpl::int_< ::boost::serialization::track_never> type;
+            typedef mpl::int_< ::boost::serialization::track_never> type;
+#if BOOST_WORKAROUND(__BORLANDC__, BOOST_TESTED_AT(0x570))
+            BOOST_STATIC_CONSTANT(int, value = ::boost::serialization::track_never);
+#else
             BOOST_STATIC_CONSTANT(int, value = type::value);
+#endif
         };
     }}
     #define BOOST_SERIALIZATION_SHARED_PTR(T)
