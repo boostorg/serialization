@@ -245,19 +245,6 @@ test-suite "serialization" :
      [ test-bsl-run_polymorphic_archive test_polymorphic : test_polymorphic_A ]
 ;
 
-# This last DEPENDS makes the directory for the part 2 depend on the 
-# completion of part 1. You may ask why the directory and not the test 
-# itself? Strangely it's because to properly chain the tests you need to 
-# make the earliest step of the second test depend on the latest part of 
-# the next test. And directories are the only sure thing that you can know 
-# a test needs first.
-
-DEPENDS test_class_info_load_text_archive.run : test_class_info_save_text_archive.run ;
-DEPENDS test_class_info_load_text_warchive.run : test_class_info_save_text_warchive.run ;
-DEPENDS test_class_info_load_xml_archive.run : test_class_info_save_xml_archive.run ;
-DEPENDS test_class_info_load_xml_archive.run : test_class_info_save_xml_warchive.run ;
-DEPENDS test_class_info_load_binary_archive.run : test_class_info_save_binary_archive.run ;
-
 if $(BOOST_SERIALIZATION_TEST) {
     test-suite "serialization" : 
         [ test-bsl-run-no-lib test_iterators ]
@@ -307,8 +294,14 @@ if $(BOOST_SERIALIZATION_TEST) {
         [ compile test_const_pass.cpp : std::locale-support ]
     ;
     
-    DEPENDS test_demo_xml_load.run : test_demo_xml_save.run ;
 }
+
+saving-tests = [ test-bsl-run_files test_class_info_save ]
+               [ test-bsl-run test_demo_xml_save ] ;
+loading-tests = [ test-bsl-run_files test_class_info_load ]
+                [ test-bsl-run test_demo_xml_load ] ;
+
+DEPENDS $(loading-tests:S=.run) : $(saving-tests:S=.run) ;
 
 }
 
