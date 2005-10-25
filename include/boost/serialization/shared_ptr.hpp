@@ -52,7 +52,11 @@
         template<class T>
         struct version< ::boost::shared_ptr<T> > {
             typedef mpl::integral_c_tag tag;
+#if BOOST_WORKAROUND(__MWERKS__, BOOST_TESTED_AT(0x3206))
+            typedef BOOST_DEDUCED_TYPENAME mpl::int_<1> type;
+#else
             typedef mpl::int_<1> type;
+#endif
 #if BOOST_WORKAROUND(__BORLANDC__, BOOST_TESTED_AT(0x570))
             BOOST_STATIC_CONSTANT(unsigned int, value = 1);
 #else
@@ -63,7 +67,11 @@
         template<class T>
         struct tracking_level< ::boost::shared_ptr<T> > { 
             typedef mpl::integral_c_tag tag;
+#if BOOST_WORKAROUND(__MWERKS__, BOOST_TESTED_AT(0x3206))
+            typedef BOOST_DEDUCED_TYPENAME mpl::int_< ::boost::serialization::track_never> type;
+#else
             typedef mpl::int_< ::boost::serialization::track_never> type;
+#endif
 #if BOOST_WORKAROUND(__BORLANDC__, BOOST_TESTED_AT(0x570))
             BOOST_STATIC_CONSTANT(int, value = ::boost::serialization::track_never);
 #else
