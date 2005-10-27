@@ -300,7 +300,15 @@ saving-tests = [ test-bsl-run_files test_class_info_save ]
 loading-tests = [ test-bsl-run_files test_class_info_load ]
                 [ test-bsl-run test_demo_xml_load ] ;
 
-DEPENDS $(loading-tests:S=.run) : $(saving-tests:S=.run) ;
+## This makes each individual load test depend on the run of the
+## corresponding save test. It is important to do this one at a
+## time because $(saving-tests) and $(loading-tests) can contain
+## the targets for multiple toolsets.
+for local save-test-i in $(saving-tests)
+{
+    DEPENDS $(loading-tests[1]:S=.run) : $(save-test-i:S=.run) ;
+    loading-tests = $(loading-tests[2-]) ;
+}
 
 }
 
