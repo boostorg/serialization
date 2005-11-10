@@ -81,6 +81,12 @@ private:
     virtual void delete_created_pointers(){
         ArchiveImplementation::delete_created_pointers();
     }
+    virtual void reset_object_address(
+        const void * new_address, 
+        const void * old_address
+    ){
+        ArchiveImplementation::reset_object_address(new_address, old_address);
+    }
     virtual void load_binary(void * t, std::size_t size){
         ArchiveImplementation::load_binary(t, size);
     }

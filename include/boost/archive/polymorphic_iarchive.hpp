@@ -133,6 +133,10 @@ public:
     virtual unsigned int get_library_version() const = 0;
     virtual unsigned int get_flags() const = 0;
     virtual void delete_created_pointers() = 0;
+    virtual void reset_object_address(
+        const void * new_address, 
+        const void * old_address
+    ) = 0;
 
     virtual void load_binary(void * t, std::size_t size) = 0;
 
