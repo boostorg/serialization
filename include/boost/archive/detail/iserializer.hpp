@@ -37,6 +37,7 @@ namespace std{
 #include <boost/smart_cast.hpp>
 #include <boost/static_assert.hpp>
 #include <boost/static_warning.hpp>
+#include <boost/detail/no_exceptions_support.hpp>
 
 #include <boost/type_traits/is_pointer.hpp>
 #include <boost/type_traits/is_fundamental.hpp>
@@ -295,17 +296,28 @@ BOOST_DLLEXPORT void pointer_iserializer<T, Archive>::load_object_ptr(
     auto_ptr_with_deleter<T> ap(heap_allocator<T>::invoke());
     if(NULL == ap.get())
         boost::throw_exception(std::bad_alloc()) ;
+
     T * t = ap.get();
     x = t;
 
-    // this addresses an obscure situtation that occurs when load_constructor
-    // de-serializes something through and a pointer.
-    ar.next_object_pointer(t);
-    boost::serialization::load_construct_data_adl<Archive, T>(
-        ar_impl,
-        t, 
-        file_version
-    );
+    // catch exception during load_construct_data so that we don't
+    // automatically delete the t which is most likely not fully
+    // constructed
+    BOOST_TRY {
+        // this addresses an obscure situtation that occurs when 
+        // load_constructor de-serializes something through a pointer.
+        ar.next_object_pointer(t);
+        boost::serialization::load_construct_data_adl<Archive, T>(
+            ar_impl,
+            t, 
+            file_version
+        );
+    }
+    BOOST_CATCH(...){
+        BOOST_RETHROW;
+    }
+    BOOST_CATCH_END
+
     ar_impl >> boost::serialization::make_nvp(NULL, * t);
     ap.release();
 }
