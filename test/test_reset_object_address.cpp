@@ -21,11 +21,13 @@ namespace std{
 
 #include <boost/test/test_tools.hpp>
 
-#include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/polymorphic_text_oarchive.hpp>
+#include <boost/archive/polymorphic_text_iarchive.hpp>
 
+#include <boost/serialization/list.hpp>
 #include <boost/serialization/access.hpp>
-#include <boost/serialization/split_member.hpp>
 
 // Someday, maybe all tests will be converted to the unit test framework.
 // but for now use the text execution monitor to be consistent with all
@@ -33,6 +35,8 @@ namespace std{
 
 // simple test of untracked value
 #include "A.hpp"
+
+BOOST_TEST_DONT_PRINT_LOG_VALUE( A )
 
 void test1(){
     std::stringstream ss;
@@ -350,6 +354,50 @@ int test6()
   return 0;
 }
 
+// test one of the collections
+void test7(){
+    std::stringstream ss;
+    B const b;
+    B const * const b_ptr = & b;
+    BOOST_CHECK_EQUAL(& b, b_ptr);
+    {
+        std::list<const B *> l;
+        l.push_back(b_ptr);
+        boost::archive::text_oarchive oa(ss);
+        oa << const_cast<const std::list<const B *> &>(l);
+    }
+    B b1;
+    {
+        std::list<B *> l;
+        boost::archive::text_iarchive ia(ss);
+        ia >> l;
+        delete l.front(); // prevent memory leak
+    }
+}
+
+// test one of the collections with polymorphic archive
+void test8(){
+    std::stringstream ss;
+    B const b;
+    B const * const b_ptr = & b;
+    BOOST_CHECK_EQUAL(& b, b_ptr);
+    {
+        std::list<const B *> l;
+        l.push_back(b_ptr);
+        boost::archive::polymorphic_text_oarchive oa(ss);
+        boost::archive::polymorphic_oarchive & poa(oa);
+        poa << const_cast<const std::list<const B *> &>(l);
+    }
+    B b1;
+    {
+        std::list<B *> l;
+        boost::archive::polymorphic_text_iarchive ia(ss);
+        boost::archive::polymorphic_iarchive & pia(ia);
+        pia >> l;
+        delete l.front(); // prevent memory leak
+    }
+}
+
 int test_main(int /* argc */, char * /* argv */[])
 {
     test1();
@@ -358,5 +406,7 @@ int test_main(int /* argc */, char * /* argv */[])
     test4();
     test5();
     test6();
+    test7();
+    test8();
     return EXIT_SUCCESS;
 }
