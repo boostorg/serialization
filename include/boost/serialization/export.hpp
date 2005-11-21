@@ -238,7 +238,7 @@ export_archives_invoke(T &, ASeq &){
         guid_initializer< T >::instance(K);                      \
     template                                                     \
     BOOST_DLLEXPORT                                              \
-    std::pair<const export_generator<T, ASEQ> *, const guid_initializer<T> *> \
+    std::pair<const export_generator<T, ASEQ> *, const guid_initializer< T > *> \
     export_archives_invoke<T, ASEQ>(T &, ASEQ &);                \
     } } }                                                        \
     /**/
