@@ -18,6 +18,8 @@
 
 #include <cassert>
 #include <cstdlib> // NULL
+#include <boost/config.hpp>
+
 #include <boost/archive/detail/auto_link_archive.hpp>
 #include <boost/archive/detail/basic_serializer.hpp>
 
@@ -45,6 +47,10 @@ protected:
     explicit basic_iserializer(
         const boost::serialization::extended_type_info & type_
     );
+    // account for bogus gcc warning
+    #if defined(__GNUC__)
+    virtual
+    #endif
     ~basic_iserializer();
 public:
     bool serialized_as_pointer() const {

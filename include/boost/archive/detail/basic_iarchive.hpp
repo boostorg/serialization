@@ -19,6 +19,7 @@
 // can't use this - much as I'd like to as borland doesn't support it
 // #include <boost/scoped_ptr.hpp>
 
+#include <boost/config.hpp>
 #include <boost/archive/basic_archive.hpp>
 #include <boost/serialization/tracking_enum.hpp>
 
@@ -56,6 +57,10 @@ class BOOST_ARCHIVE_DECL(BOOST_PP_EMPTY()) basic_iarchive
     virtual void vload(tracking_type &t) = 0;
 protected:
     basic_iarchive(unsigned int flags);
+    // account for bogus gcc warning
+    #if defined(__GNUC__)
+    virtual
+    #endif
     ~basic_iarchive();
 public:
     // note: NOT part of the public API.

@@ -63,6 +63,10 @@ class BOOST_ARCHIVE_OR_WARCHIVE_DECL(BOOST_PP_EMPTY()) basic_oarchive
     virtual void vsave(const tracking_type t) = 0;
 protected:
     basic_oarchive(unsigned int flags);
+    // account for bogus gcc warning
+    #if defined(__GNUC__)
+    virtual
+    #endif
     ~basic_oarchive();
 public:
     // note: NOT part of the public interface

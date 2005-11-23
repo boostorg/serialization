@@ -43,6 +43,10 @@ protected:
         const boost::serialization::extended_type_info & eti
     );
     BOOST_ARCHIVE_OR_WARCHIVE_DECL(BOOST_PP_EMPTY()) 
+    // account for bogus gcc warning
+    #if defined(__GNUC__)
+    virtual
+    #endif
     ~archive_pointer_iserializer();
 public:
     virtual const basic_iserializer & get_basic_serializer() const 

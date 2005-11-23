@@ -17,7 +17,7 @@
 
 //  See http://www.boost.org for updates, documentation, and revision history.
 #include <cassert>
-
+#include <boost/config.hpp>
 #include <boost/static_assert.hpp>
 #include <boost/type_traits/is_const.hpp>
 
@@ -46,6 +46,10 @@ class BOOST_SERIALIZATION_DECL(BOOST_PP_EMPTY()) extended_type_info_no_rtti_0 :
     less_than(const boost::serialization::extended_type_info &rhs) const ;
 protected:
     extended_type_info_no_rtti_0();
+    // account for bogus gcc warning
+    #if defined(__GNUC__)
+    virtual
+    #endif
     ~extended_type_info_no_rtti_0();
 public:
     struct is_polymorphic

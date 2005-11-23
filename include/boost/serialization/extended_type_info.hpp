@@ -18,6 +18,7 @@
 
 // for now, extended type info is part of the serialization libraries
 // this could change in the future.
+#include <boost/config.hpp>
 #include <boost/noncopyable.hpp>
 #include <boost/serialization/config.hpp>
 
@@ -56,6 +57,10 @@ private:
 protected:
     const char * m_key;
     extended_type_info(const char * type_info_key);
+    // account for bogus gcc warning
+    #if defined(__GNUC__)
+    virtual
+    #endif
     ~extended_type_info();
 public:
     void self_register();
