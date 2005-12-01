@@ -9,7 +9,7 @@
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // polymorphic_iarchive.hpp
 
-// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com . 
+// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
 // Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -20,8 +20,8 @@
 #include <boost/config.hpp>
 
 #if defined(BOOST_NO_STDC_NAMESPACE)
-namespace std{ 
-    using ::size_t; 
+namespace std{
+    using ::size_t;
 } // namespace std
 #endif
 
@@ -100,11 +100,11 @@ public:
     virtual void register_basic_serializer(const detail::basic_iserializer & bis) = 0;
     virtual void lookup_basic_helper(
         const boost::serialization::extended_type_info * const eti,
-		boost::shared_ptr<void> & sph
+                boost::shared_ptr<void> & sph
     ) = 0;
     virtual void insert_basic_helper(
         const boost::serialization::extended_type_info * const eti,
-		boost::shared_ptr<void> & sph
+                boost::shared_ptr<void> & sph
     ) = 0;
 
     // msvc and borland won't automatically pass these to the base class so
@@ -120,7 +120,7 @@ public:
                 #ifndef BOOST_NO_FUNCTION_TEMPLATE_ORDERING
                 const
                 #endif
-                boost::serialization::nvp<T> & t, 
+                boost::serialization::nvp<T> & t,
                 int
         ){
         load_start(t.name());
@@ -134,7 +134,7 @@ public:
     virtual unsigned int get_flags() const = 0;
     virtual void delete_created_pointers() = 0;
     virtual void reset_object_address(
-        const void * new_address, 
+        const void * new_address,
         const void * old_address
     ) = 0;
 
@@ -142,11 +142,11 @@ public:
 
     // these are used by the serialization library implementation.
     virtual void load_object(
-        void *t, 
+        void *t,
         const detail::basic_iserializer & bis
     ) = 0;
     virtual const detail::basic_pointer_iserializer * load_pointer(
-        void * & t, 
+        void * & t,
         const detail::basic_pointer_iserializer * bpis_ptr,
         const detail::basic_pointer_iserializer * (*finder)(
             const boost::serialization::extended_type_info & type
@@ -157,7 +157,7 @@ public:
 } // namespace archive
 } // namespace boost
 
-// required by smart_cast for compilers not implementing 
+// required by smart_cast for compilers not implementing
 // partial template specialization
 BOOST_BROKEN_COMPILER_TYPE_TRAITS_SPECIALIZATION(boost::archive::polymorphic_iarchive)
 
