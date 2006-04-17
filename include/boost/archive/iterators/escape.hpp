@@ -37,7 +37,8 @@ class escape :
         BOOST_DEDUCED_TYPENAME boost::iterator_value<Base>::type,
         single_pass_traversal_tag,
         BOOST_DEDUCED_TYPENAME boost::iterator_value<Base>::type
-    >{
+    >
+{
     typedef BOOST_DEDUCED_TYPENAME boost::iterator_value<Base>::type base_value_type;
     typedef BOOST_DEDUCED_TYPENAME boost::iterator_reference<Base>::type reference_type;
     friend class boost::iterator_core_access;
@@ -53,16 +54,31 @@ class escape :
     typedef escape<Derived, Base> this_t;
 
     bool equal(const this_t & rhs) const {
-        return 
-            NULL == m_bnext
-            && NULL == m_bend
-            && this->base_reference() == rhs.base_reference()
-        ;
+        if(m_bnext != rhs.m_bnext)
+            return false;
+        if(m_bnext != rhs.m_bnext)
+            return false;
+        if(m_full && ! rhs.m_full)
+            rhs.dereference();
+        else
+        if(! m_full && rhs.m_full)
+            dereference();
+        if(this->base_reference() != rhs.base_reference())
+            return false;
+        return true;
+    }
+
+    reference_type dereference_impl() {
+        if(!m_full){
+            m_current_value = static_cast<Derived *>(this)->fill(m_bnext, m_bend);
+            m_full = true;
+        }
+        return m_current_value;
     }
 
     //Access the value referred to 
     reference_type dereference() const {
-        return m_current_value;
+        return const_cast<this_t *>(this)->dereference_impl();
     }
 
    void increment(){
@@ -73,21 +89,21 @@ class escape :
         ++(this->base_reference());
         m_bnext = NULL;
         m_bend = NULL;
-        m_current_value = (static_cast<Derived *>(this))->fill(m_bnext, m_bend);
+        m_full = false;
     }
 
     // buffer to handle pending characters
     const base_value_type *m_bnext;
     const base_value_type *m_bend;
-    BOOST_DEDUCED_TYPENAME boost::iterator_value<Base>::type m_current_value;
     bool m_full;
+    BOOST_DEDUCED_TYPENAME boost::iterator_value<Base>::type m_current_value;
 public:
     escape(Base base) : 
         super_t(base),
         m_bnext(NULL),
-        m_bend(NULL)
+        m_bend(NULL),
+        m_full(false)
     {
-        m_current_value = static_cast<Derived *>(this)->fill(m_bnext, m_bend);
     }
 };
 
