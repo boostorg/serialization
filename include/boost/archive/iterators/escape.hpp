@@ -54,15 +54,13 @@ class escape :
     typedef escape<Derived, Base> this_t;
 
     bool equal(const this_t & rhs) const {
-        if(m_bnext != rhs.m_bnext)
-            return false;
-        if(m_bnext != rhs.m_bnext)
-            return false;
         if(m_full && ! rhs.m_full)
             rhs.dereference();
         else
         if(! m_full && rhs.m_full)
             dereference();
+        if(m_bnext != rhs.m_bnext)
+            return false;
         if(this->base_reference() != rhs.base_reference())
             return false;
         return true;
