@@ -53,30 +53,32 @@ class escape :
 
     typedef escape<Derived, Base> this_t;
 
+    void dereference_impl() {
+        m_current_value = static_cast<Derived *>(this)->fill(m_bnext, m_bend);
+        m_full = true;
+    }
+
+    //Access the value referred to 
+    reference_type dereference() const {
+        if(!m_full)
+            const_cast<this_t *>(this)->dereference_impl();
+        return m_current_value;
+    }
+
     bool equal(const this_t & rhs) const {
-        if(m_full && ! rhs.m_full)
-            rhs.dereference();
-        else
-        if(! m_full && rhs.m_full)
-            dereference();
+        if(m_full){
+            if(! rhs.m_full)
+                const_cast<this_t *>(& rhs)->dereference_impl();
+        }
+        else{
+            if(rhs.m_full)
+                const_cast<this_t *>(this)->dereference_impl();
+        }
         if(m_bnext != rhs.m_bnext)
             return false;
         if(this->base_reference() != rhs.base_reference())
             return false;
         return true;
-    }
-
-    reference_type dereference_impl() {
-        if(!m_full){
-            m_current_value = static_cast<Derived *>(this)->fill(m_bnext, m_bend);
-            m_full = true;
-        }
-        return m_current_value;
-    }
-
-    //Access the value referred to 
-    reference_type dereference() const {
-        return const_cast<this_t *>(this)->dereference_impl();
     }
 
    void increment(){
