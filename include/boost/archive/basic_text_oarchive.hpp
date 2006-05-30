@@ -91,9 +91,15 @@ public:
     // text file don't include the optional information 
     void save_override(const class_id_optional_type & /* t */, int){}
 
+    void save_override(const version_type & t, int){
+        // note:t.t resolves borland ambguity
+        unsigned  char x = t.t;
+        * this->This() << x;
+    }
+
     void save_override(const class_name_type & t, int){
-                const std::string s(t);
-                * this->This() << s;
+        const std::string s(t);
+        * this->This() << s;
     }
 
     BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
