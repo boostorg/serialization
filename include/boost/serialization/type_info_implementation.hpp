@@ -29,8 +29,6 @@
 namespace boost {
 namespace serialization {
 
-struct basic_traits;
-
 // note that T and const T are folded into const T so that
 // there is only one table entry per type
 template<class T>
