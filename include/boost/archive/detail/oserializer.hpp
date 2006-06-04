@@ -173,7 +173,7 @@ public:
     explicit BOOST_DLLEXPORT pointer_oserializer() BOOST_USED;
     static const pointer_oserializer instance;
 public:
-    #if !defined(__BORLANDC__)
+    #if ! BOOST_WORKAROUND(__BORLANDC__, BOOST_TESTED_AT(0x582))
     // at least one compiler (CW) seems to require that serialize_adl
     // be explicitly instantiated. Still under investigation. 
     void (* const m)(Archive &, T &, const unsigned);
@@ -216,7 +216,7 @@ BOOST_DLLEXPORT void pointer_oserializer<T, Archive>::save_object_ptr(
 }
 
 template<class T, class Archive>
-#if !defined(__BORLANDC__)
+#if ! BOOST_WORKAROUND(__BORLANDC__, BOOST_TESTED_AT(0x582))
 BOOST_DLLEXPORT pointer_oserializer<T, Archive>::pointer_oserializer() :
     archive_pointer_oserializer<Archive>(
         * boost::serialization::type_info_implementation<T>::type::get_instance()
