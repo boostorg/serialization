@@ -43,7 +43,8 @@ for archives used for saving data.
 Our archives have been factored in to a tree of classes in order to minimize
 repetition of code.  This is shown in the accompanying 
 <a target="class_diagram" href="class_diagram.html">class diagram</a>.
-All input archives should be derived from the following template:
+In order to diminish code repetition, input archives included with this library 
+have all been derived from the following template:
 <pre><code>
 template&lt;class Archive&gt;
 detail::common_iarchive;
