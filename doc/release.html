@@ -40,7 +40,7 @@ The serialization library uses the boost spirit package to load XML archives.
 We have found that all tests pass using spirit 1.6x. Spirit 1.8 and higher does not work with
 older compilers - specificallly MSVC 6, Borland and GCC < 3.0.
 If you are using one of these compilers, you may download a version
-of spirit 1.6 <a href="http://spirit.sourceforge.net/">here</a>.
+of spirit 1.6 <a href="http://spirit.sourceforge.net/index.php?doc=download/index.html">here</a>.
 To use this downloaded version rather than the one included with boost,
 set an environmental variable SPIRIT_ROOT to be equal to the root 
 directory where the downloaded copy of spirit has been placed. E. G.
@@ -99,7 +99,7 @@ at the front of the list of include paths.
     is fixed in this version.  Unfortunately, the fix breaks serialization of
     <code style="white-space: normal">std::map</code> for those compilers which do not support
     partial template specialization.
-    <li>Floating point values which are not a number(NaN) cannot be serialized to text base archives.
+    <li>Floating point values which are number cannot be serialized to text base archives.
 </ul>
 <p>
 Aside from the above, there are a number of issus related to specific platforms.  
@@ -107,7 +107,7 @@ These are listed in <a href="implementation.html#othercompilerissues">Specific C
 
 
 <hr>
-<p><i>&copy; Copyright <a href="http://www.rrsd.com">Robert Ramey</a> 2002-2006. 
+<p><i>&copy; Copyright <a href="http://www.rrsd.com">Robert Ramey</a> 2002-2004. 
 Distributed under the Boost Software License, Version 1.0. (See
 accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 </i></p>
