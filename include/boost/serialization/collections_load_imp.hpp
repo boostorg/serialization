@@ -119,7 +119,7 @@ inline void load_collection(Archive & ar, Container &s)
     s.clear();
     // retrieve number of elements
     unsigned int count;
-    unsigned int item_version;
+    unsigned int item_version(0);
     ar >> BOOST_SERIALIZATION_NVP(count);
     if(3 < ar.get_library_version()){
         ar >> BOOST_SERIALIZATION_NVP(item_version);
