@@ -81,9 +81,9 @@ namespace archive {
 // citing the tmpnam(3S) manpage, "the operation is not performed and a
 // NULL pointer is returned". tempnam does not have this restriction, so,
 // let's use tempnam instead.
-
+ 
 #define tmpnam(X) tempnam(NULL,X)
-
+ 
 namespace boost {
 namespace archive {
     using ::tempnam;
@@ -98,8 +98,8 @@ namespace archive {
 } // archive
 } // boost
 
-#endif
-#endif
+#endif // defined(__hpux)
+#endif // defined(_WIN32) || defined(__WIN32__) || defined(WIN32)
 
 /////////////////////////////////////////////
 // invoke header for a custom archive test.
@@ -107,7 +107,8 @@ namespace archive {
 #define BOOST_ARCHIVE_TEST text_archive.hpp
 #endif
 
-#include <boost/test/test_tools.hpp>
+#include <boost/preprocessor/stringize.hpp>
+#include <boost/test/minimal.hpp>
 
 // the following is to ensure that when one of the libraries changes
 // BJAM rebuilds and relinks the test.
