@@ -576,22 +576,6 @@ basic_iarchive::register_basic_serializer(const basic_iserializer & bis){
 }
 
 BOOST_ARCHIVE_DECL(void)
-basic_iarchive::lookup_basic_helper(
-    const boost::serialization::extended_type_info * const eti,
-    shared_ptr<void> & sph
-){
-    pimpl->lookup_helper(eti, sph);
-}
-
-BOOST_ARCHIVE_DECL(void)
-basic_iarchive::insert_basic_helper(
-    const boost::serialization::extended_type_info * const eti,
-    shared_ptr<void> & sph
-){
-    pimpl->insert_helper(eti, sph);
-}
-
-BOOST_ARCHIVE_DECL(void)
 basic_iarchive::delete_created_pointers()
 {
     pimpl->delete_created_pointers();
