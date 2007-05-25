@@ -145,7 +145,7 @@ class ktmap {
             m_key = key;
         }
         virtual bool
-        less_than(const extended_type_info &rhs) const
+        less_than(const extended_type_info & /* rhs */) const
         {
             assert(false);
             return false;   // to prevent a syntax error

@@ -196,7 +196,7 @@ basic_oarchive_impl::find(const serialization::extended_type_info & ti) const {
             return false;
         }
         void save_object_data(      
-            basic_oarchive & ar, const void * x
+            basic_oarchive & /* ar */, const void * /* x */
         ) const {
             assert(false);
         }
