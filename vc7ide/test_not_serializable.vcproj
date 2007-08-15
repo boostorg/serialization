@@ -30,7 +30,7 @@
 				ForceConformanceInForLoopScope="TRUE"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="0"
-				ObjectFile="$(ProjectDir)../example/bin/$(InputName).exe/vc7/$(OutDir)/runtime-link-static/$(InputName).obj"
+				ObjectFile="$(ProjectDir)../example/bin.v2/$(InputName).exe/vc7/$(OutDir)/link-static/$(InputName).obj"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="FALSE"
 				DebugInformationFormat="4"/>
@@ -38,7 +38,6 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="$(ProjectDir)../../../bin/boost/libs/serialization/build/libboost_serialization.lib/vc7/$(OutDir)/runtime-link-static/libboost_serialization.lib $(ProjectDir)../../../bin/boost/libs/serialization/build/libboost_wserialization.lib/vc7/$(OutDir)/runtime-link-static/libboost_wserialization.lib $(ProjectDir)../../../bin/boost/libs/test/build/libboost_test_exec_monitor.lib/vc7/$(OutDir)/runtime-link-static/libboost_test_exec_monitor.lib"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"
 				SubSystem="1"
@@ -85,7 +84,7 @@
 				ForceConformanceInForLoopScope="TRUE"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="0"
-				ObjectFile="$(ProjectDir)../example/bin/$(InputName).exe/vc7/$(OutDir)/runtime-link-static/$(InputName).obj"
+				ObjectFile="$(ProjectDir)../example/bin.v2/$(InputName).exe/vc7/$(OutDir)/link-static/$(InputName).obj"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="FALSE"
 				DebugInformationFormat="3"/>
@@ -93,7 +92,6 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="$(ProjectDir)../../../bin/boost/libs/serialization/build/libboost_serialization.lib/vc7/$(OutDir)/runtime-link-static/libboost_serialization.lib $(ProjectDir)../../../bin/boost/libs/serialization/build/libboost_wserialization.lib/vc7/$(OutDir)/runtime-link-static/libboost_wserialization.lib $(ProjectDir)../../../bin/boost/libs/test/build/libboost_test_exec_monitor.lib/vc7/$(OutDir)/runtime-link-static/libboost_test_exec_monitor.lib"
 				OutputFile="$(OutDir)/test_not_serializable.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="FALSE"

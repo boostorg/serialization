@@ -19,7 +19,7 @@ namespace std{
 }
 #endif
 
-#include <boost/test/test_tools.hpp>
+#include "test_tools.hpp"
 
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
@@ -74,7 +74,7 @@ public:
     {}
 };
 
-BOOST_TEST_DONT_PRINT_LOG_VALUE( B )
+//BOOST_TEST_DONT_PRINT_LOG_VALUE( B )
 
 void test2(){
     std::stringstream ss;
@@ -118,7 +118,7 @@ public:
     D(){}
 };
 
-BOOST_TEST_DONT_PRINT_LOG_VALUE( D )
+//BOOST_TEST_DONT_PRINT_LOG_VALUE( D )
 
 void test3(){
     std::stringstream ss;
@@ -162,7 +162,7 @@ public:
         m_i(rhs.m_i)
     {}
 };
-BOOST_TEST_DONT_PRINT_LOG_VALUE( E )
+//BOOST_TEST_DONT_PRINT_LOG_VALUE( E )
 
 // check that moves don't move stuff pointed to
 class F {
@@ -191,7 +191,7 @@ public:
     }
 };
 
-BOOST_TEST_DONT_PRINT_LOG_VALUE( F )
+//BOOST_TEST_DONT_PRINT_LOG_VALUE( F )
 
 void test4(){
     std::stringstream ss;
@@ -257,7 +257,7 @@ public:
     ~G(){}
 };
 
-BOOST_TEST_DONT_PRINT_LOG_VALUE( G )
+//BOOST_TEST_DONT_PRINT_LOG_VALUE( G )
 
 void test5(){
     std::stringstream ss;
@@ -384,14 +384,14 @@ void test8(){
         std::list<const B *> l;
         l.push_back(b_ptr);
         boost::archive::polymorphic_text_oarchive oa(ss);
-        boost::archive::polymorphic_oarchive & poa(oa);
+        boost::archive::polymorphic_oarchive & poa = oa;
         poa << const_cast<const std::list<const B *> &>(l);
     }
     B b1;
     {
         std::list<B *> l;
         boost::archive::polymorphic_text_iarchive ia(ss);
-        boost::archive::polymorphic_iarchive & pia(ia);
+        boost::archive::polymorphic_iarchive & pia = ia;
         pia >> l;
         delete l.front(); // prevent memory leak
     }

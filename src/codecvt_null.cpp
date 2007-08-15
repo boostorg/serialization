@@ -18,7 +18,7 @@ namespace archive {
 
 std::codecvt_base::result 
 codecvt_null<wchar_t>::do_out(
-    std::mbstate_t & /* state */,
+    std::mbstate_t & state,
     const wchar_t * first1, 
     const wchar_t * last1,
     const wchar_t * & next1,
@@ -46,7 +46,7 @@ codecvt_null<wchar_t>::do_out(
 
 std::codecvt_base::result 
 codecvt_null<wchar_t>::do_in(
-    std::mbstate_t & /* state */,
+    std::mbstate_t & state,
     const char * first1, 
     const char * last1, 
     const char * & next1,

@@ -6,7 +6,11 @@
 #  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 #
 
-project libs/serialization/test ;
+project libs/serialization/test
+    : id serialization_test
+    ;
+
+BOOST_ARCHIVE_LIST = [ modules.peek : BOOST_ARCHIVE_LIST ] ;
 
 # these are used to shorten testing while in development.  It permits
 # testing to be applied to just a particular type of archive
@@ -22,28 +26,27 @@ if ! $(BOOST_ARCHIVE_LIST) {
     BOOST_SERIALIZATION_TEST = true ;
 }
 
-
 rule run-template ( test-name : sources * : requirements * ) {
     return [
         run
-            ../../test/build//boost_test_exec_monitor/<link>static
             $(sources)
         : # command
         : # input files
         : # requirements
-
-
-            # FIXME: Not ported yet.
-            #std::locale-support
-            #toolset::require-boost-spirit-support
-            #toolset::suppress-warnings
-            #toolset::optimizations
-
+            # toolset suppress-warnings
+            <toolset>gcc:<cxxflags>"-Wno-non-virtual-dtor -Wno-ctor-dtor-privacy"
+            <toolset>msvc-8.0:<cxxflags>"-wd4996"
+            <toolset>borland:<cxxflags>"-w-8080 -w-8071 -w-8057 -w-8062 -w-8008 -w-0018 -w-8066"
+            # toolset optimizations
+            <toolset>gcc:<cxxflags>"-ftemplate-depth-255"
+            <toolset>msvc:<cxxflags>"-Gy"
+            # toolset shared library support
+            <toolset>como,<link>shared:<build>no
+#            <toolset>msvc,<stdlib>stlport,<link>shared:<build>no
+            <toolset>cw,<link>static:<build>no
             $(requirements)
         : # test name
             $(test-name)
-        : # default-build
-            debug
     ] ;
 }
 
@@ -61,9 +64,6 @@ rule dependency-save-test ( test )
 # each of the following tests is run with each type of archive
 rule run-invoke ( test-name : sources * : defns * )
 {
-#    FIXME
-#    if [ in-invocation-subdir ] { Echo $(test-name) ; }
-
     local save-test = [ dependency-save-test $(test-name) ] ;
 
     local tests ;
@@ -71,31 +71,11 @@ rule run-invoke ( test-name : sources * : defns * )
         run-template $(test-name)
         : # sources
             $(sources)
-            ../build//boost_serialization/<link>static
+            ../build//boost_serialization
         : # requirements
-
-            # msvc stlport 4.5.3 only works with static lib
-            <toolset>msvc,<stdlib>stlport:<runtime-link>static
             <define>$(defns)
             <define>BOOST_LIB_DIAGNOSTIC=1
             <dependency>$(save-test)
-    ] ;
-#   FIXME
-#    if [ in-invocation-subdir ] { Echo $(test-name)_dll ; }
-    tests += [ 
-        run-template $(test-name)_dll
-        : # sources
-            $(sources)
-            ../build//boost_serialization
-        : # requiremens
-
-        # FIXME:
-        #            toolset::require-shared-libraries-support
-            <define>$(defns)
-            <define>BOOST_LIB_DIAGNOSTIC=1
-            <define>BOOST_ALL_DYN_LINK=1
-            <runtime-link>shared
-            <dependency>$(save-test)_dll
     ] ;
     return $(tests) ;
 }
@@ -103,9 +83,6 @@ rule run-invoke ( test-name : sources * : defns * )
 # each of the following tests is run with each type of archive
 rule run-winvoke ( test-name : sources * : defns * )
 {
-# FIXME
-#    if [ in-invocation-subdir ] { Echo $(test-name) ; }
-
     local save-test = [ dependency-save-test $(test-name) ] ;
 
     local tests ;
@@ -113,64 +90,42 @@ rule run-winvoke ( test-name : sources * : defns * )
         run-template $(test-name)
         : # sources
             $(sources)
-            ../build//boost_serialization/<link>static
-            ../build//boost_wserialization/<link>static
-        : # requirements
-
-         # FIXME:
-         #   toolset::require-wide-char-io-support
-            <define>$(defns)
-            <define>BOOST_LIB_DIAGNOSTIC=1
-            # msvc stlport 4.5.3 only works with static lib
-            <toolset>msvc,<stdlib>stlport:<runtime-link>static
-            # both stlport and msvc6 define iswspace
-            <toolset>msvc,<stdlib>stlport:<linkflags>"-force:multiple"
-            <dependency>$(save-test)
-    ] ;
-# FIXME
-#    if [ in-invocation-subdir ] { Echo $(test-name)_dll ; }
-    tests += [ 
-        run-template $(test-name)_dll
-        : # sources
-            $(sources)
             ../build//boost_serialization
             ../build//boost_wserialization
         : # requirements
-        # FIXME
-        #    toolset::require-wide-char-io-support
-        #    toolset::require-shared-libraries-support
             <define>$(defns)
             <define>BOOST_LIB_DIAGNOSTIC=1
-            <define>BOOST_ALL_DYN_LINK=1
-            <runtime-link>shared
-            <dependency>$(save-test)_dll
+            # both stlport and msvc6 define iswspace
+            <toolset>msvc,<stdlib>stlport:<linkflags>"-force:multiple"
+            <dependency>$(save-test)
+            <dependency>../../config/test//BOOST_NO_STD_WSTREAMBUF
     ] ;
     return $(tests) ;
 }
 
 # for tests which don't use library code - usually just headers
-rule test-bsl-run-no-lib  ( test-name : sources * )
+rule test-bsl-run-no-lib  ( test-name : sources * : requirements * )
 {
-# FIXME
-#    if [ in-invocation-subdir ] { Echo $(test-name) ; }
     local tests ;
     tests += [ 
         run-template $(test-name)
         : # sources
             $(test-name).cpp $(sources).cpp
-        : # requirements
-          <toolset>msvc,<stdlib>stlport:<runtime-link>static
-        
+        :
+            $(requirements)
     ] ;
+    return $(tests) ;
 }
 
-rule test-bsl-run ( test-name : sources * )
+rule test-bsl-run ( test-name : sources * : requirements * )
 {
     local tests ;
     tests +=  [ 
         run-invoke $(test-name) 
-        : 
+        : # sources
             $(test-name).cpp $(sources).cpp
+        :
+            $(requirements)
     ] ;
     return $(tests) ;
 }
@@ -257,6 +212,7 @@ test-suite "serialization" :
      [ test-bsl-run_files test_split ]
      [ test-bsl-run_files test_tracking ]
      [ test-bsl-run_files test_unregistered ]
+     [ test-bsl-run_files test_valarray ]
      [ test-bsl-run_files test_variant ]
      [ test-bsl-run_files test_vector ]
      [ test-bsl-run_files test_optional ]
@@ -267,72 +223,45 @@ test-suite "serialization" :
 
 if $(BOOST_SERIALIZATION_TEST) {
     test-suite "serialization2" : 
-        [ test-bsl-run-no-lib test_iterators ]
-        [ test-bsl-run-no-lib test_iterators_base64 ]
-	[ test-bsl-run-no-lib test_inclusion ]
         [ test-bsl-run test_private_ctor ]
         [ test-bsl-run test_reset_object_address ]
-        [ test-bsl-run-no-lib test_smart_cast ]
-        [ test-bsl-run-no-lib test_static_warning ]
-        [ test-bsl-run-no-lib test_utf8_codecvt : ../src/utf8_codecvt_facet ]
         [ test-bsl-run test_void_cast ]
         [ test-bsl-run test_mult_archive_types ]
-        [ test-bsl-run-no-lib test_codecvt_null : ../src/codecvt_null ]
-
-        # demos
-        [ test-bsl-run test_demo ]
-        [ test-bsl-run test_demo_auto_ptr ]
-        [ test-bsl-run test_demo_exception ]
-        [ test-bsl-run test_demo_fast_archive ]
-        [ test-bsl-run test_demo_pimpl : ../example/demo_pimpl_A ]
-        [ test-bsl-run test_demo_polymorphic : ../example/demo_polymorphic_A ]
-        [ test-bsl-run test_demo_portable_archive ]
-        [ test-bsl-run test_demo_shared_ptr ]
-        [ test-bsl-run test_demo_xml ]
-        [ test-bsl-run test_demo_xml_load ]
-        [ test-bsl-run test_demo_xml_save ]
+        
+        [ test-bsl-run-no-lib test_iterators ]
+        [ test-bsl-run-no-lib test_iterators_base64 ]
+	    [ test-bsl-run-no-lib test_inclusion ]
+        [ test-bsl-run-no-lib test_smart_cast ]
+        [ test-bsl-run-no-lib test_static_warning ]
+        
+        [ test-bsl-run-no-lib test_utf8_codecvt 
+            : ../src/utf8_codecvt_facet
+            : <dependency>../../config/test//BOOST_NO_STD_WSTREAMBUF
+        ]
+        [ test-bsl-run-no-lib test_codecvt_null 
+            : ../src/codecvt_null 
+            : <dependency>../../config/test//BOOST_NO_STD_WSTREAMBUF
+        ]
 
         # should fail compilation
-        [ compile-fail test_not_serializable.cpp ] # FIXME std:locale-support ]
-        [ compile-fail test_traits_fail.cpp ] # FIXME std:locale-support ]
-        [ compile-fail test_const_save_fail1.cpp ] # FIXME std:locale-support ]
-        [ compile-fail test_const_save_fail2.cpp ] # FIXME std:locale-support ]
-        [ compile-fail test_const_save_fail3.cpp ] # FIXME std:locale-support ]
-        # note - library unable to detect there errors for now
+        [ compile-fail test_not_serializable.cpp ]
+        [ compile-fail test_traits_fail.cpp ]
+        [ compile-fail test_const_save_fail1.cpp ]
+        [ compile-fail test_const_save_fail2.cpp ]
+        [ compile-fail test_const_save_fail3.cpp ]
+        # note - library unable to detect these errors for now
         #[ compile-fail test_const_save_fail1_nvp.cpp ]
         #[ compile-fail test_const_save_fail2_nvp.cpp ]
         #[ compile-fail test_const_save_fail3_nvp.cpp ]
-        [ compile-fail test_const_load_fail1.cpp ] # FIXME std:locale-support ]
-        [ compile-fail test_const_load_fail2.cpp ] # FIXME std:locale-support ]
-        [ compile-fail test_const_load_fail3.cpp ] # FIXME std:locale-support ]
-        [ compile-fail test_const_load_fail1_nvp.cpp ] # FIXME std:locale-support ]
-        [ compile-fail test_const_load_fail2_nvp.cpp ] # FIXME std:locale-support ]
-        [ compile-fail test_const_load_fail3_nvp.cpp ] # FIXME std:locale-support ]
+        [ compile-fail test_const_load_fail1.cpp ]
+        [ compile-fail test_const_load_fail2.cpp ]
+        [ compile-fail test_const_load_fail3.cpp ]
+        [ compile-fail test_const_load_fail1_nvp.cpp ]
+        [ compile-fail test_const_load_fail2_nvp.cpp ]
+        [ compile-fail test_const_load_fail3_nvp.cpp ]
 
         # should compile
-        [ compile test_traits_pass.cpp ] # FIXME std:locale-support ]
-        [ compile test_const_pass.cpp ] # FIXME std:locale-support ]
+        [ compile test_traits_pass.cpp ]
+        [ compile test_const_pass.cpp ]
     ;
-    
 }
-
-#saving-tests = [ test-bsl-run_files test_class_info_save ]
-#               [ test-bsl-run test_demo_xml_save ] ;
-#loading-tests = [ test-bsl-run_files test_class_info_load ]
-#                [ test-bsl-run test_demo_xml_load ] ;
-
-# FIXME
-## This makes each individual load test depend on the run of the
-## corresponding save test. It is important to do this one at a
-## time because $(saving-tests) and $(loading-tests) can contain
-## the targets for multiple toolsets.
-
-
-
-#for local save-test-i in $(saving-tests)
-#{
-#    DEPENDS $(loading-tests[1]:S=.run) : $(save-test-i:S=.run) ;
-#    loading-tests = $(loading-tests[2-]) ;
-#}
-
-

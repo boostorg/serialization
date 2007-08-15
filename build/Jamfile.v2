@@ -8,14 +8,17 @@
 
 project boost/serialization
     : source-location ../src
-    ;
+    : requirements <dependency>../../config/test//BOOST_NO_STD_LOCALE
+    : usage-requirements <dependency>../../config/test//BOOST_NO_STD_LOCALE
+;
+
+SPIRIT_ROOT = [ modules.peek : SPIRIT_ROOT ] ;
 
 SOURCES = 
     basic_archive
-    basic_archive_impl
     basic_iarchive
-    basic_oarchive
     basic_iserializer
+    basic_oarchive
     basic_oserializer
     basic_pointer_iserializer
     basic_pointer_oserializer
@@ -40,31 +43,43 @@ SOURCES =
 ;
     
 WSOURCES = 
-    codecvt_null
-    utf8_codecvt_facet
     basic_text_wiprimitive
     basic_text_woprimitive
     binary_wiarchive
     binary_woarchive
     text_wiarchive
     text_woarchive
+    utf8_codecvt_facet
     xml_wgrammar
     xml_wiarchive
     xml_woarchive
+    codecvt_null
 ;
+
 
 lib boost_serialization 
         : $(SOURCES).cpp
-	: <toolset>msvc:<cxxflags>/Gy 
+	: 
+	    <toolset>msvc:<cxxflags>/Gy
+        # note - we can't use <include>$(SPIRIT_ROOT) because 
+        # it puts -I$(SPIRIT_ROOT) AFTER the "../../.." in the command line.
+        # so use these instead 
+        <toolset>msvc-6.5:<cxxflags>-I$(SPIRIT_ROOT)
+        <toolset>msvc-7.0:<cxxflags>-I$(SPIRIT_ROOT)
+        <toolset>borland:<cxxflags>-I$(SPIRIT_ROOT)
   	  <link>shared:<define>BOOST_SERIALIZATION_DYN_LINK=1
-	:
-	: <link>shared:<define>BOOST_SERIALIZATION_DYN_LINK=1
 	;
 
 lib boost_wserialization 
         : $(WSOURCES).cpp boost_serialization 
-	: <toolset>msvc:<cxxflags>/Gy 
-          <link>shared:<define>BOOST_WSERIALIZATION_DYN_LINK=1
         :	  
-	: <link>shared:<define>BOOST_SERIALIZATION_DYN_LINK=1	
+        <toolset>msvc:<cxxflags>/Gy 
+        # note - we can't use <include>$(SPIRIT_ROOT) because 
+        # it puts -I$(SPIRIT_ROOT) AFTER the "../../.." in the command line.
+        # so use these instead 
+        <toolset>msvc-6.5:<cxxflags>-I$(SPIRIT_ROOT)
+        <toolset>msvc-7.0:<cxxflags>-I$(SPIRIT_ROOT)
+        <toolset>borland:<cxxflags>-I$(SPIRIT_ROOT)
+        <dependency>../../config/test//BOOST_NO_STD_WSTREAMBUF
+        <link>shared:<define>BOOST_SERIALIZATION_DYN_LINK=1
 	;
