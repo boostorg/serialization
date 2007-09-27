@@ -32,16 +32,42 @@
 
 namespace boost {
 namespace serialization {
+namespace detail {
+///////////////////////////////////////////////////////////////////////
+// define a special type_info that doesn't depend on rtti which is not
+// available in all situations.
 
-template<class T>
-class extended_type_info_no_rtti : 
+// common base class to share type_info_key.  This is used to 
+// identify the method used to keep track of the extended type
+class BOOST_SERIALIZATION_DECL(BOOST_PP_EMPTY()) extended_type_info_no_rtti_0 : 
     public extended_type_info
 {
-    // private constructor to inhibit any existence other than the 
-    // static one
-    extended_type_info_no_rtti(){}
-    ~extended_type_info_no_rtti(){};
+    virtual bool
+    less_than(const boost::serialization::extended_type_info &rhs) const ;
+protected:
+    extended_type_info_no_rtti_0();
+    // account for bogus gcc warning
+    #if defined(__GNUC__)
+    virtual
+    #endif
+    ~extended_type_info_no_rtti_0();
 public:
+    struct is_polymorphic
+    {
+        typedef boost::mpl::bool_<true> type;
+        BOOST_STATIC_CONSTANT(bool, value = is_polymorphic::type::value);
+    };
+};
+
+template<class T>
+class extended_type_info_no_rtti_1 : 
+    public extended_type_info_no_rtti_0
+{
+protected:
+    extended_type_info_no_rtti_1(){}
+public:
+    // note borland complains at making this destructor protected
+    ~extended_type_info_no_rtti_1(){};
     static const boost::serialization::extended_type_info *
     get_derived_extended_type_info(const T & t){
         // find the type that corresponds to the most derived type.
@@ -54,11 +80,28 @@ public:
         return boost::serialization::extended_type_info::find(derived_key);
     }
     static boost::serialization::extended_type_info *
-    find(){
-        // is this thread safe? probably not - does it need to be?
-        static extended_type_info_no_rtti<T> instance;
+    get_instance(){
+        static extended_type_info_no_rtti_1<T> instance;
         return & instance;
     }
+    static void
+    export_register(const char * key){
+        boost::serialization::extended_type_info * eti;
+        eti = get_instance();
+        eti->key_register(key);  // initialize key and add to table
+        eti->self_register();    // add type to type table
+    }
+};
+} // namespace detail
+
+template<class T>
+class extended_type_info_no_rtti : 
+    public detail::extended_type_info_no_rtti_1<const T>
+{
+    // private constructor to inhibit any existence other than the 
+    // static one
+    extended_type_info_no_rtti(){}
+    ~extended_type_info_no_rtti(){};
 };
 
 } // namespace serialization

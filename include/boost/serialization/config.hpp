@@ -65,7 +65,7 @@
 //
 // And include the header that does the work:
 //
-#include <boost/archive/detail/auto_link_archive.hpp>
+#include <boost/config/auto_link.hpp>
 
 #endif  // !defined(BOOST_SERIALIZATION_SOURCE) && !defined(BOOST_ARCHIVE_SOURCE)
 
