@@ -28,8 +28,6 @@ namespace std{
 
 #include <boost/archive/archive_exception.hpp>
 #include "test_tools.hpp"
-#include <boost/preprocessor/stringize.hpp>
-#include BOOST_PP_STRINGIZE(BOOST_ARCHIVE_TEST)
 
 ///////////////////////////////////////////////////////
 // simple class test - using non-intrusive syntax
@@ -124,7 +122,7 @@ void serialize(
 
 void save(const char * testfile){
     test_ostream os(testfile, TEST_STREAM_FLAGS);
-    test_oarchive oa(os);
+    test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
     A a;
 
     oa << BOOST_SERIALIZATION_NVP(a);
@@ -142,7 +140,7 @@ void save(const char * testfile){
 
 void load(const char * testfile){
     test_istream is(testfile, TEST_STREAM_FLAGS);
-    test_iarchive ia(is);
+    test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
 
     A a;
     ia >> BOOST_SERIALIZATION_NVP(a);

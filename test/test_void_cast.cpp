@@ -48,86 +48,85 @@ test_main( int /* argc */, char* /* argv */[] )
 
     // simple casts only requiring table lookup
     BOOST_CHECK(vpc == boost::serialization::void_downcast(
-        * boost::serialization::extended_type_info_typeid<Derived>::get_instance(),
-        * boost::serialization::extended_type_info_typeid<Base1>::get_instance(), 
+        * boost::serialization::extended_type_info_typeid<Derived>::find(),
+        * boost::serialization::extended_type_info_typeid<Base1>::find(), 
         vpa
     ));
     BOOST_CHECK(vpa == boost::serialization::void_upcast(
-        * boost::serialization::extended_type_info_typeid<Derived>::get_instance(),
-        * boost::serialization::extended_type_info_typeid<Base1>::get_instance(), 
+        * boost::serialization::extended_type_info_typeid<Derived>::find(),
+        * boost::serialization::extended_type_info_typeid<Base1>::find(), 
         vpc  
     ));
     BOOST_CHECK(vpc == boost::serialization::void_downcast(  
-        * boost::serialization::extended_type_info_typeid<Derived>::get_instance(), 
-        * boost::serialization::extended_type_info_typeid<Base2>::get_instance(), 
+        * boost::serialization::extended_type_info_typeid<Derived>::find(), 
+        * boost::serialization::extended_type_info_typeid<Base2>::find(), 
         vpb
     ));
     BOOST_CHECK(vpb == boost::serialization::void_upcast(
-        * boost::serialization::extended_type_info_typeid<Derived>::get_instance(), 
-        * boost::serialization::extended_type_info_typeid<Base2>::get_instance(), 
+        * boost::serialization::extended_type_info_typeid<Derived>::find(), 
+        * boost::serialization::extended_type_info_typeid<Base2>::find(), 
         vpc
     ));
     BOOST_CHECK(vpd == boost::serialization::void_downcast(  
-        * boost::serialization::extended_type_info_typeid<MostDerived>::get_instance(), 
-        * boost::serialization::extended_type_info_typeid<Derived>::get_instance(), 
+        * boost::serialization::extended_type_info_typeid<MostDerived>::find(), 
+        * boost::serialization::extended_type_info_typeid<Derived>::find(), 
         vpc
     ));
     BOOST_CHECK(vpc == boost::serialization::void_upcast(
-        * boost::serialization::extended_type_info_typeid<MostDerived>::get_instance(), 
-        * boost::serialization::extended_type_info_typeid<Derived>::get_instance(), 
+        * boost::serialization::extended_type_info_typeid<MostDerived>::find(), 
+        * boost::serialization::extended_type_info_typeid<Derived>::find(), 
         vpd
     ));
-
     // note relationship between MostDerived and Base1 is automatically derived
     BOOST_CHECK(vpd == boost::serialization::void_downcast(  
-        * boost::serialization::extended_type_info_typeid<MostDerived>::get_instance(), 
-        * boost::serialization::extended_type_info_typeid<Base1>::get_instance(), 
+        * boost::serialization::extended_type_info_typeid<MostDerived>::find(), 
+        * boost::serialization::extended_type_info_typeid<Base1>::find(), 
         vpa
     ));
     BOOST_CHECK(vpa == boost::serialization::void_upcast(
-        * boost::serialization::extended_type_info_typeid<MostDerived>::get_instance(), 
-        * boost::serialization::extended_type_info_typeid<Base1>::get_instance(), 
+        * boost::serialization::extended_type_info_typeid<MostDerived>::find(), 
+        * boost::serialization::extended_type_info_typeid<Base1>::find(), 
         vpd
     ));
 
     // note relationship between MostDerived and Base2 is automatically derived
     BOOST_CHECK(vpd == boost::serialization::void_downcast(  
-        * boost::serialization::extended_type_info_typeid<MostDerived>::get_instance(), 
-        * boost::serialization::extended_type_info_typeid<Base2>::get_instance(), 
+        * boost::serialization::extended_type_info_typeid<MostDerived>::find(), 
+        * boost::serialization::extended_type_info_typeid<Base2>::find(), 
         vpb
     ));
     BOOST_CHECK(vpb == boost::serialization::void_upcast(
-        * boost::serialization::extended_type_info_typeid<MostDerived>::get_instance(), 
-        * boost::serialization::extended_type_info_typeid<Base2>::get_instance(), 
+        * boost::serialization::extended_type_info_typeid<MostDerived>::find(), 
+        * boost::serialization::extended_type_info_typeid<Base2>::find(), 
         vpd
     ));
 
     // need to double check to validate speed up optimization of derivations
     BOOST_CHECK(vpd == boost::serialization::void_downcast(  
-        * boost::serialization::extended_type_info_typeid<MostDerived>::get_instance(), 
-        * boost::serialization::extended_type_info_typeid<Base1>::get_instance(), 
+        * boost::serialization::extended_type_info_typeid<MostDerived>::find(), 
+        * boost::serialization::extended_type_info_typeid<Base1>::find(), 
         vpa
     ));
     BOOST_CHECK(vpa == boost::serialization::void_upcast(
-        * boost::serialization::extended_type_info_typeid<MostDerived>::get_instance(), 
-        * boost::serialization::extended_type_info_typeid<Base1>::get_instance(), 
+        * boost::serialization::extended_type_info_typeid<MostDerived>::find(), 
+        * boost::serialization::extended_type_info_typeid<Base1>::find(), 
         vpd
     ));
     BOOST_CHECK(vpd == boost::serialization::void_downcast(
-        * boost::serialization::extended_type_info_typeid<MostDerived>::get_instance(), 
-        * boost::serialization::extended_type_info_typeid<Base2>::get_instance(), 
+        * boost::serialization::extended_type_info_typeid<MostDerived>::find(), 
+        * boost::serialization::extended_type_info_typeid<Base2>::find(), 
         vpb
     ));
     BOOST_CHECK(vpb == boost::serialization::void_upcast(
-        * boost::serialization::extended_type_info_typeid<MostDerived>::get_instance(), 
-        * boost::serialization::extended_type_info_typeid<Base2>::get_instance(), 
+        * boost::serialization::extended_type_info_typeid<MostDerived>::find(), 
+        * boost::serialization::extended_type_info_typeid<Base2>::find(), 
         vpd
     ));
 
     // check things that should fail
     BOOST_CHECK(NULL == boost::serialization::void_downcast(
-        * boost::serialization::extended_type_info_typeid<Base2>::get_instance(),
-        * boost::serialization::extended_type_info_typeid<Base1>::get_instance(), 
+        * boost::serialization::extended_type_info_typeid<Base2>::find(),
+        * boost::serialization::extended_type_info_typeid<Base1>::find(), 
         vpa
     ));
 
@@ -147,6 +146,7 @@ test_main( int /* argc */, char* /* argv */[] )
         static_cast<MostDerived *>(NULL),
         static_cast<Derived *>(NULL)
     );
+
     return EXIT_SUCCESS;
 }
 
