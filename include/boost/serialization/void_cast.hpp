@@ -89,32 +89,17 @@ namespace void_cast_detail {
 // note: can't be abstract because an instance is used as a search argument
 class BOOST_SERIALIZATION_DECL(BOOST_PP_EMPTY()) void_caster
 {
-    friend struct void_caster_compare ;
-    friend 
-    BOOST_SERIALIZATION_DECL(void const *)  
-    boost::serialization::void_upcast(
-        const extended_type_info & derived_type,
-        const extended_type_info & base_type,
-        const void * t,
-        bool top
-    );
-    friend 
-    BOOST_SERIALIZATION_DECL(void const *)  
-    boost::serialization::void_downcast(
-        const extended_type_info & derived_type,
-        const extended_type_info & base_type,
-        const void * t,
-        bool top
-    );
-    // each derived class must re-implement these;
-    virtual void const * upcast(void const * t) const = 0;
-    virtual void const * downcast(void const * t) const = 0;
-    // Data members
-    extended_type_info const & m_derived_type;
-    extended_type_info const & m_base_type;
+    friend BOOST_SERIALIZATION_DECL(bool)
+    operator<(const void_caster & lhs, const void_caster & rhs);
 protected:
     static void static_register(const void_caster *);
 public:
+    // Data members
+    extended_type_info const & m_derived_type;
+    extended_type_info const & m_base_type;
+    // each derived class must re-implement these;
+    virtual void const * upcast(void const * t) const = 0;
+    virtual void const * downcast(void const * t) const = 0;
     // Constructor
     void_caster(
         extended_type_info const & derived_type_,
@@ -122,12 +107,15 @@ public:
     );
     // predicate used to determine if this void caster includes
     // a particular eti *
-    bool includes(const extended_type_info * eti) const;
+//    bool includes(const extended_type_info * eti) const;
     virtual ~void_caster();
 private:
     // cw 8.3 requires this!!
     void_caster& operator=(void_caster const&);
 };
+
+BOOST_SERIALIZATION_DECL(bool)
+operator<(const void_caster & lhs, const void_caster & rhs);
 
 template <class Derived, class Base>
 class void_caster_primitive : 
@@ -179,8 +167,8 @@ class void_caster_primitive :
 template <class Derived, class Base>
 BOOST_DLLEXPORT void_caster_primitive<Derived, Base>::void_caster_primitive() :
     void_caster( 
-        * type_info_implementation<Derived>::type::get_instance(), 
-        * type_info_implementation<Base>::type::get_instance() 
+        * type_info_implementation<Derived>::type::find(), 
+        * type_info_implementation<Base>::type::find() 
     )
 {
     // calling get_instance() causes infinite recursion, and the
@@ -207,6 +195,7 @@ inline const void_cast_detail::void_caster & void_cast_register(
     const Derived * dnull, 
     const Base * bnull
 ) BOOST_USED;
+
 template<class Derived, class Base>
 BOOST_DLLEXPORT 
 inline const void_cast_detail::void_caster & void_cast_register(

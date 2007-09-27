@@ -26,8 +26,8 @@
 #include <boost/config.hpp>
 #include <boost/static_assert.hpp>
 #include <boost/preprocessor/stringize.hpp>
+#include <boost/type_traits/is_polymorphic.hpp>
 
-#include <boost/archive/detail/dynamically_initialized.hpp>
 #include <boost/serialization/type_info_implementation.hpp>
 #include <boost/serialization/is_abstract.hpp>
 #include <boost/serialization/force_include.hpp>
@@ -76,7 +76,7 @@ struct guid_initializer
     
     static void export_register(const char *key)
     {
-        eti_type::export_register(key);
+        eti_type::find()->key_register(key);
     }
     
     static const guid_initializer& get_instance(char const* key)
@@ -188,9 +188,8 @@ namespace                                                                       
 // need to export it.
 #define BOOST_CLASS_EXPORT_CHECK(T)                              \
     BOOST_STATIC_WARNING(                                        \
-        boost::serialization::type_info_implementation< T >      \
-            ::type::is_polymorphic::value                        \
-    );                                                           \
+        BOOST_DEDUCED_TYPENAME boost::is_polymorphic<T>::value   \
+    );                                                         
     /**/
 
 // the default exportable class identifier is the class name

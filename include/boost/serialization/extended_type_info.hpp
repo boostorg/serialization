@@ -36,51 +36,33 @@ namespace serialization {
 class BOOST_SERIALIZATION_DECL(BOOST_PP_EMPTY()) extended_type_info : 
     private boost::noncopyable 
 {
-private:
-    virtual bool
-    less_than(const extended_type_info &rhs) const = 0;
-    int type_info_key_cmp(const extended_type_info & rhs) const;
-    
-    // used to uniquely identify the type of class derived from this one
-    // so that different derivations of this class can be simultaneously
-    // included in implementation of sets and maps.
-    const char * m_type_info_key;
-    // flag to indicate wheter its been registered by type;
-    bool m_self_registered;
-    // flag to indicate wheter its been registered by type;
-    bool m_key_registered;
-    // flag indicating that no virtual function should be called here
-    // this is necessary since it seems that at least one compiler (borland
-    // and one version of gcc call less_than above when erasing even
-    // when given an iterator argument.
-    bool m_is_destructing;
 protected:
-    const char * m_key;
-    extended_type_info(const char * type_info_key);
-    // account for bogus gcc warning
-    #if defined(__GNUC__)
-    virtual
-    #endif
+    // this class can't be used as is. It's just the 
+    // common functionality for all type_info replacement
+    // systems.  Hence, make these protected
+    extended_type_info();
     ~extended_type_info();
+    const char * m_key;
 public:
-    void self_register();
     void key_register(const char *key);
-    bool is_destructing() const {
-        return m_is_destructing;
-    }
-    bool operator<(const extended_type_info &rhs) const;
-    bool operator==(const extended_type_info &rhs) const {
-        return this == & rhs;
-    }
-    bool operator!=(const extended_type_info &rhs) const {
-        return this != & rhs;
-    }
     const char * get_key() const {
         return m_key;
     }
     static const extended_type_info * find(const char *key);
-    static const extended_type_info * find(const extended_type_info * t);
 };
+
+// in order
+BOOST_SERIALIZATION_DECL(bool)  
+operator==(
+    const extended_type_info & lhs, 
+    const extended_type_info & rhs
+);
+
+BOOST_SERIALIZATION_DECL(bool)  
+operator<(
+    const extended_type_info & lhs, 
+    const extended_type_info & rhs
+);
 
 } // namespace serialization 
 } // namespace boost

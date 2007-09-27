@@ -27,10 +27,10 @@
 #include <boost/mpl/int.hpp>
 #include <boost/type_traits/is_base_and_derived.hpp>
 #include <boost/type_traits/is_pointer.hpp>
+#include <boost/type_traits/is_polymorphic.hpp>
 #include <boost/type_traits/is_const.hpp>
 
 #include <boost/static_assert.hpp>
-#include <boost/serialization/type_info_implementation.hpp>
 #include <boost/serialization/force_include.hpp>
 #include <boost/serialization/void_cast_fwd.hpp>
 
@@ -45,33 +45,29 @@ namespace detail
   {
       static void const* execute(mpl::false_) { return 0; }
 
-      static void const* execute(mpl::true_)
-      {
-          return &void_cast_register((Derived const*)0, (Base const*)0);
+      static void const* execute(mpl::true_){
+          return & void_cast_register((Derived const*)0, (Base const*)0);
       }
             
-      static void const* invoke()
-      {
-          typedef mpl::bool_<
-              type_info_implementation<Base>::type::is_polymorphic::value
-          > is_polymorphic;
-          
-          return execute(is_polymorphic());
+      static void const* invoke(){
+          return execute(
+              BOOST_DEDUCED_TYPENAME boost::is_polymorphic<Base>::type()
+          );
       }
   };
 
   // get the base type for a given derived type
   // preserving the const-ness
-  template<class B, class D>
+  template<class Base, class Derived>
   struct base_cast
   {
       typedef BOOST_DEDUCED_TYPENAME
       mpl::if_<
-          is_const<D>,
-          const B,
-          B
+          is_const<Derived>,
+          const Base,
+          Base
       >::type type;
-      BOOST_STATIC_ASSERT(is_const<type>::value == is_const<D>::value);
+      BOOST_STATIC_ASSERT(is_const<type>::value == is_const<Derived>::value);
   };
 } // namespace detail
 
