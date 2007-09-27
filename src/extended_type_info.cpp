@@ -24,270 +24,202 @@ namespace std{ using ::strcmp; }
 #endif
 
 #include <boost/detail/no_exceptions_support.hpp>
+#include <boost/detail/lightweight_mutex.hpp>
+
 #define BOOST_SERIALIZATION_SOURCE
 #include <boost/serialization/extended_type_info.hpp>
 
 namespace boost { 
 namespace serialization {
-
-// remove all registrations corresponding to a given type
-void unregister_void_casts(extended_type_info *eti);
-
 namespace detail {
-
-// it turns out that at least one compiler (msvc 6.0) doesn't guarentee
-// to destroy static objects in exactly the reverse sequence that they
-// are constructed.  To guarentee this, use a singleton pattern
-
-// map for finding the unique global extended type entry for a given type
-class tkmap {
-    struct type_info_compare
-    {
-        bool
-        operator()(const extended_type_info * lhs, const extended_type_info * rhs) const
-        {
-            assert(! lhs->is_destructing());
-            assert(! rhs->is_destructing());
-            return *lhs < *rhs;
-        }
-    };
-    typedef std::multiset<const extended_type_info *, type_info_compare> type;
-    //typedef std::set<const extended_type_info *, type_info_compare> type;
-    type m_map;
-    static tkmap * m_self;
-    tkmap(){}
-    static tkmap::type::iterator
-    lookup(const extended_type_info * eti){
-        return m_self->m_map.find(eti);
-    }
-public:
-    ~tkmap(){
-        m_self = NULL;
-    }
-    static void
-    insert(const extended_type_info * eti){
-        if(NULL == m_self){
-            static tkmap instance;
-            m_self = & instance;
-        }
-        // make sure that attempt at registration is done only once
-        assert(lookup(eti) == m_self->m_map.end());
-        m_self->m_map.insert(eti);
-    }
-    static const extended_type_info * 
-    find(const extended_type_info * eti){
-        if(NULL == m_self)
-            return NULL;
-        tkmap::type::const_iterator it;
-        it = m_self->m_map.find(eti);
-        if(it == m_self->m_map.end())
-            return NULL;
-        return *it;
-    }
-    static void 
-    purge(const extended_type_info * eti){
-        if(NULL == m_self)
-            return;
-        // note: the following can't be used as this function
-        // is called from a destructor of extended_type_info.
-        // This will generate an error on some machines - which
-        // makes sense be cause by this time the derived class data
-        // might be gone.  Leave this in as a reminder not to do this
-        #if 0
-        tkmap::type::iterator it;
-        it = lookup(eti);
-        // it should be in there
-        assert(it != m_self->m_map.end());
-        m_self->m_map.erase(it);
-        #endif
-
-        tkmap::type::iterator i = m_self->m_map.begin();
-        tkmap::type::iterator k = m_self->m_map.end();
-        while(i != k){
-            // note that the erase might invalidate i so save it here
-            tkmap::type::iterator j = i++;
-            if(*j == eti)
-                m_self->m_map.erase(j);
-        }
-    }
-};
-
-tkmap * tkmap::m_self = NULL;
 
 // map for finding the unique global extended type info entry given its GUID
 class ktmap {
     struct key_compare
     {
         bool
-        operator()(const extended_type_info * lhs, const extended_type_info * rhs) const
-        {
-            // shortcut to exploit string pooling
-            if(lhs->get_key() == rhs->get_key())
-                return false;
-            if(NULL == lhs->get_key())
-                return true;
-            if(NULL == rhs->get_key())
-                return false;
-            return std::strcmp(lhs->get_key(), rhs->get_key()) < 0; 
+        operator()(
+            const extended_type_info * lhs, 
+            const extended_type_info * rhs
+        ) const {
+            return *lhs < *rhs;
         }
     };
+    // the reason that we use multiset rather than set is that its possible
+    // that multiple eti records will be created as DLLS that use the same
+    // eti are loaded.  Using a multset will automatically keep track of the
+    // times this occurs so that when the last dll is unloaded, the type will
+    // become "unregistered"
     typedef std::multiset<const extended_type_info *, key_compare> type;
-    //typedef std::set<const extended_type_info *, key_compare> type;
     type m_map;
-    static ktmap * m_self;
-    ktmap(){}
     class extended_type_info_arg : public extended_type_info
     {
     public:
-        extended_type_info_arg(const char * key) :
-            extended_type_info(NULL)
-        {
+        extended_type_info_arg(const char * key){
             m_key = key;
         }
-        virtual bool
-        less_than(const extended_type_info &rhs) const
-        {
-            assert(false);
-            return false;   // to prevent a syntax error
+        ~extended_type_info_arg(){
+            m_key = NULL;
         }
     };
-    static ktmap::type::iterator
-    lookup(const char *key){
-        extended_type_info_arg arg(key);
-        return m_self->m_map.find(&arg);
-    }
-
 public:
-    ~ktmap(){
-        m_self = NULL;
-    }
-    static void
+    void
     insert(const extended_type_info * eti){
-        if(NULL == m_self){
-            static ktmap instance;
-            m_self = & instance;
-        }
-        // make sure that all GUIDs are unique
-        assert(lookup(eti->get_key()) == m_self->m_map.end());
-        m_self->m_map.insert(eti);
+        m_map.insert(eti);
     }
-    static const extended_type_info * 
+    const extended_type_info * 
     find(const char *key)
     {
-        if(NULL == m_self)
-            return NULL;
-        extended_type_info_arg arg(key);
-        ktmap::type::const_iterator it;
-        it = m_self->m_map.find(&arg);
-        if(it == m_self->m_map.end())
+        const extended_type_info_arg eti(key);
+        ktmap::type::iterator it;
+        it = m_map.find(& eti);
+        if(it == m_map.end())
             return NULL;
         return *it;
     }
-    static void 
+    void 
     purge(const extended_type_info * eti){
-        if(NULL == m_self)
-            return;
-        // note: the following can't be used as this function
-        // is called from a destructor of extended_type_info.
-        // This will generate an error on some machines - which
-        // makes sense be cause by this time the derived class data
-        // might be gone.  Leave this in as a reminder not to do this
-        #if 0
         ktmap::type::iterator it;
-        it = lookup(eti->get_key());
-        // expect it to be in there !
-        assert(it != m_self->m_map.end());
-        m_self->m_map.erase(it);
-        #endif
-
-        ktmap::type::iterator i = m_self->m_map.begin();
-        ktmap::type::iterator k = m_self->m_map.end();
-        while(i != k){
-            // note that the erase might invalidate i so save it here
-            ktmap::type::iterator j = i++;
-            if(*j == eti)
-                m_self->m_map.erase(j);
-        }
+        it = m_map.find(eti);
+        // expect it to be in there ! but check anyway !
+        if(it != m_map.end())
+            m_map.erase(it);
     }
 };
 
-ktmap * ktmap::m_self = NULL;
+// the above structer is fine - except for:
+//     - its not thread-safe
+//     - it doesn't support the necessary initialization
+//       to be a singleton.
+//
+// Here we add the sauce to address this
+
+class safe_ktmap {
+    // this addresses a problem.  Our usage patter for a typical case is:
+    // extended_type_info
+    // key_register
+    //     ktmap
+    //     insert item
+    // ...
+    // ~extended_type_info
+    //     purge item
+    //  ~ktmap
+    //  ~extended_type_info // crash!! ktmap already deleted
+    safe_ktmap(){
+        ++count;
+    }
+    ~safe_ktmap(){
+        --count;
+    }
+    static short int count;
+
+    static boost::detail::lightweight_mutex &
+    get_mutex(){
+        static boost::detail::lightweight_mutex m;
+        return m;
+    }
+    static ktmap & get_instance(){
+        static ktmap m;
+        return m;
+    }
+public:
+    static void
+    insert(const extended_type_info * eti){
+        boost::detail::lightweight_mutex::scoped_lock sl(get_mutex());
+        get_instance().insert(eti);
+    }
+    static const extended_type_info * 
+    find(const char *key){
+        boost::detail::lightweight_mutex::scoped_lock sl(get_mutex());
+        return get_instance().find(key);
+    }
+    static void 
+    purge(const extended_type_info * eti){
+        if(0 == detail::safe_ktmap::count)
+            return;
+        boost::detail::lightweight_mutex::scoped_lock sl(get_mutex());
+        get_instance().purge(eti);
+    }
+};
+
+short int safe_ktmap::count = 0;
 
 } // namespace detail
 
 BOOST_SERIALIZATION_DECL(const extended_type_info *) 
 extended_type_info::find(const char *key)
 {
-    return detail::ktmap::find(key);
-}
-
-BOOST_SERIALIZATION_DECL(void) 
-extended_type_info::self_register()
-{
-    detail::tkmap::insert(this);
-    m_self_registered = true;
+    return detail::safe_ktmap::find(key);
 }
 
 BOOST_SERIALIZATION_DECL(void)  
-extended_type_info::key_register(const char *key_) {
-    if(NULL == key_)
-        return;
-    m_key = key_;
-    detail::ktmap::insert(this);
-    m_key_registered = true;
+extended_type_info::key_register(const char *k) {
+    assert(NULL != k);
+    m_key = k;
+    detail::safe_ktmap::insert(this);
+}
+
+extended_type_info::extended_type_info() : 
+    m_key(NULL)
+{
 }
 
 BOOST_SERIALIZATION_DECL(BOOST_PP_EMPTY()) 
-extended_type_info::extended_type_info(
-    const char * type_info_key
-) :
-    m_type_info_key(type_info_key),
-    m_self_registered(false),
-    m_key_registered(false),
-    m_is_destructing(false)
-{}
-
-BOOST_SERIALIZATION_DECL(BOOST_PP_EMPTY()) 
 extended_type_info::~extended_type_info(){
+    if(NULL == m_key)
+        return;
     // remove entries in maps which correspond to this type
-    m_is_destructing = true;
     BOOST_TRY{
-        if(m_self_registered)
-            detail::tkmap::purge(this);
-        if(m_key_registered)
-            detail::ktmap::purge(this);
-        unregister_void_casts(this);
+        detail::safe_ktmap::purge(this);
     }
     BOOST_CATCH(...){}
     BOOST_CATCH_END
 }
 
-BOOST_SERIALIZATION_DECL(int)
-extended_type_info::type_info_key_cmp(const extended_type_info & rhs) const {
-    if(m_type_info_key == rhs.m_type_info_key)
-        return 0;
-    //return strcmp(lhs.type_info_key, rhs.type_info_key);
-    // all we require is that the type_info_key be unique
-    // so just compare the addresses
-    return m_type_info_key < rhs.m_type_info_key ? -1 : 1;
-}
-
-BOOST_SERIALIZATION_DECL(const extended_type_info *) 
-extended_type_info::find(const extended_type_info * t)
-{
-    return detail::tkmap::find(t);
-}
-
-BOOST_SERIALIZATION_DECL(bool)
-extended_type_info::operator<(const extended_type_info &rhs) const {
-    int i = type_info_key_cmp(rhs);
-    if(i < 0)
+BOOST_SERIALIZATION_DECL(bool)  
+operator==(
+    const extended_type_info & lhs, 
+    const extended_type_info & rhs
+){
+    if(& lhs == & rhs)
         return true;
-    if(i > 0)
+    const char * l = lhs.get_key();
+    const char * r = rhs.get_key();
+    // neither have been exported
+    if(NULL == l && NULL == r)
+        // then the above test is definitive
         return false;
-    assert(! is_destructing());
-    assert(! rhs.is_destructing());
-    return less_than(rhs);
+    // shortcut to exploit string pooling
+    if(l == r)
+        return true;
+    if(NULL == r)
+        return false;
+    if(NULL == l)
+        return false;
+    return 0 == std::strcmp(l, r); 
+}
+
+BOOST_SERIALIZATION_DECL(bool)  
+operator<(
+    const extended_type_info & lhs, 
+    const extended_type_info & rhs
+){
+    // shortcut to exploit string pooling
+    const char * l = lhs.get_key();
+    const char * r = rhs.get_key();
+    // neither have been exported
+    if(NULL == l && NULL == r)
+        // order by address
+        return & lhs < & rhs;
+    // exported types are "higher" than non-exported types
+    if(NULL == l)
+        return true;
+    if(NULL == r)
+        return false;
+    // for exported types, use the string key so that
+    // multiple instances in different translation units
+    // can be matched up
+    return -1 == std::strcmp(l, r); 
 }
 
 } // namespace serialization

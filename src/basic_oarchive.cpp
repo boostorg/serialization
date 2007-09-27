@@ -164,7 +164,7 @@ class basic_oarchive_impl {
 };
 
 //////////////////////////////////////////////////////////////////////
-// implementation of basic_oarchive implementation functions
+// basic_oarchive implementation functions
 
 // given a type_info - find its bos
 // return NULL if not found

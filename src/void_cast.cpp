@@ -8,7 +8,7 @@
 // <gennadiy.rozental@tfn.com>
 
 //  See http://www.boost.org for updates, documentation, and revision history.
-
+ 
 #if (defined _MSC_VER) && (_MSC_VER == 1200)
 # pragma warning (disable : 4786) // too long name, harmless warning
 #endif
@@ -22,7 +22,8 @@
 #include <cassert>
 
 // BOOST
-#include <boost/shared_ptr.hpp>
+#include <boost/detail/lightweight_mutex.hpp>
+
 #define BOOST_SERIALIZATION_SOURCE
 #include <boost/serialization/extended_type_info.hpp>
 #include <boost/serialization/void_cast.hpp>
@@ -30,144 +31,6 @@
 namespace boost { 
 namespace serialization {
 namespace void_cast_detail {
-
-struct void_caster_compare
-{
-    bool
-    operator()(
-        shared_ptr<const void_caster> lhs, 
-        shared_ptr<const void_caster> rhs ) const
-    {
-        if( lhs.get()->m_derived_type < rhs.get()->m_derived_type )
-            return true;
-        
-        if( rhs.get()->m_derived_type < lhs.get()->m_derived_type)
-            return false;
-        
-        if( lhs.get()->m_base_type < rhs.get()->m_base_type )
-            return true;
-
-        return false;
-    }
-};
-
-struct null_deleter
-{
-    void operator()(void const *) const
-    {}
-};
-
-// it turns out that at least one compiler (msvc 6.0) doesn't guarentee
-// to destroy static objects in exactly the reverse sequence that they
-// are constructed.  To guarentee this, use a singleton pattern
-class void_caster_registry
-{
-    typedef shared_ptr<const void_caster> value_type;
-    typedef std::set<value_type, void_caster_compare> set_type;
-    set_type m_set;
-    static void_caster_registry * m_self;
-    static void_caster_registry * 
-    self(){
-        if(NULL == m_self){
-            static void_caster_registry instance;
-            m_self = & instance;
-        }
-        return m_self;
-    }
-    void_caster_registry(){}
-public:
-    ~void_caster_registry(){
-        m_self = 0;
-    }
-    typedef set_type::iterator iterator;
-    typedef set_type::const_iterator const_iterator;
-    static iterator 
-    begin() {
-        return self()->m_set.begin();
-    }
-    static iterator 
-    end() {
-        return self()->m_set.end();
-    }
-    static const_iterator 
-    find(void_caster * vcp){
-        return self()->m_set.find(value_type(vcp, null_deleter()));
-    }
-    static std::pair<iterator, bool> 
-    insert(const value_type & vcp){
-        return self()->m_set.insert(vcp);
-    }
-    static bool 
-    empty(){
-        if(NULL == m_self)
-            return true;
-        return m_self->m_set.empty();
-    }
-    static void 
-    purge(const extended_type_info * eti);
-};
-
-void_caster_registry * void_caster_registry::m_self = NULL;
-
-void 
-void_caster_registry::purge(const extended_type_info * eti){
-    if(NULL == m_self)
-        return;
-    if(! empty()){
-        iterator i = m_self->m_set.begin();
-        while(i != m_self->m_set.end()){
-            // note that the erase might invalidate i so save it here
-            iterator j = i++;
-            if((*j)->includes(eti))
-                m_self->m_set.erase(j);
-        }
-    }
-}
-
-BOOST_SERIALIZATION_DECL(BOOST_PP_EMPTY())
-void_caster::void_caster(
-    extended_type_info const & derived_type_,
-    extended_type_info const & base_type_ 
-) :
-    m_derived_type( derived_type_),
-    m_base_type(base_type_)
-{}
-
-BOOST_SERIALIZATION_DECL(BOOST_PP_EMPTY())
-void_caster::~void_caster(){}
-
-bool 
-void_caster::includes(const extended_type_info * eti) const {
-    return & m_derived_type == eti || & m_base_type == eti;
-}
-
-void BOOST_SERIALIZATION_DECL(BOOST_PP_EMPTY())
-void_caster::static_register(const void_caster * vcp) 
-{
-    void_caster_registry::insert(shared_ptr<const void_caster>(vcp, null_deleter()));
-}
-
-class void_caster_derived : public void_caster
-{
-    std::ptrdiff_t difference;
-    virtual void const*
-    upcast( void const* t ) const{
-        return static_cast<const char*> ( t ) + difference;
-    }
-    virtual void const*
-    downcast( void const* t ) const{
-        return static_cast<const char*> ( t ) - difference;
-    }
-public:
-    void_caster_derived(
-        extended_type_info const& derived_type_,
-        extended_type_info const& base_type_,
-        std::ptrdiff_t difference_
-    ) :
-        void_caster(derived_type_, base_type_),
-        difference( difference_ )
-    {}
-};
 
 // just used as a search key
 class void_caster_argument : public void_caster
@@ -191,21 +54,84 @@ public:
     {}
 };
 
-} // namespace void_cast_detail
+//////////////////////////////////////////////////////
+// void_caster implementation for indirect inheritance
 
-void  BOOST_SERIALIZATION_DECL(BOOST_PP_EMPTY())
-unregister_void_casts(extended_type_info *eti)
+class void_caster_derived : public void_caster
 {
-    void_cast_detail::void_caster_registry::purge(eti);
-}
+    std::ptrdiff_t difference;
+    virtual void const*
+    upcast( void const* t ) const{
+        return static_cast<const char*> ( t ) + difference;
+    }
+    virtual void const*
+    downcast( void const* t ) const{
+        return static_cast<const char*> ( t ) - difference;
+    }
+public:
+    void_caster_derived(
+        extended_type_info const& derived_type_,
+        extended_type_info const& base_type_,
+        std::ptrdiff_t difference_
+    ) :
+        void_caster(derived_type_, base_type_),
+        difference( difference_ )
+    {}
+};
 
-// Given a void *, assume that it really points to an instance of one type
-// and alter it so that it would point to an instance of a related type.
-// Return the altered pointer. If there exists no sequence of casts that
-// can transform from_type to to_type, return a NULL.  
+////////////////////////////////////////////////////////////
+// registry to hold all casters for all base/derived pairs
+// used.
 
-BOOST_SERIALIZATION_DECL(void const *)
-void_upcast(
+class void_caster_registry
+{
+    struct void_caster_compare
+    {
+        bool
+        operator()(
+            const void_caster * lhs, 
+            const void_caster * rhs 
+        ) const {
+            return *lhs < *rhs;
+        }
+    };
+    // note usage of multi-set since it's possible that dynamically
+    // loaded libraries might create multiple instances of a given
+    // instance of a void caster.  This implements automatic counting
+    typedef std::multiset<const void_caster *, void_caster_compare> set_type;
+    set_type m_set;
+public:
+    typedef set_type::iterator iterator;
+    typedef set_type::const_iterator const_iterator;
+    void
+    insert(const void_caster * vcp){
+        m_set.insert(vcp);
+    }
+    void
+    purge(const void_caster * vcp){
+        iterator it = m_set.find(vcp);
+        // expect it to be in there ! but check anyway !
+        assert(it != m_set.end());
+        m_set.erase(it);
+    }
+    void const *
+    upcast(
+        extended_type_info const & derived_type,
+        extended_type_info const & base_type,
+        void const * const t,
+        bool top
+    );
+    void const *
+    downcast(
+        const extended_type_info & derived_type,
+        const extended_type_info & base_type,
+        const void * const t,
+        bool top
+    );
+};
+
+inline void const *
+void_caster_registry::upcast(
     extended_type_info const & derived_type,
     extended_type_info const & base_type,
     void const * const t,
@@ -216,21 +142,21 @@ void_upcast(
         return t;
     
     // check to see if base/derived pair is found in the registry
-    void_cast_detail::void_caster_argument ca(derived_type, base_type );
-    void_cast_detail::void_caster_registry::const_iterator it;
-    it = void_cast_detail::void_caster_registry::find( &ca );
+    void_caster_argument ca(derived_type, base_type );
+    const_iterator it;
+    it = m_set.find( &ca );
     
     const void * t_new = NULL;
 
     // if so
-    if (it != void_cast_detail::void_caster_registry::end())
+    if (it != m_set.end())
         // we're done
         return (*it)->upcast(t);
 
     // try to find a chain that gives us what we want
     for(
-        it = void_cast_detail::void_caster_registry::begin();
-        it != void_cast_detail::void_caster_registry::end();
+        it = m_set.begin();
+        it != m_set.end();
         ++it
     ){
         // if the current candidate doesn't cast to the desired target type
@@ -249,15 +175,13 @@ void_upcast(
                 if(top){
                     // register the this pair so we will have to go through
                     // keep this expensive search process more than once.
-                    void_cast_detail::void_caster * vcp = 
-                        new void_cast_detail::void_caster_derived( 
+                    const void_caster * vcp = 
+                        new void_caster_derived( 
                             derived_type,
                             base_type,
                             static_cast<const char*>(t_new) - static_cast<const char*>(t)
                         );
-                    void_cast_detail::void_caster_registry::insert(
-                        shared_ptr<const void_cast_detail::void_caster>(vcp)
-                    );
+                    m_set.insert(vcp);
                 }
                 break;
             }
@@ -266,8 +190,8 @@ void_upcast(
     return t_new;
 }
 
-BOOST_SERIALIZATION_DECL(void const *)
-void_downcast(
+inline void const *
+void_caster_registry::downcast(
     const extended_type_info & derived_type,
     const extended_type_info & base_type,
     const void * const t,
@@ -278,20 +202,20 @@ void_downcast(
         return t;
     
     // check to see if base/derived pair is found in the registry
-    void_cast_detail::void_caster_argument ca(derived_type, base_type );
-    void_cast_detail::void_caster_registry::const_iterator it;
-    it = void_cast_detail::void_caster_registry::find( &ca );
+    void_caster_argument ca(derived_type, base_type );
+    const_iterator it;
+    it = m_set.find( &ca );
     
     // if so
-    if (it != void_cast_detail::void_caster_registry::end())
+    if (it != m_set.end())
         // we're done
         return (*it)->downcast(t);
 
     const void * t_new = NULL;
     // try to find a chain that gives us what we want
     for(
-        it = void_cast_detail::void_caster_registry::begin();
-        it != void_cast_detail::void_caster_registry::end();
+        it = m_set.begin();
+        it != m_set.end();
         ++it
     ){
         // if the current candidate doesn't casts from the desired target type
@@ -310,15 +234,13 @@ void_downcast(
                 if(top){
                     // register the this pair so we will have to go through
                     // keep this expensive search process more than once.
-                    void_cast_detail::void_caster * vcp = 
-                        new void_cast_detail::void_caster_derived( 
+                    const void_caster * vcp = 
+                        new void_caster_derived( 
                             derived_type,
                             base_type,
                             static_cast<const char*>(t) - static_cast<const char*>(t_new)
                         );
-                    void_cast_detail::void_caster_registry::insert(
-                        shared_ptr<const void_cast_detail::void_caster>(vcp)
-                    );
+                    m_set.insert(vcp);
                 }
                 break;
             }
@@ -327,7 +249,146 @@ void_downcast(
     return t_new;
 }
 
+// the above structer is fine - except for:
+//     - its not thread-safe
+//     - it doesn't support the necessary initialization
+//       to be a singleton.
+//
+// Here we add the sauce to address this
+
+class safe_void_caster_registry {
+    // this addresses a problem.  Our usage patter for a typical case is:
+    // void_caster
+    // void_caster_register
+    //     void_caster_registry
+    //     insert item
+    // ...
+    // ~void_caster
+    //     purge item
+    //  ~void_caster_registry
+    //  ~void_caster // crash!! void_caster_registry already deleted
+    safe_void_caster_registry (){
+        ++count;
+    }
+    ~safe_void_caster_registry (){
+        --count;
+    }
+    static short int count;
+
+    static boost::detail::lightweight_mutex &
+    get_mutex(){
+        static boost::detail::lightweight_mutex m;
+        return m;
+    }
+    static void_caster_registry & get_instance(){
+        static void_caster_registry m;
+        return m;
+    }
+public:
+    static void
+    insert(const void_caster * vcp){
+        boost::detail::lightweight_mutex::scoped_lock sl(get_mutex());
+        get_instance().insert(vcp);
+    }
+    static void const *
+    upcast(
+        extended_type_info const & derived_type,
+        extended_type_info const & base_type,
+        void const * const t,
+        bool top
+    ){
+        boost::detail::lightweight_mutex::scoped_lock sl(get_mutex());
+        return get_instance().upcast(derived_type, base_type, t, top);
+    }
+    static void const *
+    downcast(
+        const extended_type_info & derived_type,
+        const extended_type_info & base_type,
+        const void * const t,
+        bool top
+    ){
+        boost::detail::lightweight_mutex::scoped_lock sl(get_mutex());
+        return get_instance().downcast(derived_type, base_type, t, top);
+    }
+    static void
+    purge(const void_caster * vcp){
+        boost::detail::lightweight_mutex::scoped_lock sl(get_mutex());
+        if(count == 0)
+            return;
+        get_instance().purge(vcp);
+    }
+};
+
+short int safe_void_caster_registry::count = 0;
+
+////////////////////////////////////////////////
+// void_caster implementation
+
+BOOST_SERIALIZATION_DECL(BOOST_PP_EMPTY())
+void_caster::void_caster(
+    extended_type_info const & derived_type_,
+    extended_type_info const & base_type_ 
+) :
+    m_derived_type( derived_type_),
+    m_base_type(base_type_)
+{}
+
+BOOST_SERIALIZATION_DECL(BOOST_PP_EMPTY())
+void_caster::~void_caster(){
+    safe_void_caster_registry::purge(this);
+}
+
+void BOOST_SERIALIZATION_DECL(BOOST_PP_EMPTY())
+void_caster::static_register(const void_caster * vcp) 
+{
+    safe_void_caster_registry::insert(vcp);
+}
+
+BOOST_SERIALIZATION_DECL(bool)
+operator<(const void_caster & lhs, const void_caster & rhs){
+    if( lhs.m_derived_type < rhs.m_derived_type )
+        return true;
+
+    if( rhs.m_derived_type < lhs.m_derived_type)
+        return false;
+
+    if( lhs.m_base_type < rhs.m_base_type )
+        return true;
+
+    return false;
+}
+
+} // namespace void_cast_detail
+
+// Given a void *, assume that it really points to an instance of one type
+// and alter it so that it would point to an instance of a related type.
+// Return the altered pointer. If there exists no sequence of casts that
+// can transform from_type to to_type, return a NULL.  
+
+BOOST_SERIALIZATION_DECL(void const *)
+void_upcast(
+    extended_type_info const & derived_type,
+    extended_type_info const & base_type,
+    void const * const t,
+    bool top
+){
+    return void_cast_detail::safe_void_caster_registry::upcast(
+        derived_type, base_type, t, top
+    );
+}
+
+BOOST_SERIALIZATION_DECL(void const *)
+void_downcast(
+    const extended_type_info & derived_type,
+    const extended_type_info & base_type,
+    const void * const t,
+    bool top
+){
+    return void_cast_detail::safe_void_caster_registry::downcast(
+        derived_type, base_type, t, top
+    );
+}
+
 } // namespace serialization
 } // namespace boost
 
-// EOF

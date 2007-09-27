@@ -17,27 +17,3 @@ namespace std{ using ::strcmp; }
 
 #define BOOST_SERIALIZATION_SOURCE
 #include <boost/serialization/extended_type_info_no_rtti.hpp>
-
-namespace boost { 
-namespace serialization { 
-namespace detail { 
-
-BOOST_SERIALIZATION_DECL(bool)
-extended_type_info_no_rtti_0::less_than(
-    const boost::serialization::extended_type_info &rhs) const 
-{
-    return std::strcmp(m_key, rhs.get_key()) < 0;
-}
-
-BOOST_SERIALIZATION_DECL(BOOST_PP_EMPTY())  
-extended_type_info_no_rtti_0::extended_type_info_no_rtti_0() :
-    boost::serialization::extended_type_info("extended_type_info_no_rtti")
-{}
-
-BOOST_SERIALIZATION_DECL(BOOST_PP_EMPTY())  
-extended_type_info_no_rtti_0::~extended_type_info_no_rtti_0()
-{}
-
-} // namespece detail
-} // namespace serialization
-} // namespace boost
