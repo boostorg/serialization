@@ -110,7 +110,7 @@ private:
     // static one
     explicit iserializer() :
         basic_iserializer(
-            * boost::serialization::type_info_implementation<T>::type::get_instance()
+            * boost::serialization::type_info_implementation<T>::type::find()
         )
     {}
 public:
@@ -136,11 +136,7 @@ public:
         return ::boost::serialization::version<T>::value;
     }
     virtual bool is_polymorphic() const {
-        typedef BOOST_DEDUCED_TYPENAME 
-            boost::serialization::type_info_implementation<
-                T
-            >::type::is_polymorphic::type typex;
-        return typex::value;
+        return boost::is_polymorphic<T>::value;
     }
     static iserializer & get_instance(){
         static iserializer instance;
@@ -305,18 +301,14 @@ BOOST_DLLEXPORT void pointer_iserializer<Archive, T>::load_object_ptr(
 }
 
 template<class Archive, class T>
-#if !defined(__BORLANDC__)
 BOOST_DLLEXPORT pointer_iserializer<Archive, T>::pointer_iserializer() :
     archive_pointer_iserializer<Archive>(
-        * boost::serialization::type_info_implementation<T>::type::get_instance()
-    ),
-    m(boost::serialization::serialize_adl<Archive, T>),
-    e(boost::serialization::type_info_implementation<T>::type::get_instance)
-#else
-BOOST_DLLEXPORT pointer_iserializer<Archive, T>::pointer_iserializer() :
-    archive_pointer_iserializer<Archive>(
-        * boost::serialization::type_info_implementation<T>::type::get_instance()
+        * boost::serialization::type_info_implementation<T>::type::find()
     )
+#if !defined(__BORLANDC__)
+    ,
+    m(boost::serialization::serialize_adl<Archive, T>),
+    e(boost::serialization::type_info_implementation<T>::type::find)
 #endif
 {
     iserializer<Archive, T> & bis = iserializer<Archive, T>::get_instance();
@@ -421,12 +413,8 @@ struct load_pointer_type {
     struct abstract
     {
         static const basic_pointer_iserializer * register_type(Archive & /* ar */){
-            #if ! defined(__BORLANDC__)
-            typedef BOOST_DEDUCED_TYPENAME 
-                boost::serialization::type_info_implementation<T>::type::is_polymorphic typex;
             // it has? to be polymorphic
-            BOOST_STATIC_ASSERT(typex::value);
-            #endif
+            BOOST_STATIC_ASSERT(boost::is_polymorphic<T>::value);
             return static_cast<basic_pointer_iserializer *>(NULL);
          }
     };
@@ -464,7 +452,7 @@ struct load_pointer_type {
         return static_cast<T *>(
             boost::serialization::void_upcast(
                 eti,
-                * boost::serialization::type_info_implementation<T>::type::get_instance(),
+                * boost::serialization::type_info_implementation<T>::type::find(),
                 t
             )
         );
@@ -513,27 +501,6 @@ struct load_array_type {
         ar >> serialization::make_array(static_cast<value_type*>(&t[0]),count);
     }
 };
-
-#if 0
-// note bogus arguments to workaround msvc 6 silent runtime failure
-template<class Archive, class T>
-BOOST_DLLEXPORT 
-inline const basic_pointer_iserializer &
-instantiate_pointer_iserializer(
-    Archive * /* ar = NULL */,
-    T * /* t = NULL */
-) BOOST_USED;
-
-template<class Archive, class T>
-BOOST_DLLEXPORT 
-inline const basic_pointer_iserializer &
-instantiate_pointer_iserializer(
-    Archive * /* ar = NULL */,
-    T * /* t = NULL */
-){
-    return pointer_iserializer<Archive,T>::instance;
-}
-#endif
 
 } // detail
 

@@ -21,6 +21,7 @@
 
 #include <boost/config.hpp>
 #include <boost/shared_ptr.hpp>
+#include <boost/serialization/type_info_implementation.hpp>
 #include <boost/serialization/shared_ptr_132.hpp>
 #include <boost/throw_exception.hpp>
 
@@ -97,10 +98,11 @@ public:
                 )
             );
         const boost::serialization::extended_type_info * this_type
-            = boost::serialization::type_info_implementation<T>::type::get_instance();
+            = boost::serialization::type_info_implementation<T>::type::find();
         void * vp = void_downcast(*true_type, *this_type, t);
         return vp;
     }
+public:
     template<class T>
     void reset(shared_ptr<T> & s, T * r){
         if(NULL == r){

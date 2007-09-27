@@ -71,9 +71,10 @@ public:
     Archive * This(){
         return static_cast<Archive *>(this);
     }
+    #ifndef BOOST_NO_STD_LOCALE
     boost::scoped_ptr<std::locale> archive_locale;
     basic_streambuf_locale_saver<Elem, Tr> locale_saver;
-
+    #endif
     // default saving of primitives.
     template<class T>
     void save(const T & t)
