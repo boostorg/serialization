@@ -25,7 +25,7 @@
 #include <boost/config.hpp>
 #include <boost/operators.hpp>
 
-#if !defined(__BORLANDC__) || __BORLANDC__ >= 0x590
+#if !defined(__BORLANDC__)
     #define BOOST_STRONG_TYPEDEF(T, D)                              \
     struct D                                                        \
         : boost::totally_ordered1< D                                \
