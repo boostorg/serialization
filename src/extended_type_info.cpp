@@ -14,6 +14,7 @@
 
 #include <algorithm>
 #include <set>
+#include <utility>
 #include <cassert>
 
 #include <boost/config.hpp> // msvc needs this to suppress warning
@@ -24,7 +25,8 @@ namespace std{ using ::strcmp; }
 #endif
 
 #include <boost/detail/no_exceptions_support.hpp>
-#include <boost/detail/lightweight_mutex.hpp>
+#include <boost/serialization/singleton.hpp>
+#include <boost/serialization/force_include.hpp>
 
 #define BOOST_SERIALIZATION_SOURCE
 #include <boost/serialization/extended_type_info.hpp>
@@ -33,147 +35,75 @@ namespace boost {
 namespace serialization {
 namespace detail {
 
-// map for finding the unique global extended type info entry given its GUID
-class ktmap {
-    struct key_compare
-    {
-        bool
-        operator()(
-            const extended_type_info * lhs, 
-            const extended_type_info * rhs
-        ) const {
-            return *lhs < *rhs;
-        }
-    };
-    // the reason that we use multiset rather than set is that its possible
-    // that multiple eti records will be created as DLLS that use the same
-    // eti are loaded.  Using a multset will automatically keep track of the
-    // times this occurs so that when the last dll is unloaded, the type will
-    // become "unregistered"
-    typedef std::multiset<const extended_type_info *, key_compare> type;
-    type m_map;
-    class extended_type_info_arg : public extended_type_info
-    {
-    public:
-        extended_type_info_arg(const char * key){
-            m_key = key;
-        }
-        ~extended_type_info_arg(){
-            m_key = NULL;
-        }
-    };
-public:
-    void
-    insert(const extended_type_info * eti){
-        m_map.insert(eti);
-    }
-    const extended_type_info * 
-    find(const char *key)
-    {
-        const extended_type_info_arg eti(key);
-        ktmap::type::iterator it;
-        it = m_map.find(& eti);
-        if(it == m_map.end())
-            return NULL;
-        return *it;
-    }
-    void 
-    purge(const extended_type_info * eti){
-        ktmap::type::iterator it;
-        it = m_map.find(eti);
-        // expect it to be in there ! but check anyway !
-        if(it != m_map.end())
-            m_map.erase(it);
+struct key_compare
+{
+    bool
+    operator()(
+        const extended_type_info * lhs, 
+        const extended_type_info * rhs
+    ) const {
+        return *lhs < *rhs;
     }
 };
+typedef std::set<
+    const extended_type_info *, 
+    key_compare
+> ktmap;
 
-// the above structer is fine - except for:
-//     - its not thread-safe
-//     - it doesn't support the necessary initialization
-//       to be a singleton.
-//
-// Here we add the sauce to address this
+template ktmap;
 
-class safe_ktmap {
-    // this addresses a problem.  Our usage patter for a typical case is:
-    // extended_type_info
-    // key_register
-    //     ktmap
-    //     insert item
-    // ...
-    // ~extended_type_info
-    //     purge item
-    //  ~ktmap
-    //  ~extended_type_info // crash!! ktmap already deleted
-    safe_ktmap(){
-        ++count;
-    }
-    ~safe_ktmap(){
-        --count;
-    }
-    static short int count;
-
-    static boost::detail::lightweight_mutex &
-    get_mutex(){
-        static boost::detail::lightweight_mutex m;
-        return m;
-    }
-    static ktmap & get_instance(){
-        static ktmap m;
-        return m;
-    }
+class extended_type_info_arg : public extended_type_info
+{
 public:
-    static void
-    insert(const extended_type_info * eti){
-        boost::detail::lightweight_mutex::scoped_lock sl(get_mutex());
-        get_instance().insert(eti);
+    extended_type_info_arg(const char * key){
+        m_key = key;
     }
-    static const extended_type_info * 
-    find(const char *key){
-        boost::detail::lightweight_mutex::scoped_lock sl(get_mutex());
-        return get_instance().find(key);
-    }
-    static void 
-    purge(const extended_type_info * eti){
-        if(0 == detail::safe_ktmap::count)
-            return;
-        boost::detail::lightweight_mutex::scoped_lock sl(get_mutex());
-        get_instance().purge(eti);
+    ~extended_type_info_arg(){
+        m_key = NULL;
     }
 };
-
-short int safe_ktmap::count = 0;
 
 } // namespace detail
 
-BOOST_SERIALIZATION_DECL(const extended_type_info *) 
-extended_type_info::find(const char *key)
-{
-    return detail::safe_ktmap::find(key);
+BOOST_SERIALIZATION_DECL(void)  
+extended_type_info::key_register(const char *key) {
+    assert(NULL != key);
+    m_key = key;
+    std::pair<detail::ktmap::const_iterator, bool> result;
+    // prohibit duplicates and multiple registrations
+    result = singleton<detail::ktmap>::get_mutable_instance().insert(this);
+    assert(result.second);
+    // would like to throw and exception here but I don't
+    // have one conveniently defined
+    // throw(?)
 }
 
-BOOST_SERIALIZATION_DECL(void)  
-extended_type_info::key_register(const char *k) {
-    assert(NULL != k);
-    m_key = k;
-    detail::safe_ktmap::insert(this);
+BOOST_SERIALIZATION_DECL(const extended_type_info *) 
+extended_type_info::find(const char *key) {
+    const detail::ktmap & k = singleton<detail::ktmap>::get_const_instance();
+    const detail::extended_type_info_arg eti_key(key);
+    const detail::ktmap::const_iterator it = k.find(& eti_key);
+    if(k.end() == it)
+        return NULL;
+    return *(it);
 }
 
 extended_type_info::extended_type_info() : 
     m_key(NULL)
 {
+    // make sure that the ktmap is instantiated before 
+    // the first key is added to it.
+    singleton<detail::ktmap>::get_const_instance();
 }
 
 BOOST_SERIALIZATION_DECL(BOOST_PP_EMPTY()) 
 extended_type_info::~extended_type_info(){
-    if(NULL == m_key)
-        return;
-    // remove entries in maps which correspond to this type
-    BOOST_TRY{
-        detail::safe_ktmap::purge(this);
+    if(NULL != m_key){
+        unsigned int erase_count;
+        erase_count = 
+            singleton<detail::ktmap>::get_mutable_instance().erase(this);
+        assert(1 == erase_count);
     }
-    BOOST_CATCH(...){}
-    BOOST_CATCH_END
 }
 
 BOOST_SERIALIZATION_DECL(bool)  
@@ -181,25 +111,10 @@ operator==(
     const extended_type_info & lhs, 
     const extended_type_info & rhs
 ){
-    if(& lhs == & rhs)
-        return true;
-    const char * l = lhs.get_key();
-    const char * r = rhs.get_key();
-    // neither have been exported
-    if(NULL == l && NULL == r)
-        // then the above test is definitive
-        return false;
-    // shortcut to exploit string pooling
-    if(l == r)
-        return true;
-    if(NULL == r)
-        return false;
-    if(NULL == l)
-        return false;
-    return 0 == std::strcmp(l, r); 
+    return (& lhs == & rhs);
 }
 
-BOOST_SERIALIZATION_DECL(bool)  
+BOOST_SERIALIZATION_DECL(bool)
 operator<(
     const extended_type_info & lhs, 
     const extended_type_info & rhs
