@@ -23,6 +23,8 @@
 #include <boost/archive/detail/oserializer.hpp>
 #include <boost/archive/detail/abi_prefix.hpp> // must be the last header
 
+#include <boost/serialization/singleton.hpp>
+
 namespace boost {
 namespace archive {
 namespace detail {
@@ -49,7 +51,9 @@ public:
     const  /* BOOST_ARCHIVE_DECL(BOOST_PP_EMPTY()) */ basic_pointer_oserializer * 
     register_type(const T * = NULL){
         const /* BOOST_ARCHIVE_DECL(BOOST_PP_EMPTY()) */ basic_pointer_oserializer & bpos =
-            pointer_oserializer<Archive, T>::get_instance();
+            boost::serialization::singleton<
+                pointer_oserializer<Archive, T>
+            >::get_const_instance();
         this->This()->register_basic_serializer(bpos.get_basic_serializer());
         return & bpos;
     }

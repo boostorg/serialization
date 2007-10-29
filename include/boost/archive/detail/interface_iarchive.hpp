@@ -20,7 +20,10 @@
 #include <boost/mpl/bool.hpp>
 #include <boost/archive/detail/auto_link_archive.hpp>
 #include <boost/archive/detail/iserializer.hpp>
+#include <boost/serialization/singleton.hpp>
 #include <boost/archive/detail/abi_prefix.hpp> // must be the last header
+
+#include <boost/serialization/singleton.hpp>
 
 namespace boost {
 namespace archive {
@@ -48,7 +51,9 @@ public:
     const /* BOOST_ARCHIVE_DECL(BOOST_PP_EMPTY()) */ basic_pointer_iserializer * 
     register_type(T * = NULL){
         const /* BOOST_ARCHIVE_DECL(BOOST_PP_EMPTY()) */ basic_pointer_iserializer & bpis =
-            pointer_iserializer<Archive, T>::get_instance();
+            boost::serialization::singleton<
+                pointer_iserializer<Archive, T> 
+            >::get_const_instance();
         this->This()->register_basic_serializer(bpis.get_basic_serializer());
         return & bpis;
     }

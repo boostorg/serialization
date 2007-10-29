@@ -44,6 +44,13 @@ public:
     }
 };
 
+class basic_serializer_arg : public basic_serializer {
+public:
+    basic_serializer_arg(const serialization::extended_type_info & eti) :
+        basic_serializer(eti)
+    {}
+};
+
 } // namespace detail
 } // namespace archive
 } // namespace boost

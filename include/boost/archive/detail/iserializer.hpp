@@ -67,7 +67,6 @@ namespace std{
 #include <boost/archive/detail/basic_iarchive.hpp>
 #include <boost/archive/detail/basic_iserializer.hpp>
 #include <boost/archive/detail/archive_pointer_iserializer.hpp>
-#include <boost/archive/detail/dynamically_initialized.hpp>
 
 #include <boost/serialization/force_include.hpp>
 #include <boost/serialization/serialization.hpp>
@@ -79,6 +78,8 @@ namespace std{
 #include <boost/serialization/void_cast.hpp>
 #include <boost/serialization/array.hpp>
 #include <boost/serialization/collection_size_type.hpp>
+#include <boost/serialization/singleton.hpp>
+
 namespace boost {
 
 namespace serialization {
@@ -108,12 +109,14 @@ private:
     }
     // private constructor to inhibit any existence other than the 
     // static one
+public:
     explicit iserializer() :
         basic_iserializer(
-            * boost::serialization::type_info_implementation<T>::type::find()
+            boost::serialization::singleton<
+                boost::serialization::type_info_implementation<T>::type
+            >::get_const_instance()
         )
     {}
-public:
     virtual BOOST_DLLEXPORT void load_object_data(
         basic_iarchive & ar,
         void *x, 
@@ -138,10 +141,6 @@ public:
     virtual bool is_polymorphic() const {
         return boost::is_polymorphic<T>::value;
     }
-    static iserializer & get_instance(){
-        static iserializer instance;
-        return instance;
-    }
     virtual ~iserializer(){};
 };
 
@@ -163,11 +162,11 @@ BOOST_DLLEXPORT void iserializer<Archive, T>::load_object_data(
 template<class Archive, class T>
 class pointer_iserializer
   : public archive_pointer_iserializer<Archive>
-  , public dynamically_initialized<pointer_iserializer<Archive,T> >
 {
 private:
     virtual const basic_iserializer & get_basic_serializer() const {
-        return iserializer<Archive, T>::get_instance();
+        return boost::serialization::singleton<iserializer<Archive, T> >
+            ::get_const_instance();
     }
     virtual BOOST_DLLEXPORT void load_object_ptr(
         basic_iarchive & ar, 
@@ -177,18 +176,20 @@ private:
 #if defined(__GNUC__) || ( defined(BOOST_MSVC) && (_MSC_VER <= 1300) )
 public:
 #endif
+public:
     // private constructor to inhibit any existence other than the 
     // static one.  Note GCC doesn't permit constructor to be private
     BOOST_DLLEXPORT pointer_iserializer() BOOST_USED;
-    friend struct dynamically_initialized<pointer_iserializer<Archive,T> >;
-public:
+    //friend class serialization::singleton<pointer_iserializer<Archive,T> >;
     // at least one compiler (CW) seems to require that serialize_adl
     // be explicitly instantiated. Still under investigation. 
+#if 0
     #if !defined(__BORLANDC__)
     void (* const m)(Archive &, T &, const unsigned);
     boost::serialization::extended_type_info * (* e)();
     #endif
-    BOOST_DLLEXPORT static const pointer_iserializer & get_instance() BOOST_USED;
+#endif
+//    BOOST_DLLEXPORT static const pointer_iserializer & get_instance() BOOST_USED;
 };
 
 // note trick to be sure that operator new is using class specific
@@ -303,23 +304,20 @@ BOOST_DLLEXPORT void pointer_iserializer<Archive, T>::load_object_ptr(
 template<class Archive, class T>
 BOOST_DLLEXPORT pointer_iserializer<Archive, T>::pointer_iserializer() :
     archive_pointer_iserializer<Archive>(
-        * boost::serialization::type_info_implementation<T>::type::find()
+        boost::serialization::singleton<
+            boost::serialization::type_info_implementation<T>::type
+        >::get_const_instance()
     )
+#if 0
 #if !defined(__BORLANDC__)
     ,
     m(boost::serialization::serialize_adl<Archive, T>),
-    e(boost::serialization::type_info_implementation<T>::type::find)
+    e(boost::serialization::type_info_implementation<T>::type::get_instance)
+#endif
 #endif
 {
-    iserializer<Archive, T> & bis = iserializer<Archive, T>::get_instance();
-    bis.set_bpis(this);
-}
-
-template<class Archive, class T>
-BOOST_DLLEXPORT const pointer_iserializer<Archive, T> &
-pointer_iserializer<Archive, T>::get_instance() {
-    // note: comeau complains without full qualification
-    return dynamically_initialized<pointer_iserializer<Archive,T> >::instance;
+    boost::serialization::singleton<iserializer<Archive, T> >
+        ::get_mutable_instance().set_bpis(this);
 }
 
 template<class Archive, class T>
@@ -353,7 +351,11 @@ struct load_non_pointer_type {
             // its not called that way - so fix it her
             typedef BOOST_DEDUCED_TYPENAME boost::remove_const<T>::type typex;
             void * x = & const_cast<typex &>(t);
-            ar.load_object(x, iserializer<Archive, T>::get_instance());
+            ar.load_object(
+                x, 
+                boost::serialization::singleton<iserializer<Archive, T> >
+                    ::get_const_instance()
+            );
         }
     };
 
@@ -452,7 +454,9 @@ struct load_pointer_type {
         return static_cast<T *>(
             boost::serialization::void_upcast(
                 eti,
-                * boost::serialization::type_info_implementation<T>::type::find(),
+                boost::serialization::singleton<
+                    boost::serialization::type_info_implementation<T>::type
+                >::get_const_instance(),
                 t
             )
         );
