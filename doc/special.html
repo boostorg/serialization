@@ -194,6 +194,14 @@ This will permit <code style="white-space: normal">BOOST_CLASS_EXPORT</code>
 to be a permanent part of the <code style="white-space: normal">my_class.hpp</code> .
 
 <p>
+Strictly speaking, export should not be necessary if all pointer serialization
+occurs through the most derived class.  However, in order to detect
+what would be catastophic error, the library traps ALL serializations through
+a pointer to a polymorphic which are not exported or otherwise registered.
+So, in practice, be prepared to register or export all classes with one
+or more virtual functions which are serialized through a pointer. 
+
+<p>
 Note that the implementation of this functionality depends upon vendor
 specific extensions to the C++ language.  So, there is no guarenteed portability
 of programs which use this facility.  However, all C++ compilers which

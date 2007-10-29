@@ -210,6 +210,20 @@ and also implement the following:
 
 <dt><h4><code style="white-space: normal"><pre>
 template&lt;class ETI&gt;
+static extended_type_info &
+ETI::get_mutable_instance();
+static const extended_type_info &
+ETI::get_const:instance();
+</pre></code></h4></dt>
+<dd>
+Return a pointer to the instance of
+<code style="white-space: normal">extended_type_info</code>
+which corresponds to type T.  Normally these instances are static objects so
+this just amounts to returning the address of this static object.
+</dd>
+
+<dt><h4><code style="white-space: normal"><pre>
+template&lt;class ETI&gt;
 static const extended_type_info *
 ETI::get_derived_extended_type_info(const T & t);
 </pre></code></h4></dt>
@@ -222,29 +236,6 @@ hierarchy of classes.  The type T can always be cast to the "true type" with
 a static cast.  Implemention of this function will vary among type id systems
 and sometimes will make presumptions about the type T than can be identified
 with a particular <code style="white-space: normal">extended_type_info implementation</code>.
-</dd>
-
-<dt><h4><code style="white-space: normal"><pre>
-template&lt;class ETI&gt;
-static extended_type_info *
-ETI::find();
-</pre></code></h4></dt>
-<dd>
-Return a pointer to the instance of
-<code style="white-space: normal">extended_type_info</code>
-which corresponds to type T.  Normally these instances are static objects so
-this just amounts to returning the address of this static object.
-</dd>
-
-<dt><h4><code style="white-space: normal"><pre>
-template&lt;class ETI&gt;
-static void 
-ETI::key_register(const char * key);
-</pre></code></h4></dt>
-<dd>
-The main function is to invoke key_register to add the GUID to the
-global table.  Depending on the type id system being used, it might
-perform other initializaition functions as well.
 </dd>
 </dl>
 
@@ -273,9 +264,11 @@ by the compiler.
 <p>
 <code style="white-space: normal"><h4><a target="extended_type_info_no_rtti.hpp" href="../../../boost/serialization/extended_type_info_no_rtti.hpp">
 extended_type_info_no_rtti</a></h4></code>
-is implemented in a way that doesn't rely on the existence RTTI. 
-However, it does require that all classes for which type id is to be used implement
-a virtual function of the signiture:
+is implemented in a way that doesn't rely on the existence RTTI.
+However, if the export facility is to be used to serialize types
+through base class pointers, those types are required to implement
+a virtual function with the signature:
+
 <code><pre>
 virtual const char * get_key();
 </pre></code>
