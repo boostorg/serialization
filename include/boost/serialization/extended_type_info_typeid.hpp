@@ -19,11 +19,12 @@
 
 #include <typeinfo>
 #include <boost/config.hpp>
+#include <boost/detail/workaround.hpp>
 
 //#include <boost/static_warning.hpp>
 #include <boost/static_assert.hpp>
-#include <boost/type_traits/is_polymorphic.hpp>
 #include <boost/type_traits/is_const.hpp>
+#include <boost/type_traits/is_polymorphic.hpp>
 #include <boost/preprocessor/stringize.hpp>
 
 #include <boost/serialization/extended_type_info.hpp>
@@ -36,26 +37,24 @@
 
 namespace boost {
 namespace serialization {
-
 namespace detail {
 
 class BOOST_SERIALIZATION_DECL(BOOST_PP_EMPTY()) extended_type_info_typeid_0 : 
     public extended_type_info
 {
-private:
-    virtual bool
-    less_than(const extended_type_info &rhs) const;
 protected:
+    const std::type_info * m_ti;
+    extended_type_info_typeid_0() :
+        m_ti(NULL)
+    {}
+    virtual ~extended_type_info_typeid_0();
+    void type_register(const std::type_info & ti);
     static const extended_type_info *
     get_derived_extended_type_info(const std::type_info & ti);
-    extended_type_info_typeid_0();
-    // account for bogus gcc warning
-    #if defined(__GNUC__)
-    virtual
-    #endif
-    ~extended_type_info_typeid_0();
 public:
-    virtual const std::type_info & get_eti() const = 0;
+    const std::type_info & get_typeid() const {
+        return *m_ti;
+    }
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -64,41 +63,35 @@ template<class T>
 class extended_type_info_typeid_1 : 
     public detail::extended_type_info_typeid_0
 {
-private:
-    virtual const std::type_info & get_eti() const {
-        return typeid(T);
-    }
 protected:
-    // private constructor to inhibit any existence other than the 
+    // protected constructor to inhibit any existence other than the 
     // static one
     extended_type_info_typeid_1() :
         detail::extended_type_info_typeid_0()
     {
-        self_register();    // add type to type table
+        type_register(typeid(T));
     }
+#if BOOST_WORKAROUND(__BORLANDC__, BOOST_TESTED_AT(0x560))
+public:
+#endif
+    ~extended_type_info_typeid_1(){}
 public:
     struct is_polymorphic
     {
         typedef BOOST_DEDUCED_TYPENAME boost::is_polymorphic<T>::type type;
         BOOST_STATIC_CONSTANT(bool, value = is_polymorphic::type::value);
     };
-    static const extended_type_info *
-    get_derived_extended_type_info(const T & t){
+    const extended_type_info *
+    get_derived_extended_type_info(const T & t) const {
         // note: this implementation - based on usage of typeid (rtti)
         // only works if the class has at least one virtual function.
 //      BOOST_STATIC_WARNING(
 //          static_cast<bool>(is_polymorphic::value)
 //      );
-        return detail::extended_type_info_typeid_0::get_derived_extended_type_info(typeid(t));
-    }
-    static extended_type_info *
-    get_instance(){
-        static extended_type_info_typeid_1<T> instance;
-        return & instance;
-    }
-    static void
-    export_register(const char * key){
-        get_instance()->key_register(key);
+        return 
+            detail::extended_type_info_typeid_0::get_derived_extended_type_info(
+                typeid(t)
+            );
     }
 };
 

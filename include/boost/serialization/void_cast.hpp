@@ -18,10 +18,9 @@
 //  See http://www.boost.org for updates, documentation, and revision history.
 
 #include <boost/smart_cast.hpp>
-#include <boost/mpl/eval_if.hpp>
-#include <boost/mpl/identity.hpp>
 
 #include <boost/serialization/config.hpp>
+#include <boost/serialization/singleton.hpp>
 #include <boost/serialization/force_include.hpp>
 #include <boost/serialization/type_info_implementation.hpp>
 
@@ -46,8 +45,7 @@ BOOST_SERIALIZATION_DECL(void const *)
 void_upcast(
     extended_type_info const & derived_type,  
     extended_type_info const & base_type, 
-    void const * const t,
-    bool top = true
+    void const * const t
 );
 
 inline void *
@@ -67,63 +65,59 @@ BOOST_SERIALIZATION_DECL(void const *)
 void_downcast(
     extended_type_info const & derived_type,  
     extended_type_info const & base_type, 
-    void const * const t,
-    bool top = true
+    void const * const t
 );
 
 inline void *
 void_downcast(
-    extended_type_info const & derived_type_,
-    extended_type_info const & base_type_,
+    extended_type_info const & derived_type,
+    extended_type_info const & base_type,
     void * const t 
 ){
     return const_cast<void*>(void_downcast(
-        derived_type_, 
-        base_type_, 
+        derived_type, 
+        base_type, 
         const_cast<void const *>(t)
     ));
 }
 
 namespace void_cast_detail {
 
-// note: can't be abstract because an instance is used as a search argument
 class BOOST_SERIALIZATION_DECL(BOOST_PP_EMPTY()) void_caster
 {
     friend struct void_caster_compare ;
     friend 
-    BOOST_SERIALIZATION_DECL(void const *)  
+    BOOST_SERIALIZATION_DECL(void const *)
     boost::serialization::void_upcast(
-        const extended_type_info & derived_type,
-        const extended_type_info & base_type,
-        const void * t,
-        bool top
+        const extended_type_info & derived,
+        const extended_type_info & base,
+        const void * t
     );
     friend 
     BOOST_SERIALIZATION_DECL(void const *)  
     boost::serialization::void_downcast(
-        const extended_type_info & derived_type,
-        const extended_type_info & base_type,
-        const void * t,
-        bool top
+        const extended_type_info & derived,
+        const extended_type_info & base,
+        const void * t
     );
+    // Data members
+    const extended_type_info & m_derived;
+    const extended_type_info & m_base;
     // each derived class must re-implement these;
     virtual void const * upcast(void const * t) const = 0;
     virtual void const * downcast(void const * t) const = 0;
-    // Data members
-    extended_type_info const & m_derived_type;
-    extended_type_info const & m_base_type;
 protected:
-    static void static_register(const void_caster *);
+    BOOST_SERIALIZATION_DECL(void)
+    static_register() const;
+    BOOST_SERIALIZATION_DECL(void)
+    static_unregister() const;
 public:
     // Constructor
     void_caster(
-        extended_type_info const & derived_type_,
-        extended_type_info const & base_type_ 
+        extended_type_info const & derived,
+        extended_type_info const & base
     );
-    // predicate used to determine if this void caster includes
-    // a particular eti *
-    bool includes(const extended_type_info * eti) const;
-    virtual ~void_caster();
+    virtual ~void_caster(){};
 private:
     // cw 8.3 requires this!!
     void_caster& operator=(void_caster const&);
@@ -134,66 +128,36 @@ class void_caster_primitive :
     public void_caster
 {
     virtual void const* downcast( void const * t ) const {
-        Derived * d = boost::smart_cast<const Derived *, const Base *>(
+        const Derived * d = boost::smart_cast<const Derived *, const Base *>(
             static_cast<const Base *>(t)
         );
         return d;
     }
     virtual void const* upcast(void const * t) const {
-        Base * b = boost::smart_cast<const Base *, const Derived *>(
+        const Base * b = boost::smart_cast<const Base *, const Derived *>(
             static_cast<const Derived *>(t)
         );
         return b;
     }
-
+public:
     BOOST_DLLEXPORT void_caster_primitive() BOOST_USED;
-    
-    static BOOST_DLLEXPORT void_caster_primitive const& instance;
-
-    // Something we can use to force instantiation without generating
-    // warnings.
-    static void use(void_caster_primitive const&) {}
-    
- public:
-    // CodeWarrior fails to construct static members of class
-    // templates when they are instantiated from within templates, so
-    // we do everything with void_caster_primitive in terms of
-    // get_instance.  On CodeWarrior, the user must invoke
-    // BOOST_SERIALIZATION_MWERKS_BASE_AND_DERIVED to make this work
-    // (see boost/serialization/export.hpp).  On other compilers (and
-    // if the bug is fixed in a future version of CodeWarriror), the
-    // initialization of instance (above) obviates the need for
-    // BOOST_SERIALIZATION_MWERKS_BASE_AND_DERIVED.
-    static BOOST_DLLEXPORT void_caster_primitive const& get_instance()
-    {
-        static void_caster_primitive instance_;
-        
-        // refer to instance, causing it to be instantiated (and
-        // initialized at startup on working compilers)
-        use(instance);
-
-        return instance_;
-    }
+    BOOST_DLLEXPORT ~void_caster_primitive() BOOST_USED;
 };
 
 template <class Derived, class Base>
 BOOST_DLLEXPORT void_caster_primitive<Derived, Base>::void_caster_primitive() :
     void_caster( 
-        * type_info_implementation<Derived>::type::get_instance(), 
-        * type_info_implementation<Base>::type::get_instance() 
+        singleton<type_info_implementation<Derived>::type>::get_const_instance(), 
+        singleton<type_info_implementation<Base>::type>::get_const_instance()
     )
 {
-    // calling get_instance() causes infinite recursion, and the
-    // instance reference isn't initialized yet, so we must pass this
-    // to static_register.  It *is* the same object as instance, but
-    // there's no way even to assert that here.
-    this->static_register(this);
+    static_register();
 }
 
 template <class Derived, class Base>
-BOOST_DLLEXPORT void_caster_primitive<Derived,Base> const&
-void_caster_primitive<Derived,Base>::instance
-= void_caster_primitive<Derived,Base>::get_instance();
+BOOST_DLLEXPORT void_caster_primitive<Derived, Base>::~void_caster_primitive(){
+    static_unregister();
+}
 
 } // void_cast_detail 
 
@@ -213,9 +177,9 @@ inline const void_cast_detail::void_caster & void_cast_register(
     const Derived * /* dnull = NULL */, 
     const Base * /* bnull = NULL */
 ){
-    return void_cast_detail::void_caster_primitive<
-        const Derived, const Base
-    >::get_instance();
+    return singleton<void_cast_detail::void_caster_primitive<
+        Derived, Base
+    > >::get_const_instance();
 }
 
 } // namespace serialization
