@@ -97,8 +97,10 @@ void load_derived(const char *testfile)
     ia >> BOOST_SERIALIZATION_NVP(rd1);
 
     const boost::serialization::extended_type_info * p1;
-    p1 = boost::serialization::type_info_implementation<polymorphic_derived1>
-            ::type::find();
+    p1 = boost::serialization::singleton<
+            boost::serialization::type_info_implementation<
+                polymorphic_derived1
+            >::type>::get_const_instance();
 
     BOOST_CHECK(NULL != p1);
 
@@ -114,8 +116,9 @@ void load_derived(const char *testfile)
 
     BOOST_CHECK_MESSAGE(
         boost::serialization::type_info_implementation<polymorphic_derived2>
-            ::type::find()
-        == boost::serialization::type_info_implementation<polymorphic_derived2>
+            ::type::get_instance()
+        == 
+        boost::serialization::type_info_implementation<polymorphic_derived2>
             ::type::get_derived_extended_type_info(*rd2),
         "restored pointer d2 not of correct type"
     );
@@ -134,7 +137,7 @@ void load_derived(const char *testfile)
     );
 
     p1 = boost::serialization::type_info_implementation<polymorphic_derived1>
-        ::type::find();
+        ::type::get_instance();
 
     BOOST_CHECK(NULL != p1);
 
@@ -154,7 +157,7 @@ void load_derived(const char *testfile)
 
     BOOST_CHECK_MESSAGE(
         boost::serialization::type_info_implementation<polymorphic_derived2>
-            ::type::find()
+            ::type::get_instance()
         == boost::serialization::type_info_implementation<polymorphic_base>
             ::type::get_derived_extended_type_info(*rb2),
         "restored pointer b2 not of correct type"
@@ -200,7 +203,7 @@ void load_registered(const char *testfile)
 
     BOOST_CHECK_MESSAGE(
         boost::serialization::type_info_implementation<polymorphic_derived1>
-            ::type::find()
+            ::type::get_instance()
         == boost::serialization::type_info_implementation<polymorphic_base>
             ::type::get_derived_extended_type_info(*rb1),
         "restored pointer b1 not of correct type"
@@ -208,7 +211,7 @@ void load_registered(const char *testfile)
 
     BOOST_CHECK_MESSAGE(
         boost::serialization::type_info_implementation<polymorphic_derived2>
-            ::type::find()
+            ::type::get_instance()
         == boost::serialization::type_info_implementation<polymorphic_base>
             ::type::get_derived_extended_type_info(*rb2),
         "restored pointer b2 not of correct type"

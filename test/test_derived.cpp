@@ -69,12 +69,14 @@ void save_derived(const char *testfile)
     // Warning, the current type id system does not yield true
     // type id for non-polymorphic types
     const boost::serialization::extended_type_info & this_type
-        = * boost::serialization::type_info_implementation<base>::type
-            ::find();
+        = boost::serialization::singleton<
+            boost::serialization::type_info_implementation<base>::type
+        >::get_const_instance();
     // retrieve the true type of the object pointed to
-    const boost::serialization::extended_type_info & true_type 
-        = * boost::serialization::type_info_implementation<base>::type
-            ::get_derived_extended_type_info(*b1);
+    const boost::serialization::extended_type_info & true_type
+        = * boost::serialization::singleton<
+            boost::serialization::type_info_implementation<base>::type
+        >::get_const_instance().get_derived_extended_type_info(*b1);
 
     BOOST_WARN_MESSAGE(
         !(this_type == true_type), 
@@ -107,12 +109,14 @@ void load_derived(const char *testfile)
     // Warning, the current type id system does not yield true
     // type id for non-polymorphic types
     const boost::serialization::extended_type_info & this_type
-        = * boost::serialization::type_info_implementation<base>::type
-            ::find();
+        = boost::serialization::singleton<
+            boost::serialization::type_info_implementation<base>::type
+        >::get_const_instance();
     // retrieve the true type of the object pointed to
-    const boost::serialization::extended_type_info & true_type 
-        = * boost::serialization::type_info_implementation<base>::type
-            ::get_derived_extended_type_info(*b1);
+    const boost::serialization::extended_type_info & true_type
+        = * boost::serialization::singleton<
+            boost::serialization::type_info_implementation<base>::type
+        >::get_const_instance().get_derived_extended_type_info(*b1);
             
     BOOST_WARN_MESSAGE(
         ! (this_type == true_type), 

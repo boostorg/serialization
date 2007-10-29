@@ -173,8 +173,12 @@ inline void msg_impl(char const * msg, char const * file, int line, char const *
 
 int test_main(int argc, char * argv[]);
 
+#include <boost/serialization/singleton.hpp>
+
 int
 main(int argc, char * argv[]){
+    boost::serialization::global_lock::get_mutable_instance().lock();
+
     BOOST_TRY{
         test_main(argc, argv);
     }
@@ -187,6 +191,9 @@ main(int argc, char * argv[]){
         BOOST_FAIL("failed with uncaught exception:");
     }
     BOOST_CATCH_END
+
+    boost::serialization::global_lock::get_mutable_instance().unlock();
+
     return boost::report_errors();
 }
 
