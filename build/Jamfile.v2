@@ -29,7 +29,6 @@ SOURCES =
     binary_iarchive
     binary_oarchive
     extended_type_info
-    extended_type_info_no_rtti
     extended_type_info_typeid
     polymorphic_iarchive
     polymorphic_oarchive
