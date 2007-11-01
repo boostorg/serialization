@@ -33,9 +33,8 @@ class MostDerived : public Derived
 
 template<class T>
 const boost::serialization::extended_type_info & eti(){
-    return boost::serialization::singleton<
-        boost::serialization::extended_type_info_typeid<T>
-    >::get_const_instance();
+    return boost::serialization::extended_type_info_typeid<T>
+        ::get_const_instance();
 }
 
 int

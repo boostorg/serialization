@@ -97,16 +97,14 @@ void load_derived(const char *testfile)
     ia >> BOOST_SERIALIZATION_NVP(rd1);
 
     const boost::serialization::extended_type_info * p1;
-    p1 = boost::serialization::singleton<
-            boost::serialization::type_info_implementation<
-                polymorphic_derived1
-            >::type>::get_const_instance();
+    p1 = & boost::serialization::type_info_implementation<polymorphic_derived1>
+        ::type::get_const_instance();
 
     BOOST_CHECK(NULL != p1);
 
     const boost::serialization::extended_type_info * p2;
     p2 = boost::serialization::type_info_implementation<polymorphic_derived1>
-            ::type::get_derived_extended_type_info(*rd1);
+        ::type::get_const_instance().get_derived_extended_type_info(*rd1);
 
     BOOST_CHECK(NULL != p2);
 
@@ -115,11 +113,11 @@ void load_derived(const char *testfile)
     ia >> BOOST_SERIALIZATION_NVP(rd2);
 
     BOOST_CHECK_MESSAGE(
-        boost::serialization::type_info_implementation<polymorphic_derived2>
-            ::type::get_instance()
+        & boost::serialization::type_info_implementation<polymorphic_derived2>
+            ::type::get_const_instance()
         == 
         boost::serialization::type_info_implementation<polymorphic_derived2>
-            ::type::get_derived_extended_type_info(*rd2),
+            ::type::get_const_instance().get_derived_extended_type_info(*rd2),
         "restored pointer d2 not of correct type"
     );
 
@@ -136,13 +134,13 @@ void load_derived(const char *testfile)
         "serialized pointers not correctly restored"
     );
 
-    p1 = boost::serialization::type_info_implementation<polymorphic_derived1>
-        ::type::get_instance();
+    p1 = & boost::serialization::type_info_implementation<polymorphic_derived1>
+        ::type::get_const_instance();
 
     BOOST_CHECK(NULL != p1);
 
     p2 = boost::serialization::type_info_implementation<polymorphic_base>
-        ::type::get_derived_extended_type_info(*rb1);
+        ::type::get_const_instance().get_derived_extended_type_info(*rb1);
 
     BOOST_CHECK(NULL != p2);
 
@@ -156,10 +154,10 @@ void load_derived(const char *testfile)
     );
 
     BOOST_CHECK_MESSAGE(
-        boost::serialization::type_info_implementation<polymorphic_derived2>
-            ::type::get_instance()
+        & boost::serialization::type_info_implementation<polymorphic_derived2>
+            ::type::get_const_instance()
         == boost::serialization::type_info_implementation<polymorphic_base>
-            ::type::get_derived_extended_type_info(*rb2),
+            ::type::get_const_instance().get_derived_extended_type_info(*rb2),
         "restored pointer b2 not of correct type"
     );
 
@@ -202,18 +200,18 @@ void load_registered(const char *testfile)
     ia >> BOOST_SERIALIZATION_NVP(rb1) >> BOOST_SERIALIZATION_NVP(rb2);
 
     BOOST_CHECK_MESSAGE(
-        boost::serialization::type_info_implementation<polymorphic_derived1>
-            ::type::get_instance()
+        & boost::serialization::type_info_implementation<polymorphic_derived1>
+            ::type::get_const_instance()
         == boost::serialization::type_info_implementation<polymorphic_base>
-            ::type::get_derived_extended_type_info(*rb1),
+            ::type::get_const_instance().get_derived_extended_type_info(*rb1),
         "restored pointer b1 not of correct type"
     );
 
     BOOST_CHECK_MESSAGE(
-        boost::serialization::type_info_implementation<polymorphic_derived2>
-            ::type::get_instance()
+        & boost::serialization::type_info_implementation<polymorphic_derived2>
+            ::type::get_const_instance()
         == boost::serialization::type_info_implementation<polymorphic_base>
-            ::type::get_derived_extended_type_info(*rb2),
+            ::type::get_const_instance().get_derived_extended_type_info(*rb2),
         "restored pointer b2 not of correct type"
     );
 
