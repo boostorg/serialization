@@ -22,6 +22,7 @@
 #include <boost/type_traits/is_const.hpp>
 
 #include <boost/serialization/extended_type_info.hpp>
+#include <boost/serialization/singleton.hpp>
 #include <boost/mpl/bool.hpp>
 
 #include <boost/config/abi_prefix.hpp> // must be the last header
@@ -38,14 +39,10 @@ namespace serialization {
 
 template<class T>
 class extended_type_info_no_rtti : 
-    public extended_type_info
+    public extended_type_info,
+    public singleton<extended_type_info_no_rtti<T> >
 {
 public:
-    struct is_polymorphic
-    {
-        typedef boost::mpl::bool_<true> type;
-        BOOST_STATIC_CONSTANT(bool, value = is_polymorphic::type::value);
-    };
     // private constructor to inhibit any existence other than the 
     // static one
     extended_type_info_no_rtti(){}

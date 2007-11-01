@@ -23,11 +23,13 @@
 
 //#include <boost/static_warning.hpp>
 #include <boost/static_assert.hpp>
+#include <boost/static_warning.hpp>
 #include <boost/type_traits/is_const.hpp>
 #include <boost/type_traits/is_polymorphic.hpp>
 #include <boost/preprocessor/stringize.hpp>
 
 #include <boost/serialization/extended_type_info.hpp>
+#include <boost/serialization/singleton.hpp>
 
 #include <boost/config/abi_prefix.hpp> // must be the last header
 #ifdef BOOST_MSVC
@@ -47,7 +49,7 @@ protected:
     extended_type_info_typeid_0() :
         m_ti(NULL)
     {}
-    virtual ~extended_type_info_typeid_0();
+    ~extended_type_info_typeid_0();
     void type_register(const std::type_info & ti);
     static const extended_type_info *
     get_derived_extended_type_info(const std::type_info & ti);
@@ -57,51 +59,41 @@ public:
     }
 };
 
+} // namespace detail
+
 ///////////////////////////////////////////////////////////////////////////////
 // layer to fold T and const T into the same table entry.
 template<class T>
-class extended_type_info_typeid_1 : 
-    public detail::extended_type_info_typeid_0
+class extended_type_info_typeid : 
+    public detail::extended_type_info_typeid_0,
+    public singleton<extended_type_info_typeid<const T> >
 {
 protected:
+#if BOOST_WORKAROUND(__BORLANDC__, BOOST_TESTED_AT(0x560))
+public:
+#endif
+public:
     // protected constructor to inhibit any existence other than the 
     // static one
-    extended_type_info_typeid_1() :
+    extended_type_info_typeid() :
         detail::extended_type_info_typeid_0()
     {
         type_register(typeid(T));
     }
-#if BOOST_WORKAROUND(__BORLANDC__, BOOST_TESTED_AT(0x560))
-public:
-#endif
-    ~extended_type_info_typeid_1(){}
-public:
-    struct is_polymorphic
-    {
-        typedef BOOST_DEDUCED_TYPENAME boost::is_polymorphic<T>::type type;
-        BOOST_STATIC_CONSTANT(bool, value = is_polymorphic::type::value);
-    };
+    ~extended_type_info_typeid(){}
     const extended_type_info *
     get_derived_extended_type_info(const T & t) const {
         // note: this implementation - based on usage of typeid (rtti)
-        // only works if the class has at least one virtual function.
-//      BOOST_STATIC_WARNING(
-//          static_cast<bool>(is_polymorphic::value)
-//      );
+        // only does something if the class has at least one virtual function.
+        BOOST_STATIC_WARNING(
+            static_cast<bool>(boost::is_polymorphic<T>::value)
+        );
         return 
             detail::extended_type_info_typeid_0::get_derived_extended_type_info(
                 typeid(t)
             );
     }
 };
-
-} // namespace detail
-
-///////////////////////////////////////////////////////////////////////////////
-template<class T>
-class extended_type_info_typeid : 
-    public detail::extended_type_info_typeid_1<const T>
-{};
 
 } // namespace serialization
 } // namespace boost

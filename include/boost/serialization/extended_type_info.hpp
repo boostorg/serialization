@@ -47,7 +47,7 @@ protected:
     #if defined(__GNUC__)
     virtual
     #endif
-    virtual ~extended_type_info();
+    ~extended_type_info();
 public:
     void key_register(const char *key);
     const char * get_key() const {

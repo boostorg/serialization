@@ -79,9 +79,8 @@ struct guid_initializer
     const guid_initializer & export_guid(char const* key)
     {
         assert(NULL != key);
-        boost::serialization::singleton<
-            boost::serialization::type_info_implementation<T>::type
-        >::get_mutable_instance().key_register(key);
+        boost::serialization::type_info_implementation<T>::type
+            ::get_mutable_instance().key_register(key);
 
         // generates the statically-initialized objects whose constructors
         // register the information allowing serialization of T objects
@@ -182,8 +181,7 @@ namespace                                                                       
 // need to export it.
 #define BOOST_CLASS_EXPORT_CHECK(T)                              \
     BOOST_STATIC_WARNING(                                        \
-        boost::serialization::type_info_implementation< T >      \
-            ::type::is_polymorphic::value                        \
+        boost::is_polymorphic<U>::value                          \
     );                                                           \
     /**/
 
