@@ -60,7 +60,6 @@
 #include <boost/archive/detail/basic_oserializer.hpp>
 #include <boost/archive/detail/archive_pointer_oserializer.hpp>
 
-#include <boost/serialization/force_include.hpp>
 #include <boost/serialization/serialization.hpp>
 #include <boost/serialization/version.hpp>
 #include <boost/serialization/level.hpp>
@@ -106,17 +105,16 @@ private:
     // private constructor to inhibit any existence other than the 
     // static one
 public:
-    explicit BOOST_DLLEXPORT oserializer() :
+    explicit oserializer() :
         basic_oserializer(
-            boost::serialization::singleton<
-                boost::serialization::type_info_implementation<T>::type
-            >::get_const_instance()
+            boost::serialization::type_info_implementation<T>::type
+                ::get_const_instance()
         )
     {}
-    virtual BOOST_DLLEXPORT void save_object_data(
+    virtual void save_object_data(
         basic_oarchive & ar,    
         const void *x
-    ) const BOOST_USED ;
+    ) const ;
     virtual bool class_info() const {
         return boost::serialization::implementation_level<T>::value 
             >= boost::serialization::object_class_info;
@@ -138,7 +136,7 @@ public:
 };
 
 template<class Archive, class T>
-BOOST_DLLEXPORT void oserializer<Archive, T>::save_object_data(
+void oserializer<Archive, T>::save_object_data(
     basic_oarchive & ar,    
     const void *x
 ) const {
@@ -160,31 +158,16 @@ private:
         return boost::serialization::singleton<oserializer<Archive, T> >
             ::get_const_instance();
     }
-    virtual BOOST_DLLEXPORT void save_object_ptr(
+    virtual void save_object_ptr(
         basic_oarchive & ar,
         const void * x
-    ) const BOOST_USED ;
-//#if defined(__GNUC__) || ( defined(BOOST_MSVC) && (_MSC_VER <= 1300) )
-//public:
-//#endif
-    // private constructor to inhibit any existence other than the 
-    // static one.  Note GCC doesn't permit constructor to be private
+    ) const ;
 public:
-    explicit BOOST_DLLEXPORT pointer_oserializer() BOOST_USED;
-//    friend class serialization::singleton<pointer_oserializer<Archive,T> >;
-#if 0
-    #if !defined(__BORLANDC__)
-    // at least one compiler (CW) seems to require that serialize_adl
-    // be explicitly instantiated. Still under investigation. 
-    void (* const m)(Archive &, T &, const unsigned);
-    boost::serialization::extended_type_info * (* e)();
-#endif
-    #endif
-//    BOOST_DLLEXPORT static const pointer_oserializer & get_instance() BOOST_USED;
+    explicit pointer_oserializer();
 };
 
 template<class Archive, class T>
-BOOST_DLLEXPORT void pointer_oserializer<Archive, T>::save_object_ptr(
+void pointer_oserializer<Archive, T>::save_object_ptr(
     basic_oarchive & ar,
     const void * x
 ) const {
@@ -203,22 +186,11 @@ BOOST_DLLEXPORT void pointer_oserializer<Archive, T>::save_object_ptr(
 }
 
 template<class Archive, class T>
-BOOST_DLLEXPORT pointer_oserializer<Archive, T>::pointer_oserializer() :
+pointer_oserializer<Archive, T>::pointer_oserializer() :
     archive_pointer_oserializer<Archive>(
-        boost::serialization::singleton<
-            boost::serialization::type_info_implementation<T>::type
-        >::get_const_instance()
-    )
-#if 0
-#if !defined(__BORLANDC__)
-    ,    
-    m(boost::serialization::serialize_adl<Archive, T>),
-    e(boost::serialization::singleton<
         boost::serialization::type_info_implementation<T>::type
-        >::get_instance
+            ::get_const_instance()
     )
-#endif
-#endif
 {
     // make sure appropriate member function is instantiated
     boost::serialization::singleton<oserializer<Archive, T> >
@@ -373,17 +345,15 @@ struct save_pointer_type {
             const basic_pointer_oserializer * bpos_ptr
         ){
             const boost::serialization::extended_type_info * this_type 
-                = & boost::serialization::singleton<
-                    boost::serialization::type_info_implementation<T>::type
-                >::get_const_instance();
+                = & boost::serialization::type_info_implementation<T>::type
+                    ::get_const_instance();
             // retrieve the true type of the object pointed to
             // if this assertion fails its an error in this library
             assert(NULL != this_type);
 
             const boost::serialization::extended_type_info * true_type 
-                = boost::serialization::singleton<
-                    boost::serialization::type_info_implementation<T>::type
-                >::get_const_instance().get_derived_extended_type_info(t);
+                = boost::serialization::type_info_implementation<T>::type
+                    ::get_const_instance().get_derived_extended_type_info(t);
             // note:if this exception is thrown, be sure that derived pointer
             // is either registered or exported.
             if(NULL == true_type){
@@ -410,9 +380,7 @@ struct save_pointer_type {
             // since true_type is valid, and this only gets made if the 
             // pointer oserializer object has been created, this should never
             // fail
-            bpos_ptr = boost::serialization::singleton<
-                pointer_oserializer<Archive, T> 
-            >::get_const_instance().find(* true_type);
+            bpos_ptr = archive_pointer_oserializer<Archive>::find(* true_type);
             assert(NULL != bpos_ptr);
             if(NULL == bpos_ptr)
                 boost::throw_exception(

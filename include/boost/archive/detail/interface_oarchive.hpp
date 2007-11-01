@@ -48,9 +48,9 @@ public:
     }
 
     template<class T>
-    const  /* BOOST_ARCHIVE_DECL(BOOST_PP_EMPTY()) */ basic_pointer_oserializer * 
+    const basic_pointer_oserializer * 
     register_type(const T * = NULL){
-        const /* BOOST_ARCHIVE_DECL(BOOST_PP_EMPTY()) */ basic_pointer_oserializer & bpos =
+        const basic_pointer_oserializer & bpos =
             boost::serialization::singleton<
                 pointer_oserializer<Archive, T>
             >::get_const_instance();

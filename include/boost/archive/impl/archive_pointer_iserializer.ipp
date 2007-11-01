@@ -35,7 +35,7 @@ archive_pointer_iserializer<Archive>::archive_pointer_iserializer(
 ) :
     basic_pointer_iserializer(eti)
 {
-    std::pair<serializer_map<Archive>::iterator, bool> result;
+    std::pair<BOOST_DEDUCED_TYPENAME  serializer_map<Archive>::iterator, bool> result;
     result = serialization::singleton<serializer_map<Archive> >
         ::get_mutable_instance().insert(this);
     assert(result.second);
@@ -47,7 +47,7 @@ archive_pointer_iserializer<Archive>::find(
     const boost::serialization::extended_type_info & eti
 ){
     const basic_serializer_arg bs(eti);
-    serializer_map<Archive>::const_iterator it;
+    BOOST_DEDUCED_TYPENAME serializer_map<Archive>::const_iterator it;
     it = boost::serialization::singleton<serializer_map<Archive> >
         ::get_const_instance().find(& bs);
     assert(

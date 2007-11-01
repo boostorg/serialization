@@ -87,9 +87,8 @@ public:
     template<class T>
     void * object_identifier(T * t) const {
         const boost::serialization::extended_type_info * true_type 
-            = boost::serialization::singleton<
-                boost::serialization::type_info_implementation<T>::type
-              >::get_const_instance().get_derived_extended_type_info(*t);
+            = boost::serialization::type_info_implementation<T>::type
+                ::get_const_instance().get_derived_extended_type_info(*t);
         // note:if this exception is thrown, be sure that derived pointer
         // is either registered or exported.
         if(NULL == true_type)
@@ -99,9 +98,8 @@ public:
                 )
             );
         const boost::serialization::extended_type_info * this_type
-            = & boost::serialization::singleton<
-                boost::serialization::type_info_implementation<T>::type
-              >::get_const_instance();
+            = & boost::serialization::type_info_implementation<T>::type
+                ::get_const_instance();
         void * vp = void_downcast(*true_type, *this_type, t);
         return vp;
     }

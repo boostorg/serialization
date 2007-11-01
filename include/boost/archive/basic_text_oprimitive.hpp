@@ -92,8 +92,7 @@ public:
     void save(const bool t){
         // trap usage of invalid uninitialized boolean which would
         // otherwise crash on load.
-        int i = t;
-        assert(0 == i || 1 == i);
+        assert(0 == static_cast<int>(t) || 1 == static_cast<int>(t));
         if(os.fail())
             boost::throw_exception(archive_exception(archive_exception::stream_error));
         os << t;

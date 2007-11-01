@@ -88,8 +88,7 @@ public:
     // trap usage of invalid uninitialized boolean which would
     // otherwise crash on load.
     void save(const bool t){
-        int i = t;
-        assert(0 == i || 1 == i);
+        assert(0 == static_cast<int>(t) || 1 == static_cast<int>(t));
         save_binary(& t, sizeof(t));
     }
     BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)

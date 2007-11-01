@@ -7,7 +7,7 @@
 #endif
 
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
-// polymorphic_oarchive_forward.hpp
+// polymorphic_oarchive_route.hpp
 
 // (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
 // Use, modification and distribution is subject to the Boost Software
@@ -43,7 +43,7 @@ class BOOST_ARCHIVE_DECL(BOOST_PP_EMPTY()) basic_oserializer;
 class BOOST_ARCHIVE_DECL(BOOST_PP_EMPTY()) basic_pointer_oserializer;
 
 template<class ArchiveImplementation>
-class polymorphic_oarchive_forward :
+class polymorphic_oarchive_route :
     public polymorphic_oarchive,
     // note: gcc dynamic cross cast fails if the the derivation below is
     // not public.  I think this is a mistake.
@@ -166,7 +166,7 @@ public:
     }
     // all current archives take a stream as constructor argument
     template <class _Elem, class _Tr>
-    polymorphic_oarchive_forward(
+    polymorphic_oarchive_route(
         std::basic_ostream<_Elem, _Tr> & os,
         unsigned int flags = 0
     ) :

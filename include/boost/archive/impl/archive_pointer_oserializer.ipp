@@ -34,7 +34,10 @@ archive_pointer_oserializer<Archive>::archive_pointer_oserializer(
 ) :
     basic_pointer_oserializer(eti)
 {
-    std::pair<serializer_map<Archive>::iterator, bool> result;
+    std::pair<
+        BOOST_DEDUCED_TYPENAME serializer_map<Archive>::iterator, 
+        bool
+    > result;
     result = serialization::singleton<serializer_map<Archive> >
         ::get_mutable_instance().insert(this);
     assert(result.second);
