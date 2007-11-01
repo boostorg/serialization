@@ -27,9 +27,9 @@ http://www.boost.org/LICENSE_1_0.txt)
 <hr>
 <dl class="index">
   <dt><a href="#requirements">Requirements</a></dt>
-  <dt><a href="#differences_1_32">Differences from version 1.32</a></dt>
-  <dt><a href="#differences_1_33">Differences from version 1.33</a></dt>
   <dt><a href="#differences_1_34">Differences from version 1.34</a></dt>
+  <dt><a href="#differences_1_33">Differences from version 1.33</a></dt>
+  <dt><a href="#differences_1_32">Differences from version 1.32</a></dt>
   <dt><a href="#todo">Pending Issues</a></dt>
 </dl>
 There are currently no known bugs. However, due to compiler/library quirks and or 
@@ -51,6 +51,22 @@ set SPIRIT_ROOT=c:/spirit16
 If you're not using bjam and the Jamfile to build the library, be sure that
 the directory which contains the version of spirit you plan to use is placed
 at the front of the list of include paths.
+
+<h2><a name="differences_1_34"></a>Differences from Boost 1.34</h2>
+<ul>
+    <li>Enhanced support for fast serialization for native binary archives. By Mattias Troyer.
+    <li>Improved implementation of "export" functionality.  Removes header ordering
+        requirement and eliminates the maintenance of a pre-determined list of "known archives"
+        By David Abrahams.
+    <li>Library is now thread-safe.
+    <li>Improved support for STLPort.
+</ul>
+
+<h2><a name="differences_1_33"></a>Differences from Boost 1.33</h2>
+<ul>
+    <li>Native Binary archives use the <code style="white-space: normal">std::streambuf</code> interface.
+    This should result in noticeably faster execution in many cases.
+</ul>
 
 <h2><a name="differences_1_32"></a>Differences from Boost 1.32</h2>
 <ul>
@@ -79,20 +95,6 @@ at the front of the list of include paths.
     <li>More compilers tested and supported.
     <li>Miscellaneous bug fixes.
 </ul>
-<h2><a name="differences_1_33"></a>Differences from Boost 1.33</h2>
-<ul>
-    <li>Native Binary archives use the <code style="white-space: normal">std::streambuf</code> interface.
-    This should result in noticeably faster execution in many cases.
-</ul>
-
-<h2><a name="differences_1_34"></a>Differences from Boost 1.34</h2>
-<ul>
-    <li>Enhanced support for fast serialization for native binary archives. By Mattias Troyer.
-    <li>Improved implementation of "export" functionality.  Removes header ordering
-        requirement and eliminates the maintenance of a pre-determined list of "known archives"
-        By David Abrahams.
-    <li>Improved support for STLPort.
-</ul>
 
 <h2><a name="todo"></a>Pending issues</h2>
 <ul>
@@ -109,7 +111,6 @@ at the front of the list of include paths.
     is fixed in this version.  Unfortunately, the fix breaks serialization of
     <code style="white-space: normal">std::map</code> for those compilers which do not support
     partial template specialization.
-    <li>Floating point values which are number cannot be serialized to text base archives.
 </ul>
 <p>
 Aside from the above, there are a number of issues related to specific platforms.  
