@@ -52,7 +52,7 @@ struct void_caster_compare
 typedef std::set<const void_caster *, void_caster_compare> set_type;
 typedef boost::serialization::singleton<set_type> void_caster_registry;
 
-template void_caster_registry;
+//template void_caster_registry;
 
 // implementation of void caster base class
 BOOST_SERIALIZATION_DECL(BOOST_PP_EMPTY())
@@ -64,7 +64,7 @@ void_caster::void_caster(
     m_base(base)
 {}
 
-void
+BOOST_SERIALIZATION_DECL(void)
 void_caster::static_register() const {
     void_caster_registry::get_mutable_instance().insert(this);
     // to do - add new void_caster_derived entries
@@ -78,7 +78,7 @@ void_caster::static_register() const {
     */
 }
 
-void
+BOOST_SERIALIZATION_DECL(void)
 void_caster::static_unregister() const {
     void_cast_detail::set_type & st 
         = void_caster_registry::get_mutable_instance();
@@ -101,18 +101,18 @@ void_caster::static_unregister() const {
 class void_caster_derived : public void_caster
 {
     std::ptrdiff_t difference;
-    virtual void const*
-    upcast( void const* t ) const{
-        return static_cast<const char*> ( t ) + difference;
+    virtual void const *
+    upcast(void const * const t) const{
+        return static_cast<const char *> ( t ) + difference;
     }
-    virtual void const*
-    downcast( void const* t ) const{
-        return static_cast<const char*> ( t ) - difference;
+    virtual void const *
+    downcast(void const * const t) const{
+        return static_cast<const char *> ( t ) - difference;
     }
 public:
     void_caster_derived(
-        const extended_type_info & derived,
-        const extended_type_info & base,
+        extended_type_info const & derived,
+        extended_type_info const & base,
         std::ptrdiff_t difference
     ) :
         void_caster(derived, base),
@@ -128,20 +128,20 @@ public:
 // just used as a search key
 class void_caster_argument : public void_caster
 {
-    virtual void const*
-    upcast( void const* t ) const {
+    virtual void const *
+    upcast(void const * const t) const {
         assert(false);
         return NULL;
     }
-    virtual void const*
-    downcast( void const* t ) const {
+    virtual void const *
+    downcast( void const * const t) const {
         assert(false);
         return NULL;
     }
 public:
     void_caster_argument(
-        const extended_type_info & derived,
-        const extended_type_info & base
+        extended_type_info const & derived,
+        extended_type_info const & base
     ) :
         void_caster(derived, base)
     {}
@@ -156,9 +156,9 @@ public:
 // can transform from_type to to_type, return a NULL.  
 BOOST_SERIALIZATION_DECL(void const *)  
 void_upcast(
-    const extended_type_info & derived,
-    const extended_type_info & base,
-    const void * t
+    extended_type_info const & derived,
+    extended_type_info const & base,
+    void const * const t
 ){
     // same types - trivial case
     if (derived == base)
@@ -200,7 +200,7 @@ BOOST_SERIALIZATION_DECL(void const *)
 void_downcast(
     extended_type_info const & derived,
     extended_type_info const & base,
-    const void * const t
+    void const * const t
 ){
     // same types - trivial case
     if (derived == base)

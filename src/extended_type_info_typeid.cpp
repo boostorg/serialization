@@ -42,7 +42,7 @@ typedef std::set<
     type_compare
 > tkmap;
     
-template tkmap;
+//template tkmap;
 
 BOOST_SERIALIZATION_DECL(void) 
 extended_type_info_typeid_0::type_register(const std::type_info & ti){
@@ -63,6 +63,7 @@ extended_type_info_typeid_0::~extended_type_info_typeid_0()
         unsigned int erase_count;
         erase_count 
             = singleton<tkmap>::get_mutable_instance().erase(this);
+        assert(1 == erase_count);
     }
 }
 

@@ -50,7 +50,7 @@ typedef std::set<
     key_compare
 > ktmap;
 
-template ktmap;
+//template ktmap;
 
 class extended_type_info_arg : public extended_type_info
 {
