@@ -54,6 +54,7 @@ http://www.boost.org/LICENSE_1_0.txt)
       <dt><a href="#derivedpointers">Pointers to Objects of Derived Classes</a>
       <dl class="page-index">
         <dt><a href="#registration">Registration</a>
+        <dt><a href="#export">Export</a>
         <dt><a href="#instantiation">Instantiation</a>
         <dt><a href="#selectivetracking">Selective Tracking</a>
         <dt><a href="#runtimecasting">Runtime Casting</a>
@@ -676,8 +677,9 @@ main(){
 Note that if the serialization function is split between save and load, both
 functions must include the registration.  This is required to keep the save
 and corresponding load in syncronization.
-<p>
-This will work but may be inconvenient.  We don't always know which derived
+
+<h4><a name="export">Export</a></h4>
+The above will work but may be inconvenient.  We don't always know which derived
 classes we are going to serialize when we write the code to serialize through
 a base class pointer.  Every time a new derived class is written we have to
 go back to all the places where the base class is serialized and update the
