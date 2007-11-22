@@ -19,6 +19,8 @@
 
 #include <boost/config.hpp> // msvc needs this to suppress warning
 
+#include "bidirectional_map.hpp"
+
 #include <cstring>
 #if defined(BOOST_NO_STDC_NAMESPACE)
 namespace std{ using ::strcmp; }
@@ -42,24 +44,37 @@ struct key_compare
         const extended_type_info * lhs, 
         const extended_type_info * rhs
     ) const {
-        return *lhs < *rhs;
+        const char * l = lhs->get_key();
+        assert(NULL != l);
+        const char * r = rhs->get_key();
+        assert(NULL != r);
+        // performance shortcut
+        // shortcut to exploit string pooling
+        if(l == r)
+            return false;
+        // for exported types, use the string key so that
+        // multiple instances in different translation units
+        // can be matched up
+        return -1 == std::strcmp(l, r);
     }
 };
-typedef std::set<
-    const extended_type_info *, 
-    key_compare
-> ktmap;
 
-//template ktmap;
+typedef std::multiset<const extended_type_info *, key_compare> ktmap;
 
 class extended_type_info_arg : public extended_type_info
 {
 public:
-    extended_type_info_arg(const char * key){
+    extended_type_info_arg(const char * key) :
+        extended_type_info(NULL)
+    {
         m_key = key;
     }
     ~extended_type_info_arg(){
         m_key = NULL;
+    }
+    virtual bool less_than(const extended_type_info &rhs) const {
+        key_compare kc;
+        return kc(this, & rhs);
     }
 };
 
@@ -69,17 +84,31 @@ BOOST_SERIALIZATION_DECL(void)
 extended_type_info::key_register(const char *key) {
     assert(NULL != key);
     m_key = key;
-    std::pair<detail::ktmap::const_iterator, bool> result;
-    // prohibit duplicates and multiple registrations
-    result = singleton<detail::ktmap>::get_mutable_instance().insert(this);
-    assert(result.second);
-    // would like to throw and exception here but I don't
-    // have one conveniently defined
-    // throw(?)
+    singleton<detail::ktmap>::get_mutable_instance().insert(this);
+}
+
+BOOST_SERIALIZATION_DECL(void)  
+extended_type_info::key_unregister() {
+    assert(NULL != m_key);
+    detail::ktmap & x = singleton<detail::ktmap>::get_mutable_instance();
+    detail::ktmap::iterator start = x.lower_bound(this);
+    detail::ktmap::iterator end = x.upper_bound(this);
+    assert(start != end);
+
+    // remove entry in map which corresponds to this type
+    do{
+        if(this == *start){
+            x.erase(start);
+            break;
+        }
+    }while(++start != end);
+
+    m_key = NULL;
 }
 
 BOOST_SERIALIZATION_DECL(const extended_type_info *) 
 extended_type_info::find(const char *key) {
+    assert(NULL != key);
     const detail::ktmap & k = singleton<detail::ktmap>::get_const_instance();
     const detail::extended_type_info_arg eti_key(key);
     const detail::ktmap::const_iterator it = k.find(& eti_key);
@@ -88,7 +117,11 @@ extended_type_info::find(const char *key) {
     return *(it);
 }
 
-extended_type_info::extended_type_info() : 
+BOOST_SERIALIZATION_DECL(BOOST_PP_EMPTY())  
+extended_type_info::extended_type_info(
+    const unsigned int type_info_key
+) :
+    m_type_info_key(type_info_key),
     m_key(NULL)
 {
     // make sure that the ktmap is instantiated before 
@@ -98,44 +131,31 @@ extended_type_info::extended_type_info() :
 
 BOOST_SERIALIZATION_DECL(BOOST_PP_EMPTY()) 
 extended_type_info::~extended_type_info(){
-    if(NULL != m_key){
-        unsigned int erase_count;
-        erase_count = 
-            singleton<detail::ktmap>::get_mutable_instance().erase(this);
-        assert(1 == erase_count);
-    }
-}
-
-BOOST_SERIALIZATION_DECL(bool)  
-operator==(
-    const extended_type_info & lhs, 
-    const extended_type_info & rhs
-){
-    return (& lhs == & rhs);
+    if(NULL == m_key)
+        return;
+    key_unregister();
 }
 
 BOOST_SERIALIZATION_DECL(bool)
-operator<(
-    const extended_type_info & lhs, 
-    const extended_type_info & rhs
-){
-    // shortcut to exploit string pooling
-    const char * l = lhs.get_key();
-    const char * r = rhs.get_key();
-    // neither have been exported
-    if(NULL == l && NULL == r)
-        // order by address
-        return & lhs < & rhs;
-    // exported types are "higher" than non-exported types
-    if(NULL == l)
+extended_type_info::operator<(const extended_type_info &rhs) const {
+    if(m_type_info_key == rhs.m_type_info_key){
+        return less_than(rhs);
+    }
+    if(m_type_info_key < rhs.m_type_info_key)
         return true;
-    if(NULL == r)
-        return false;
-    // for exported types, use the string key so that
-    // multiple instances in different translation units
-    // can be matched up
-    return -1 == std::strcmp(l, r); 
+    return false;
 }
+
+BOOST_SERIALIZATION_DECL(bool)
+extended_type_info::operator==(const extended_type_info &rhs) const {
+    if(this == & rhs)
+        return true;
+    if(*this < rhs)
+        return false;
+    if(rhs < *this)
+        return false;
+    return true;
+};
 
 } // namespace serialization
 } // namespace boost

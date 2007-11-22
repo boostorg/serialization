@@ -22,9 +22,9 @@
 #include <cassert>
 
 // BOOST
+#define BOOST_SERIALIZATION_SOURCE
 #include <boost/serialization/singleton.hpp>
 #include <boost/serialization/extended_type_info.hpp>
-#define BOOST_SERIALIZATION_SOURCE
 #include <boost/serialization/void_cast.hpp>
 
 namespace boost { 
@@ -41,8 +41,6 @@ struct void_caster_compare
     ) const {
         if( lhs->m_derived < rhs->m_derived )
             return true;
-        if( rhs->m_derived < lhs->m_derived)
-            return false;   
         if( lhs->m_base < rhs->m_base )
             return true;
         return false;
@@ -51,8 +49,6 @@ struct void_caster_compare
 
 typedef std::set<const void_caster *, void_caster_compare> set_type;
 typedef boost::serialization::singleton<set_type> void_caster_registry;
-
-//template void_caster_registry;
 
 // implementation of void caster base class
 BOOST_SERIALIZATION_DECL(BOOST_PP_EMPTY())

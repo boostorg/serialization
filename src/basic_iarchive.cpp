@@ -23,29 +23,29 @@ namespace std{
 } // namespace std
 #endif
 
-#define BOOST_ARCHIVE_SOURCE
-#include <boost/archive/detail/auto_link_archive.hpp>
-
 #include <boost/limits.hpp>
 #include <boost/state_saver.hpp>
 #include <boost/throw_exception.hpp>
+#include <boost/serialization/tracking.hpp>
 
+#include <boost/archive/archive_exception.hpp>
+
+#define BOOST_ARCHIVE_SOURCE
+#define BOOST_SERIALIZATION_SOURCE
+
+#include <boost/archive/detail/decl.hpp>
+#include <boost/archive/basic_archive.hpp>
 #include <boost/archive/detail/basic_iserializer.hpp>
 #include <boost/archive/detail/basic_pointer_iserializer.hpp>
 #include <boost/archive/detail/basic_iarchive.hpp>
-#include <boost/archive/archive_exception.hpp>
 
-#include <boost/serialization/tracking.hpp>
-#include <boost/serialization/extended_type_info.hpp>
+#include <boost/archive/detail/auto_link_archive.hpp>
 
 using namespace boost::serialization;
 
 namespace boost {
 namespace archive {
 namespace detail {
-
-class basic_iserializer;
-class basic_pointer_iserializer;
 
 class basic_iarchive_impl {
     friend class basic_iarchive;
@@ -486,8 +486,15 @@ basic_iarchive_impl::load_pointer(
     return bpis_ptr;
 }
 
+} // namespace detail
+} // namespace archive
+} // namespace boost
+
 //////////////////////////////////////////////////////////////////////
 // implementation of basic_iarchive functions
+namespace boost {
+namespace archive {
+namespace detail {
 
 BOOST_ARCHIVE_DECL(void)
 basic_iarchive::next_object_pointer(void *t){

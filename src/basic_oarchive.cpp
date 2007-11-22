@@ -20,8 +20,9 @@
 // including this here to work around an ICC in intel 7.0
 // normally this would be part of basic_oarchive.hpp below.
 #define BOOST_ARCHIVE_SOURCE
-#include <boost/archive/basic_archive.hpp>
+#define BOOST_SERIALIZATION_SOURCE
 
+#include <boost/archive/basic_archive.hpp>
 #include <boost/archive/detail/basic_oserializer.hpp>
 #include <boost/archive/detail/basic_pointer_oserializer.hpp>
 #include <boost/archive/detail/basic_oarchive.hpp>
@@ -385,8 +386,16 @@ basic_oarchive_impl::save_pointer(
     stored_pointers.insert(oid);
 }
 
+} // namespace detail
+} // namespace archive
+} // namespace boost
+
 //////////////////////////////////////////////////////////////////////
 // implementation of basic_oarchive functions
+
+namespace boost {
+namespace archive {
+namespace detail {
 
 BOOST_ARCHIVE_DECL(BOOST_PP_EMPTY()) 
 basic_oarchive::basic_oarchive(unsigned int flags)
