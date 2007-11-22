@@ -42,6 +42,7 @@ namespace std{
 #include <boost/serialization/variant.hpp>
 
 #include "A.hpp"
+#include "A.ipp"
 
 class are_equal
     : public boost::static_visitor<bool>

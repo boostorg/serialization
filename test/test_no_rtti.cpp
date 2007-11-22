@@ -55,7 +55,7 @@ BOOST_CLASS_TYPE_INFO(
     extended_type_info_no_rtti<polymorphic_base>
 )
 // note: types which use ...no_rtti MUST be exported
-BOOST_CLASS_EXPORT(polymorphic_base)
+// BOOST_CLASS_EXPORT(polymorphic_base)
 
 class polymorphic_derived1 : public polymorphic_base
 {

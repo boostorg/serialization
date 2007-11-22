@@ -27,6 +27,7 @@ namespace std{
 #include <boost/serialization/base_object.hpp>
 
 #include "A.hpp"
+#include "A.ipp"
 
 ///////////////////////////////////////////////////////
 // class with a member which refers to itself

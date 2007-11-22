@@ -30,6 +30,7 @@ namespace std{
 #include <boost/serialization/map.hpp>
 
 #include "A.hpp"
+#include "A.ipp"
 
 ///////////////////////////////////////////////////////
 // a key value initialized with a random value for use

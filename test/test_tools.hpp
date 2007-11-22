@@ -82,30 +82,6 @@ namespace archive {
         }
         return name;
     }
-#if 0
-    char * tmpnam(char * buffer){
-        char old_dir[256];
-        _getcwd(old_dir, sizeof(old_dir) - 1);
-
-        char * temp_dir = boost::archive::tmpdir();
-        chdir(temp_dir);
-
-        char temp_name[256];
-        std::tmpnam(temp_name);
-
-        chdir(old_dir);
-        static char ibuffer [512];
-
-        if(NULL == buffer)
-            buffer = ibuffer;
-
-        STRCPY(buffer, temp_dir);
-        std::strcat(buffer, temp_name);
-        return buffer;
-    }
-#endif
-
-
 } // archive
 } // boost
 
@@ -177,22 +153,23 @@ int test_main(int argc, char * argv[]);
 
 int
 main(int argc, char * argv[]){
-    boost::serialization::global_lock::get_mutable_instance().lock();
+    
+    boost::serialization::singleton_module::lock();
 
     BOOST_TRY{
         test_main(argc, argv);
     }
     #ifndef BOOST_NO_EXCEPTION_STD_NAMESPACE
         BOOST_CATCH(const std::exception e){
-            BOOST_FAIL(e.what());
+            BOOST_ERROR(e.what());
         }
     #endif
     BOOST_CATCH(...){
-        BOOST_FAIL("failed with uncaught exception:");
+        BOOST_ERROR("failed with uncaught exception:");
     }
     BOOST_CATCH_END
 
-    boost::serialization::global_lock::get_mutable_instance().unlock();
+    boost::serialization::singleton_module::unlock();
 
     return boost::report_errors();
 }
@@ -217,9 +194,6 @@ main(int argc, char * argv[]){
 #if ! defined(BOOST_ARCHIVE_TEST)
 #define BOOST_ARCHIVE_TEST text_archive.hpp
 #endif
-
-//#undef BOOST_ARCHIVE_TEST
-//#define BOOST_ARCHIVE_TEST portable_le_binary_archive.hpp
 
 #include <boost/preprocessor/stringize.hpp>
 #include BOOST_PP_STRINGIZE(BOOST_ARCHIVE_TEST)

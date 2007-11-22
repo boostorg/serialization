@@ -23,6 +23,7 @@ namespace std{
 #include <boost/serialization/vector.hpp>
 
 #include "A.hpp"
+#include "A.ipp"
 
 template <class T>
 int test_vector(T)

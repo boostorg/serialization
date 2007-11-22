@@ -42,6 +42,7 @@ public:
     virtual ~A(){--count;}   // default destructor
 };
 
+BOOST_CLASS_EXPORT(A)
 
 // B is a subclass of A
 class B : public A
@@ -59,7 +60,6 @@ public:
     virtual ~B() {};
 };
 
-BOOST_CLASS_EXPORT(A)
 BOOST_CLASS_EXPORT(B)
 
 int A::count = 0;

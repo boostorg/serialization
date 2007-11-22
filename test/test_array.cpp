@@ -21,8 +21,8 @@ namespace std{
 #include <boost/detail/no_exceptions_support.hpp>
 #include <boost/archive/archive_exception.hpp>
 
-#include <boost/serialization/nvp.hpp>
 #include "A.hpp"
+#include "A.ipp"
 
 struct array_equal_to //: public std::binary_function<T, T, bool>
 {

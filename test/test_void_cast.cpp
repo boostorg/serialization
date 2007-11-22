@@ -10,6 +10,7 @@
 #include "test_tools.hpp"
 #include <boost/serialization/extended_type_info_typeid.hpp>
 #include <boost/serialization/void_cast.hpp>
+#include <boost/serialization/singleton.hpp>
 
 class Base1
 {
@@ -33,8 +34,9 @@ class MostDerived : public Derived
 
 template<class T>
 const boost::serialization::extended_type_info & eti(){
-    return boost::serialization::extended_type_info_typeid<T>
-        ::get_const_instance();
+    return boost::serialization::singleton<
+        boost::serialization::extended_type_info_typeid<T>
+    >::get_const_instance();
 }
 
 int

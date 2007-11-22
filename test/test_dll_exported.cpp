@@ -18,20 +18,18 @@ namespace std{
 }
 #endif
 
+#include <boost/archive/archive_exception.hpp>
+#include "test_tools.hpp"
+#include "test_decl.hpp"
+
+#define DLL_DECL IMPORT_DECL
+#include "base.hpp"
+#undef  DLL_DECL
+
 #include <boost/serialization/base_object.hpp>
 #include <boost/serialization/export.hpp>
 #include <boost/serialization/type_info_implementation.hpp>
-
-#include <boost/archive/archive_exception.hpp>
-#include "test_tools.hpp"
-
-#include "base.hpp"
-
-template<class Archive>
-void polymorphic_base::serialize(
-    Archive &ar,
-    const unsigned int /* file_version */){
-}
+#include <boost/serialization/access.hpp>
 
 class polymorphic_derived1 : public polymorphic_base
 {
@@ -41,7 +39,7 @@ class polymorphic_derived1 : public polymorphic_base
         ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(polymorphic_base);
     }
 public:
-    ~polymorphic_derived1(){}
+    virtual ~polymorphic_derived1(){}
 };
 
 BOOST_CLASS_EXPORT(polymorphic_derived1)
@@ -49,16 +47,9 @@ BOOST_CLASS_EXPORT(polymorphic_derived1)
 // MWerks users can do this to make their code work
 BOOST_SERIALIZATION_MWERKS_BASE_AND_DERIVED(polymorphic_base, polymorphic_derived1)
 
+#define DLL_DECL IMPORT_DECL
 #include "derived2.hpp"
-
-template<class Archive>
-void polymorphic_derived2::serialize(
-    Archive &ar, 
-    const unsigned int /* file_version */
-){
-    ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(polymorphic_base);
-}
-BOOST_CLASS_EXPORT(polymorphic_derived2)
+#undef  DLL_DECL
 
 // save exported polymorphic class
 void save_exported(const char *testfile)
@@ -98,7 +89,6 @@ void load_exported(const char *testfile)
             ::type::get_const_instance().get_derived_extended_type_info(*rb1),
         "restored pointer b1 not of correct type"
     );
-
     ia >> BOOST_SERIALIZATION_NVP(rb2);
     BOOST_CHECK_MESSAGE(
         boost::serialization::type_info_implementation<polymorphic_derived2>
@@ -108,7 +98,6 @@ void load_exported(const char *testfile)
             ::type::get_const_instance().get_derived_extended_type_info(*rb2),
         "restored pointer b2 not of correct type"
     );
-
     delete rb1;
     delete rb2;
 }
