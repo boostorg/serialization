@@ -57,7 +57,7 @@ WSOURCES =
 
 
 lib boost_serialization 
-        : $(SOURCES).cpp
+    : $(SOURCES).cpp
 	: 
 	    <toolset>msvc:<cxxflags>/Gy
         # note - we can't use <include>$(SPIRIT_ROOT) because 
@@ -66,7 +66,7 @@ lib boost_serialization
         <toolset>msvc-6.5:<cxxflags>-I$(SPIRIT_ROOT)
         <toolset>msvc-7.0:<cxxflags>-I$(SPIRIT_ROOT)
         <toolset>borland:<cxxflags>-I$(SPIRIT_ROOT)
-  	  <link>shared:<define>BOOST_SERIALIZATION_DYN_LINK=1
+  	    <link>shared:<define>BOOST_SERIALIZATION_DYN_LINK=1
 	;
 
 lib boost_wserialization 
@@ -82,3 +82,5 @@ lib boost_wserialization
         <dependency>../../config/test//BOOST_NO_STD_WSTREAMBUF
         <link>shared:<define>BOOST_SERIALIZATION_DYN_LINK=1
 	;
+
+boost-install boost_serialization boost_wserialization ;
