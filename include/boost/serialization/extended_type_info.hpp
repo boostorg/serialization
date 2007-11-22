@@ -19,7 +19,6 @@
 // for now, extended type info is part of the serialization libraries
 // this could change in the future.
 #include <boost/config.hpp>
-#include <boost/noncopyable.hpp>
 #include <boost/serialization/config.hpp>
 
 #include <boost/config/abi_prefix.hpp> // must be the last header
@@ -33,41 +32,39 @@
 namespace boost { 
 namespace serialization {
 
-class BOOST_SERIALIZATION_DECL(BOOST_PP_EMPTY()) extended_type_info : 
-    private boost::noncopyable 
+class BOOST_SERIALIZATION_DECL(BOOST_PP_EMPTY()) extended_type_info
 {
+private: 
+    // used to uniquely identify the type of class derived from this one
+    // so that different derivations of this class can be simultaneously
+    // included in implementation of sets and maps.
+    const unsigned int m_type_info_key;
+    virtual bool
+    less_than(const extended_type_info &rhs) const = 0;
+    void key_unregister();
 protected:
     const char * m_key;
-
     // this class can't be used as is. It's just the 
     // common functionality for all type_info replacement
     // systems.  Hence, make these protected
-    extended_type_info();
+    extended_type_info(const unsigned int type_info_key);
     // account for bogus gcc warning
     #if defined(__GNUC__)
     virtual
     #endif
     ~extended_type_info();
 public:
-    void key_register(const char *key);
     const char * get_key() const {
         return m_key;
     }
+    void key_register(const char *key);
+    bool operator<(const extended_type_info &rhs) const;
+    bool operator==(const extended_type_info &rhs) const;
+    bool operator!=(const extended_type_info &rhs) const {
+        return !(operator==(rhs));
+    }
     static const extended_type_info * find(const char *key);
 };
-
-// in order
-BOOST_SERIALIZATION_DECL(bool)  
-operator==(
-    const extended_type_info & lhs, 
-    const extended_type_info & rhs
-);
-
-BOOST_SERIALIZATION_DECL(bool)  
-operator<(
-    const extended_type_info & lhs, 
-    const extended_type_info & rhs
-);
 
 } // namespace serialization 
 } // namespace boost

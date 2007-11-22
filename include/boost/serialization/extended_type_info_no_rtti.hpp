@@ -31,6 +31,8 @@
 #  pragma warning(disable : 4251 4231 4660 4275)
 #endif
 
+#define EXTENDED_TYPE_INFO_NO_RTTI_KEY 2
+
 namespace boost {
 namespace serialization {
 ///////////////////////////////////////////////////////////////////////
@@ -43,11 +45,16 @@ class extended_type_info_no_rtti :
     public singleton<extended_type_info_no_rtti<T> >
 {
 public:
-    // private constructor to inhibit any existence other than the 
-    // static one
-    extended_type_info_no_rtti(){}
+    virtual bool
+    less_than(const extended_type_info &rhs) const;
+    /*static*/ const extended_type_info *
+    get_extended_type_info(const std::type_info & ti) const;
+
+    extended_type_info_no_rtti() :
+        extended_type_info(EXTENDED_TYPE_INFO_NO_RTTI_KEY)
+    {}
     ~extended_type_info_no_rtti(){};
-    const boost::serialization::extended_type_info *
+    const extended_type_info *
     get_derived_extended_type_info(const T & t) const {
         // find the type that corresponds to the most derived type.
         // this implementation doesn't depend on typeid() but assumes

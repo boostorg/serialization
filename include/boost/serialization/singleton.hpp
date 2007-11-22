@@ -23,12 +23,11 @@
 // In order to do this,
 // a) Initialize dynamically when used.
 // b) Require that all singletons be initialized before main
-// is called*.  This guarentees no race condition for initialization.
-// In debug mode, assert that no non-const functions are called
+// is called or any entry point into the shared library is invoked.
+// This guarentees no race condition for initialization.
+// In debug mode, we assert that no non-const functions are called
 // after main is invoked.
 //
-// * note exception regarding dynamically loaded shared libraries.
-// check documentation
 
 // MS compatible compilers support #pragma once
 #if defined(_MSC_VER) && (_MSC_VER >= 1020)
@@ -49,10 +48,52 @@ namespace serialization {
 // details.
 //
 
-template <class T>
-class singleton : public boost::noncopyable
+// singletons created by this code are guarenteed to be unique
+// within the executable or shared library which creates them.
+// This is sufficient and in fact ideal for the serialization library.
+// The singleton is created when the module is loaded and destroyed
+// when the module is unloaded.
+
+// This base class has two functions.
+
+// First it provides a module handle for each singleton indicating
+// the executable or shared library in which it was created. This
+// turns out to be necessary and sufficient to implement the tables
+// used by serialization library.
+
+// Second, it provides a mechanism to detect when a non-const function
+// is called after initialization.
+
+// make a singleton to lock/unlock all singletons for alteration.
+// The intent is that all singletons created/used by this code
+// are to be initialized before main is called. A test program
+// can lock all the single
+
+class singleton_module  : public boost::noncopyable
 {
-    friend class global_lock;
+private:
+    static bool & get_lock(){
+        static bool lock = false;
+        return lock;
+    }
+public:
+//    static const void * get_module_handle(){
+//        return static_cast<const void *>(get_module_handle);
+//    }
+    static void lock(){
+        get_lock() = true;
+    }
+    static void unlock(){
+        get_lock() = false;
+    }
+    static bool is_locked() {
+        return get_lock();
+    }
+};
+
+template <class T>
+class singleton : public singleton_module
+{
 private:
     BOOST_DLLEXPORT static T & instance;
     // include this to provoke instantiation at pre-execution time
@@ -65,48 +106,18 @@ private:
         return t;
     }
 public:
-    static const T & get_const_instance();
-    static T & get_mutable_instance();
+    static T & get_mutable_instance(){
+        assert(! is_locked());
+        return get_instance();
+    }
+    static const T & get_const_instance(){
+        return get_instance();
+    }
+
 };
 
 template<class T>
 BOOST_DLLEXPORT T & singleton<T>::instance = singleton<T>::get_instance();
-
-// make a singleton to lock/unlock all singletons for alteration.
-// The intent is that all singletons created/used by this code
-// are to be initialized before main is called. (note exception
-// for DLLS which is dealt with in the documentation).  If
-// the singleton is then used only as read
-
-class global_lock : public singleton<global_lock> {
-    bool locked;
-public:
-    global_lock() : locked(false) {}
-    void lock(){
-        locked = true;
-    }
-    void unlock(){
-        locked = false;
-    }
-    bool is_locked() const {
-        return locked;
-    }
-    static global_lock & get_mutable_instance(){
-        return get_instance();
-    }
-};
-
-template<class T>
-inline T & singleton<T>::get_mutable_instance(){
-    assert(! global_lock::get_mutable_instance().is_locked());
-    return get_instance();
-}
-
-template<class T>
-inline const T & singleton<T>::get_const_instance(){
-    return get_instance();
-}
-
 
 } // namespace serialization
 } // namespace boost

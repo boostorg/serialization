@@ -25,6 +25,7 @@
 
 #include <boost/config.hpp>
 #include <boost/static_assert.hpp>
+#include <boost/static_warning.hpp>
 #include <boost/preprocessor/stringize.hpp>
 #include <boost/type_traits/is_polymorphic.hpp>
 
@@ -37,6 +38,7 @@
 #include <boost/mpl/assert.hpp>
 #include <boost/mpl/and.hpp>
 #include <boost/mpl/not.hpp>
+#include <boost/mpl/bool.hpp>
 
 #include <iostream>
 
@@ -46,11 +48,8 @@ namespace detail {
 
 class basic_pointer_iserializer;
 class basic_pointer_oserializer;
-
-template<class Archive, class T>
-class pointer_iserializer;
-template<class Archive, class T>
-class pointer_oserializer;
+class basic_iserializer;
+class basic_oserializer;
 
 template <class Archive, class Serializable>
 struct export_impl
@@ -68,26 +67,8 @@ struct export_impl
             pointer_oserializer<Archive, Serializable> 
         >::get_const_instance();
     }
-
     inline static void enable_load(mpl::false_) {}
     inline static void enable_save(mpl::false_) {}
-};
-
-template<class T>
-struct guid_initializer
-{  
-    const guid_initializer & export_guid(char const* key)
-    {
-        assert(NULL != key);
-        boost::serialization::type_info_implementation<T>::type
-            ::get_mutable_instance().key_register(key);
-
-        // generates the statically-initialized objects whose constructors
-        // register the information allowing serialization of T objects
-        // through pointers to their base classes.
-        instantiate_ptr_serialization((T*)0, 0);
-        return *this;
-    }
 };
 
 // On many platforms, naming a specialization of this template is
@@ -119,14 +100,43 @@ struct ptr_serialization_support
 template <class Archive, class Serializable>
 BOOST_DLLEXPORT void ptr_serialization_support<Archive,Serializable>::instantiate()
 {
-    typedef mpl::not_<serialization::is_abstract<Serializable> > concrete;
     
     export_impl<Archive,Serializable>::enable_save(
-        mpl::and_<concrete, BOOST_DEDUCED_TYPENAME Archive::is_saving>());
+        BOOST_DEDUCED_TYPENAME Archive::is_saving()
+    );
 
     export_impl<Archive,Serializable>::enable_load(
-        mpl::and_<concrete, BOOST_DEDUCED_TYPENAME Archive::is_loading>());
+        BOOST_DEDUCED_TYPENAME Archive::is_loading::type::type()
+    );
 }
+
+template<class T>
+struct guid_initializer
+{  
+    const guid_initializer & export_guid(char const* key, mpl::false_){
+        BOOST_STATIC_WARNING(boost::is_polymorphic<T>::value);
+        assert(NULL != key);
+        boost::serialization::singleton<
+            boost::serialization::type_info_implementation<T>::type
+        >::get_mutable_instance().key_register(key);
+
+        // generates the statically-initialized objects whose constructors
+        // register the information allowing serialization of T objects
+        // through pointers to their base classes.
+        instantiate_ptr_serialization((T*)0, 0);
+        return *this;
+    }
+    const guid_initializer & export_guid(char const* key, mpl::true_){
+        return *this;
+    }
+    const guid_initializer & export_guid(char const* key){
+        // note: exporting an abstract base class will have no effect
+        // and cannot be used to instantitiate serialization code
+        // (one might be using this in a DLL to instantiate code)
+        BOOST_STATIC_WARNING(! boost::is_abstract<T>::value);
+        return export_guid(key, serialization::is_abstract<T>());
+    }
+};
 
 } // namespace detail
 } // namespace archive

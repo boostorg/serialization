@@ -1,5 +1,6 @@
 #ifndef BOOST_SERIALIZATION_EXTENDED_TYPE_INFO_TYPEID_HPP
 #define BOOST_SERIALIZATION_EXTENDED_TYPE_INFO_TYPEID_HPP
+
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // MS compatible compilers support #pragma once
 #if defined(_MSC_VER) && (_MSC_VER >= 1020)
@@ -28,8 +29,8 @@
 #include <boost/type_traits/is_polymorphic.hpp>
 #include <boost/preprocessor/stringize.hpp>
 
-#include <boost/serialization/extended_type_info.hpp>
 #include <boost/serialization/singleton.hpp>
+#include <boost/serialization/extended_type_info.hpp>
 
 #include <boost/config/abi_prefix.hpp> // must be the last header
 #ifdef BOOST_MSVC
@@ -46,14 +47,15 @@ class BOOST_SERIALIZATION_DECL(BOOST_PP_EMPTY()) extended_type_info_typeid_0 :
 {
 protected:
     const std::type_info * m_ti;
-    extended_type_info_typeid_0() :
-        m_ti(NULL)
-    {}
+    extended_type_info_typeid_0();
     ~extended_type_info_typeid_0();
     void type_register(const std::type_info & ti);
-    static const extended_type_info *
-    get_derived_extended_type_info(const std::type_info & ti);
+    void type_unregister();
+    const extended_type_info *
+    get_extended_type_info(const std::type_info & ti) const;
 public:
+    virtual bool
+    less_than(const extended_type_info &rhs) const;
     const std::type_info & get_typeid() const {
         return *m_ti;
     }
@@ -61,26 +63,22 @@ public:
 
 } // namespace detail
 
-///////////////////////////////////////////////////////////////////////////////
-// layer to fold T and const T into the same table entry.
 template<class T>
 class extended_type_info_typeid : 
     public detail::extended_type_info_typeid_0,
-    public singleton<extended_type_info_typeid<const T> >
+    public singleton<extended_type_info_typeid<T> >
 {
-protected:
-#if BOOST_WORKAROUND(__BORLANDC__, BOOST_TESTED_AT(0x560))
 public:
-#endif
-public:
-    // protected constructor to inhibit any existence other than the 
-    // static one
     extended_type_info_typeid() :
         detail::extended_type_info_typeid_0()
     {
         type_register(typeid(T));
     }
-    ~extended_type_info_typeid(){}
+    ~extended_type_info_typeid(){
+        type_unregister();
+    }
+    // get the eti record for the true type of this record
+    // relying upon standard type info implemenation (rtti)
     const extended_type_info *
     get_derived_extended_type_info(const T & t) const {
         // note: this implementation - based on usage of typeid (rtti)
@@ -89,7 +87,7 @@ public:
             static_cast<bool>(boost::is_polymorphic<T>::value)
         );
         return 
-            detail::extended_type_info_typeid_0::get_derived_extended_type_info(
+            detail::extended_type_info_typeid_0::get_extended_type_info(
                 typeid(t)
             );
     }
