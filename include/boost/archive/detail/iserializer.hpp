@@ -164,8 +164,9 @@ class pointer_iserializer
 {
 private:
     virtual const basic_iserializer & get_basic_serializer() const {
-        return boost::serialization::singleton<iserializer<Archive, T> >
-            ::get_const_instance();
+        return boost::serialization::singleton<
+            iserializer<Archive, T>
+        >::get_const_instance();
     }
     virtual void load_object_ptr(
         basic_iarchive & ar, 
@@ -292,8 +293,9 @@ pointer_iserializer<Archive, T>::pointer_iserializer() :
             ::get_const_instance()
     )
 {
-    boost::serialization::singleton<iserializer<Archive, T> >
-        ::get_mutable_instance().set_bpis(this);
+    boost::serialization::singleton<
+        iserializer<Archive, T>
+    >::get_mutable_instance().set_bpis(this);
 }
 
 template<class Archive, class T>
@@ -329,8 +331,9 @@ struct load_non_pointer_type {
             void * x = & const_cast<typex &>(t);
             ar.load_object(
                 x, 
-                boost::serialization::singleton<iserializer<Archive, T> >
-                    ::get_const_instance()
+                boost::serialization::singleton<
+                    iserializer<Archive, T>
+                >::get_const_instance()
             );
         }
     };

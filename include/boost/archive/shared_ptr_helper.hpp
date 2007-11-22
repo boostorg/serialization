@@ -99,7 +99,7 @@ public:
             );
         const boost::serialization::extended_type_info * this_type
             = & boost::serialization::type_info_implementation<T>::type
-                ::get_const_instance();
+                    ::get_const_instance();
         void * vp = void_downcast(*true_type, *this_type, t);
         return vp;
     }

@@ -38,8 +38,9 @@ archive_pointer_oserializer<Archive>::archive_pointer_oserializer(
         BOOST_DEDUCED_TYPENAME serializer_map<Archive>::iterator, 
         bool
     > result;
-    result = serialization::singleton<serializer_map<Archive> >
-        ::get_mutable_instance().insert(this);
+    result = serialization::singleton<
+            serializer_map<Archive>
+        >::get_mutable_instance().insert(this);
     assert(result.second);
 }
 
@@ -50,13 +51,15 @@ archive_pointer_oserializer<Archive>::find(
 ){
     const basic_serializer_arg bs(eti);
     basic_serializer_map::const_iterator it;
-    it =  boost::serialization::singleton<serializer_map<Archive> >
-        ::get_const_instance().find(& bs);
+    it =  boost::serialization::singleton<
+            serializer_map<Archive>
+        >::get_const_instance().find(& bs);
     assert(
         it 
         != 
-        boost::serialization::singleton<serializer_map<Archive> >
-            ::get_const_instance().end()
+        boost::serialization::singleton<
+                serializer_map<Archive>
+            >::get_const_instance().end()
     );
     return static_cast<const basic_pointer_oserializer *>(*it);
 }
@@ -67,8 +70,9 @@ archive_pointer_oserializer<Archive>::~archive_pointer_oserializer(){
     // note: we need to check that the map still exists as we can't depend
     // on static variables being constructed in a specific sequence
     unsigned int count;
-    count = serialization::singleton<serializer_map<Archive> >
-        ::get_mutable_instance().erase(this);
+    count = serialization::singleton<
+            serializer_map<Archive>
+        >::get_mutable_instance().erase(this);
     assert(count);
 }
 

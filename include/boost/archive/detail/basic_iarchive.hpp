@@ -20,9 +20,9 @@
 // #include <boost/scoped_ptr.hpp>
 
 #include <boost/config.hpp>
-#include <boost/archive/basic_archive.hpp>
 #include <boost/serialization/tracking_enum.hpp>
-
+#include <boost/archive/basic_archive.hpp>
+#include <boost/archive/detail/decl.hpp>
 #include <boost/archive/detail/abi_prefix.hpp> // must be the last header
 
 namespace boost {

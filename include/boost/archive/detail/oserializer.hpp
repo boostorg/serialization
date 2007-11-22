@@ -155,8 +155,9 @@ class pointer_oserializer
 {
 private:
     virtual const basic_oserializer & get_basic_serializer() const {
-        return boost::serialization::singleton<oserializer<Archive, T> >
-            ::get_const_instance();
+        return boost::serialization::singleton<
+            oserializer<Archive, T>
+        >::get_const_instance();
     }
     virtual void save_object_ptr(
         basic_oarchive & ar,
@@ -193,8 +194,9 @@ pointer_oserializer<Archive, T>::pointer_oserializer() :
     )
 {
     // make sure appropriate member function is instantiated
-    boost::serialization::singleton<oserializer<Archive, T> >
-        ::get_mutable_instance().set_bpos(this);
+    boost::serialization::singleton<
+        oserializer<Archive, T> 
+    >::get_mutable_instance().set_bpos(this);
 }
 
 template<class Archive, class T>
@@ -224,8 +226,9 @@ struct save_non_pointer_type {
         static void invoke(Archive &ar, const T & t){
             ar.save_object(
                 & t, 
-                boost::serialization::singleton<oserializer<Archive, T> >
-                    ::get_const_instance()
+                boost::serialization::singleton<
+                    oserializer<Archive, T>
+                >::get_const_instance()
             );
         }
     };
@@ -344,16 +347,18 @@ struct save_pointer_type {
             const T & t, 
             const basic_pointer_oserializer * bpos_ptr
         ){
-            const boost::serialization::extended_type_info * this_type 
-                = & boost::serialization::type_info_implementation<T>::type
+            const boost::serialization::type_info_implementation<T>::type & i
+                = boost::serialization::type_info_implementation<T>::type
                     ::get_const_instance();
+
+            const boost::serialization::extended_type_info * this_type = & i;
+
             // retrieve the true type of the object pointed to
             // if this assertion fails its an error in this library
             assert(NULL != this_type);
 
-            const boost::serialization::extended_type_info * true_type 
-                = boost::serialization::type_info_implementation<T>::type
-                    ::get_const_instance().get_derived_extended_type_info(t);
+            const boost::serialization::extended_type_info * true_type =
+                i.get_derived_extended_type_info(t);
             // note:if this exception is thrown, be sure that derived pointer
             // is either registered or exported.
             if(NULL == true_type){
