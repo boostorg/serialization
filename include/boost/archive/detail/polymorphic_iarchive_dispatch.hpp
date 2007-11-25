@@ -1,5 +1,5 @@
-#ifndef BOOST_ARCHIVE_DETAIL_POLYMORPHIC_IARCHIVE_IMPL_HPP
-#define BOOST_ARCHIVE_DETAIL_POLYMORPHIC_IARCHIVE_IMPL_HPP
+#ifndef BOOST_ARCHIVE_DETAIL_POLYMORPHIC_IARCHIVE_DISPATCH_HPP
+#define BOOST_ARCHIVE_DETAIL_POLYMORPHIC_IARCHIVE_DISPATCH_HPP
 
 // MS compatible compilers support #pragma once
 #if defined(_MSC_VER) && (_MSC_VER >= 1020)
@@ -7,7 +7,7 @@
 #endif
 
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
-// polymorphic_iarchive_impl.hpp
+// polymorphic_iarchive_dispatch.hpp
 
 // (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
 // Use, modification and distribution is subject to the Boost Software
@@ -45,7 +45,7 @@ class BOOST_ARCHIVE_DECL(BOOST_PP_EMPTY()) basic_iserializer;
 class BOOST_ARCHIVE_DECL(BOOST_PP_EMPTY()) basic_pointer_iserializer;
 
 template<class ArchiveImplementation>
-class polymorphic_iarchive_impl :
+class polymorphic_iarchive_dispatch :
     public polymorphic_iarchive,
     // note: gcc dynamic cross cast fails if the the derivation below is
     // not public.  I think this is a mistake.
@@ -161,20 +161,8 @@ private:
     virtual void register_basic_serializer(const basic_iserializer & bis){
         ArchiveImplementation::register_basic_serializer(bis);
     }
-    virtual void lookup_basic_helper(
-        const boost::serialization::extended_type_info * const eti,
-        boost::shared_ptr<void> & sph
-        ){
-                ArchiveImplementation::lookup_basic_helper(eti, sph);
-        }
-    virtual void insert_basic_helper(
-        const boost::serialization::extended_type_info * const eti,
-                boost::shared_ptr<void> & sph
-        ){
-                ArchiveImplementation::insert_basic_helper(eti, sph);
-        }
 public:
-    // this can't be inherited because they appear in mulitple
+    // this can't be inheriteded because they appear in mulitple
     // parents
     typedef mpl::bool_<true> is_loading;
     typedef mpl::bool_<false> is_saving;
@@ -192,7 +180,7 @@ public:
 
     // all current archives take a stream as constructor argument
     template <class _Elem, class _Tr>
-    polymorphic_iarchive_impl(
+    polymorphic_iarchive_dispatch(
         std::basic_istream<_Elem, _Tr> & is,
         unsigned int flags = 0
     ) :
@@ -206,4 +194,4 @@ public:
 
 #include <boost/archive/detail/abi_suffix.hpp> // pops abi_suffix.hpp pragmas
 
-#endif // BOOST_ARCHIVE_DETAIL_POLYMORPHIC_IARCHIVE_IMPL_HPP
+#endif // BOOST_ARCHIVE_DETAIL_POLYMORPHIC_IARCHIVE_DISPATCH_HPP
