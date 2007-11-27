@@ -32,7 +32,6 @@
 #include <boost/static_warning.hpp>
 
 #include <boost/type_traits/is_pointer.hpp>
-#include <boost/type_traits/is_fundamental.hpp>
 #include <boost/type_traits/is_enum.hpp>
 #include <boost/type_traits/is_volatile.hpp>
 #include <boost/type_traits/is_const.hpp>
@@ -347,11 +346,11 @@ struct save_pointer_type {
             const T & t, 
             const basic_pointer_oserializer * bpos_ptr
         ){
-            const boost::serialization::type_info_implementation<T>::type & i
-                = boost::serialization::type_info_implementation<T>::type
+            BOOST_DEDUCED_TYPENAME boost::serialization::type_info_implementation<T>::type 
+                const & i = boost::serialization::type_info_implementation<T>::type
                     ::get_const_instance();
 
-            const boost::serialization::extended_type_info * this_type = & i;
+            boost::serialization::extended_type_info const * const this_type = & i;
 
             // retrieve the true type of the object pointed to
             // if this assertion fails its an error in this library
