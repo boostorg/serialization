@@ -22,6 +22,7 @@ namespace std{
 #include <boost/serialization/nvp.hpp>
 
 #include "B.hpp"
+#include "A.ipp"
 
 ///////////////////////////////////////////////////////
 // Contained class

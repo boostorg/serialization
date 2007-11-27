@@ -37,6 +37,7 @@ http://www.boost.org/LICENSE_1_0.txt)
   <dt><a href="#xml_archives">XML Archives</a>
   <dt><a href="#export">Exporting Class Serialization</a>
   <dt><a href="#dlls">DLLS - Serialization and Runtime Linking</a>
+  <dt><a href="#plugins">Plugins</a>
   <dt><a href="#multi_threading">Multi-Threading</a>
   <dt><a href="#optimizations">Optimizations</a>
   <dt><a href="exceptions.html">Archive Exceptions</a>
@@ -361,9 +362,9 @@ Also, when making shared libraries, there is currently a restriction
 that only one such library can use <code style="white-space: normal">BOOST_CLASS_EXPORT</code>
 for any given type. All this will most likely make it inconvenient
 to include <code style="white-space: normal">BOOST_CLASS_EXPORT</code>
-as part of the header of the class to be serialized.  In this case
-it would probably be best to include it in source module which
-implements the class.
+as part of the header of the class to be serialized. So, <b>the 
+best way to use <code style="white-space: normal">BOOST_CLASS_EXPORT</code>
+is to include it in the same module which implements the class</b>.
 
 <p>
 Strictly speaking, export should not be necessary if all pointer serialization
@@ -424,6 +425,42 @@ example, this code is loaded automatically when the program which
 uses it starts up, but it could just as well be loaded and unloaded 
 with an OS dependent API call.
 
+<h3><a name="plugins">Plugins</a></h3>
+In order to implement the library, various facilities for runtime
+manipulation of types are runtime were required.  These
+are <a target="detail" href="extended_type_info.html"><code>extended_type_info</code></a>
+for associating classes with external identifying strings (<b>GUID</b>)
+and <a target="detail" href="void_cast.html"><code>void_cast</code></a>
+for casting between pointers of related types.
+
+To complete the functionality of 
+<a target="detail" href="extended_type_info.html"><code>extended_type_info</code></a>
+the ability to construct and destroy corresponding types has been
+added.  In order to use this functionality, one must specify
+how each type is created.  This should be done at the time
+a class is exported.  So, a more complete example of the code above would be:
+
+<pre><code>
+#include &lt;boost/archive/text_oarchive.hpp&gt;
+#include &lt;boost/archive/text_oarchive.hpp&gt;
+... // other archives
+
+#include "a.hpp" // header declaration for class a
+
+// this class has a default constructor
+BOOST_SERIALIZATION_FACTORY_0(a)
+// as well as one that takes one integer argument
+BOOST_SERIALIZATION_FACTORY_1(a, int)
+
+// specify the GUID for this class
+BOOST_CLASS_EXPORT(a)
+... // other class headers and exports
+</code></pre>
+
+With this in place, one can construct, serialize and destroy
+about which only is know the <b>GUID</b> and a base class.
+
+
 <h3><a name="multi_threading">Multi-Threading</a></h3>
 The fundamental purpose of serialization would conflict with multiple 
 thread concurrently writing/reading from/to a single open archive instance.
@@ -439,7 +476,7 @@ lock-free thread-safe
 </a>
 described elsewhere in this documentation.
 <p>
-This singleton implemenation guarentees that all of this shared
+This singleton implementation guarentees that all of this shared
 information is initialized when the code module which contains
 them is loaded.  The serialization library takes care to
 ensure that these data structures are not subsequently

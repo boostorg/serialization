@@ -30,6 +30,7 @@ SOURCES =
     binary_oarchive
     extended_type_info
     extended_type_info_typeid
+    extended_type_info_no_rtti
     polymorphic_iarchive
     polymorphic_oarchive
     stl_port

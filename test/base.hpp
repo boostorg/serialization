@@ -29,8 +29,7 @@ class DLL_DECL polymorphic_base
     template<class Archive>
     void serialize(Archive & /* ar */, const unsigned int /* file_version */);
 public:
-    // msvc 7.1 has a link time problem with making this abstract - look in to this
-    virtual ~polymorphic_base() {} /* = 0 */;
+    virtual ~polymorphic_base(){};
 };
 
 //BOOST_IS_ABSTRACT(polymorphic_base)

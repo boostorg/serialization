@@ -18,6 +18,7 @@
 
 #include <boost/serialization/export.hpp>
 #include <boost/serialization/access.hpp>
+
 #include "base.hpp"
 
 #ifndef DLL_DECL

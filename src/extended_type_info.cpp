@@ -72,7 +72,7 @@ public:
     ~extended_type_info_arg(){
         m_key = NULL;
     }
-    virtual bool less_than(const extended_type_info &rhs) const {
+    virtual bool is_less_than(const extended_type_info &rhs) const {
         key_compare kc;
         return kc(this, & rhs);
     }
@@ -117,7 +117,7 @@ extended_type_info::find(const char *key) {
     return *(it);
 }
 
-BOOST_SERIALIZATION_DECL(BOOST_PP_EMPTY())  
+BOOST_SERIALIZATION_DECL(BOOST_PP_EMPTY())
 extended_type_info::extended_type_info(
     const unsigned int type_info_key
 ) :
@@ -136,10 +136,10 @@ extended_type_info::~extended_type_info(){
     key_unregister();
 }
 
-BOOST_SERIALIZATION_DECL(bool)
+BOOST_SERIALIZATION_DECL(bool)  
 extended_type_info::operator<(const extended_type_info &rhs) const {
     if(m_type_info_key == rhs.m_type_info_key){
-        return less_than(rhs);
+        return is_less_than(rhs);
     }
     if(m_type_info_key < rhs.m_type_info_key)
         return true;
@@ -148,13 +148,13 @@ extended_type_info::operator<(const extended_type_info &rhs) const {
 
 BOOST_SERIALIZATION_DECL(bool)
 extended_type_info::operator==(const extended_type_info &rhs) const {
+    // short cut for a common cases
     if(this == & rhs)
         return true;
-    if(*this < rhs)
+    if(m_type_info_key != rhs.m_type_info_key){
         return false;
-    if(rhs < *this)
-        return false;
-    return true;
+    }
+    return is_equal(rhs);
 };
 
 } // namespace serialization

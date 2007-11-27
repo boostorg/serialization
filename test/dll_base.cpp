@@ -28,7 +28,7 @@ void polymorphic_base::serialize(
 // for some reason this is required at least by MSVC
 // given that its declared virtual .. = 0;  This 
 // seems wrong to me but here it is.
-polymorphic_base::~polymorphic_base(){}
+//polymorphic_base::~polymorphic_base(){}
 
 // instantiate code for text archives
 #include <boost/archive/text_oarchive.hpp>

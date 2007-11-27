@@ -23,6 +23,7 @@ namespace std{
 #include <boost/serialization/nvp.hpp>
 
 #include "B.hpp"
+#include "A.ipp"
 
 int test_main( int argc, char* argv[] )
 {

@@ -36,4 +36,7 @@ void polymorphic_derived2::serialize(
 #include <boost/archive/polymorphic_iarchive.hpp>
 
 // note: export has to be AFTER #includes for all archive classes
+
+#include <boost/serialization/factory.hpp>
+BOOST_SERIALIZATION_FACTORY_0(polymorphic_derived2)
 BOOST_CLASS_EXPORT(polymorphic_derived2)

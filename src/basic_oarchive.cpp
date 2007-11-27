@@ -27,6 +27,7 @@
 #include <boost/archive/detail/basic_pointer_oserializer.hpp>
 #include <boost/archive/detail/basic_oarchive.hpp>
 #include <boost/archive/archive_exception.hpp>
+#include <boost/serialization/extended_type_info.hpp>
 
 #ifdef BOOST_MSVC
 #  pragma warning(push)
@@ -36,9 +37,6 @@
 using namespace boost::serialization;
 
 namespace boost {
-namespace serialization {
-    class extended_type_info;
-}
 namespace archive {
 namespace detail {
 

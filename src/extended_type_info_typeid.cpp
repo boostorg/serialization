@@ -34,7 +34,7 @@ struct type_compare
         const extended_type_info_typeid_0 * lhs,
         const extended_type_info_typeid_0 * rhs
     ) const {
-        return lhs->less_than(*rhs);
+        return lhs->is_less_than(*rhs);
     }
 };
 
@@ -42,15 +42,21 @@ typedef std::multiset<
     const extended_type_info_typeid_0 *,
     type_compare
 > tkmap;
-
+    
 BOOST_SERIALIZATION_DECL(bool) 
-extended_type_info_typeid_0::less_than(
+extended_type_info_typeid_0::is_less_than(
     const boost::serialization::extended_type_info & rhs
 ) const {
-    //assert(this->m_type_info_key == rhs.m_type_info_key);
     return m_ti->before(
         *(static_cast<const extended_type_info_typeid_0 &>(rhs).m_ti)
     );
+}
+
+BOOST_SERIALIZATION_DECL(bool) 
+extended_type_info_typeid_0::is_equal(
+    const boost::serialization::extended_type_info & rhs
+) const {
+    return * m_ti == *(static_cast<const extended_type_info_typeid_0 &>(rhs).m_ti);
 }
 
 BOOST_SERIALIZATION_DECL(BOOST_PP_EMPTY())
@@ -85,7 +91,7 @@ extended_type_info_typeid_0::type_unregister()
         if(this == *start){
             x.erase(start);
             break;
-        }
+    }
     }while(++start != end);
 
     m_ti = NULL;
@@ -112,7 +118,7 @@ BOOST_SERIALIZATION_DECL(const extended_type_info *)
 extended_type_info_typeid_0::get_extended_type_info(
     const std::type_info & ti
 ) const {
-	detail::extended_type_info_typeid_arg etia(ti);
+    detail::extended_type_info_typeid_arg etia(ti);
     const tkmap & t = singleton<tkmap>::get_const_instance();
     const tkmap::const_iterator it = t.find(& etia);
     if(t.end() == it)

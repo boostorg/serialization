@@ -156,12 +156,12 @@ bool A::operator==(const A &rhs) const
     return true;
 }
 
-inline bool A::operator!=(const A &rhs) const
+bool A::operator!=(const A &rhs) const
 {
     return ! (*this == rhs);
 }
 
-inline bool A::operator<(const A &rhs) const
+bool A::operator<(const A &rhs) const
 {
     if(b != rhs.b)
         return b < rhs.b;

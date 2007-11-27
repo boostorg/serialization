@@ -118,6 +118,9 @@ public:
     bool operator!=(const extended_type_info &rhs) const {
         return !(operator==(rhs));
     }
+    // for plugins
+    virtual void * construct(unsigned int count = 0, ...) const;
+    virtual void destroy(void const * const p) const;
     static const extended_type_info * find(const char *key);
 };
 
@@ -183,6 +186,39 @@ extended_type_info
 </code> 
 </a>
 objects. They a strict total ordering on all instances of this class.
+</dd>
+
+<dt><h4><pre><code>
+virtual void * construct(unsigned int count = 0, ...) const;
+</code></pre></h4></dt>
+<dd>
+Construct a new instance of the type to which this
+<a target="extended_type_info.hpp" href = "../../../boost/serialization/extended_type_info.hpp">
+<code style="white-space: normal">
+extended_type_info
+</code>
+</a>
+record corresponds. This function takes variable list of up to 4 arguments
+of any type.  These arguments are passed to the type's constructor
+at runtime.  In order to use the facility, 
+one must declare a type sequence for the constructor arguments.  
+Arguments for this function must match in number and type
+with those specified when the type was exported.  
+This function permits one to create instances of
+any exported type given only the exported <strong>GUID</strong> assigned
+with BOOST_CLASS_EXPORT.  
+If these types are defined in DLLS or shared libraries.  When these modules
+are loaded at runtime, these constructor can be called until the module
+is unloaded.  These modules are referred to as <b>plugin</b>. 
+</code>
+</dd>
+
+<dt><h4><pre><code>
+virtual void destroy(void const * const p) const;
+</code></pre></h4></dt>
+<dd>
+Destroy an instance created by the above constructor.
+</dd>
 
 <dt><h4><pre><code>
 static const extended_type_info * find(const char *key);
@@ -241,7 +277,8 @@ with a particular <code style="white-space: normal">extended_type_info</code> im
 bool ETI::less_than(const extended_type_info &rhs) const;
 </pre></code></h4></dt>
 <dd>
-Compare this instance to another one.
+Compare this instance to another one using the same
+<code style="white-space: normal">extended_type_info</code> implementation.
 </dd>
 </dl>
 

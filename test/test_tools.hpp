@@ -160,7 +160,7 @@ main(int argc, char * argv[]){
         test_main(argc, argv);
     }
     #ifndef BOOST_NO_EXCEPTION_STD_NAMESPACE
-        BOOST_CATCH(const std::exception e){
+        BOOST_CATCH(const std::exception & e){
             BOOST_ERROR(e.what());
         }
     #endif

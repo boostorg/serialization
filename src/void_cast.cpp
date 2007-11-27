@@ -24,6 +24,8 @@
 // BOOST
 #define BOOST_SERIALIZATION_SOURCE
 #include <boost/serialization/singleton.hpp>
+
+#define BOOST_SERIALIZATION_SOURCE
 #include <boost/serialization/extended_type_info.hpp>
 #include <boost/serialization/void_cast.hpp>
 
