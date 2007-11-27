@@ -21,7 +21,6 @@
 #include <boost/serialization/singleton.hpp>
 #include <boost/serialization/force_include.hpp>
 #include <boost/serialization/type_info_implementation.hpp>
-
 #include <boost/serialization/config.hpp>
 #include <boost/config/abi_prefix.hpp> // must be the last header
 

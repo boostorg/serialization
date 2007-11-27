@@ -19,18 +19,17 @@
 //  See http://www.boost.org for updates, documentation, and revision history.
 
 #include <typeinfo>
-#include <boost/config.hpp>
-#include <boost/detail/workaround.hpp>
+#include <cstdarg>
 
-//#include <boost/static_warning.hpp>
+#include <boost/config.hpp>
+
 #include <boost/static_assert.hpp>
 #include <boost/static_warning.hpp>
-#include <boost/type_traits/is_const.hpp>
 #include <boost/type_traits/is_polymorphic.hpp>
-#include <boost/preprocessor/stringize.hpp>
 
 #include <boost/serialization/singleton.hpp>
 #include <boost/serialization/extended_type_info.hpp>
+#include <boost/serialization/factory.hpp>
 
 #include <boost/config/abi_prefix.hpp> // must be the last header
 #ifdef BOOST_MSVC
@@ -55,7 +54,9 @@ protected:
     get_extended_type_info(const std::type_info & ti) const;
 public:
     virtual bool
-    less_than(const extended_type_info &rhs) const;
+    is_less_than(const extended_type_info &rhs) const;
+    virtual bool
+    is_equal(const extended_type_info &rhs) const;
     const std::type_info & get_typeid() const {
         return *m_ti;
     }
@@ -90,6 +91,30 @@ public:
             detail::extended_type_info_typeid_0::get_extended_type_info(
                 typeid(t)
             );
+    }
+    void * construct(unsigned int count, ...) const{
+        // count up the arguments
+        std::va_list ap;
+        va_start(ap, count);
+        switch(count){
+        case 0:
+            return factory<T, 0>(ap);
+        case 1:
+            return factory<T, 1>(ap);
+        case 2:
+            return factory<T, 2>(ap);
+        case 3:
+            return factory<T, 3>(ap);
+        case 4:
+            return factory<T, 4>(ap);
+        default:
+            assert(false); // too many arguments
+            // throw exception here?
+            return NULL;
+        }
+    }
+    void destroy(void const * const p) const{
+        delete static_cast<T const *>(p) ;
     }
 };
 

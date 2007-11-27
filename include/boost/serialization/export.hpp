@@ -48,8 +48,11 @@ namespace detail {
 
 class basic_pointer_iserializer;
 class basic_pointer_oserializer;
-class basic_iserializer;
-class basic_oserializer;
+
+template<class Archive, class T>
+class pointer_iserializer;
+template<class Archive, class T>
+class pointer_oserializer;
 
 template <class Archive, class Serializable>
 struct export_impl
@@ -106,7 +109,7 @@ BOOST_DLLEXPORT void ptr_serialization_support<Archive,Serializable>::instantiat
     );
 
     export_impl<Archive,Serializable>::enable_load(
-        BOOST_DEDUCED_TYPENAME Archive::is_loading::type::type()
+        BOOST_DEDUCED_TYPENAME Archive::is_loading()
     );
 }
 
@@ -114,12 +117,6 @@ template<class T>
 struct guid_initializer
 {  
     const guid_initializer & export_guid(char const* key, mpl::false_){
-        BOOST_STATIC_WARNING(boost::is_polymorphic<T>::value);
-        assert(NULL != key);
-        boost::serialization::singleton<
-            boost::serialization::type_info_implementation<T>::type
-        >::get_mutable_instance().key_register(key);
-
         // generates the statically-initialized objects whose constructors
         // register the information allowing serialization of T objects
         // through pointers to their base classes.
@@ -130,10 +127,16 @@ struct guid_initializer
         return *this;
     }
     const guid_initializer & export_guid(char const* key){
+        BOOST_STATIC_WARNING(boost::is_polymorphic<T>::value);
+        assert(NULL != key);
+        boost::serialization::singleton<
+            BOOST_DEDUCED_TYPENAME 
+            boost::serialization::type_info_implementation<T>::type
+        >::get_mutable_instance().key_register(key);
         // note: exporting an abstract base class will have no effect
         // and cannot be used to instantitiate serialization code
         // (one might be using this in a DLL to instantiate code)
-        BOOST_STATIC_WARNING(! boost::is_abstract<T>::value);
+        //BOOST_STATIC_WARNING(! boost::is_abstract<T>::value);
         return export_guid(key, serialization::is_abstract<T>());
     }
 };
