@@ -122,8 +122,8 @@ public:
 //        if(0 != (flags &  no_tracking))
 //            return false;
         return boost::serialization::tracking_level<T>::value == boost::serialization::track_always
-            || boost::serialization::tracking_level<T>::value == boost::serialization::track_selectively
-            && serialized_as_pointer();
+            || (boost::serialization::tracking_level<T>::value == boost::serialization::track_selectively
+                && serialized_as_pointer());
     }
     virtual unsigned int version() const {
         return ::boost::serialization::version<T>::value;
