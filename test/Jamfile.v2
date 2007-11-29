@@ -72,7 +72,7 @@ test-suite "serialization" :
 if ! $(BOOST_ARCHIVE_LIST) {
     test-suite "serialization2" : 
         [ test-bsl-run test_private_ctor ]
-        [ test-bsl-run test_reset_object_address ]
+        [ test-bsl-run test_reset_object_address : a ]
         [ test-bsl-run test_void_cast ]
         [ test-bsl-run test_mult_archive_types ]
         
