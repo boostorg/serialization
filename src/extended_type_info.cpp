@@ -55,7 +55,7 @@ struct key_compare
         // for exported types, use the string key so that
         // multiple instances in different translation units
         // can be matched up
-        return -1 == std::strcmp(l, r);
+        return std::strcmp(l, r) < 0;
     }
 };
 
@@ -71,10 +71,6 @@ public:
     }
     ~extended_type_info_arg(){
         m_key = NULL;
-    }
-    virtual bool is_less_than(const extended_type_info &rhs) const {
-        key_compare kc;
-        return kc(this, & rhs);
     }
 };
 
