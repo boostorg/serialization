@@ -160,7 +160,7 @@ basic_binary_iprimitive<Archive, Elem, Tr>::load_binary(
             boost::throw_exception(
                 archive_exception(archive_exception::stream_error)
             );
-        std::memcpy(address, &t, s);
+        std::memcpy(static_cast<char*>(address) + (count - s), &t, s);
     }
 }
 

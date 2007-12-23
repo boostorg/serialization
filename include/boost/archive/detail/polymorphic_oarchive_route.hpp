@@ -172,6 +172,7 @@ public:
     ) :
         ArchiveImplementation(os, flags)
     {}
+    virtual ~polymorphic_oarchive_route(){};
 };
 
 } // namespace detail

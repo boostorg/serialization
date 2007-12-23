@@ -184,6 +184,7 @@ public:
     ) :
         ArchiveImplementation(is, flags)
     {}
+    virtual ~polymorphic_iarchive_route(){};
 };
 
 } // namespace detail

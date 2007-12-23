@@ -375,6 +375,11 @@ struct load_non_pointer_type {
     > > >::type typex;
 
     static void invoke(Archive & ar, T &t){
+        // check that we're not trying to serialize something that
+        // has been marked not to be serialized.  If this your program
+        // traps here, you've tried to serialize a class whose trait
+        // has been marked "non-serializable". Either reset the trait
+        // (see level.hpp) or change program not to serialize items of this class
         BOOST_STATIC_ASSERT((
             mpl::greater_equal<
                 boost::serialization::implementation_level<T>, 
@@ -413,7 +418,7 @@ struct load_pointer_type {
         // virtual serialize functions used for plug-ins
         typedef BOOST_DEDUCED_TYPENAME
             mpl::eval_if<
-                serialization::is_abstract<T>,
+                serialization::is_abstract<const T>,
                 mpl::identity<abstract<T> >,
                 mpl::identity<non_abstract<T> >    
             >::type typex;
