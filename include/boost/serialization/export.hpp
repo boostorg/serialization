@@ -29,6 +29,9 @@
 #include <boost/preprocessor/stringize.hpp>
 #include <boost/type_traits/is_polymorphic.hpp>
 
+#ifndef BOOST_SERIALIZATION_DEFAULT_TYPE_INFO   
+    #include <boost/serialization/extended_type_info_typeid.hpp>   
+#endif 
 #include <boost/serialization/type_info_implementation.hpp>
 #include <boost/serialization/is_abstract.hpp>
 #include <boost/serialization/force_include.hpp>
@@ -103,7 +106,6 @@ struct ptr_serialization_support
 template <class Archive, class Serializable>
 BOOST_DLLEXPORT void ptr_serialization_support<Archive,Serializable>::instantiate()
 {
-    
     export_impl<Archive,Serializable>::enable_save(
         BOOST_DEDUCED_TYPENAME Archive::is_saving()
     );

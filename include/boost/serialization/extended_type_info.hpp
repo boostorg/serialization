@@ -19,6 +19,7 @@
 // for now, extended type info is part of the serialization libraries
 // this could change in the future.
 #include <cstdarg>
+#include <cassert>
 #include <boost/config.hpp>
 #include <boost/serialization/config.hpp>
 
@@ -89,6 +90,7 @@ public:
 #ifdef BOOST_MSVC
 #pragma warning(pop)
 #endif
+
 #include <boost/config/abi_suffix.hpp> // pops abi_suffix.hpp pragmas
 
 #endif // BOOST_SERIALIZATION_EXTENDED_TYPE_INFO_HPP

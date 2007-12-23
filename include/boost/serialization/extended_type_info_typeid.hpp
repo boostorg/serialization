@@ -26,6 +26,7 @@
 #include <boost/static_assert.hpp>
 #include <boost/static_warning.hpp>
 #include <boost/type_traits/is_polymorphic.hpp>
+#include <boost/type_traits/remove_const.hpp>
 
 #include <boost/serialization/singleton.hpp>
 #include <boost/serialization/extended_type_info.hpp>
@@ -98,15 +99,15 @@ public:
         va_start(ap, count);
         switch(count){
         case 0:
-            return factory<T, 0>(ap);
+            return factory<boost::remove_const<T>, 0>(ap);
         case 1:
-            return factory<T, 1>(ap);
+            return factory<boost::remove_const<T>, 1>(ap);
         case 2:
-            return factory<T, 2>(ap);
+            return factory<boost::remove_const<T>, 2>(ap);
         case 3:
-            return factory<T, 3>(ap);
+            return factory<boost::remove_const<T>, 3>(ap);
         case 4:
-            return factory<T, 4>(ap);
+            return factory<boost::remove_const<T>, 4>(ap);
         default:
             assert(false); // too many arguments
             // throw exception here?

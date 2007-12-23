@@ -32,7 +32,7 @@
 namespace boost { 
 namespace serialization { 
 
-//class BOOST_SERIALIZATION_DECL(BOOST_PP_EMPTY()) extended_type_info;
+class extended_type_info;
 
 // Given a void *, assume that it really points to an instance of one type
 // and alter it so that it would point to an instance of a related type.
@@ -104,6 +104,8 @@ class BOOST_SERIALIZATION_DECL(BOOST_PP_EMPTY()) void_caster
     // each derived class must re-implement these;
     virtual void const * upcast(void const * const t) const = 0;
     virtual void const * downcast(void const * const t) const = 0;
+    // cw 8.3 requires this!!
+    void_caster& operator=(void_caster const &);
 protected:
     void
     static_register() const;
@@ -116,9 +118,7 @@ public:
         extended_type_info const & base
     );
     virtual ~void_caster(){};
-private:
-    // cw 8.3 requires this!!
-    void_caster& operator=(void_caster const &);
+    bool operator==(const void_caster & rhs) const;
 };
 
 template <class Derived, class Base>
@@ -183,6 +183,10 @@ inline const void_cast_detail::void_caster & void_cast_register(
 
 } // namespace serialization
 } // namespace boost
+
+#ifdef BOOST_MSVC  
+#  pragma warning(pop)  
+#endif
 
 #include <boost/config/abi_suffix.hpp> // pops abi_suffix.hpp pragmas
 
