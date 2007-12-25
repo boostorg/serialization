@@ -154,7 +154,7 @@ namespace                                                                       
         BOOST_PP_CAT(boost_serialization_guid_initializer_, __LINE__)               \
         = ::boost::serialization::singleton<                                        \
             ::boost::archive::detail::guid_initializer< T >                         \
-             >::get_mutable_instance().export_guid(K);                              \
+          >::get_mutable_instance().export_guid(K);                                 \
 }
 
 // the following is solely to support de-serialization of pointers serialized
@@ -163,10 +163,12 @@ namespace                                                                       
 namespace                                                                           \
 {                                                                                   \
     ::boost::archive::detail::guid_initializer< T > const &                         \
-    BOOST_PP_CAT(boost_serialization_guid_initializer_, __LINE__ ## _1)             \
-        = ::boost::serialization::singleton<                                        \
+    BOOST_PP_CAT(                                                                   \
+        boost_serialization_guid_initializer_,                                      \
+        BOOST_PP_CAT(__LINE__,_1)                                                   \
+    ) = ::boost::serialization::singleton<                                          \
             ::boost::archive::detail::guid_initializer< T >                         \
-             >::get_mutable_instance().export_guid(K);                              \
+        >::get_mutable_instance().export_guid(K);                                   \
 }
 
 #if BOOST_WORKAROUND(__MWERKS__, BOOST_TESTED_AT(0x3205))
