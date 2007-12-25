@@ -19,8 +19,6 @@
 
 #include <boost/config.hpp> // msvc needs this to suppress warning
 
-#include "bidirectional_map.hpp"
-
 #include <cstring>
 #if defined(BOOST_NO_STDC_NAMESPACE)
 namespace std{ using ::strcmp; }
