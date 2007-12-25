@@ -18,6 +18,7 @@ namespace std{
 
 #include <boost/archive/basic_xml_archive.hpp>
 #include <boost/archive/basic_xml_oarchive.hpp>
+#include <boost/archive/xml_archive_exception.hpp>
 #include <boost/detail/no_exceptions_support.hpp>
 
 namespace boost {
@@ -78,7 +79,7 @@ basic_xml_oarchive<Archive>::write_attribute(
     this->This()->put(' ');
     this->This()->put(attribute_name);
     this->This()->put("=\"");
-    this->This()->put(key);
+    this->This()->save(key);
     this->This()->put('"');
 }
 
