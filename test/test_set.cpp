@@ -113,18 +113,14 @@ test_hash_set(){
         test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
         ia >> boost::serialization::make_nvp("ahash_set", ahash_set1);
     }
-    #if ! defined(__SGI_STL_PORT) || (__SGI_STL_PORT < 0x500)
-    BOOST_CHECK(ahash_set == ahash_set1);
-    #else
-        std::vector<A> tvec, tvec1;
-        tvec.clear();
-        tvec1.clear();
-        std::copy(ahash_set.begin(), ahash_set.end(), std::back_inserter(tvec));
-        std::sort(tvec.begin(), tvec.end());
-        std::copy(ahash_set1.begin(), ahash_set1.end(), std::back_inserter(tvec1));
-        std::sort(tvec1.begin(), tvec1.end());
-        BOOST_CHECK(tvec == tvec1);
-    #endif
+    std::vector<A> tvec, tvec1;
+    tvec.clear();
+    tvec1.clear();
+    std::copy(ahash_set.begin(), ahash_set.end(), std::back_inserter(tvec));
+    std::sort(tvec.begin(), tvec.end());
+    std::copy(ahash_set1.begin(), ahash_set1.end(), std::back_inserter(tvec1));
+    std::sort(tvec1.begin(), tvec1.end());
+    BOOST_CHECK(tvec == tvec1);
     std::remove(testfile);
 }
 
@@ -148,18 +144,14 @@ test_hash_multiset(){
         ia >> boost::serialization::make_nvp("ahash_multiset", ahash_multiset1);
     }
 
-    #if ! defined(__SGI_STL_PORT) || (__SGI_STL_PORT < 0x500)
-    BOOST_CHECK(ahash_multiset == ahash_multiset1);
-    #else
-        std::vector<A> tvec, tvec1;
-        tvec.clear();
-        tvec1.clear();
-        std::copy(ahash_multiset.begin(), ahash_multiset.end(), std::back_inserter(tvec));
-        std::sort(tvec.begin(), tvec.end());
-        std::copy(ahash_multiset1.begin(), ahash_multiset1.end(), std::back_inserter(tvec1));
-        std::sort(tvec1.begin(), tvec1.end());
-        BOOST_CHECK(tvec == tvec1);
-    #endif
+    std::vector<A> tvec, tvec1;
+    tvec.clear();
+    tvec1.clear();
+    std::copy(ahash_multiset.begin(), ahash_multiset.end(), std::back_inserter(tvec));
+    std::sort(tvec.begin(), tvec.end());
+    std::copy(ahash_multiset1.begin(), ahash_multiset1.end(), std::back_inserter(tvec1));
+    std::sort(tvec1.begin(), tvec1.end());
+    BOOST_CHECK(tvec == tvec1);
 
     std::remove(testfile);
 }

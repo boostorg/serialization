@@ -23,10 +23,28 @@
 #include <boost/config.hpp>
 #include <boost/detail/no_exceptions_support.hpp>
 
+#if defined(UNDER_CE)
+
+// Windows CE does not supply the tmpnam function in its CRT. 
+// Substitute a primitive implementation here.
+namespace boost {
+namespace archive {
+    char * tmpnam(char * buffer){
+        static char ibuffer [512];
+        if(NULL == buffer)
+            buffer = ibuffer;
+
+        static unsigned short index = 0;
+        std::sprintf(buffer, "\\tmpfile%05X.tmp", index++);
+        return buffer;
+    }
+} // archive
+} // boost
+
+#elif defined(_WIN32) || defined(__WIN32__) || defined(WIN32)
 // win32 has a brain-dead tmpnam implementation.
 // which leaves temp files in root directory 
 // regardless of environmental settings
-#if defined(_WIN32) || defined(__WIN32__) || defined(WIN32)
 
 #include <cstdlib>
 #include <cstring>
