@@ -27,15 +27,18 @@ http://www.boost.org/LICENSE_1_0.txt)
 <hr>
 <dl class="index">
   <dt><a href="#requirements">Requirements</a></dt>
+  <dt><a href="#differences_1_35">Differences from version 1.35</a></dt>
   <dt><a href="#differences_1_34">Differences from version 1.34</a></dt>
   <dt><a href="#differences_1_33">Differences from version 1.33</a></dt>
   <dt><a href="#differences_1_32">Differences from version 1.32</a></dt>
   <dt><a href="#todo">Pending Issues</a></dt>
 </dl>
-There are currently no known bugs. However, due to compiler/library quirks and or 
+As of this is written, there are no known bugs. However, due to compiler/library quirks and or 
 bugs, some tests fail with some combinations of compilers and libraries.
 <h2><a name="requirements"></a>Requirements</h2>
 This library has been tested on Boost version 1.34 and 1.35.
+
+<!--
 <p>
 The serialization library uses the boost spirit package to load XML archives.
 We have found that all tests pass using spirit 1.6x. Spirit 1.8 and higher does not work with
@@ -51,6 +54,36 @@ set SPIRIT_ROOT=c:/spirit16
 If you're not using bjam and the Jamfile to build the library, be sure that
 the directory which contains the version of spirit you plan to use is placed
 at the front of the list of include paths.
+-->
+
+<h2><a name="differences_1_35"></a>Differences from Boost 1.35</h2>
+<ul>
+    <li>The library is now thread safe.  That is, multiple archives can be open
+    in different threads.  This has been implmented with a lock-free algorithm
+    to avoid any performance bottlenecks.
+    <li>Serialization of types defined in shared libraries is now supported.
+    shared libraries (DLLS) can be loaded/unloaded dynamically at runtime.
+    This includes the serialization of types of abstract base classes so that
+    a program can be written so as to be compatible with as yet undefined
+    and un-implemented code.
+    <li>The extended type info system has been enhanced to in order to implement
+    the above.  It is now a general purpose system for creating and casting of
+    types about which is only known a string ID and an abstract base class.
+    <li>All bug reports filed as TRAK tickets have been addressed.
+    <li>As of this writing, the library will fail build on older compilers such
+    as MSVC before version 7.1 and older versions of Borland compilers.  This
+    may or maynot change in the future.
+    <li>In previous versions, all types serialized through a pointer were
+    automatically "registered" as a side-effect. This made it unnecessary to
+    explicitly register or export these types if they were subsequently
+    serialized through a pointer to a base class. On rare occasions this
+    created some difficulties by instantiating undesired code and made
+    the requirement for registration and/or export dependent on the sequence
+    of operations.  So any type that is to be serialized through a base
+    class pointer must be either explicitly registered or exported.  This
+    might break some code and result in the throwing of "unregistered type"
+    exception.
+</ul>
 
 <h2><a name="differences_1_34"></a>Differences from Boost 1.34</h2>
 <ul>
@@ -58,7 +91,6 @@ at the front of the list of include paths.
     <li>Improved implementation of "export" functionality.  Removes header ordering
         requirement and eliminates the maintenance of a pre-determined list of "known archives"
         By David Abrahams.
-    <li>Library is now thread-safe.
     <li>Improved support for STLPort.
 </ul>
 
@@ -99,8 +131,6 @@ at the front of the list of include paths.
 <h2><a name="todo"></a>Pending issues</h2>
 <ul>
     <li>Compile, and test on more platforms
-    <li>implement <code>is_virtual_base&lt;T&gt;</code> to automatically
-    eliminate redundancy in virtual base class serialization.
     <li>currently can't serialize through a pointer an object a of class
     that implements its own <code style="white-space: normal">new/delete</code> operators.
     <li>Its possible that <code style="white-space: normal">std::string</code>
