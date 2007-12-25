@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="7.10"
-	Name="test_zmisc"
+	Name="test_dll_exported"
 	ProjectGUID="{A7D4CC95-F2AC-11D6-9E47-525400E2CF85}"
-	RootNamespace="test_zmisc"
+	RootNamespace="test_dll_exported"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -21,7 +21,7 @@
 				Optimization="0"
 				ImproveFloatingPointConsistency="TRUE"
 				AdditionalIncludeDirectories="&quot;$(ProjectDir)..\..\..\&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;BOOST_LIB_DIAGNOSTIC=1;BOOST_DYN_LINK=1"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;BOOST_LIB_DIAGNOSTIC=1;BOOST_ALL_DYN_LINK=1"
 				SmallerTypeCheck="TRUE"
 				RuntimeLibrary="3"
 				BufferSecurityCheck="TRUE"
@@ -38,9 +38,10 @@
 			<Tool
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="TRUE"
+				AdditionalDependencies="dll_a.lib"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
-				AdditionalLibraryDirectories="&quot;$(ProjectDir../../../bin.v2/libs/serialization/build/msvc-7.1/debug/threading-multi&quot;"
+				AdditionalLibraryDirectories="&quot;$(ProjectDir)../../../bin.v2/libs/serialization/build/msvc-7.1/debug/threading-multi&quot;"
 				GenerateDebugInformation="TRUE"
 				SubSystem="1"/>
 			<Tool
@@ -350,18 +351,16 @@
 			Name="Debug runtime-dynamic threading-multi|Win32"
 			OutputDirectory="$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="1"
-			UseOfMFC="2"
-			UseOfATL="2">
+			ConfigurationType="1">
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/EHa"
 				Optimization="0"
 				ImproveFloatingPointConsistency="TRUE"
 				AdditionalIncludeDirectories="&quot;$(ProjectDir)..\..\..\&quot;"
-				PreprocessorDefinitions="BOOST_ARCHIVE_TEST=xml_archive.hpp;WIN32;_DEBUG;_CONSOLE;BOOST_LIB_DIAGNOSTIC=1;BOOST_ALL_DYN_LINK=1"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;BOOST_LIB_DIAGNOSTIC=1;BOOST_ALL_DYN_LINK=1"
 				RuntimeLibrary="3"
-				BufferSecurityCheck="FALSE"
+				BufferSecurityCheck="TRUE"
 				EnableFunctionLevelLinking="TRUE"
 				TreatWChar_tAsBuiltInType="TRUE"
 				ForceConformanceInForLoopScope="TRUE"
@@ -375,6 +374,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="TRUE"
+				AdditionalDependencies="derived2.lib base.lib"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
 				AdditionalLibraryDirectories="&quot;$(OutDir)&quot;"
@@ -408,7 +408,13 @@
 	</References>
 	<Files>
 		<File
-			RelativePath="..\test\test_zmisc.cpp">
+			RelativePath="..\test\base.hpp">
+		</File>
+		<File
+			RelativePath="..\test\derived2.hpp">
+		</File>
+		<File
+			RelativePath="..\test\test_dll_exported.cpp">
 		</File>
 	</Files>
 	<Globals>
