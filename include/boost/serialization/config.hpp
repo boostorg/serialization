@@ -12,7 +12,7 @@
 //----------------------------------------------------------------------------// 
 
 // This header implements separate compilation features as described in
-// http://www.boost.org/more/separate_compilation.html
+// http://www.boost.org/development/separate_compilation.html
 
 #include <boost/config.hpp>
 #include <boost/detail/workaround.hpp>

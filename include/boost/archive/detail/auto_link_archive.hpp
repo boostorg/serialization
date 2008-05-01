@@ -19,7 +19,7 @@
 //----------------------------------------------------------------------------// 
 
 // This header implements separate compilation features as described in
-// http://www.boost.org/more/separate_compilation.html
+// http://www.boost.org/development/separate_compilation.html
 
 //  enable automatic library variant selection  ------------------------------// 
 
