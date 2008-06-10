@@ -66,7 +66,7 @@ public:
   // the optimized implementation for vector uses serialization::array
   template<class ValueType, class Allocator>
   void load_optimized(
-    std::vector<ValueType, Allocator> &t, unsigned int version, mpl::true_)
+    std::vector<ValueType, Allocator> &t, unsigned int /*version*/, mpl::true_)
   {
     t.clear();
     // retrieve number of elements
@@ -92,7 +92,7 @@ public:
   template<class ValueType, class Allocator>
   void load_override(std::vector<ValueType,Allocator> &x, unsigned int version)
   {
-    typedef typename mpl::and_<
+    typedef BOOST_DEDUCED_TYPENAME mpl::and_<
       mpl::not_<is_same<ValueType,bool> >,
       mpl::apply1<
         BOOST_DEDUCED_TYPENAME Archive::use_array_optimization
@@ -105,7 +105,7 @@ public:
   template<class ValueType>
   void load_override(serialization::array<ValueType> const& x, unsigned int version)
   {
-    typedef typename mpl::apply1<
+    typedef BOOST_DEDUCED_TYPENAME mpl::apply1<
         BOOST_DEDUCED_TYPENAME Archive::use_array_optimization
       , ValueType
     >::type use_optimized;
