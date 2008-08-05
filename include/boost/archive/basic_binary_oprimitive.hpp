@@ -26,9 +26,9 @@
 #include <iosfwd>
 #include <cassert>
 #include <locale>
-#include <cstddef> // size_t
 #include <streambuf> // basic_streambuf
 #include <string>
+#include <cstddef> // size_t
 
 #include <boost/config.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)
@@ -120,13 +120,13 @@ public:
     // workaround without using mpl lambdas
     struct use_array_optimization {
       template <class T>
-      struct apply : public serialization::is_bitwise_serializable<T> {};
+      struct apply : public boost::serialization::is_bitwise_serializable<T> {};
     };
     
 
     // the optimized save_array dispatches to save_binary 
     template <class ValueType>
-    void save_array(serialization::array<ValueType> const& a, unsigned int)
+    void save_array(boost::serialization::array<ValueType> const& a, unsigned int)
     {
       save_binary(a.address(),a.count()*sizeof(ValueType));
     }

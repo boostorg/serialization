@@ -8,12 +8,19 @@
 
 // should pass compilation and execution
 
-#include <algorithm>
-#include <vector>
+#include <cstddef> // NULLsize_t
+#include <cstdio> // remove
 #include <fstream>
 
-#include <cstdio> // remove
+#include <algorithm>
+#include <vector>
+
 #include <boost/config.hpp>
+#if defined(BOOST_NO_STDC_NAMESPACE)
+namespace std{
+    using ::size_t;
+}
+#endif
 
 #include <boost/detail/workaround.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)

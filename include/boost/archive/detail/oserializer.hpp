@@ -23,6 +23,7 @@
 //  See http://www.boost.org for updates, documentation, and revision history.
 
 #include <cassert>
+#include <cstddef> // NULL
 
 #include <boost/config.hpp>
 #include <boost/detail/workaround.hpp>
@@ -37,7 +38,7 @@
 #include <boost/type_traits/is_const.hpp>
 //#include <boost/type_traits/is_same.hpp>
 #include <boost/type_traits/is_polymorphic.hpp>
-#include <boost/type_traits/remove_all_extents.hpp>
+#include <boost/type_traits/remove_extent.hpp>
 #include <boost/serialization/assume_abstract.hpp>
 
 #include <boost/mpl/eval_if.hpp>
@@ -104,16 +105,16 @@ private:
     // private constructor to inhibit any existence other than the 
     // static one
 public:
-    explicit oserializer() :
+    explicit BOOST_DLLEXPORT oserializer() :
         basic_oserializer(
             boost::serialization::type_info_implementation<T>::type
                 ::get_const_instance()
         )
     {}
-    virtual void save_object_data(
+    virtual BOOST_DLLEXPORT void save_object_data(
         basic_oarchive & ar,    
         const void *x
-    ) const ;
+    ) const BOOST_USED;
     virtual bool class_info() const {
         return boost::serialization::implementation_level<T>::value 
             >= boost::serialization::object_class_info;
@@ -133,7 +134,7 @@ public:
 };
 
 template<class Archive, class T>
-void oserializer<Archive, T>::save_object_data(
+BOOST_DLLEXPORT void oserializer<Archive, T>::save_object_data(
     basic_oarchive & ar,    
     const void *x
 ) const {
@@ -153,12 +154,12 @@ class pointer_oserializer
 {
     const basic_oserializer & get_basic_serializer() const;
 private:
-    virtual void save_object_ptr(
+    virtual BOOST_DLLEXPORT void save_object_ptr(
         basic_oarchive & ar,
         const void * x
-    ) const ;
+    ) const BOOST_USED;
 public:
-    explicit pointer_oserializer();
+    explicit BOOST_DLLEXPORT pointer_oserializer() BOOST_USED;
 };
 
 template<class Archive, class T>
@@ -170,7 +171,7 @@ pointer_oserializer<Archive, T>::get_basic_serializer() const {
 }
 
 template<class Archive, class T>
-void pointer_oserializer<Archive, T>::save_object_ptr(
+BOOST_DLLEXPORT void pointer_oserializer<Archive, T>::save_object_ptr(
     basic_oarchive & ar,
     const void * x
 ) const {
@@ -189,7 +190,7 @@ void pointer_oserializer<Archive, T>::save_object_ptr(
 }
 
 template<class Archive, class T>
-pointer_oserializer<Archive, T>::pointer_oserializer() :
+BOOST_DLLEXPORT pointer_oserializer<Archive, T>::pointer_oserializer() :
     archive_pointer_oserializer<Archive>(
         boost::serialization::type_info_implementation<T>::type
             ::get_const_instance()
@@ -351,8 +352,9 @@ struct save_pointer_type {
             Archive &ar, 
             T & t
         ){
-            BOOST_DEDUCED_TYPENAME boost::serialization::type_info_implementation<T>::type 
-                const & i = boost::serialization::type_info_implementation<T>::type
+            BOOST_DEDUCED_TYPENAME 
+            boost::serialization::type_info_implementation<T>::type const
+            & i = boost::serialization::type_info_implementation<T>::type
                     ::get_const_instance();
 
             boost::serialization::extended_type_info const * const this_type = & i;
@@ -381,7 +383,11 @@ struct save_pointer_type {
             }
             // convert pointer to more derived type. if this is thrown
             // it means that the base/derived relationship hasn't be registered
-            vp = serialization::void_downcast(*true_type, *this_type, &t);
+            vp = serialization::void_downcast(
+                *true_type, 
+                *this_type, 
+                static_cast<const void *>(&t)
+            );
             if(NULL == vp){
                 boost::throw_exception(
                     archive_exception(archive_exception::unregistered_cast)
@@ -464,7 +470,7 @@ template<class Archive, class T>
 struct save_array_type
 {
     static void invoke(Archive &ar, const T &t){
-        typedef BOOST_DEDUCED_TYPENAME remove_all_extents<T>::type value_type;
+        typedef BOOST_DEDUCED_TYPENAME boost::remove_extent<T>::type value_type;
         
         save_access::end_preamble(ar);
         // consider alignment

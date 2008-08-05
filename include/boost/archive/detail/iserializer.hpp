@@ -24,7 +24,7 @@
 
 #include <new>     // for placement new
 #include <memory>  // for auto_ptr
-#include <cstddef> // size_t
+#include <cstddef> // size_t, NULL
 
 #include <boost/config.hpp>
 #include <boost/detail/workaround.hpp>
@@ -43,7 +43,7 @@ namespace std{
 #include <boost/type_traits/is_enum.hpp>
 #include <boost/type_traits/is_const.hpp>
 #include <boost/type_traits/remove_const.hpp>
-#include <boost/type_traits/remove_all_extents.hpp>
+#include <boost/type_traits/remove_extent.hpp>
 #include <boost/serialization/assume_abstract.hpp>
 #include <boost/type_traits/is_polymorphic.hpp>
 
@@ -67,6 +67,7 @@ namespace std{
 #include <boost/archive/detail/basic_iarchive.hpp>
 #include <boost/archive/detail/basic_iserializer.hpp>
 #include <boost/archive/detail/archive_pointer_iserializer.hpp>
+#include <boost/archive/archive_exception.hpp>
 
 #include <boost/serialization/serialization.hpp>
 #include <boost/serialization/version.hpp>
@@ -115,11 +116,11 @@ public:
                 ::get_const_instance()
         )
     {}
-    virtual void load_object_data(
+    virtual BOOST_DLLEXPORT void load_object_data(
         basic_iarchive & ar,
         void *x, 
         const unsigned int file_version
-    ) const;
+    ) const BOOST_USED;
     virtual bool class_info() const {
         return boost::serialization::implementation_level<T>::value 
             >= boost::serialization::object_class_info;
@@ -141,7 +142,7 @@ public:
 };
 
 template<class Archive, class T>
-void iserializer<Archive, T>::load_object_data(
+BOOST_DLLEXPORT void iserializer<Archive, T>::load_object_data(
     basic_iarchive & ar,
     void *x, 
     const unsigned int file_version
@@ -165,11 +166,11 @@ private:
             iserializer<Archive, T>
         >::get_const_instance();
     }
-    virtual void load_object_ptr(
+    BOOST_DLLEXPORT virtual void load_object_ptr(
         basic_iarchive & ar, 
         void * & x,
         const unsigned int file_version
-    ) const ;
+    ) const BOOST_USED;
 public:
     pointer_iserializer();
 };
@@ -245,7 +246,7 @@ private:
 };
 
 template<class Archive, class T>
-void pointer_iserializer<Archive, T>::load_object_ptr(
+BOOST_DLLEXPORT void pointer_iserializer<Archive, T>::load_object_ptr(
     basic_iarchive & ar, 
     void * & x,
     const unsigned int file_version
@@ -469,7 +470,7 @@ struct load_enum_type {
 template<class Archive, class T>
 struct load_array_type {
     static void invoke(Archive &ar, T &t){
-        typedef BOOST_DEDUCED_TYPENAME remove_all_extents<T>::type value_type;
+        typedef BOOST_DEDUCED_TYPENAME remove_extent<T>::type value_type;
         
         // convert integers to correct enum to load
         int current_count = sizeof(t) / (
