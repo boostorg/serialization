@@ -14,10 +14,11 @@
 // As this program uses RTTI for one of the types, the test will fail
 // on a system for which RTTI is not enabled or not existent.
 
+#include <cstddef>
 #include <fstream>
 
-#include <cstdio> // remove
 #include <boost/config.hpp>
+#include <cstdio> // remove
 #if defined(BOOST_NO_STDC_NAMESPACE)
 namespace std{ 
     using ::remove;
@@ -49,7 +50,8 @@ public:
     virtual ~polymorphic_base(){};
 };
 
-BOOST_IS_ABSTRACT(polymorphic_base)
+BOOST_SERIALIZATION_ASSUME_ABSTRACT(polymorphic_base)
+
 BOOST_CLASS_TYPE_INFO(
     polymorphic_base,
     extended_type_info_no_rtti<polymorphic_base>
@@ -75,10 +77,10 @@ BOOST_CLASS_TYPE_INFO(
 BOOST_CLASS_EXPORT(polymorphic_derived1)
 
 const char * polymorphic_derived1::get_key() const {
-    const boost::serialization::extended_type_info *eti
-        = boost::serialization::type_info_implementation<polymorphic_derived1>
-            ::type::get_instance();
-    return eti->get_key();
+    return
+        boost::serialization::type_info_implementation<
+            polymorphic_derived1
+        >::type::get_const_instance().get_key();
 }
 
 class polymorphic_derived2 : public polymorphic_base
@@ -102,10 +104,10 @@ BOOST_CLASS_EXPORT(polymorphic_derived2)
 
 const char * polymorphic_derived2::get_key() const {
     // use the exported key as the identifier
-    const boost::serialization::extended_type_info *eti
-        = boost::serialization::type_info_implementation<polymorphic_derived2>
-        ::type::get_instance();
-    return eti->get_key();
+    return
+        boost::serialization::type_info_implementation<
+            polymorphic_derived2
+        >::type::get_const_instance().get_key();
 }
 
 // save derived polymorphic class
@@ -144,20 +146,28 @@ void load_derived(const char *testfile)
     ia >> BOOST_SERIALIZATION_NVP(rd1);
 
     BOOST_CHECK_MESSAGE(
-        boost::serialization::type_info_implementation<polymorphic_derived1>
-            ::type::get_instance()
-        == boost::serialization::type_info_implementation<polymorphic_derived1>
-            ::type::get_derived_extended_type_info(*rd1),
+        boost::serialization::type_info_implementation<
+            polymorphic_derived1
+        >::type::get_const_instance()
+        == 
+        * boost::serialization::type_info_implementation<
+            polymorphic_derived1
+        >::type::get_const_instance().get_derived_extended_type_info(*rd1)
+        ,
         "restored pointer d1 not of correct type"
     );
 
     ia >> BOOST_SERIALIZATION_NVP(rd2);
 
     BOOST_CHECK_MESSAGE(
-        boost::serialization::type_info_implementation<polymorphic_derived2>
-            ::type::get_instance()
-        == boost::serialization::type_info_implementation<polymorphic_derived2>
-            ::type::get_derived_extended_type_info(*rd2),
+        boost::serialization::type_info_implementation<
+            polymorphic_derived2
+        >::type::get_const_instance()
+        == 
+        * boost::serialization::type_info_implementation<
+            polymorphic_derived2
+        >::type::get_const_instance().get_derived_extended_type_info(*rd2)
+        ,
         "restored pointer d2 not of correct type"
     );
 
@@ -175,10 +185,14 @@ void load_derived(const char *testfile)
     );
 
     BOOST_CHECK_MESSAGE(
-        boost::serialization::type_info_implementation<polymorphic_derived1>
-            ::type::get_instance()
-        == boost::serialization::type_info_implementation<polymorphic_base>
-            ::type::get_derived_extended_type_info(*rb1),
+        boost::serialization::type_info_implementation<
+            polymorphic_derived1
+        >::type::get_const_instance()
+        == 
+        * boost::serialization::type_info_implementation<
+            polymorphic_base
+        >::type::get_const_instance().get_derived_extended_type_info(*rb1)
+        ,
         "restored pointer b1 not of correct type"
     );
 
@@ -190,10 +204,14 @@ void load_derived(const char *testfile)
     );
 
     BOOST_CHECK_MESSAGE(
-        boost::serialization::type_info_implementation<polymorphic_derived2>
-            ::type::get_instance()
-        == boost::serialization::type_info_implementation<polymorphic_base>
-            ::type::get_derived_extended_type_info(*rb2),
+        boost::serialization::type_info_implementation<
+            polymorphic_derived2
+        >::type::get_const_instance()
+        == 
+        * boost::serialization::type_info_implementation<
+            polymorphic_base
+        >::type::get_const_instance().get_derived_extended_type_info(*rb2)
+        ,
         "restored pointer b2 not of correct type"
     );
 

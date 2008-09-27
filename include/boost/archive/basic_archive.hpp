@@ -17,7 +17,7 @@
 //  See http://www.boost.org for updates, documentation, and revision history.
 
 #include <boost/config.hpp>
-#include <boost/strong_typedef.hpp>
+#include <boost/serialization/strong_typedef.hpp>
 #include <boost/noncopyable.hpp>
 
 #include <boost/archive/detail/auto_link_archive.hpp>
@@ -86,17 +86,17 @@ enum archive_flags {
     no_header = 1,  // suppress archive header info
     no_codecvt = 2,  // suppress alteration of codecvt facet
     no_xml_tag_checking = 4,   // suppress checking of xml tags
-    no_tracking = 8           // suppress ALL tracking
-//    no_object_creation = 16    // don't create any new objects
+    no_tracking = 8,           // suppress ALL tracking
+    flags_last = 8
 };
 
 #define NULL_POINTER_TAG class_id_type(-1)
 
 BOOST_ARCHIVE_DECL(const char *)
-ARCHIVE_SIGNATURE();
+BOOST_ARCHIVE_SIGNATURE();
 
 BOOST_ARCHIVE_DECL(unsigned char)
-ARCHIVE_VERSION();
+BOOST_ARCHIVE_VERSION();
 
 }// namespace archive
 }// namespace boost

@@ -8,7 +8,8 @@
 
 //  See http://www.boost.org for updates, documentation, and revision history.
 
-#include <boost/pfto.hpp>
+#include <cstddef> // NULL
+#include <boost/serialization/pfto.hpp>
 
 #include <boost/archive/basic_text_oprimitive.hpp>
 #include <boost/archive/codecvt_null.hpp>
@@ -35,7 +36,9 @@ basic_text_oprimitive<OStream>::save_binary(
         return;
     
     if(os.fail())
-        boost::throw_exception(archive_exception(archive_exception::stream_error));
+        boost::serialization::throw_exception(
+            archive_exception(archive_exception::stream_error)
+        );
         
     os.put('\n');
     
@@ -61,12 +64,13 @@ basic_text_oprimitive<OStream>::save_binary(
         ),
         oi
     );
-    std::size_t padding = 2 - count % 3;
-    if(padding > 1)
-        *oi = '=';
-        if(padding > 2)
+    
+    std::size_t tail = count % 3;
+    if(tail > 0){
+        *oi++ = '=';
+        if(tail < 2)
             *oi = '=';
-
+    }
 }
 
 template<class OStream>
@@ -75,6 +79,7 @@ basic_text_oprimitive<OStream>::basic_text_oprimitive(
     OStream & os_,
     bool no_codecvt
 ) : 
+#ifndef BOOST_NO_STD_LOCALE
     os(os_),
     flags_saver(os_),
     precision_saver(os_),
@@ -92,6 +97,12 @@ basic_text_oprimitive<OStream>::basic_text_oprimitive(
     }
     os << std::noboolalpha;
 }
+#else
+    os(os_),
+    flags_saver(os_),
+    precision_saver(os_)
+{}
+#endif
 
 template<class OStream>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL(BOOST_PP_EMPTY())

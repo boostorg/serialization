@@ -8,10 +8,12 @@
 
 // should pass compilation and execution
 
+#include <cstddef> // NULL
+#include <cstdio> // remove
 #include <fstream>
+
 #include <boost/config.hpp>
 
-#include <cstdio> // remove
 #if defined(BOOST_NO_STDC_NAMESPACE)
 namespace std{ 
     using ::remove;
@@ -21,12 +23,11 @@ namespace std{
 
 #include <boost/archive/archive_exception.hpp>
 #include "test_tools.hpp"
-#include <boost/preprocessor/stringize.hpp>
-#include BOOST_PP_STRINGIZE(BOOST_ARCHIVE_TEST)
 
 #include <boost/serialization/optional.hpp>
 
 #include "A.hpp"
+#include "A.ipp"
 
 int test_main( int /* argc */, char* /* argv */[] )
 {
@@ -37,7 +38,7 @@ int test_main( int /* argc */, char* /* argv */[] )
     const boost::optional<int> aoptional2(123);
     {   
         test_ostream os(testfile, TEST_STREAM_FLAGS);
-        test_oarchive oa(os);
+        test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
         oa << boost::serialization::make_nvp("aoptional1",aoptional1);
         oa << boost::serialization::make_nvp("aoptional2",aoptional2);
     }
@@ -47,7 +48,7 @@ int test_main( int /* argc */, char* /* argv */[] )
 
     {
         test_istream is(testfile, TEST_STREAM_FLAGS);
-        test_iarchive ia(is);
+        test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
         ia >> boost::serialization::make_nvp("aoptional1",aoptional1a);
         ia >> boost::serialization::make_nvp("aoptional2",aoptional2a);
     }

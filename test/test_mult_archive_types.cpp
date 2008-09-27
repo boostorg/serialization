@@ -6,10 +6,11 @@
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
+#include <cstddef>
 #include <fstream>
 
-#include <cstdio> // remove
 #include <boost/config.hpp>
+#include <cstdio> // remove
 #if defined(BOOST_NO_STDC_NAMESPACE)
 namespace std{ 
     using ::remove;
@@ -21,8 +22,6 @@ namespace std{
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/archive/xml_iarchive.hpp>
 #include "test_tools.hpp"
-#include <boost/preprocessor/stringize.hpp>
-#include BOOST_PP_STRINGIZE(BOOST_ARCHIVE_TEST)
 
 #include <boost/serialization/export.hpp>
 #include <boost/serialization/nvp.hpp>
@@ -44,6 +43,7 @@ public:
     virtual ~A(){--count;}   // default destructor
 };
 
+BOOST_CLASS_EXPORT(A)
 
 // B is a subclass of A
 class B : public A
@@ -61,7 +61,6 @@ public:
     virtual ~B() {};
 };
 
-BOOST_CLASS_EXPORT(A)
 BOOST_CLASS_EXPORT(B)
 
 int A::count = 0;

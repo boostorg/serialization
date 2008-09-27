@@ -8,11 +8,10 @@
 
 // test implementation level "primitive_type"
 
+#include <cstddef> // NULL
 #include <fstream>
 
 #include "test_tools.hpp"
-#include <boost/preprocessor/stringize.hpp>
-#include BOOST_PP_STRINGIZE(BOOST_ARCHIVE_TEST)
 
 #include <boost/serialization/level.hpp>
 #include <boost/serialization/nvp.hpp>
@@ -39,14 +38,14 @@ BOOST_CLASS_IMPLEMENTATION(A, boost::serialization::primitive_type)
 void out(const char *testfile, A & a)
 {
     test_ostream os(testfile, TEST_STREAM_FLAGS);
-    test_oarchive oa(os);
+    test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
     oa << BOOST_SERIALIZATION_NVP(a);
 }
 
 void in(const char *testfile, A & a)
 {
     test_istream is(testfile, TEST_STREAM_FLAGS);
-    test_iarchive ia(is);
+    test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
     ia >> BOOST_SERIALIZATION_NVP(a);
 }
 

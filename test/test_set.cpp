@@ -8,12 +8,19 @@
 
 // should pass compilation and execution
 
-#include <algorithm>
-#include <vector>
+#include <cstddef> // NULLsize_t
+#include <cstdio> // remove
 #include <fstream>
 
-#include <cstdio> // remove
+#include <algorithm>
+#include <vector>
+
 #include <boost/config.hpp>
+#if defined(BOOST_NO_STDC_NAMESPACE)
+namespace std{
+    using ::size_t;
+}
+#endif
 
 #include <boost/detail/workaround.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)
@@ -25,13 +32,12 @@ namespace std{
 #include <boost/archive/archive_exception.hpp>
 
 #include "test_tools.hpp"
-#include <boost/preprocessor/stringize.hpp>
-#include BOOST_PP_STRINGIZE(BOOST_ARCHIVE_TEST)
 
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/set.hpp>
 
 #include "A.hpp"
+#include "A.ipp"
 
 void
 test_set(){
@@ -44,13 +50,13 @@ test_set(){
     aset.insert(A());
     {   
         test_ostream os(testfile, TEST_STREAM_FLAGS);
-        test_oarchive oa(os);
+        test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
         oa << boost::serialization::make_nvp("aset", aset);
     }
     std::set<A> aset1;
     {
         test_istream is(testfile, TEST_STREAM_FLAGS);
-        test_iarchive ia(is);
+        test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
         ia >> boost::serialization::make_nvp("aset", aset1);
     }
     BOOST_CHECK(aset == aset1);
@@ -67,13 +73,13 @@ test_multiset(){
     amultiset.insert(A());
     {   
         test_ostream os(testfile, TEST_STREAM_FLAGS);
-        test_oarchive oa(os);
+        test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
         oa << boost::serialization::make_nvp("amultiset", amultiset);
     }
     std::multiset<A> amultiset1;
     {
         test_istream is(testfile, TEST_STREAM_FLAGS);
-        test_iarchive ia(is);
+        test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
         ia >> boost::serialization::make_nvp("amultiset", amultiset1);
     }
     BOOST_CHECK(amultiset == amultiset1);
@@ -105,27 +111,23 @@ test_hash_set(){
     ahash_set.insert(a1);
     {   
         test_ostream os(testfile, TEST_STREAM_FLAGS);
-        test_oarchive oa(os);
+        test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
         oa << boost::serialization::make_nvp("ahash_set", ahash_set);
     }
     BOOST_STD_EXTENSION_NAMESPACE::hash_set<A> ahash_set1;
     {
         test_istream is(testfile, TEST_STREAM_FLAGS);
-        test_iarchive ia(is);
+        test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
         ia >> boost::serialization::make_nvp("ahash_set", ahash_set1);
     }
-    #if ! defined(__SGI_STL_PORT) || (__SGI_STL_PORT < 0x500)
-    BOOST_CHECK(ahash_set == ahash_set1);
-    #else
-        std::vector<A> tvec, tvec1;
-        tvec.clear();
-        tvec1.clear();
-        std::copy(ahash_set.begin(), ahash_set.end(), std::back_inserter(tvec));
-        std::sort(tvec.begin(), tvec.end());
-        std::copy(ahash_set1.begin(), ahash_set1.end(), std::back_inserter(tvec1));
-        std::sort(tvec1.begin(), tvec1.end());
-        BOOST_CHECK(tvec == tvec1);
-    #endif
+    std::vector<A> tvec, tvec1;
+    tvec.clear();
+    tvec1.clear();
+    std::copy(ahash_set.begin(), ahash_set.end(), std::back_inserter(tvec));
+    std::sort(tvec.begin(), tvec.end());
+    std::copy(ahash_set1.begin(), ahash_set1.end(), std::back_inserter(tvec1));
+    std::sort(tvec1.begin(), tvec1.end());
+    BOOST_CHECK(tvec == tvec1);
     std::remove(testfile);
 }
 
@@ -139,28 +141,24 @@ test_hash_multiset(){
     ahash_multiset.insert(A());
     {   
         test_ostream os(testfile, TEST_STREAM_FLAGS);
-        test_oarchive oa(os);
+        test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
         oa << boost::serialization::make_nvp("ahash_multiset", ahash_multiset);
     }
     BOOST_STD_EXTENSION_NAMESPACE::hash_multiset<A> ahash_multiset1;
     {
         test_istream is(testfile, TEST_STREAM_FLAGS);
-        test_iarchive ia(is);
+        test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
         ia >> boost::serialization::make_nvp("ahash_multiset", ahash_multiset1);
     }
 
-    #if ! defined(__SGI_STL_PORT) || (__SGI_STL_PORT < 0x500)
-    BOOST_CHECK(ahash_multiset == ahash_multiset1);
-    #else
-        std::vector<A> tvec, tvec1;
-        tvec.clear();
-        tvec1.clear();
-        std::copy(ahash_multiset.begin(), ahash_multiset.end(), std::back_inserter(tvec));
-        std::sort(tvec.begin(), tvec.end());
-        std::copy(ahash_multiset1.begin(), ahash_multiset1.end(), std::back_inserter(tvec1));
-        std::sort(tvec1.begin(), tvec1.end());
-        BOOST_CHECK(tvec == tvec1);
-    #endif
+    std::vector<A> tvec, tvec1;
+    tvec.clear();
+    tvec1.clear();
+    std::copy(ahash_multiset.begin(), ahash_multiset.end(), std::back_inserter(tvec));
+    std::sort(tvec.begin(), tvec.end());
+    std::copy(ahash_multiset1.begin(), ahash_multiset1.end(), std::back_inserter(tvec1));
+    std::sort(tvec1.begin(), tvec1.end());
+    BOOST_CHECK(tvec == tvec1);
 
     std::remove(testfile);
 }

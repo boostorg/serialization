@@ -26,7 +26,7 @@
 
 #include <cassert>
 #include <boost/config.hpp>
-#include <boost/pfto.hpp>
+#include <boost/serialization/pfto.hpp>
 #include <boost/detail/workaround.hpp>
 
 #include <boost/archive/detail/common_oarchive.hpp>
@@ -38,7 +38,7 @@ namespace boost {
 namespace archive {
 
 /////////////////////////////////////////////////////////////////////////
-// class basic_text_iarchive - read serialized objects from a input text stream
+// class basic_text_oarchive 
 template<class Archive>
 class basic_text_oarchive : 
     public detail::common_oarchive<Archive>

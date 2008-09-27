@@ -26,9 +26,9 @@
 #include <iosfwd>
 #include <cassert>
 #include <locale>
-#include <cstddef> // size_t
 #include <streambuf> // basic_streambuf
 #include <string>
+#include <cstddef> // size_t
 
 #include <boost/config.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)
@@ -41,12 +41,12 @@ namespace std{
 //#include <boost/limits.hpp>
 //#include <boost/io/ios_state.hpp>
 #include <boost/scoped_ptr.hpp>
-#include <boost/throw_exception.hpp>
+#include <boost/serialization/throw_exception.hpp>
 
 #include <boost/archive/basic_streambuf_locale_saver.hpp>
 #include <boost/archive/archive_exception.hpp>
 #include <boost/archive/detail/auto_link_archive.hpp>
-#include <boost/type_traits/is_fundamental.hpp>
+#include <boost/serialization/is_bitwise_serializable.hpp>
 #include <boost/mpl/placeholders.hpp>
 #include <boost/serialization/array.hpp>
 #include <boost/archive/detail/abi_prefix.hpp> // must be the last header
@@ -71,9 +71,10 @@ public:
     Archive * This(){
         return static_cast<Archive *>(this);
     }
+    #ifndef BOOST_NO_STD_LOCALE
     boost::scoped_ptr<std::locale> archive_locale;
     basic_streambuf_locale_saver<Elem, Tr> locale_saver;
-
+    #endif
     // default saving of primitives.
     template<class T>
     void save(const T & t)
@@ -87,8 +88,7 @@ public:
     // trap usage of invalid uninitialized boolean which would
     // otherwise crash on load.
     void save(const bool t){
-        int i = t;
-        assert(0 == i || 1 == i);
+        assert(0 == static_cast<int>(t) || 1 == static_cast<int>(t));
         save_binary(& t, sizeof(t));
     }
     BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
@@ -113,12 +113,20 @@ public:
     BOOST_ARCHIVE_OR_WARCHIVE_DECL(BOOST_PP_EMPTY()) 
     ~basic_binary_oprimitive();
 public:
+
     // we provide an optimized save for all fundamental types
-    typedef is_fundamental<mpl::_1> use_array_optimization;
+    // typedef serialization::is_bitwise_serializable<mpl::_1> 
+    //  use_array_optimization;
+    // workaround without using mpl lambdas
+    struct use_array_optimization {
+      template <class T>
+      struct apply : public boost::serialization::is_bitwise_serializable<T> {};
+    };
+    
 
     // the optimized save_array dispatches to save_binary 
     template <class ValueType>
-    void save_array(serialization::array<ValueType> const& a, unsigned int)
+    void save_array(boost::serialization::array<ValueType> const& a, unsigned int)
     {
       save_binary(a.address(),a.count()*sizeof(ValueType));
     }
@@ -140,7 +148,9 @@ basic_binary_oprimitive<Archive, Elem, Tr>::save_binary(
     // mode where by cr characters recieve special treatment.
     // be sure that the output stream is opened with ios::binary
     //if(os.fail())
-    //    boost::throw_exception(archive_exception(archive_exception::stream_error));
+    //    boost::serialization::throw_exception(
+    //        archive_exception(archive_exception::stream_error)
+    //    );
     // figure number of elements to output - round up
     count = ( count + sizeof(Elem) - 1) 
         / sizeof(Elem);
@@ -149,7 +159,9 @@ basic_binary_oprimitive<Archive, Elem, Tr>::save_binary(
         count
     );
     if(count != static_cast<std::size_t>(scount))
-        boost::throw_exception(archive_exception(archive_exception::stream_error));
+        boost::serialization::throw_exception(
+            archive_exception(archive_exception::stream_error)
+        );
     //os.write(
     //    static_cast<const BOOST_DEDUCED_TYPENAME OStream::char_type *>(address), 
     //    count

@@ -20,7 +20,7 @@
 #include <boost/archive/detail/interface_iarchive.hpp>
 #include <boost/archive/detail/iserializer.hpp>
 #include <boost/archive/detail/register_archive.hpp>
-#include <boost/pfto.hpp>
+#include <boost/serialization/pfto.hpp>
 
 namespace boost {
 namespace archive {
@@ -60,8 +60,8 @@ protected:
     }
     // default implementations of functions which emit start/end tags for
     // archive types that require them.
-    void load_start(const char *name){}
-    void load_end(const char *name){}
+    void load_start(const char * /*name*/){}
+    void load_end(const char * /*name*/){}
     // default archive initialization
     common_iarchive(unsigned int flags = 0) : 
         basic_iarchive(flags),

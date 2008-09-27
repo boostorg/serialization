@@ -12,10 +12,12 @@
 // a) non-intrusive method of implementing serialization
 // b) usage of a non-default constructor
 
+#include <cstddef> // NULL
+#include <cstdio>  // remove()
 #include <fstream>
 #include <cstdlib> // for rand()
-#include <cstdio>  // remove()
 #include <cmath> // for fabs()
+#include <limits> 
 
 #include <boost/config.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)
@@ -23,13 +25,12 @@ namespace std{
     using ::rand; 
     using ::fabs; 
     using ::remove;
+    using ::numeric_limits;
 }
 #endif
 
 #include <boost/archive/archive_exception.hpp>
 #include "test_tools.hpp"
-#include <boost/preprocessor/stringize.hpp>
-#include BOOST_PP_STRINGIZE(BOOST_ARCHIVE_TEST)
 
 ///////////////////////////////////////////////////////
 // simple class test - using non-intrusive syntax
@@ -123,7 +124,7 @@ template<class Archive>
 inline void save_construct_data(
     Archive & ar, 
     const A * a, 
-    const unsigned int /* file_version */
+    const BOOST_PFTO unsigned int /* file_version */
 ){
     // variable used for construction
     ar << boost::serialization::make_nvp("i", a->get_i());
@@ -145,7 +146,7 @@ inline void load_construct_data(
 
 void save(const char * testfile){
     test_ostream os(testfile, TEST_STREAM_FLAGS);
-    test_oarchive oa(os);
+    test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
     A a(2);
 
     oa << BOOST_SERIALIZATION_NVP(a);
@@ -162,7 +163,7 @@ void save(const char * testfile){
 }
 void load(const char * testfile){
     test_istream is(testfile, TEST_STREAM_FLAGS);
-    test_iarchive ia(is);
+    test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
 
     A a(4);
     ia >> BOOST_SERIALIZATION_NVP(a);

@@ -24,11 +24,12 @@
 // for head_iterator test
 //#include <boost/bind.hpp> 
 #include <boost/function.hpp>
-#include <boost/pfto.hpp>
+#include <boost/serialization/pfto.hpp>
 
 #include <boost/io/ios_state.hpp>
-#include <boost/throw_exception.hpp>
+#include <boost/serialization/throw_exception.hpp>
 #include <boost/archive/impl/basic_xml_grammar.hpp>
+#include <boost/archive/xml_archive_exception.hpp>
 #include <boost/archive/basic_xml_archive.hpp>
 #include <boost/archive/iterators/xml_unescape.hpp>
 
@@ -128,7 +129,7 @@ template<class String>
 struct append_char {
     String & contents;
     void operator()(const unsigned int char_value) const {
-        const typename String::value_type z = char_value;
+        const BOOST_DEDUCED_TYPENAME String::value_type z = char_value;
         contents += z;
     }
     append_char(String & contents_)
@@ -141,7 +142,7 @@ struct append_lit {
     String & contents;
     template<class X, class Y>
     void operator()(const X & /*x*/, const Y & /*y*/) const {
-        const typename String::value_type z = c;
+        const BOOST_DEDUCED_TYPENAME String::value_type z = c;
         contents += z;
     }
     append_lit(String & contents_)
@@ -156,9 +157,9 @@ bool basic_xml_grammar<CharType>::my_parse(
     BOOST_DEDUCED_TYPENAME basic_xml_grammar<CharType>::IStream & is,
     const rule_t & rule_,
     CharType delimiter
-){
+) const {
     if(is.fail()){
-        boost::throw_exception(
+        boost::serialization::throw_exception(
             archive_exception(archive_exception::stream_error)
         );
     }
@@ -182,17 +183,17 @@ bool basic_xml_grammar<CharType>::my_parse(
     // is terminated.  This will permit the archive to be used for debug
     // and transaction data logging in the standard way.
     
-    parse_info<BOOST_DEDUCED_TYPENAME std::basic_string<CharType>::iterator> result
-        = boost::spirit::parse(arg.begin(), arg.end(), rule_);
+    parse_info<BOOST_DEDUCED_TYPENAME std::basic_string<CharType>::iterator> 
+        result = boost::spirit::parse(arg.begin(), arg.end(), rule_);
     return result.hit;
 }
 
 template<class CharType>
 bool basic_xml_grammar<CharType>::parse_start_tag(
     BOOST_DEDUCED_TYPENAME basic_xml_grammar<CharType>::IStream & is
-) {
+){
     if(is.fail()){
-        boost::throw_exception(
+        boost::serialization::throw_exception(
             archive_exception(archive_exception::stream_error)
         );
     }
@@ -201,9 +202,9 @@ bool basic_xml_grammar<CharType>::parse_start_tag(
 }
 
 template<class CharType>
-bool basic_xml_grammar<CharType>::parse_end_tag(IStream & is) {
+bool basic_xml_grammar<CharType>::parse_end_tag(IStream & is) const {
     if(is.fail()){
-        boost::throw_exception(
+        boost::serialization::throw_exception(
             archive_exception(archive_exception::stream_error)
         );
     }
@@ -211,9 +212,9 @@ bool basic_xml_grammar<CharType>::parse_end_tag(IStream & is) {
 }
 
 template<class CharType>
-bool basic_xml_grammar<CharType>::parse_string(IStream & is, StringType & s) {
+bool basic_xml_grammar<CharType>::parse_string(IStream & is, StringType & s){
     if(is.fail()){
-        boost::throw_exception(
+        boost::serialization::throw_exception(
             archive_exception(archive_exception::stream_error)
         );
     }
@@ -269,7 +270,7 @@ basic_xml_grammar<CharType>::basic_xml_grammar(){
     ;
 
     // refactoring to workaround template depth on darwin
-    CharDataChars = *(anychar_p - chset_p(L"&<"));
+    CharDataChars = +(anychar_p - chset_p(L"&<"));
     CharData =  
         CharDataChars [
             xml::append_string<
@@ -305,19 +306,22 @@ basic_xml_grammar<CharType>::basic_xml_grammar(){
 
     content = 
         L"<" // should be end_p
-        | (Reference | CharData) >> content
+        | +(Reference | CharData) >> L"<"
     ;
 
     ClassIDAttribute = 
-        str_p(CLASS_ID()) >> NameTail
+        str_p(BOOST_ARCHIVE_XML_CLASS_ID()) >> NameTail
         >> Eq 
         >> L'"'
         >> int_p [xml::assign_object(rv.class_id.t)]
         >> L'"'
       ;
 
-    ObjectIDAttribute = 
-        (str_p(OBJECT_ID()) | str_p(OBJECT_REFERENCE()) )
+    ObjectIDAttribute = (
+        str_p(BOOST_ARCHIVE_XML_OBJECT_ID()) 
+        | 
+        str_p(BOOST_ARCHIVE_XML_OBJECT_REFERENCE()) 
+        )
         >> NameTail
         >> Eq 
         >> L'"'
@@ -341,7 +345,7 @@ basic_xml_grammar<CharType>::basic_xml_grammar(){
     ;
     
     ClassNameAttribute = 
-        str_p(CLASS_NAME()) 
+        str_p(BOOST_ARCHIVE_XML_CLASS_NAME()) 
         >> Eq 
         >> L'"'
         >> ClassName
@@ -349,7 +353,7 @@ basic_xml_grammar<CharType>::basic_xml_grammar(){
     ;
 
     TrackingAttribute = 
-        str_p(TRACKING())
+        str_p(BOOST_ARCHIVE_XML_TRACKING())
         >> Eq
         >> L'"'
         >> uint_p [xml::assign_level(rv.tracking_level)]
@@ -357,7 +361,7 @@ basic_xml_grammar<CharType>::basic_xml_grammar(){
     ;
 
     VersionAttribute = 
-        str_p(VERSION())
+        str_p(BOOST_ARCHIVE_XML_VERSION())
         >> Eq
         >> L'"'
         >> uint_p [xml::assign_object(rv.version.t)]
@@ -368,7 +372,7 @@ basic_xml_grammar<CharType>::basic_xml_grammar(){
         Name
         >> Eq
         >> L'"'
-        >> CharData
+        >> !CharData
         >> L'"'
     ;
 
@@ -426,19 +430,19 @@ template<class CharType>
 void basic_xml_grammar<CharType>::init(IStream & is){
     init_chset();
     if(! my_parse(is, XMLDecl))
-        boost::throw_exception(
+        boost::serialization::throw_exception(
             xml_archive_exception(xml_archive_exception::xml_archive_parsing_error)
         );
     if(! my_parse(is, DocTypeDecl))
-        boost::throw_exception(
+        boost::serialization::throw_exception(
             xml_archive_exception(xml_archive_exception::xml_archive_parsing_error)
         );
     if(! my_parse(is, SerializationWrapper))
-        boost::throw_exception(
+        boost::serialization::throw_exception(
             xml_archive_exception(xml_archive_exception::xml_archive_parsing_error)
         );
-    if(! std::equal(rv.class_name.begin(), rv.class_name.end(), ARCHIVE_SIGNATURE()))
-        boost::throw_exception(
+    if(! std::equal(rv.class_name.begin(), rv.class_name.end(), BOOST_ARCHIVE_SIGNATURE()))
+        boost::serialization::throw_exception(
             archive_exception(archive_exception::invalid_signature)
         );
 }

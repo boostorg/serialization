@@ -15,8 +15,9 @@
 // thanks to Robert Ramey and Peter Dimov.
 //
 
-#include <fstream>
+#include <cstddef> // NULL
 #include <cstdio> // remove
+#include <fstream>
 #include <cmath> // for fabs()
 #include <boost/config.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)
@@ -28,15 +29,13 @@ namespace std{
 #include <boost/type_traits/is_same.hpp>
 #include <boost/mpl/eval_if.hpp>
 #include <boost/mpl/identity.hpp>
-#include <boost/throw_exception.hpp>
+#include <boost/serialization/throw_exception.hpp>
 
 #if defined(_MSC_VER) && (_MSC_VER <= 1020)
 #  pragma warning (disable : 4786) // too long name, harmless warning
 #endif
 
 #include "test_tools.hpp"
-#include <boost/preprocessor/stringize.hpp>
-#include BOOST_PP_STRINGIZE(BOOST_ARCHIVE_TEST)
 
 #include <boost/archive/archive_exception.hpp>
 
@@ -44,6 +43,7 @@ namespace std{
 #include <boost/serialization/variant.hpp>
 
 #include "A.hpp"
+#include "A.ipp"
 
 class are_equal
     : public boost::static_visitor<bool>
@@ -91,14 +91,14 @@ void test_type(const T& gets_written){
    BOOST_REQUIRE(testfile != NULL);
    {
       test_ostream os(testfile, TEST_STREAM_FLAGS);
-      test_oarchive oa(os);
+      test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
       oa << boost::serialization::make_nvp("written", gets_written);
    }
 
    T got_read;
    {
       test_istream is(testfile, TEST_STREAM_FLAGS);
-      test_iarchive ia(is);
+      test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
       ia >> boost::serialization::make_nvp("written", got_read);
    }
    BOOST_CHECK(boost::apply_visitor(are_equal(), gets_written, got_read));
@@ -125,13 +125,13 @@ void do_bad_read()
         BOOST_REQUIRE(testfile != NULL);
         {
             test_ostream os(testfile, TEST_STREAM_FLAGS);
-            test_oarchive oa(os);
+            test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
             oa << BOOST_SERIALIZATION_NVP(big_variant);
         }
         boost::variant<bool, float, int> little_variant;
         {
             test_istream is(testfile, TEST_STREAM_FLAGS);
-            test_iarchive ia(is);
+            test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
             bool exception_invoked = false;
             BOOST_TRY {
                 ia >> BOOST_SERIALIZATION_NVP(little_variant);

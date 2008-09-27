@@ -7,6 +7,7 @@
 // http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include <cstddef> // NULL
 #include <fstream>
 
 #include <cstdio> // remove
@@ -18,9 +19,8 @@ namespace std{
 #endif
 
 #include "test_tools.hpp"
-#include <boost/preprocessor/stringize.hpp>
-#include BOOST_PP_STRINGIZE(BOOST_ARCHIVE_TEST)
 #include <boost/detail/no_exceptions_support.hpp>
+#include <boost/serialization/throw_exception.hpp>
 
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/split_member.hpp>
@@ -40,14 +40,11 @@ class A
     void load(Archive & ar, const unsigned int /* file_version */)
     {
         static int i = 0;
-        ++i;
-        bool b = false;
-        if(i == 2)
-            b = true;
-
         ar >> BOOST_SERIALIZATION_NVP(next_);
-        if(b)
-            boost::throw_exception(0);
+        if(++i == 3)
+            boost::serialization::throw_exception(boost::archive::archive_exception(
+                boost::archive::archive_exception::no_exception
+            ));
     }
     BOOST_SERIALIZATION_SPLIT_MEMBER()
 public:
@@ -96,7 +93,7 @@ test_main( int /* argc */, char* /* argv */[] )
     //output the vector
     {
         test_ostream os(testfile, TEST_STREAM_FLAGS);
-        test_oarchive oa(os);
+        test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
         oa << BOOST_SERIALIZATION_NVP(vec);
     }
 
@@ -108,7 +105,7 @@ test_main( int /* argc */, char* /* argv */[] )
     //read the vector back
     {
         test_istream is(testfile, TEST_STREAM_FLAGS);
-        test_iarchive ia(is);
+        test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
         BOOST_TRY {
             ia >> BOOST_SERIALIZATION_NVP(vec);
         }
@@ -129,5 +126,4 @@ test_main( int /* argc */, char* /* argv */[] )
     std::remove(testfile);
     return EXIT_SUCCESS;
 }
-
 

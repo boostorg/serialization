@@ -10,9 +10,10 @@
 
 // invoke header for a custom archive test.
 
+#include <cstddef> // NULL
+#include <cstdio> // remove
 #include <fstream>
 
-#include <cstdio> // remove
 #include <boost/config.hpp>
 
 #if defined(BOOST_NO_STDC_NAMESPACE)
@@ -22,11 +23,9 @@ namespace std{
 #endif
 
 #include "test_tools.hpp"
-#include <boost/preprocessor/stringize.hpp>
-#include BOOST_PP_STRINGIZE(BOOST_ARCHIVE_TEST)
 
-#include <boost/serialization/nvp.hpp>
 #include "A.hpp"
+#include "A.ipp"
 
 int 
 test_main( int /* argc */, char* /* argv */[] )
@@ -37,12 +36,12 @@ test_main( int /* argc */, char* /* argv */[] )
     A a, a1;
     {   
         test_ostream os(testfile, TEST_STREAM_FLAGS);
-        test_oarchive oa(os);
+        test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
         oa << boost::serialization::make_nvp("a", a);
     }
     {
         test_istream is(testfile, TEST_STREAM_FLAGS);
-        test_iarchive ia(is);
+        test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
         ia >> boost::serialization::make_nvp("a", a1);
     }
     BOOST_CHECK_EQUAL(a, a1);

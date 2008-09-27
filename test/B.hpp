@@ -17,6 +17,7 @@
 //  See http://www.boost.org for updates, documentation, and revision history.
 
 #include <cstdlib> // for rand()
+#include <cmath>
 
 #include <boost/config.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)
@@ -109,39 +110,4 @@ inline bool B::operator==(const B &rhs) const
     ;
 }
 
-#if 0
-template<class Archive>
-void inline B::save(Archive &ar, const unsigned int /* file_version */) const
-{
-    // write any base class info to the archive
-    ar << BOOST_SERIALIZATION_BASE_OBJECT_NVP(A);
-
-    // write out members
-    ar << BOOST_SERIALIZATION_NVP(s);
-    ar << BOOST_SERIALIZATION_NVP(t);
-    ar << BOOST_SERIALIZATION_NVP(u);
-    ar << BOOST_SERIALIZATION_NVP(v);
-    ar << BOOST_SERIALIZATION_NVP(w);
-    ar << BOOST_SERIALIZATION_NVP(x);
-}
-
-template<class Archive>
-inline void B::load(Archive & ar, const unsigned int file_version)
-{
-    // read any base class info to the archive
-    ar >> BOOST_SERIALIZATION_BASE_OBJECT_NVP(A);
-    switch(file_version){
-    case 1:
-    case 2:
-        ar >> BOOST_SERIALIZATION_NVP(s);
-        ar >> BOOST_SERIALIZATION_NVP(t);
-        ar >> BOOST_SERIALIZATION_NVP(u);
-        ar >> BOOST_SERIALIZATION_NVP(v);
-        ar >> BOOST_SERIALIZATION_NVP(w);
-        ar >> BOOST_SERIALIZATION_NVP(x);
-    default:
-        break;
-    }
-}
-#endif
 #endif // BOOST_SERIALIZATION_TEST_B_HPP

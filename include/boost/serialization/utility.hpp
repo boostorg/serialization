@@ -22,6 +22,8 @@
 
 #include <boost/type_traits/remove_const.hpp>
 #include <boost/serialization/nvp.hpp>
+#include <boost/serialization/is_bitwise_serializable.hpp>
+#include <boost/mpl/and.hpp>
 
 namespace boost { 
 namespace serialization {
@@ -40,6 +42,13 @@ inline void serialize(
     ar & boost::serialization::make_nvp("first", const_cast<typef &>(p.first));
     ar & boost::serialization::make_nvp("second", p.second);
 }
+
+/// specialization of is_bitwise_serializable for pairs
+template <class T, class U>
+struct is_bitwise_serializable<std::pair<T,U> >
+ : public mpl::and_<is_bitwise_serializable<T>,is_bitwise_serializable<U> >
+{
+};
 
 } // serialization
 } // namespace boost

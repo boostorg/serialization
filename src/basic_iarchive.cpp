@@ -14,7 +14,7 @@
 #include <set>
 #include <list>
 #include <vector>
-#include <cstddef> // size_t
+#include <cstddef> // size_t, NULL
 
 #include <boost/config.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)
@@ -23,29 +23,29 @@ namespace std{
 } // namespace std
 #endif
 
-#define BOOST_ARCHIVE_SOURCE
-#include <boost/archive/detail/auto_link_archive.hpp>
-
 #include <boost/limits.hpp>
-#include <boost/state_saver.hpp>
-#include <boost/throw_exception.hpp>
+#include <boost/serialization/state_saver.hpp>
+#include <boost/serialization/throw_exception.hpp>
+#include <boost/serialization/tracking.hpp>
 
+#include <boost/archive/archive_exception.hpp>
+
+#define BOOST_ARCHIVE_SOURCE
+#define BOOST_SERIALIZATION_SOURCE
+
+#include <boost/archive/detail/decl.hpp>
+#include <boost/archive/basic_archive.hpp>
 #include <boost/archive/detail/basic_iserializer.hpp>
 #include <boost/archive/detail/basic_pointer_iserializer.hpp>
 #include <boost/archive/detail/basic_iarchive.hpp>
-#include <boost/archive/archive_exception.hpp>
 
-#include <boost/serialization/tracking.hpp>
-#include <boost/serialization/extended_type_info.hpp>
+#include <boost/archive/detail/auto_link_archive.hpp>
 
 using namespace boost::serialization;
 
 namespace boost {
 namespace archive {
 namespace detail {
-
-class basic_iserializer;
-class basic_pointer_iserializer;
 
 class basic_iarchive_impl {
     friend class basic_iarchive;
@@ -162,10 +162,11 @@ class basic_iarchive_impl {
     version_type pending_version;
 
     basic_iarchive_impl(unsigned int flags) :
-        m_archive_library_version(ARCHIVE_VERSION()),
+        m_archive_library_version(BOOST_ARCHIVE_VERSION()),
         m_flags(flags),
         moveable_objects_start(0),
         moveable_objects_end(0),
+        moveable_objects_recent(0),
         pending_object(NULL),
         pending_bis(NULL),
         pending_version(0)
@@ -223,7 +224,6 @@ basic_iarchive_impl::reset_object_address(
     const void * new_address, 
     const void *old_address
 ){
-    object_id_type i;
     // this code handles a couple of situations.
     // a) where reset_object_address is applied to an untracked object.
     //    In such a case the call is really superfluous and its really an
@@ -236,6 +236,7 @@ basic_iarchive_impl::reset_object_address(
     //    but the code may work anyway.  Naturally, a bad practice on the part
     //    of the programmer but we can't detect it - as above.  So maybe we
     //    can save a few more people from themselves as above.
+    object_id_type i;
     for(i = moveable_objects_recent; i < moveable_objects_end; ++i){
         if(old_address == object_id_vector[i].address)
             break;
@@ -274,8 +275,10 @@ basic_iarchive_impl::delete_created_pointers()
         ++i
     ){
         if(i->loaded_as_pointer){
-            const unsigned int j = i->class_id;
+            // borland complains without this minor hack
+            const int j = i->class_id;
             const cobject_id & co = cobject_id_vector[j];
+            //const cobject_id & co = cobject_id_vector[i->class_id];
             // with the appropriate input serializer, 
             // delete the indicated object
             co.bis_ptr->destroy(i->address);
@@ -358,12 +361,13 @@ basic_iarchive_impl::load_object(
     }
 
     const class_id_type cid = register_type(bis);
-    cobject_id & co = cobject_id_vector[cid];
+    const int i = cid;
+    cobject_id & co = cobject_id_vector[i];
 
     load_preamble(ar, co);
 
     // save the current move stack position in case we want to truncate it
-    boost::state_saver<object_id_type> w(moveable_objects_start);
+    boost::serialization::state_saver<object_id_type> w(moveable_objects_start);
 
     // note: extra line used to evade borland issue
     const bool tracking = co.tracking_level;
@@ -420,7 +424,7 @@ basic_iarchive_impl::load_pointer(
             if(0 != key[0])
                 eti = serialization::extended_type_info::find(key);
             if(NULL == eti)
-                boost::throw_exception(
+                boost::serialization::throw_exception(
                     archive_exception(archive_exception::unregistered_class)
                 );
             bpis_ptr = (*finder)(*eti);
@@ -445,15 +449,15 @@ basic_iarchive_impl::load_pointer(
         return bpis_ptr;
 
     // save state
-    state_saver<object_id_type> w_start(moveable_objects_start);
+    serialization::state_saver<object_id_type> w_start(moveable_objects_start);
 
     if(! tracking){
         bpis_ptr->load_object_ptr(ar, t, co.file_version);
     }
     else{
-        state_saver<void *> x(pending_object);
-        state_saver<const basic_iserializer *> y(pending_bis);
-        state_saver<version_type> z(pending_version);
+        serialization::state_saver<void *> x(pending_object);
+        serialization::state_saver<const basic_iserializer *> y(pending_bis);
+        serialization::state_saver<version_type> z(pending_version);
 
         pending_bis = & bpis_ptr->get_basic_serializer();
         pending_version = co.file_version;
@@ -461,7 +465,7 @@ basic_iarchive_impl::load_pointer(
         // predict next object id to be created
         const unsigned int ui = object_id_vector.size();
 
-        state_saver<object_id_type> w_end(moveable_objects_end);
+        serialization::state_saver<object_id_type> w_end(moveable_objects_end);
 
         // because the following operation could move the items
         // don't use co after this
@@ -482,8 +486,15 @@ basic_iarchive_impl::load_pointer(
     return bpis_ptr;
 }
 
+} // namespace detail
+} // namespace archive
+} // namespace boost
+
 //////////////////////////////////////////////////////////////////////
 // implementation of basic_iarchive functions
+namespace boost {
+namespace archive {
+namespace detail {
 
 BOOST_ARCHIVE_DECL(void)
 basic_iarchive::next_object_pointer(void *t){

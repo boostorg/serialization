@@ -43,7 +43,7 @@ namespace std{
 #include <boost/archive/dinkumware.hpp>
 #endif
 
-#include <boost/throw_exception.hpp>
+#include <boost/serialization/throw_exception.hpp>
 #include <boost/limits.hpp>
 #include <boost/io/ios_state.hpp>
 #include <boost/scoped_ptr.hpp>
@@ -68,21 +68,29 @@ public:
     IStream &is;
     io::ios_flags_saver flags_saver;
     io::ios_precision_saver precision_saver;
+
+    #ifndef BOOST_NO_STD_LOCALE
     boost::scoped_ptr<std::locale> archive_locale;
     io::basic_ios_locale_saver<
         BOOST_DEDUCED_TYPENAME IStream::char_type, BOOST_DEDUCED_TYPENAME IStream::traits_type
     > locale_saver;
+    #endif
+
     template<class T>
     void load(T & t)
     {
         if(is.fail())
-            boost::throw_exception(archive_exception(archive_exception::stream_error));
+            boost::serialization::throw_exception(
+                archive_exception(archive_exception::stream_error)
+            );
         is >> t;
     }
     void load(unsigned char & t)
     {
         if(is.fail())
-            boost::throw_exception(archive_exception(archive_exception::stream_error));
+            boost::serialization::throw_exception(
+                archive_exception(archive_exception::stream_error)
+            );
         unsigned short int i;
         is >> i;
         t = static_cast<unsigned char>(i);
@@ -90,7 +98,9 @@ public:
     void load(signed char & t)
     {
         if(is.fail())
-            boost::throw_exception(archive_exception(archive_exception::stream_error));
+            boost::serialization::throw_exception(
+                archive_exception(archive_exception::stream_error)
+            );
         signed short int i;
         is >> i;
         t = static_cast<signed char>(i);
@@ -98,7 +108,9 @@ public:
     void load(char & t)
     {
         if(is.fail())
-            boost::throw_exception(archive_exception(archive_exception::stream_error));
+            boost::serialization::throw_exception(
+                archive_exception(archive_exception::stream_error)
+            );
         short int i;
         is >> i;
         t = static_cast<char>(i);
@@ -107,7 +119,9 @@ public:
     void load(wchar_t & t)
     {
         if(is.fail())
-            boost::throw_exception(archive_exception(archive_exception::stream_error));
+            boost::serialization::throw_exception(
+                archive_exception(archive_exception::stream_error)
+            );
         unsigned i;
         is >> i;
         t = static_cast<wchar_t>(i);

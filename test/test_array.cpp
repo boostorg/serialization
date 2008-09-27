@@ -8,7 +8,9 @@
 
 // should pass compilation and execution
 
+#include <cstddef>
 #include <fstream>
+
 #include <cstdio> // remove
 #include <boost/config.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)
@@ -18,13 +20,12 @@ namespace std{
 #endif
 
 #include "test_tools.hpp"
-#include <boost/preprocessor/stringize.hpp>
-#include BOOST_PP_STRINGIZE(BOOST_ARCHIVE_TEST)
 #include <boost/detail/no_exceptions_support.hpp>
 #include <boost/archive/archive_exception.hpp>
+#include <boost/array.hpp>
 
-#include <boost/serialization/nvp.hpp>
 #include "A.hpp"
+#include "A.ipp"
 
 struct array_equal_to //: public std::binary_function<T, T, bool>
 {
@@ -59,25 +60,36 @@ int test_array(T)
 
     // test array of objects
     const T a_array[10]={T(),T(),T(),T(),T(),T(),T(),T(),T(),T()};
+    const T b_array[2][3]={{T(),T(),T()},{T(),T(),T()}};
+    const boost::array<T,10> c_array = boost::array<T,10>();
     {   
         test_ostream os(testfile, TEST_STREAM_FLAGS);
-        test_oarchive oa(os);
+        test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
         oa << boost::serialization::make_nvp("a_array", a_array);
+        oa << boost::serialization::make_nvp("b_array", b_array);
+        oa << boost::serialization::make_nvp("c_array", c_array);
     }
     {
         T a_array1[10];
+        T b_array1[2][3];
+        boost::array<T,10> c_array1;
         test_istream is(testfile, TEST_STREAM_FLAGS);
-        test_iarchive ia(is);
+        test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
         ia >> boost::serialization::make_nvp("a_array", a_array1);
+        ia >> boost::serialization::make_nvp("b_array", b_array1);
+        ia >> boost::serialization::make_nvp("c_array", c_array1);
 
         array_equal_to/*<A[10]>*/ Compare;
         BOOST_CHECK(Compare(a_array, a_array1));
+        BOOST_CHECK(Compare(b_array[0], b_array1[0]));
+        BOOST_CHECK(Compare(b_array[1], b_array1[1]));
+        BOOST_CHECK(Compare(c_array, c_array1));
     }
     {
         T a_array1[9];
         test_istream is(testfile, TEST_STREAM_FLAGS);
         BOOST_TRY {
-            test_iarchive ia(is);
+            test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
             bool exception_invoked = false;
             BOOST_TRY {
                 ia >> boost::serialization::make_nvp("a_array", a_array1);

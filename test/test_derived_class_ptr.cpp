@@ -8,6 +8,7 @@
 
 // should pass compilation and execution
 
+#include <cstddef> // NULL
 #include <fstream>
 
 #include <cstdio> // remove
@@ -19,10 +20,9 @@ namespace std{
 #endif
 
 #include "test_tools.hpp"
-#include <boost/preprocessor/stringize.hpp>
-#include BOOST_PP_STRINGIZE(BOOST_ARCHIVE_TEST)
 
 #include "B.hpp"
+#include "A.ipp"
 
 int test_main( int /* argc */, char* /* argv */[] )
 {
@@ -34,12 +34,12 @@ int test_main( int /* argc */, char* /* argv */[] )
 
     {   
         test_ostream os(testfile, TEST_STREAM_FLAGS);
-        test_oarchive oa(os);
+        test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
         oa << boost::serialization::make_nvp("tb", tb);
     }
     {
         test_istream is(testfile, TEST_STREAM_FLAGS);
-        test_iarchive ia(is);
+        test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
         ia >> boost::serialization::make_nvp("tb",tb1);
     }
     BOOST_CHECK(tb != tb1);

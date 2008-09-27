@@ -8,6 +8,7 @@
 
 // should pass compilation and execution
 
+#include <cstddef> // NULL
 #include <fstream>
 
 #include <cstdio> // remove
@@ -20,8 +21,6 @@ namespace std{
 
 
 #include "test_tools.hpp"
-#include <boost/preprocessor/stringize.hpp>
-#include BOOST_PP_STRINGIZE(BOOST_ARCHIVE_TEST)
 #include <boost/detail/no_exceptions_support.hpp>
 
 #include <boost/serialization/nvp.hpp>
@@ -29,6 +28,7 @@ namespace std{
 #include <boost/serialization/base_object.hpp>
 
 #include "A.hpp"
+#include "A.ipp"
 
 ///////////////////////////////////////////////////////
 // class with a member which refers to itself
@@ -115,7 +115,7 @@ int test_main( int /* argc */, char* /* argv */[] )
     );
     {   
         test_ostream os(testfile, TEST_STREAM_FLAGS);
-        test_oarchive oa(os);
+        test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
         BOOST_TRY {
             oa << BOOST_SERIALIZATION_NVP(k);
         }
@@ -131,7 +131,7 @@ int test_main( int /* argc */, char* /* argv */[] )
     if(exception.code == boost::archive::archive_exception::no_exception){
         // try to read the archive
         test_istream is(testfile, TEST_STREAM_FLAGS);
-        test_iarchive ia(is);
+        test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
         exception = boost::archive::archive_exception(
             boost::archive::archive_exception::no_exception
         );

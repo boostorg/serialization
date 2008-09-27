@@ -17,7 +17,7 @@
 //  See http://www.boost.org for updates, documentation, and revision history.
 
 #include <istream>
-#include <boost/pfto.hpp>
+#include <boost/serialization/pfto.hpp>
 #include <boost/archive/basic_binary_iprimitive.hpp>
 #include <boost/archive/basic_binary_iarchive.hpp>
 
@@ -42,7 +42,7 @@ protected:
     // make this protected so it can be called from a derived archive
     template<class T>
     void load_override(T & t, BOOST_PFTO int){
-        basic_binary_iarchive<Archive>::load_override(t, 0);
+        this->basic_binary_iarchive<Archive>::load_override(t, 0L);
     }
     void init(unsigned int flags){
         if(0 != (flags & no_header))
