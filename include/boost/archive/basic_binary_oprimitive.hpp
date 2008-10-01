@@ -118,11 +118,20 @@ public:
     // typedef serialization::is_bitwise_serializable<mpl::_1> 
     //  use_array_optimization;
     // workaround without using mpl lambdas
+#if defined(BOOST_NO_DEPENDENT_NESTED_DERIVATIONS)
+    struct use_array_optimization {
+      template <class T>
+      struct apply
+      {
+        typedef typename boost::serialization::is_bitwise_serializable<T>::type type;
+      };
+    };
+#else
     struct use_array_optimization {
       template <class T>
       struct apply : public boost::serialization::is_bitwise_serializable<T> {};
     };
-    
+#endif
 
     // the optimized save_array dispatches to save_binary 
     template <class ValueType>
