@@ -25,8 +25,8 @@
 namespace boost {
 namespace archive {
     namespace detail {
-        template<class Archive> class interface_oarchive;
-        template<class Archive> class interface_iarchive;
+        template<class Archive, bool HelperSupport> class interface_oarchive;
+        template<class Archive, bool HelperSupport> class interface_iarchive;
     } // namespace detail
 } // namespace archive
 

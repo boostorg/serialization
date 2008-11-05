@@ -26,12 +26,12 @@ namespace archive {
 namespace detail {
 
 // note: referred to as Curiously Recurring Template Patter (CRTP)
-template<class Archive>
+template<class Archive, bool HelperSupport = true>
 class common_oarchive : 
     public basic_oarchive,
-    public interface_oarchive<Archive>
+    public interface_oarchive<Archive, HelperSupport>
 {
-    friend class interface_oarchive<Archive>;
+    friend class interface_oarchive<Archive, HelperSupport>;
 private:
     virtual void vsave(const version_type t){
         * this->This() << t;
@@ -67,7 +67,7 @@ protected:
     void save_end(const char * /*name*/){}
     common_oarchive(unsigned int flags = 0) : 
         basic_oarchive(flags),
-        interface_oarchive<Archive>()
+        interface_oarchive<Archive, HelperSupport>()
     {}
 };
 

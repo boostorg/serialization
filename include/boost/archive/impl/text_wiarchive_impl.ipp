@@ -28,9 +28,9 @@ namespace archive {
 //////////////////////////////////////////////////////////////////////
 // implementation of wiprimtives functions
 //
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_WARCHIVE_DECL(void)
-text_wiarchive_impl<Archive>::load(char *s)
+text_wiarchive_impl<Archive, HelperSupport>::load(char *s)
 {
     std::size_t size;
     * this->This() >> size;
@@ -42,9 +42,9 @@ text_wiarchive_impl<Archive>::load(char *s)
     *s = '\0';
 }
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_WARCHIVE_DECL(void)
-text_wiarchive_impl<Archive>::load(std::string &s)
+text_wiarchive_impl<Archive, HelperSupport>::load(std::string &s)
 {
     std::size_t size;
     * this->This() >> size;
@@ -62,9 +62,9 @@ text_wiarchive_impl<Archive>::load(std::string &s)
 }
 
 #ifndef BOOST_NO_INTRINSIC_WCHAR_T
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_WARCHIVE_DECL(void)
-text_wiarchive_impl<Archive>::load(wchar_t *s)
+text_wiarchive_impl<Archive, HelperSupport>::load(wchar_t *s)
 {
     std::size_t size;
     * this->This() >> size;
@@ -77,9 +77,9 @@ text_wiarchive_impl<Archive>::load(wchar_t *s)
 #endif
 
 #ifndef BOOST_NO_STD_WSTRING
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_WARCHIVE_DECL(void)
-text_wiarchive_impl<Archive>::load(std::wstring &ws)
+text_wiarchive_impl<Archive, HelperSupport>::load(std::wstring &ws)
 {
     std::size_t size;
     * this->This() >> size;
@@ -96,9 +96,9 @@ text_wiarchive_impl<Archive>::load(std::wstring &ws)
 }
 #endif
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_WARCHIVE_DECL(BOOST_PP_EMPTY()) 
-text_wiarchive_impl<Archive>::text_wiarchive_impl(
+text_wiarchive_impl<Archive, HelperSupport>::text_wiarchive_impl(
     std::wistream & is, 
     unsigned int flags
 ) :
@@ -106,10 +106,10 @@ text_wiarchive_impl<Archive>::text_wiarchive_impl(
         is, 
         0 != (flags & no_codecvt)
     ),
-    basic_text_iarchive<Archive>(flags)
+    basic_text_iarchive<Archive, HelperSupport>(flags)
 {
     if(0 == (flags & no_header))
-        basic_text_iarchive<Archive>::init();
+        basic_text_iarchive<Archive, HelperSupport>::init();
 }
 
 } // archive

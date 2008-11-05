@@ -32,16 +32,16 @@ template<class CharType>
 class basic_xml_grammar;
 typedef basic_xml_grammar<char> xml_grammar;
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 class xml_iarchive_impl : 
     public basic_text_iprimitive<std::istream>,
-    public basic_xml_iarchive<Archive>
+    public basic_xml_iarchive<Archive, HelperSupport>
 {
 #ifdef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
 public:
 #else
-    friend class detail::interface_iarchive<Archive>;
-    friend class basic_xml_iarchive<Archive>;
+    friend class detail::interface_iarchive<Archive, HelperSupport>;
+    friend class basic_xml_iarchive<Archive, HelperSupport>;
     friend class load_access;
 protected:
 #endif
@@ -71,7 +71,7 @@ protected:
     #endif
     template<class T>
     void load_override(T & t, BOOST_PFTO int){
-        basic_xml_iarchive<Archive>::load_override(t, 0);
+        basic_xml_iarchive<Archive, HelperSupport>::load_override(t, 0);
     }
     BOOST_ARCHIVE_DECL(void)
     load_override(class_name_type & t, int);
@@ -87,36 +87,23 @@ protected:
 // via inhertance, derived from text_iarchive_impl instead.  This will
 // preserve correct static polymorphism.
 
-// same as xml_iarchive below - without the shared_ptr_helper
+// same as xml_iarchive below - without helper support
 class naked_xml_iarchive : 
-    public xml_iarchive_impl<naked_xml_iarchive>
+    public xml_iarchive_impl<naked_xml_iarchive, false /* no helper support */>
 {
 public:
     naked_xml_iarchive(std::istream & is, unsigned int flags = 0) :
-        xml_iarchive_impl<naked_xml_iarchive>(is, flags)
+        xml_iarchive_impl<naked_xml_iarchive, false>(is, flags)
     {}
     ~naked_xml_iarchive(){}
 };
 
-} // namespace archive
-} // namespace boost
-
-// note special treatment of shared_ptr. This type needs a special
-// structure associated with every archive.  We created a "mix-in"
-// class to provide this functionality.  Since shared_ptr holds a
-// special esteem in the boost library - we included it here by default.
-#include <boost/archive/shared_ptr_helper.hpp>
-
-namespace boost { 
-namespace archive {
-
 class xml_iarchive : 
-    public xml_iarchive_impl<xml_iarchive>,
-    public detail::shared_ptr_helper
+    public xml_iarchive_impl<xml_iarchive, true /* helper support */>
 {
 public:
     xml_iarchive(std::istream & is, unsigned int flags = 0) :
-        xml_iarchive_impl<xml_iarchive>(is, flags)
+        xml_iarchive_impl<xml_iarchive, true>(is, flags)
     {}
     ~xml_iarchive(){};
 };

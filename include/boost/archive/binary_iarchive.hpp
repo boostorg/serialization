@@ -26,38 +26,33 @@ namespace archive {
 // via inhertance, derived from text_iarchive_impl instead.  This will
 // preserve correct static polymorphism.
 
-// same as binary_iarchive below - without the shared_ptr_helper
+// same as binary_iarchive below - without helper support
 class naked_binary_iarchive : 
     public binary_iarchive_impl<
         boost::archive::naked_binary_iarchive, 
         std::istream::char_type, 
-        std::istream::traits_type
+        std::istream::traits_type,
+        false // no helper support
     >
 {
 public:
     naked_binary_iarchive(std::istream & is, unsigned int flags = 0) :
         binary_iarchive_impl<
-            naked_binary_iarchive, std::istream::char_type, std::istream::traits_type
+            naked_binary_iarchive,
+            std::istream::char_type,
+            std::istream::traits_type,
+            false
         >(is, flags)
     {}
     naked_binary_iarchive(std::streambuf & bsb, unsigned int flags = 0) :
         binary_iarchive_impl<
-            naked_binary_iarchive, std::istream::char_type, std::istream::traits_type
+            naked_binary_iarchive,
+            std::istream::char_type,
+            std::istream::traits_type,
+            false
         >(bsb, flags)
     {}
 };
-
-} // namespace archive
-} // namespace boost
-
-// note special treatment of shared_ptr. This type needs a special
-// structure associated with every archive.  We created a "mix-in"
-// class to provide this functionality.  Since shared_ptr holds a
-// special esteem in the boost library - we included it here by default.
-#include <boost/archive/shared_ptr_helper.hpp>
-
-namespace boost { 
-namespace archive {
 
 // do not derive from this class.  If you want to extend this functionality
 // via inhertance, derived from binary_iarchive_impl instead.  This will
@@ -66,19 +61,25 @@ class binary_iarchive :
     public binary_iarchive_impl<
         boost::archive::binary_iarchive, 
         std::istream::char_type, 
-        std::istream::traits_type
-    >,
-    public detail::shared_ptr_helper
+        std::istream::traits_type,
+        true // helper support
+    >
 {
 public:
     binary_iarchive(std::istream & is, unsigned int flags = 0) :
         binary_iarchive_impl<
-            binary_iarchive, std::istream::char_type, std::istream::traits_type
+            binary_iarchive,
+            std::istream::char_type,
+            std::istream::traits_type,
+            true
         >(is, flags)
     {}
     binary_iarchive(std::streambuf & bsb, unsigned int flags = 0) :
         binary_iarchive_impl<
-            binary_iarchive, std::istream::char_type, std::istream::traits_type
+            binary_iarchive,
+            std::istream::char_type,
+            std::istream::traits_type,
+            true
         >(bsb, flags)
     {}
 };

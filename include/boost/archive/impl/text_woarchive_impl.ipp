@@ -30,9 +30,9 @@ namespace archive {
 //////////////////////////////////////////////////////////////////////
 // implementation of woarchive functions
 //
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_WARCHIVE_DECL(void)
-text_woarchive_impl<Archive>::save(const char *s)
+text_woarchive_impl<Archive, HelperSupport>::save(const char *s)
 {
     // note: superfluous local variable fixes borland warning
     const std::size_t size = std::strlen(s);
@@ -42,9 +42,9 @@ text_woarchive_impl<Archive>::save(const char *s)
         os.put(os.widen(*s++));
 }
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_WARCHIVE_DECL(void)
-text_woarchive_impl<Archive>::save(const std::string &s)
+text_woarchive_impl<Archive, HelperSupport>::save(const std::string &s)
 {
     const std::size_t size = s.size();
     * this->This() << size;
@@ -55,9 +55,9 @@ text_woarchive_impl<Archive>::save(const std::string &s)
 }
 
 #ifndef BOOST_NO_INTRINSIC_WCHAR_T
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_WARCHIVE_DECL(void)
-text_woarchive_impl<Archive>::save(const wchar_t *ws)
+text_woarchive_impl<Archive, HelperSupport>::save(const wchar_t *ws)
 {
     const std::size_t size = std::wostream::traits_type::length(ws);
     * this->This() << size;
@@ -67,9 +67,9 @@ text_woarchive_impl<Archive>::save(const wchar_t *ws)
 #endif
 
 #ifndef BOOST_NO_STD_WSTRING
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_WARCHIVE_DECL(void)
-text_woarchive_impl<Archive>::save(const std::wstring &ws)
+text_woarchive_impl<Archive, HelperSupport>::save(const std::wstring &ws)
 {
     const std::size_t size = ws.length();
     * this->This() << size;

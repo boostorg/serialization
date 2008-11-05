@@ -38,9 +38,9 @@ namespace archive {
 
 /////////////////////////////////////////////////////////////////////////
 // class basic_text_iarchive - read serialized objects from a input text stream
-template<class Archive>
+template<class Archive, bool HelperSupport>
 class basic_text_iarchive : 
-    public detail::common_iarchive<Archive>
+    public detail::common_iarchive<Archive, HelperSupport>
 {
 protected:
 #if BOOST_WORKAROUND(BOOST_MSVC, <= 1300)
@@ -48,14 +48,14 @@ public:
 #elif defined(BOOST_MSVC)
     // for some inexplicable reason insertion of "class" generates compile erro
     // on msvc 7.1
-    friend detail::interface_iarchive<Archive>;
+    friend detail::interface_iarchive<Archive, HelperSupport>;
 #else
-    friend class detail::interface_iarchive<Archive>;
+    friend class detail::interface_iarchive<Archive, HelperSupport>;
 #endif
     // intermediate level to support override of operators
     // fot templates in the absence of partial function 
     // template ordering
-    typedef detail::common_iarchive<Archive> detail_common_iarchive;
+    typedef detail::common_iarchive<Archive, HelperSupport> detail_common_iarchive;
     template<class T>
     void load_override(T & t, BOOST_PFTO int)
     {
@@ -71,7 +71,7 @@ public:
     init(void);
 
     basic_text_iarchive(unsigned int flags) : 
-        detail::common_iarchive<Archive>(flags)
+        detail::common_iarchive<Archive, HelperSupport>(flags)
     {}
     ~basic_text_iarchive(){}
 };

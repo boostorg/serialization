@@ -57,9 +57,9 @@ struct XML_name {
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // implemenations of functions common to both types of xml output
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
-basic_xml_oarchive<Archive>::write_attribute(
+basic_xml_oarchive<Archive, HelperSupport>::write_attribute(
     const char *attribute_name,
     int t,
     const char *conjunction
@@ -71,9 +71,9 @@ basic_xml_oarchive<Archive>::write_attribute(
     this->This()->put('"');
 }
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
-basic_xml_oarchive<Archive>::write_attribute(
+basic_xml_oarchive<Archive, HelperSupport>::write_attribute(
     const char *attribute_name,
     const char *key
 ){
@@ -84,17 +84,17 @@ basic_xml_oarchive<Archive>::write_attribute(
     this->This()->put('"');
 }
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
-basic_xml_oarchive<Archive>::indent(){
+basic_xml_oarchive<Archive, HelperSupport>::indent(){
     int i;
     for(i = depth; i-- > 0;)
         this->This()->put('\t');
 }
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
-basic_xml_oarchive<Archive>::save_start(const char *name)
+basic_xml_oarchive<Archive, HelperSupport>::save_start(const char *name)
 {
     if(NULL == name)
         return;
@@ -114,9 +114,9 @@ basic_xml_oarchive<Archive>::save_start(const char *name)
     indent_next = false;
 }
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
-basic_xml_oarchive<Archive>::save_end(const char *name)
+basic_xml_oarchive<Archive, HelperSupport>::save_end(const char *name)
 {
     if(NULL == name)
         return;
@@ -138,90 +138,90 @@ basic_xml_oarchive<Archive>::save_end(const char *name)
         this->This()->put('\n');
 }
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
-basic_xml_oarchive<Archive>::end_preamble(){
+basic_xml_oarchive<Archive, HelperSupport>::end_preamble(){
     if(pending_preamble){
         this->This()->put('>');
         pending_preamble = false;
     }
 }
 #if 0
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
-basic_xml_oarchive<Archive>::save_override(const object_id_type & t, int)
+basic_xml_oarchive<Archive, HelperSupport>::save_override(const object_id_type & t, int)
 {
     int i = t.t; // extra .t is for borland
     write_attribute(BOOST_ARCHIVE_XML_OBJECT_ID(), i, "=\"_");
 }
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
-basic_xml_oarchive<Archive>::save_override(
+basic_xml_oarchive<Archive, HelperSupport>::save_override(
     const object_reference_type & t,
     int
 ){
     int i = t.t; // extra .t is for borland
     write_attribute(BOOST_ARCHIVE_XML_OBJECT_REFERENCE(), i, "=\"_");
 }
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
-basic_xml_oarchive<Archive>::save_override(const version_type & t, int)
+basic_xml_oarchive<Archive, HelperSupport>::save_override(const version_type & t, int)
 {
     int i = t.t; // extra .t is for borland
     write_attribute(VBOOST_ARCHIVE_XML_ERSION(), i);
 }
 #endif
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
-basic_xml_oarchive<Archive>::save_override(const object_id_type & t, int)
+basic_xml_oarchive<Archive, HelperSupport>::save_override(const object_id_type & t, int)
 {
     // borland doesn't do conversion of STRONG_TYPEDEFs very well
     const unsigned int i = t;
     write_attribute(BOOST_ARCHIVE_XML_OBJECT_ID(), i, "=\"_");
 }
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
-basic_xml_oarchive<Archive>::save_override(
+basic_xml_oarchive<Archive, HelperSupport>::save_override(
     const object_reference_type & t,
     int
 ){
     const unsigned int i = t;
     write_attribute(BOOST_ARCHIVE_XML_OBJECT_REFERENCE(), i, "=\"_");
 }
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
-basic_xml_oarchive<Archive>::save_override(const version_type & t, int)
+basic_xml_oarchive<Archive, HelperSupport>::save_override(const version_type & t, int)
 {
     const unsigned int i = t;
     write_attribute(BOOST_ARCHIVE_XML_VERSION(), i);
 }
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
-basic_xml_oarchive<Archive>::save_override(const class_id_type & t, int)
+basic_xml_oarchive<Archive, HelperSupport>::save_override(const class_id_type & t, int)
 {
     write_attribute(BOOST_ARCHIVE_XML_CLASS_ID(), t);
 }
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
-basic_xml_oarchive<Archive>::save_override(
+basic_xml_oarchive<Archive, HelperSupport>::save_override(
     const class_id_reference_type & t,
     int
 ){
     write_attribute(BOOST_ARCHIVE_XML_CLASS_ID_REFERENCE(), t);
 }
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
-basic_xml_oarchive<Archive>::save_override(
+basic_xml_oarchive<Archive, HelperSupport>::save_override(
     const class_id_optional_type & t,
     int
 ){
     write_attribute(BOOST_ARCHIVE_XML_CLASS_ID(), t);
 }
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
-basic_xml_oarchive<Archive>::save_override(const class_name_type & t, int)
+basic_xml_oarchive<Archive, HelperSupport>::save_override(const class_name_type & t, int)
 {
     const char * key = t;
     if(NULL == key)
@@ -229,16 +229,16 @@ basic_xml_oarchive<Archive>::save_override(const class_name_type & t, int)
     write_attribute(BOOST_ARCHIVE_XML_CLASS_NAME(), key);
 }
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
-basic_xml_oarchive<Archive>::save_override(const tracking_type & t, int)
+basic_xml_oarchive<Archive, HelperSupport>::save_override(const tracking_type & t, int)
 {
     write_attribute(BOOST_ARCHIVE_XML_TRACKING(), t.t);
 }
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
-basic_xml_oarchive<Archive>::init(){
+basic_xml_oarchive<Archive, HelperSupport>::init(){
     // xml header
     this->This()->put("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?>\n");
     this->This()->put("<!DOCTYPE boost_serialization>\n");
@@ -249,19 +249,19 @@ basic_xml_oarchive<Archive>::init(){
     this->This()->put(">\n");
 }
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL(BOOST_PP_EMPTY())
-basic_xml_oarchive<Archive>::basic_xml_oarchive(unsigned int flags) :
-    detail::common_oarchive<Archive>(flags),
+basic_xml_oarchive<Archive, HelperSupport>::basic_xml_oarchive(unsigned int flags) :
+    detail::common_oarchive<Archive, HelperSupport>(flags),
     depth(0),
     indent_next(false),
     pending_preamble(false)
 {
 }
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL(BOOST_PP_EMPTY())
-basic_xml_oarchive<Archive>::~basic_xml_oarchive(){
+basic_xml_oarchive<Archive, HelperSupport>::~basic_xml_oarchive(){
     if(0 == (this->get_flags() & no_header)){
         BOOST_TRY{
                 this->This()->put("</boost_serialization>\n");

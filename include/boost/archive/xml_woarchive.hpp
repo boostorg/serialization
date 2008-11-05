@@ -47,16 +47,16 @@ BOOST_WARCHIVE_DECL(std::wostream &)
 operator<<(std::wostream &os, const char t);
 #endif
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 class xml_woarchive_impl : 
     public basic_text_oprimitive<std::wostream>,
-    public basic_xml_oarchive<Archive>
+    public basic_xml_oarchive<Archive, HelperSupport>
 {
 #ifdef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
 public:
 #else
-    friend class detail::interface_oarchive<Archive>;
-    friend class basic_xml_oarchive<Archive>;
+    friend class detail::interface_oarchive<Archive, HelperSupport>;
+    friend class basic_xml_oarchive<Archive, HelperSupport>;
     friend class save_access;
 protected:
 #endif
@@ -105,17 +105,27 @@ public:
 // do not derive from this class.  If you want to extend this functionality
 // via inhertance, derived from xml_woarchive_impl instead.  This will
 // preserve correct static polymorphism.
+
+// same as xml_woarchive below - without helper support
+class naked_xml_woarchive : 
+    public xml_woarchive_impl<naked_xml_woarchive, false /* helper support */>
+{
+public:
+    naked_xml_woarchive(std::wostream & os, unsigned int flags = 0) :
+        xml_woarchive_impl<naked_xml_woarchive, false>(os, flags)
+    {}
+    ~naked_xml_woarchive(){}
+};
+
 class xml_woarchive : 
-    public xml_woarchive_impl<xml_woarchive>
+    public xml_woarchive_impl<xml_woarchive, true /* helper support*/>
 {
 public:
     xml_woarchive(std::wostream & os, unsigned int flags = 0) :
-        xml_woarchive_impl<xml_woarchive>(os, flags)
+        xml_woarchive_impl<xml_woarchive, true>(os, flags)
     {}
     ~xml_woarchive(){}
 };
-
-typedef xml_woarchive naked_xml_woarchive;
 
 } // namespace archive
 } // namespace boost

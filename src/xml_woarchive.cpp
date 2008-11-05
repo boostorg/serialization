@@ -56,8 +56,12 @@ operator<<(std::wostream &os, const char t){
 }
 #endif
 
-template class basic_xml_oarchive<xml_woarchive> ;
-template class xml_woarchive_impl<xml_woarchive> ;
+template class basic_xml_oarchive<naked_xml_woarchive, false> ;
+template class xml_woarchive_impl<naked_xml_woarchive, false> ;
+template class detail::archive_pointer_oserializer<naked_xml_woarchive> ;
+
+template class basic_xml_oarchive<xml_woarchive, true> ;
+template class xml_woarchive_impl<xml_woarchive, true> ;
 template class detail::archive_pointer_oserializer<xml_woarchive> ;
 
 } // namespace archive

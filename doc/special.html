@@ -28,6 +28,7 @@ http://www.boost.org/LICENSE_1_0.txt)
 <dl class="page-index">
   <dt><a href="#objecttracking">Object Tracking</a>
   <dt><a href="#classinfo">Class Information</a>
+  <dt><a href="#helpersupport">Helper Support</a>
   <dt><a href="#portability">Archive Portability</a>
   <dl class="page-index">
     <dt><a href="#numerics">Numerics</a>
@@ -201,6 +202,65 @@ BOOST_CLASS_IMPLEMENTATION(pixel, boost::serialization::object_serializable);
 // at the risk of a programming error creating duplicate objects.
 BOOST_CLASS_TRACKING(pixel, boost::serialization::track_never)
 </code></pre>
+
+<h3><a name="helpersupport">Helper Support</a></h3>
+Some types, specially those with complicated lifetime behavior or limited
+access to their internal state, might need or benefit from elaborate serialization
+algorithms. In these cases, it can be advantageous to have a <i>helper object</i>
+associated to the current archive that can be used to store contextual
+information relevant to the particular type serialization algorithm.
+
+<pre><code>
+class complex_type
+{
+   ...
+};
+
+BOOST_SERIALIZATION_SPLIT_FREE(complex_type)
+
+class complex_type_serialization_helper
+{
+  // maintain contextual information for complex_type
+  // serialization algorithm
+};
+
+namespace boost {
+namespace serialization {
+
+template&lt;class Archive&gt;
+void save(Archive &amp; ar, const complex_type &amp; x, unsigned int /* version */)
+{
+    complex_type_serialization_helper &amp; hlp =
+        ar.template get_helper&lt;complex_type_serialization_helper&gt;();
+        
+    // implement complex_type save algorithm with the aid of hlp
+}
+
+template&lt;class Archive&gt;
+void load(Archive &amp; ar, complex_type &amp; x, unsigned int /* version */)
+{
+    complex_type_serialization_helper &amp; hlp =
+        ar.template get_helper&lt;complex_type_serialization_helper&gt;();
+        
+    // implement complex_type load algorithm with the aid of hlp
+}
+
+} // namespace serialization
+} // namespace boost
+</code></pre>
+<code style="white-space: normal">get_helper&lt;complex_type_serialization_helper&gt;();</code>
+creates a helper object associated to the archive the first time it is invoked;
+subsequent invocations return a reference to the object created in the first
+place, so that <code style="white-space: normal">hlp</code> can effectively be
+used to store contextual information persisting through the serialization
+of different <code style="white-space: normal">complex_type</code> objects on
+the same archive.
+Although the example code does not show it, the helper types used for saving and loading
+can be different. A notable example of a type whose serialization routines use helper support
+is <code style="white-space: normal">boost::shared_ptr</code>. The test
+program <a href="../test/test_helper_support.cpp" target="test_helper_support_cpp"><code style="white-space: normal">test_helper_support.cpp</code></a>
+shows how to use helper support to implement a serialization algorithm
+for a string type that avoids emitting duplicate contents.
 
 <h3><a name="portability">Archive Portability</a></h3>
 Several archive classes create their data in the form of text or portable a binary format.  

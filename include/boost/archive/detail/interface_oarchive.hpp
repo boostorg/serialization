@@ -21,6 +21,7 @@
 #include <boost/mpl/bool.hpp>
 
 #include <boost/archive/detail/auto_link_archive.hpp>
+#include <boost/archive/detail/helper_collection.hpp>
 #include <boost/archive/detail/oserializer.hpp>
 #include <boost/archive/detail/abi_prefix.hpp> // must be the last header
 
@@ -32,8 +33,9 @@ namespace detail {
 
 class BOOST_ARCHIVE_OR_WARCHIVE_DECL(BOOST_PP_EMPTY()) basic_pointer_oserializer;
 
-template<class Archive>
-class interface_oarchive 
+template<class Archive, bool HelperSupport>
+class interface_oarchive :
+    public derive_from_helper_collection<HelperSupport>
 {
 protected:
     interface_oarchive(){};

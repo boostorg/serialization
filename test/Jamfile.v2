@@ -42,6 +42,7 @@ test-suite "serialization" :
      [ test-bsl-run_files test_class_info_save ]
      [ test-bsl-run_files test_object ]
      [ test-bsl-run_files test_primitive ]
+     [ test-bsl-run_files test_helper_support ]
      [ test-bsl-run_files test_list : A ]
      [ test-bsl-run_files test_list_ptrs : A ]
      [ test-bsl-run_files test_map : A ]

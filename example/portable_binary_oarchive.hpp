@@ -84,7 +84,8 @@ public:
     friend archive_base_t;
     friend primitive_base_t; // since with override save below
     friend class boost::archive::detail::interface_oarchive<
-        portable_binary_oarchive
+        portable_binary_oarchive,
+        true // helper support
     >;
     friend class boost::archive::save_access;
 protected:

@@ -28,9 +28,9 @@ namespace archive {
 
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // implementation of text_text_archive
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
-basic_text_iarchive<Archive>::load_override(class_name_type & t, int){
+basic_text_iarchive<Archive, HelperSupport>::load_override(class_name_type & t, int){
     std::string cn;
     cn.reserve(BOOST_SERIALIZATION_MAX_KEY_SIZE);
     load_override(cn, 0);
@@ -43,9 +43,9 @@ basic_text_iarchive<Archive>::load_override(class_name_type & t, int){
     t.t[cn.size()] = '\0';
 }
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
-basic_text_iarchive<Archive>::init(void){
+basic_text_iarchive<Archive, HelperSupport>::init(void){
     // read signature in an archive version independent manner
     std::string file_signature;
     * this->This() >> file_signature;

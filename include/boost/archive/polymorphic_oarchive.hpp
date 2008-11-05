@@ -65,12 +65,12 @@ namespace detail {
 class polymorphic_oarchive;
 
 class polymorphic_oarchive_impl :
-    public detail::interface_oarchive<polymorphic_oarchive>
+    public detail::interface_oarchive<polymorphic_oarchive, true /* helper support */>
 {
 #ifdef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
 public:
 #else
-    friend class detail::interface_oarchive<polymorphic_oarchive>;
+    friend class detail::interface_oarchive<polymorphic_oarchive, true>;
     friend class save_access;
 #endif
     // primitive types the only ones permitted by polymorphic archives

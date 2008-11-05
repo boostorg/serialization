@@ -23,9 +23,14 @@ namespace boost {
 namespace archive {
 
 // explicitly instantiate for this type of xml stream
-template class basic_xml_oarchive<xml_oarchive> ;
+template class basic_xml_oarchive<naked_xml_oarchive, false> ;
+template class detail::archive_pointer_oserializer<naked_xml_oarchive> ;
+template class xml_oarchive_impl<naked_xml_oarchive, false> ;
+
+// explicitly instantiate for this type of xml stream
+template class basic_xml_oarchive<xml_oarchive, true> ;
 template class detail::archive_pointer_oserializer<xml_oarchive> ;
-template class xml_oarchive_impl<xml_oarchive> ;
+template class xml_oarchive_impl<xml_oarchive, true> ;
 
 } // namespace archive
 } // namespace boost

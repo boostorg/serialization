@@ -32,16 +32,16 @@
 namespace boost { 
 namespace archive {
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 class text_wiarchive_impl : 
     public basic_text_iprimitive<std::wistream>,
-    public basic_text_iarchive<Archive>
+    public basic_text_iarchive<Archive,HelperSupport>
 {
 #ifdef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
 public:
 #else
-    friend class detail::interface_iarchive<Archive>;
-    friend class basic_text_iarchive<Archive>;
+    friend class detail::interface_iarchive<Archive, HelperSupport>;
+    friend class basic_text_iarchive<Archive, HelperSupport>;
     friend class load_access;
 protected:
 #endif
@@ -65,7 +65,7 @@ protected:
     // fails to compile one test (test_shared_ptr) without it !!!
     template<class T>
     void load_override(T & t, BOOST_PFTO int){
-        basic_text_iarchive<Archive>::load_override(t, 0);
+        basic_text_iarchive<Archive, HelperSupport>::load_override(t, 0);
     }
     BOOST_WARCHIVE_DECL(BOOST_PP_EMPTY()) 
     text_wiarchive_impl(std::wistream & is, unsigned int flags);
@@ -76,36 +76,23 @@ protected:
 // via inhertance, derived from text_iarchive_impl instead.  This will
 // preserve correct static polymorphism.
 
-// same as text_wiarchive below - without the shared_ptr_helper
+// same as text_wiarchive below - without helper support
 class naked_text_wiarchive : 
-    public text_wiarchive_impl<naked_text_wiarchive>
+    public text_wiarchive_impl<naked_text_wiarchive, false /* no helper support */>
 {
 public:
     naked_text_wiarchive(std::wistream & is, unsigned int flags = 0) :
-        text_wiarchive_impl<naked_text_wiarchive>(is, flags)
+        text_wiarchive_impl<naked_text_wiarchive, false>(is, flags)
     {}
     ~naked_text_wiarchive(){}
 };
 
-} // namespace archive
-} // namespace boost
-
-// note special treatment of shared_ptr. This type needs a special
-// structure associated with every archive.  We created a "mix-in"
-// class to provide this functionality.  Since shared_ptr holds a
-// special esteem in the boost library - we included it here by default.
-#include <boost/archive/shared_ptr_helper.hpp>
-
-namespace boost { 
-namespace archive {
-
 class text_wiarchive : 
-    public text_wiarchive_impl<text_wiarchive>,
-    public detail::shared_ptr_helper
+    public text_wiarchive_impl<text_wiarchive, true /* helper support */>
 {
 public:
     text_wiarchive(std::wistream & is, unsigned int flags = 0) :
-        text_wiarchive_impl<text_wiarchive>(is, flags)
+        text_wiarchive_impl<text_wiarchive,true >(is, flags)
     {}
     ~text_wiarchive(){}
 };

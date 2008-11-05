@@ -30,11 +30,12 @@ template class basic_binary_iprimitive<
     wchar_t, 
     std::char_traits<wchar_t> 
 >;
-template class basic_binary_iarchive<naked_binary_wiarchive> ;
+template class basic_binary_iarchive<naked_binary_wiarchive, false> ;
 template class binary_iarchive_impl<
     naked_binary_wiarchive, 
     wchar_t, 
-    std::char_traits<wchar_t> 
+    std::char_traits<wchar_t>, 
+    false
 >;
 template class detail::archive_pointer_iserializer<naked_binary_wiarchive> ;
 
@@ -44,11 +45,12 @@ template class basic_binary_iprimitive<
     wchar_t, 
     std::char_traits<wchar_t> 
 >;
-template class basic_binary_iarchive<binary_wiarchive> ;
+template class basic_binary_iarchive<binary_wiarchive, true> ;
 template class binary_iarchive_impl<
     binary_wiarchive, 
     wchar_t, 
-    std::char_traits<wchar_t> 
+    std::char_traits<wchar_t>, 
+    true
 >;
 template class detail::archive_pointer_iserializer<binary_wiarchive> ;
 

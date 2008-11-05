@@ -27,9 +27,9 @@ namespace std{
 namespace boost {
 namespace archive {
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_DECL(void)
-text_iarchive_impl<Archive>::load(char *s)
+text_iarchive_impl<Archive, HelperSupport>::load(char *s)
 {
     std::size_t size;
     * this->This() >> size;
@@ -40,9 +40,9 @@ text_iarchive_impl<Archive>::load(char *s)
     s[size] = '\0';
 }
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_DECL(void)
-text_iarchive_impl<Archive>::load(std::string &s)
+text_iarchive_impl<Archive, HelperSupport>::load(std::string &s)
 {
     std::size_t size;
     * this->This() >> size;
@@ -59,9 +59,9 @@ text_iarchive_impl<Archive>::load(std::string &s)
 
 #ifndef BOOST_NO_CWCHAR
 #ifndef BOOST_NO_INTRINSIC_WCHAR_T
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_DECL(void)
-text_iarchive_impl<Archive>::load(wchar_t *ws)
+text_iarchive_impl<Archive, HelperSupport>::load(wchar_t *ws)
 {
     std::size_t size;
     * this->This() >> size;
@@ -73,9 +73,9 @@ text_iarchive_impl<Archive>::load(wchar_t *ws)
 #endif // BOOST_NO_INTRINSIC_WCHAR_T
 
 #ifndef BOOST_NO_STD_WSTRING
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_DECL(void)
-text_iarchive_impl<Archive>::load(std::wstring &ws)
+text_iarchive_impl<Archive, HelperSupport>::load(std::wstring &ws)
 {
     std::size_t size;
     * this->This() >> size;
@@ -92,21 +92,21 @@ text_iarchive_impl<Archive>::load(std::wstring &ws)
 #endif // BOOST_NO_STD_WSTRING
 #endif // BOOST_NO_CWCHAR
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_DECL(void)
-text_iarchive_impl<Archive>::load_override(class_name_type & t, int){
-    basic_text_iarchive<Archive>::load_override(t, 0);
+text_iarchive_impl<Archive, HelperSupport>::load_override(class_name_type & t, int){
+    basic_text_iarchive<Archive, HelperSupport>::load_override(t, 0);
 }
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_DECL(void)
-text_iarchive_impl<Archive>::init(){
-    basic_text_iarchive<Archive>::init();
+text_iarchive_impl<Archive, HelperSupport>::init(){
+    basic_text_iarchive<Archive, HelperSupport>::init();
 }
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_DECL(BOOST_PP_EMPTY()) 
-text_iarchive_impl<Archive>::text_iarchive_impl(
+text_iarchive_impl<Archive, HelperSupport>::text_iarchive_impl(
     std::istream & is, 
     unsigned int flags
 ) :
@@ -114,13 +114,13 @@ text_iarchive_impl<Archive>::text_iarchive_impl(
         is, 
         0 != (flags & no_codecvt)
     ),
-    basic_text_iarchive<Archive>(flags)
+    basic_text_iarchive<Archive, HelperSupport>(flags)
 {
     if(0 == (flags & no_header))
         #if BOOST_WORKAROUND(__MWERKS__, BOOST_TESTED_AT(0x3205))
         this->init();
         #else
-        this->basic_text_iarchive<Archive>::init();
+        this->basic_text_iarchive<Archive, HelperSupport>::init();
         #endif
 }
 

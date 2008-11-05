@@ -26,7 +26,6 @@
 #include <boost/archive/archive_exception.hpp>
 #include <boost/archive/basic_binary_iprimitive.hpp>
 #include <boost/archive/detail/common_iarchive.hpp>
-#include <boost/archive/shared_ptr_helper.hpp>
 #include <boost/archive/detail/register_archive.hpp>
 
 #include "portable_binary_archive.hpp"
@@ -69,8 +68,6 @@ class portable_binary_iarchive :
     public boost::archive::detail::common_iarchive<
         portable_binary_iarchive
     >
-	,
-    public boost::archive::detail::shared_ptr_helper
 	{
     typedef boost::archive::basic_binary_iprimitive<
         portable_binary_iarchive,
@@ -86,7 +83,8 @@ public:
     friend archive_base_t;
     friend primitive_base_t; // since with override load below
     friend class boost::archive::detail::interface_iarchive<
-        portable_binary_iarchive
+        portable_binary_iarchive,
+        true // helper support
     >;
     friend class boost::archive::load_access;
 protected:

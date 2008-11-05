@@ -35,16 +35,16 @@ namespace std{
 namespace boost {
 namespace archive {
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 class xml_oarchive_impl : 
     public basic_text_oprimitive<std::ostream>,
-    public basic_xml_oarchive<Archive>
+    public basic_xml_oarchive<Archive, HelperSupport>
 {
 #ifdef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
 public:
 #else
-    friend class detail::interface_oarchive<Archive>;
-    friend class basic_xml_oarchive<Archive>;
+    friend class detail::interface_oarchive<Archive, HelperSupport>;
+    friend class basic_xml_oarchive<Archive, HelperSupport>;
     friend class save_access;
 protected:
 #endif
@@ -91,17 +91,27 @@ public:
 // do not derive from this class.  If you want to extend this functionality
 // via inhertance, derived from xml_oarchive_impl instead.  This will
 // preserve correct static polymorphism.
+
+// same as xml_oarchive below - without helper support
+class naked_xml_oarchive : 
+    public xml_oarchive_impl<naked_xml_oarchive, false /* helper support */>
+{
+public:
+    naked_xml_oarchive(std::ostream & os, unsigned int flags = 0) :
+        xml_oarchive_impl<naked_xml_oarchive, false>(os, flags)
+    {}
+    ~naked_xml_oarchive(){}
+};
+
 class xml_oarchive : 
-    public xml_oarchive_impl<xml_oarchive>
+    public xml_oarchive_impl<xml_oarchive, true /* helper support*/>
 {
 public:
     xml_oarchive(std::ostream & os, unsigned int flags = 0) :
-        xml_oarchive_impl<xml_oarchive>(os, flags)
+        xml_oarchive_impl<xml_oarchive, true>(os, flags)
     {}
     ~xml_oarchive(){}
 };
-
-typedef xml_oarchive naked_xml_oarchive;
 
 } // namespace archive
 } // namespace boost

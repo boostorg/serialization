@@ -26,11 +26,12 @@ template class basic_binary_iprimitive<
     std::istream::char_type, 
     std::istream::traits_type
 >;
-template class basic_binary_iarchive<naked_binary_iarchive> ;
+template class basic_binary_iarchive<naked_binary_iarchive, false> ;
 template class binary_iarchive_impl<
     naked_binary_iarchive, 
     std::istream::char_type, 
-    std::istream::traits_type
+    std::istream::traits_type, 
+    false
 >;
 template class detail::archive_pointer_iserializer<naked_binary_iarchive> ;
 
@@ -40,11 +41,12 @@ template class basic_binary_iprimitive<
     std::istream::char_type, 
     std::istream::traits_type
 >;
-template class basic_binary_iarchive<binary_iarchive> ;
+template class basic_binary_iarchive<binary_iarchive, true> ;
 template class binary_iarchive_impl<
     binary_iarchive, 
     std::istream::char_type, 
-    std::istream::traits_type
+    std::istream::traits_type, 
+    true
 >;
 template class detail::archive_pointer_iserializer<binary_iarchive> ;
 

@@ -39,9 +39,9 @@ namespace archive {
 
 /////////////////////////////////////////////////////////////////////////
 // class basic_text_oarchive 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 class basic_text_oarchive : 
-    public detail::common_oarchive<Archive>
+    public detail::common_oarchive<Archive, HelperSupport>
 {
 protected:
 #if BOOST_WORKAROUND(BOOST_MSVC, <= 1300) \
@@ -50,9 +50,9 @@ public:
 #elif defined(BOOST_MSVC)
     // for some inexplicable reason insertion of "class" generates compile erro
     // on msvc 7.1
-    friend detail::interface_oarchive<Archive>;
+    friend detail::interface_oarchive<Archive, HelperSupport>;
 #else
-    friend class detail::interface_oarchive<Archive>;
+    friend class detail::interface_oarchive<Archive, HelperSupport>;
 #endif
     enum {
         none,
@@ -69,7 +69,7 @@ public:
 
     // default processing - kick back to base class.  Note the
     // extra stuff to get it passed borland compilers
-    typedef detail::common_oarchive<Archive> detail_common_oarchive;
+    typedef detail::common_oarchive<Archive, HelperSupport> detail_common_oarchive;
     template<class T>
     void save_override(T & t, BOOST_PFTO int){
         this->detail_common_oarchive::save_override(t, 0);
@@ -120,7 +120,7 @@ public:
     init();
 
     basic_text_oarchive(unsigned int flags) :
-        detail::common_oarchive<Archive>(flags),
+        detail::common_oarchive<Archive, HelperSupport>(flags),
         delimiter(none)
     {}
     ~basic_text_oarchive(){}

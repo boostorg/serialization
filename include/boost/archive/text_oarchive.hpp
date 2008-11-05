@@ -35,16 +35,16 @@ namespace std{
 namespace boost { 
 namespace archive {
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 class text_oarchive_impl : 
      /* protected ? */ public basic_text_oprimitive<std::ostream>,
-     public basic_text_oarchive<Archive>
+     public basic_text_oarchive<Archive, HelperSupport>
 {
 #ifdef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
 public:
 #else
-    friend class detail::interface_oarchive<Archive>;
-    friend class basic_text_oarchive<Archive>;
+    friend class detail::interface_oarchive<Archive, HelperSupport>;
+    friend class basic_text_oarchive<Archive, HelperSupport>;
     friend class save_access;
 protected:
 #endif
@@ -77,18 +77,29 @@ public:
 // do not derive from this class.  If you want to extend this functionality
 // via inhertance, derived from text_oarchive_impl instead.  This will
 // preserve correct static polymorphism.
+
+// same as text_oarchive below - without helper support
+class naked_text_oarchive : 
+    public text_oarchive_impl<naked_text_oarchive, false /* no helper support*/>
+{
+public:
+     
+    naked_text_oarchive(std::ostream & os, unsigned int flags = 0) :
+        text_oarchive_impl<naked_text_oarchive, false>(os, flags)
+    {}
+    ~naked_text_oarchive(){}
+};
+
 class text_oarchive : 
-    public text_oarchive_impl<text_oarchive>
+    public text_oarchive_impl<text_oarchive, true /* helper support */>
 {
 public:
      
     text_oarchive(std::ostream & os, unsigned int flags = 0) :
-        text_oarchive_impl<text_oarchive>(os, flags)
+        text_oarchive_impl<text_oarchive, true>(os, flags)
     {}
     ~text_oarchive(){}
 };
-
-typedef text_oarchive naked_text_oarchive;
 
 } // namespace archive
 } // namespace boost

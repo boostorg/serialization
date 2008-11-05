@@ -38,12 +38,12 @@
 namespace boost {
 namespace archive {
 
-template class basic_xml_iarchive<naked_xml_wiarchive> ;
-template class xml_wiarchive_impl<naked_xml_wiarchive> ;
+template class basic_xml_iarchive<naked_xml_wiarchive, false> ;
+template class xml_wiarchive_impl<naked_xml_wiarchive, false> ;
 template class detail::archive_pointer_iserializer<naked_xml_wiarchive> ;
 
-template class basic_xml_iarchive<xml_wiarchive> ;
-template class xml_wiarchive_impl<xml_wiarchive> ;
+template class basic_xml_iarchive<xml_wiarchive, true> ;
+template class xml_wiarchive_impl<xml_wiarchive, true> ;
 template class detail::archive_pointer_iserializer<xml_wiarchive> ;
 
 } // namespace archive

@@ -19,12 +19,12 @@
 namespace boost {
 namespace archive {
 
-template class basic_text_iarchive<naked_text_iarchive> ;
-template class text_iarchive_impl<naked_text_iarchive> ;
+template class basic_text_iarchive<naked_text_iarchive, false> ;
+template class text_iarchive_impl<naked_text_iarchive, false> ;
 template class detail::archive_pointer_iserializer<naked_text_iarchive> ;
 
-template class basic_text_iarchive<text_iarchive> ;
-template class text_iarchive_impl<text_iarchive> ;
+template class basic_text_iarchive<text_iarchive, true> ;
+template class text_iarchive_impl<text_iarchive, true> ;
 template class detail::archive_pointer_iserializer<text_iarchive> ;
 
 } // namespace archive

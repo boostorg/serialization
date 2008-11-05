@@ -26,15 +26,31 @@ namespace archive {
 
 // explicitly instantiate for this type of text stream
 template class basic_binary_oprimitive<
+    naked_binary_woarchive, 
+    wchar_t, 
+    std::char_traits<wchar_t> 
+>;
+template class basic_binary_oarchive<naked_binary_woarchive, false> ;
+template class binary_oarchive_impl<
+    naked_binary_woarchive, 
+    wchar_t, 
+    std::char_traits<wchar_t>, 
+    false
+>;
+template class detail::archive_pointer_oserializer<naked_binary_woarchive> ;
+
+// explicitly instantiate for this type of text stream
+template class basic_binary_oprimitive<
     binary_woarchive, 
     wchar_t, 
     std::char_traits<wchar_t> 
 >;
-template class basic_binary_oarchive<binary_woarchive> ;
+template class basic_binary_oarchive<binary_woarchive, true> ;
 template class binary_oarchive_impl<
     binary_woarchive, 
     wchar_t, 
-    std::char_traits<wchar_t> 
+    std::char_traits<wchar_t>, 
+    true
 >;
 template class detail::archive_pointer_oserializer<binary_woarchive> ;
 

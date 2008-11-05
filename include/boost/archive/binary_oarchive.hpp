@@ -25,25 +25,61 @@ namespace archive {
 // do not derive from this class.  If you want to extend this functionality
 // via inhertance, derived from binary_oarchive_impl instead.  This will
 // preserve correct static polymorphism.
+
+// same as binary_oarchive below - without helper support
+class naked_binary_oarchive : 
+    public binary_oarchive_impl<
+        naked_binary_oarchive ,
+        std::ostream::char_type,
+        std::ostream::traits_type,
+        false // no helper_support
+    >
+{
+public:
+    naked_binary_oarchive(std::ostream & os, unsigned int flags = 0) :
+        binary_oarchive_impl<
+            naked_binary_oarchive,
+            std::ostream::char_type,
+            std::ostream::traits_type,
+            false
+        >(os, flags)
+    {}
+    naked_binary_oarchive(std::streambuf & bsb, unsigned int flags = 0) :
+        binary_oarchive_impl<
+            naked_binary_oarchive,
+            std::ostream::char_type,
+            std::ostream::traits_type,
+            false
+        >(bsb, flags)
+    {}
+};
+
 class binary_oarchive : 
     public binary_oarchive_impl<
-        binary_oarchive, std::ostream::char_type, std::ostream::traits_type
+        binary_oarchive,
+        std::ostream::char_type,
+        std::ostream::traits_type,
+        true // helper support
     >
 {
 public:
     binary_oarchive(std::ostream & os, unsigned int flags = 0) :
         binary_oarchive_impl<
-            binary_oarchive, std::ostream::char_type, std::ostream::traits_type
+            binary_oarchive,
+            std::ostream::char_type,
+            std::ostream::traits_type,
+            true
         >(os, flags)
     {}
     binary_oarchive(std::streambuf & bsb, unsigned int flags = 0) :
         binary_oarchive_impl<
-            binary_oarchive, std::ostream::char_type, std::ostream::traits_type
+            binary_oarchive,
+            std::ostream::char_type,
+            std::ostream::traits_type,
+            true
         >(bsb, flags)
     {}
 };
-
-typedef binary_oarchive naked_binary_oarchive;
 
 } // namespace archive
 } // namespace boost

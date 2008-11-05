@@ -24,16 +24,16 @@
 namespace boost { 
 namespace archive {
 
-template<class Archive, class Elem, class Tr>
+template<class Archive, class Elem, class Tr, bool HelperSupport>
 class binary_oarchive_impl : 
     public basic_binary_oprimitive<Archive, Elem, Tr>,
-    public basic_binary_oarchive<Archive>
+    public basic_binary_oarchive<Archive, HelperSupport>
 {
 #ifdef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
 public:
 #else
-    friend class detail::interface_oarchive<Archive>;
-    friend class basic_binary_oarchive<Archive>;
+    friend class detail::interface_oarchive<Archive, HelperSupport>;
+    friend class basic_binary_oarchive<Archive, HelperSupport>;
     friend class save_access;
 protected:
 #endif
@@ -42,13 +42,13 @@ protected:
     // make this protected so it can be called from a derived archive
     template<class T>
     void save_override(T & t, BOOST_PFTO int){
-        this->basic_binary_oarchive<Archive>::save_override(t, 0L);
+        this->basic_binary_oarchive<Archive, HelperSupport>::save_override(t, 0L);
     }
     void init(unsigned int flags) {
         if(0 != (flags & no_header))
             return;
         #if ! defined(__MWERKS__)
-            this->basic_binary_oarchive<Archive>::init();
+            this->basic_binary_oarchive<Archive, HelperSupport>::init();
             this->basic_binary_oprimitive<Archive, Elem, Tr>::init();
         #else
             basic_binary_oarchive<Archive>::init();
@@ -63,7 +63,7 @@ protected:
             bsb, 
             0 != (flags & no_codecvt)
         ),
-        basic_binary_oarchive<Archive>(flags)
+        basic_binary_oarchive<Archive, HelperSupport>(flags)
     {
         init(flags);
     }
@@ -75,7 +75,7 @@ protected:
             * os.rdbuf(), 
             0 != (flags & no_codecvt)
         ),
-        basic_binary_oarchive<Archive>(flags)
+        basic_binary_oarchive<Archive, HelperSupport>(flags)
     {
         init(flags);
     }

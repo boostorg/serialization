@@ -67,9 +67,9 @@ void copy_to_ptr(char * s, const std::wstring & ws){
 
 } // anonymous
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_WARCHIVE_DECL(void)
-xml_wiarchive_impl<Archive>::load(std::string & s){
+xml_wiarchive_impl<Archive, HelperSupport>::load(std::string & s){
     std::wstring ws;
     bool result = gimpl->parse_string(is, ws);
     if(! result)
@@ -93,9 +93,9 @@ xml_wiarchive_impl<Archive>::load(std::string & s){
 }
 
 #ifndef BOOST_NO_STD_WSTRING
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_WARCHIVE_DECL(void)
-xml_wiarchive_impl<Archive>::load(std::wstring & ws){
+xml_wiarchive_impl<Archive, HelperSupport>::load(std::wstring & ws){
     bool result = gimpl->parse_string(is, ws);
     if(! result)
         boost::serialization::throw_exception(
@@ -104,9 +104,9 @@ xml_wiarchive_impl<Archive>::load(std::wstring & ws){
 }
 #endif
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_WARCHIVE_DECL(void)
-xml_wiarchive_impl<Archive>::load(char * s){
+xml_wiarchive_impl<Archive, HelperSupport>::load(char * s){
     std::wstring ws;
     bool result = gimpl->parse_string(is, ws);
     if(! result)
@@ -117,9 +117,9 @@ xml_wiarchive_impl<Archive>::load(char * s){
 }
 
 #ifndef BOOST_NO_INTRINSIC_WCHAR_T
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_WARCHIVE_DECL(void)
-xml_wiarchive_impl<Archive>::load(wchar_t * ws){
+xml_wiarchive_impl<Archive, HelperSupport>::load(wchar_t * ws){
     std::wstring twstring;
     bool result = gimpl->parse_string(is, twstring);
     if(! result)
@@ -131,9 +131,9 @@ xml_wiarchive_impl<Archive>::load(wchar_t * ws){
 }
 #endif
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_WARCHIVE_DECL(void)
-xml_wiarchive_impl<Archive>::load_override(class_name_type & t, int){
+xml_wiarchive_impl<Archive, HelperSupport>::load_override(class_name_type & t, int){
     const std::wstring & ws = gimpl->rv.class_name;
     if(ws.size() > BOOST_SERIALIZATION_MAX_KEY_SIZE - 1)
         boost::serialization::throw_exception(
@@ -142,16 +142,16 @@ xml_wiarchive_impl<Archive>::load_override(class_name_type & t, int){
     copy_to_ptr(t, ws);
 }
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_WARCHIVE_DECL(void)
-xml_wiarchive_impl<Archive>::init(){
+xml_wiarchive_impl<Archive, HelperSupport>::init(){
     gimpl->init(is);
     this->set_library_version(gimpl->rv.version);
 }
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_WARCHIVE_DECL(BOOST_PP_EMPTY())
-xml_wiarchive_impl<Archive>::xml_wiarchive_impl(
+xml_wiarchive_impl<Archive, HelperSupport>::xml_wiarchive_impl(
     std::wistream &is_,
     unsigned int flags
 ) :
@@ -159,7 +159,7 @@ xml_wiarchive_impl<Archive>::xml_wiarchive_impl(
         is_, 
         true // don't change the codecvt - use the one below
     ),
-    basic_xml_iarchive<Archive>(flags),
+    basic_xml_iarchive<Archive, HelperSupport>(flags),
     gimpl(new xml_wgrammar())
 {
     if(0 == (flags & no_codecvt)){
@@ -185,9 +185,9 @@ xml_wiarchive_impl<Archive>::xml_wiarchive_impl(
     }
 }
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_WARCHIVE_DECL(BOOST_PP_EMPTY())
-xml_wiarchive_impl<Archive>::~xml_wiarchive_impl(){
+xml_wiarchive_impl<Archive, HelperSupport>::~xml_wiarchive_impl(){
     if(0 == (this->get_flags() & no_header)){
         BOOST_TRY{
             gimpl->windup(is);

@@ -37,16 +37,16 @@ template<class CharType>
 class basic_xml_grammar;
 typedef basic_xml_grammar<wchar_t> xml_wgrammar;
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 class xml_wiarchive_impl : 
     public basic_text_iprimitive<std::wistream>,
-    public basic_xml_iarchive<Archive>
+    public basic_xml_iarchive<Archive, HelperSupport>
 {
 #ifdef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
 public:
 #else
-    friend class detail::interface_iarchive<Archive>;
-    friend class basic_xml_iarchive<Archive>;
+    friend class detail::interface_iarchive<Archive, HelperSupport>;
+    friend class basic_xml_iarchive<Archive, HelperSupport>;
     friend class load_access;
 protected:
 #endif
@@ -75,7 +75,7 @@ protected:
     #endif
     template<class T>
     void load_override(T & t, BOOST_PFTO int){
-        basic_xml_iarchive<Archive>::load_override(t, 0);
+        basic_xml_iarchive<Archive, HelperSupport>::load_override(t, 0);
     }
     BOOST_WARCHIVE_DECL(void)
     load_override(class_name_type & t, int);
@@ -91,36 +91,23 @@ protected:
 // via inhertance, derived from xml_wiarchive_impl instead.  This will
 // preserve correct static polymorphism.
 
-// same as xml_wiarchive below - without the shared_ptr_helper
+// same as xml_wiarchive below - without helper support
 class naked_xml_wiarchive : 
-    public xml_wiarchive_impl<naked_xml_wiarchive>
+    public xml_wiarchive_impl<naked_xml_wiarchive, false /* helper support */>
 {
 public:
     naked_xml_wiarchive(std::wistream & is, unsigned int flags = 0) :
-        xml_wiarchive_impl<naked_xml_wiarchive>(is, flags)
+        xml_wiarchive_impl<naked_xml_wiarchive, false>(is, flags)
     {}
     ~naked_xml_wiarchive(){}
 };
 
-} // namespace archive
-} // namespace boost
-
-// note special treatment of shared_ptr. This type needs a special
-// structure associated with every archive.  We created a "mix-in"
-// class to provide this functionality.  Since shared_ptr holds a
-// special esteem in the boost library - we included it here by default.
-#include <boost/archive/shared_ptr_helper.hpp>
-
-namespace boost { 
-namespace archive {
-
 class xml_wiarchive : 
-    public xml_wiarchive_impl<xml_wiarchive>,
-    public detail::shared_ptr_helper
+    public xml_wiarchive_impl<xml_wiarchive, true /* helper support*/>
 {
 public:
     xml_wiarchive(std::wistream & is, unsigned int flags = 0) :
-        xml_wiarchive_impl<xml_wiarchive>(is, flags)
+        xml_wiarchive_impl<xml_wiarchive, true>(is, flags)
     {}
     ~xml_wiarchive(){}
 };

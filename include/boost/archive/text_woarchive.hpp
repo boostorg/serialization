@@ -40,16 +40,16 @@ namespace std{
 namespace boost { 
 namespace archive {
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 class text_woarchive_impl : 
     public basic_text_oprimitive<std::wostream>,
-    public basic_text_oarchive<Archive>
+    public basic_text_oarchive<Archive, HelperSupport>
 {
 #ifdef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
 public:
 #else
-    friend class detail::interface_oarchive<Archive>;
-    friend class basic_text_oarchive<Archive>;
+    friend class detail::interface_oarchive<Archive, HelperSupport>;
+    friend class basic_text_oarchive<Archive, HelperSupport>;
     friend class save_access;
 protected:
 #endif
@@ -75,10 +75,10 @@ protected:
             os, 
             0 != (flags & no_codecvt)
         ),
-        basic_text_oarchive<Archive>(flags)
+        basic_text_oarchive<Archive, HelperSupport>(flags)
     {
         if(0 == (flags & no_header))
-            basic_text_oarchive<Archive>::init();
+            basic_text_oarchive<Archive, HelperSupport>::init();
     }
 public:
     void save_binary(const void *address, std::size_t count){
@@ -104,17 +104,27 @@ public:
 // do not derive from this class.  If you want to extend this functionality
 // via inhertance, derived from text_oarchive_impl instead.  This will
 // preserve correct static polymorphism.
+
+// same as text_woarchive below - without helper support
+class naked_text_woarchive : 
+    public text_woarchive_impl<naked_text_woarchive, false /* no helper support*/>
+{
+public:
+    naked_text_woarchive(std::wostream & os, unsigned int flags = 0) :
+        text_woarchive_impl<naked_text_woarchive, false>(os, flags)
+    {}
+    ~naked_text_woarchive(){}
+};
+
 class text_woarchive : 
-    public text_woarchive_impl<text_woarchive>
+    public text_woarchive_impl<text_woarchive, true /* helper support */>
 {
 public:
     text_woarchive(std::wostream & os, unsigned int flags = 0) :
-        text_woarchive_impl<text_woarchive>(os, flags)
+        text_woarchive_impl<text_woarchive, true>(os, flags)
     {}
     ~text_woarchive(){}
 };
-
-typedef text_woarchive naked_text_woarchive;
 
 } // namespace archive
 } // namespace boost

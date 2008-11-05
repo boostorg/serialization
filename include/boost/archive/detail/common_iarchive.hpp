@@ -27,12 +27,12 @@ namespace archive {
 namespace detail {
 
 // note: referred to as Curiously Recurring Template Patter (CRTP)
-template<class Archive>
+template<class Archive, bool HelperSupport = true>
 class common_iarchive : 
     public basic_iarchive,
-    public interface_iarchive<Archive>
+    public interface_iarchive<Archive, HelperSupport>
 {
-    friend class interface_iarchive<Archive>;
+    friend class interface_iarchive<Archive, HelperSupport>;
 private:
     virtual void vload(version_type & t){
         * this->This() >> t; 
@@ -65,7 +65,7 @@ protected:
     // default archive initialization
     common_iarchive(unsigned int flags = 0) : 
         basic_iarchive(flags),
-        interface_iarchive<Archive>()
+        interface_iarchive<Archive, HelperSupport>()
     {}
 };
 

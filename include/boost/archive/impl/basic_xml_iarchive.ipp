@@ -23,9 +23,9 @@ namespace archive {
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // implementation of xml_text_archive
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
-basic_xml_iarchive<Archive>::load_start(const char *name){
+basic_xml_iarchive<Archive, HelperSupport>::load_start(const char *name){
     // if there's no name
     if(NULL == name)
         return;
@@ -40,9 +40,9 @@ basic_xml_iarchive<Archive>::load_start(const char *name){
     return;
 }
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
-basic_xml_iarchive<Archive>::load_end(const char *name){
+basic_xml_iarchive<Archive, HelperSupport>::load_end(const char *name){
     // if there's no name
     if(NULL == name)
         return;
@@ -73,39 +73,39 @@ basic_xml_iarchive<Archive>::load_end(const char *name){
     }
 }
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
-basic_xml_iarchive<Archive>::load_override(object_id_type & t, int){
+basic_xml_iarchive<Archive, HelperSupport>::load_override(object_id_type & t, int){
     t = this->This()->gimpl->rv.object_id;
 }
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
-basic_xml_iarchive<Archive>::load_override(version_type & t, int){
+basic_xml_iarchive<Archive, HelperSupport>::load_override(version_type & t, int){
     t = this->This()->gimpl->rv.version;
 }
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
-basic_xml_iarchive<Archive>::load_override(class_id_type & t, int){
+basic_xml_iarchive<Archive, HelperSupport>::load_override(class_id_type & t, int){
     t = this->This()->gimpl->rv.class_id;
 }
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
-basic_xml_iarchive<Archive>::load_override(tracking_type & t, int){
+basic_xml_iarchive<Archive, HelperSupport>::load_override(tracking_type & t, int){
     t = this->This()->gimpl->rv.tracking_level;
 }
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL(BOOST_PP_EMPTY())
-basic_xml_iarchive<Archive>::basic_xml_iarchive(unsigned int flags) :
-    detail::common_iarchive<Archive>(flags),
+basic_xml_iarchive<Archive, HelperSupport>::basic_xml_iarchive(unsigned int flags) :
+    detail::common_iarchive<Archive, HelperSupport>(flags),
     depth(0)
 {}
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL(BOOST_PP_EMPTY())
-basic_xml_iarchive<Archive>::~basic_xml_iarchive(){}
+basic_xml_iarchive<Archive, HelperSupport>::~basic_xml_iarchive(){}
 
 } // namespace archive
 } // namespace boost

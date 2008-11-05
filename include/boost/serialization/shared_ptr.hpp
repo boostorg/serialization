@@ -26,6 +26,7 @@
 #include <boost/detail/workaround.hpp>
 #include <boost/shared_ptr.hpp>
 
+#include <boost/serialization/shared_ptr_helper.hpp>
 #include <boost/serialization/split_free.hpp>
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/version.hpp>
@@ -121,13 +122,13 @@ inline void load(
         //    boost_132::detail::sp_counted_base_impl<T *, boost::checked_deleter<T> > *
         //>(NULL));
         ar.register_type(static_cast<
-            boost_132::detail::sp_counted_base_impl<T *, boost::archive::detail::null_deleter > *
+            boost_132::detail::sp_counted_base_impl<T *, boost::serialization::detail::null_deleter > *
         >(NULL));
         boost_132::shared_ptr<T> sp;
         ar >> boost::serialization::make_nvp("px", sp.px);
         ar >> boost::serialization::make_nvp("pn", sp.pn);
         // got to keep the sps around so the sp.pns don't disappear
-        ar.append(sp);
+        ar.template get_helper<boost::serialization::detail::shared_ptr_helper>().append(sp);
         r = sp.get();
     }
     else    
@@ -135,7 +136,7 @@ inline void load(
     {
         ar >> boost::serialization::make_nvp("px", r);
     }
-    ar.reset(t,r);
+    ar.template get_helper<boost::serialization::detail::shared_ptr_helper>().reset(t,r);
 }
 
 template<class Archive, class T>

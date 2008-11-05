@@ -42,9 +42,9 @@ namespace archive {
 // by a program built with the same tools for the same machne.  This class
 // does have the virtue of buiding the smalles archive in the minimum amount
 // of time.  So under some circumstances it may be he right choice.
-template<class Archive>
+template<class Archive, bool HelperSupport>
 class basic_binary_oarchive : 
-    public archive::detail::common_oarchive<Archive>
+    public archive::detail::common_oarchive<Archive, HelperSupport>
 {
 protected:
 #if BOOST_WORKAROUND(BOOST_MSVC, <= 1300)
@@ -52,12 +52,12 @@ public:
 #elif defined(BOOST_MSVC)
     // for some inexplicable reason insertion of "class" generates compile erro
     // on msvc 7.1
-    friend detail::interface_oarchive<Archive>;
+    friend detail::interface_oarchive<Archive, HelperSupport>;
 #else
-    friend class detail::interface_oarchive<Archive>;
+    friend class detail::interface_oarchive<Archive, HelperSupport>;
 #endif
     // any datatype not specifed below will be handled by base class
-    typedef detail::common_oarchive<Archive> detail_common_oarchive;
+    typedef detail::common_oarchive<Archive, HelperSupport> detail_common_oarchive;
     template<class T>
     void save_override(const T & t, BOOST_PFTO int version){
       this->detail_common_oarchive::save_override(t, static_cast<int>(version));
@@ -113,7 +113,7 @@ public:
     init();
 
     basic_binary_oarchive(unsigned int flags) :
-        detail::common_oarchive<Archive>(flags)
+        detail::common_oarchive<Archive, HelperSupport>(flags)
     {}
 };
 

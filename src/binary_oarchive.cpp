@@ -22,15 +22,31 @@ namespace archive {
 
 // explicitly instantiate for this type of binary stream
 template class basic_binary_oprimitive<
+    naked_binary_oarchive, 
+    std::ostream::char_type, 
+    std::ostream::traits_type
+>;
+template class basic_binary_oarchive<naked_binary_oarchive, false> ;
+template class binary_oarchive_impl<
+    naked_binary_oarchive, 
+    std::ostream::char_type, 
+    std::ostream::traits_type, 
+    false
+>;
+template class detail::archive_pointer_oserializer<naked_binary_oarchive> ;
+
+// explicitly instantiate for this type of binary stream
+template class basic_binary_oprimitive<
     binary_oarchive, 
     std::ostream::char_type, 
     std::ostream::traits_type
 >;
-template class basic_binary_oarchive<binary_oarchive> ;
+template class basic_binary_oarchive<binary_oarchive, true> ;
 template class binary_oarchive_impl<
     binary_oarchive, 
     std::ostream::char_type, 
-    std::ostream::traits_type
+    std::ostream::traits_type, 
+    true
 >;
 template class detail::archive_pointer_oserializer<binary_oarchive> ;
 

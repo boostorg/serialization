@@ -27,7 +27,8 @@ typedef detail::polymorphic_oarchive_route<
     binary_oarchive_impl<
         naked_binary_oarchive, 
         std::ostream::char_type, 
-        std::ostream::traits_type
+        std::ostream::traits_type, 
+        false // no helper support
     >
  > polymorphic_binary_oarchive;
 

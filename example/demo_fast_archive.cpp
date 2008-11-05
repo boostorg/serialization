@@ -36,20 +36,22 @@ class fast_binary_oarchive :
     public binary_oarchive_impl<
         fast_binary_oarchive, 
         std::ostream::char_type, 
-        std::ostream::traits_type
+        std::ostream::traits_type,
+        true // helper support
     >
 {
     typedef fast_binary_oarchive derived_t;
     typedef binary_oarchive_impl<
         fast_binary_oarchive, 
         std::ostream::char_type, 
-        std::ostream::traits_type
+        std::ostream::traits_type, 
+        true
     > base_t;
 #ifndef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
 public:
 #else
-    friend class boost::archive::detail::interface_oarchive<derived_t>;
-    friend class basic_binary_oarchive<derived_t>;
+    friend class boost::archive::detail::interface_oarchive<derived_t, true>;
+    friend class basic_binary_oarchive<derived_t, true>;
     friend class basic_binary_oprimitive<
         derived_t, 
         std::ostream::char_type, 
@@ -101,20 +103,22 @@ class fast_binary_iarchive :
     public binary_iarchive_impl<
         fast_binary_iarchive, 
         std::istream::char_type, 
-        std::istream::traits_type
+        std::istream::traits_type, 
+        true // helper support
     >
 {
     typedef fast_binary_iarchive derived_t;
     typedef binary_iarchive_impl<
         fast_binary_iarchive, 
         std::istream::char_type, 
-        std::istream::traits_type
+        std::istream::traits_type, 
+        true
     > base_t;
 #ifndef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
 public:
 #else
-    friend class boost::archive::detail::interface_iarchive<derived_t>;
-    friend class basic_binary_iarchive<derived_t>;
+    friend class boost::archive::detail::interface_iarchive<derived_t, true>;
+    friend class basic_binary_iarchive<derived_t, true>;
     friend class basic_binary_iprimitive<
         derived_t, 
         std::ostream::char_type, 

@@ -30,25 +30,64 @@ namespace archive {
 // do not derive from this class.  If you want to extend this functionality
 // via inhertance, derived from binary_oarchive_impl instead.  This will
 // preserve correct static polymorphism.
-class binary_woarchive : 
+
+// same as binary_iarchive below - without helper support
+class naked_binary_woarchive : 
     public binary_oarchive_impl<
-            binary_woarchive, std::wostream::char_type, std::wostream::traits_type
-        >
+        naked_binary_woarchive,
+        std::wostream::char_type,
+        std::wostream::traits_type,
+        false // no helper support
+    >
 {
 public:
-    binary_woarchive(std::wostream & os, unsigned int flags = 0) :
+    naked_binary_woarchive(std::wostream & os, unsigned int flags = 0) :
         binary_oarchive_impl<
-            binary_woarchive, std::wostream::char_type, std::wostream::traits_type
+            naked_binary_woarchive,
+            std::wostream::char_type,
+            std::wostream::traits_type,
+            false
         >(os, flags)
     {}
-    binary_woarchive(std::wstreambuf & bsb, unsigned int flags = 0) :
+    naked_binary_woarchive(std::wstreambuf & bsb, unsigned int flags = 0) :
         binary_oarchive_impl<
-            binary_woarchive, std::wostream::char_type, std::wostream::traits_type
+            naked_binary_woarchive,
+            std::wostream::char_type,
+            std::wostream::traits_type,
+            false
         >(bsb, flags)
     {}
 };
 
-typedef binary_woarchive naked_binary_woarchive;
+// do not derive from this class.  If you want to extend this functionality
+// via inhertance, derived from binary_oarchive_impl instead.  This will
+// preserve correct static polymorphism.
+class binary_woarchive : 
+    public binary_oarchive_impl<
+        binary_woarchive,
+        std::wostream::char_type,
+        std::wostream::traits_type,
+        true // helper support
+    >
+{
+public:
+    binary_woarchive(std::wostream & os, unsigned int flags = 0) :
+        binary_oarchive_impl<
+            binary_woarchive,
+            std::wostream::char_type,
+            std::wostream::traits_type,
+            true
+        >(os, flags)
+    {}
+    binary_woarchive(std::wstreambuf & bsb, unsigned int flags = 0) :
+        binary_oarchive_impl<
+            binary_woarchive,
+            std::wostream::char_type,
+            std::wostream::traits_type,
+            true
+        >(bsb, flags)
+    {}
+};
 
 } // namespace archive
 } // namespace boost

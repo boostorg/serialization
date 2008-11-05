@@ -26,9 +26,9 @@ namespace archive {
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // implementation of basic_text_oarchive
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
-basic_text_oarchive<Archive>::newtoken()
+basic_text_oarchive<Archive, HelperSupport>::newtoken()
 {
     switch(delimiter){
     default:
@@ -47,9 +47,9 @@ basic_text_oarchive<Archive>::newtoken()
     }
 }
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
-basic_text_oarchive<Archive>::init(){
+basic_text_oarchive<Archive, HelperSupport>::init(){
     // write signature in an archive version independent manner
     const std::string file_signature(BOOST_ARCHIVE_SIGNATURE());
     * this->This() << file_signature;

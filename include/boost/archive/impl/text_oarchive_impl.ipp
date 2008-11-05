@@ -37,9 +37,9 @@ namespace archive {
 // implementation of basic_text_oprimitive overrides for the combination
 // of template parameters used to create a text_oprimitive
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_DECL(void)
-text_oarchive_impl<Archive>::save(const char * s)
+text_oarchive_impl<Archive, HelperSupport>::save(const char * s)
 {
     const std::size_t len = std::ostream::traits_type::length(s);
     *this->This() << len;
@@ -47,9 +47,9 @@ text_oarchive_impl<Archive>::save(const char * s)
     os << s;
 }
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_DECL(void)
-text_oarchive_impl<Archive>::save(const std::string &s)
+text_oarchive_impl<Archive, HelperSupport>::save(const std::string &s)
 {
     const std::size_t size = s.size();
     *this->This() << size;
@@ -59,9 +59,9 @@ text_oarchive_impl<Archive>::save(const std::string &s)
 
 #ifndef BOOST_NO_CWCHAR
 #ifndef BOOST_NO_INTRINSIC_WCHAR_T
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_DECL(void)
-text_oarchive_impl<Archive>::save(const wchar_t * ws)
+text_oarchive_impl<Archive, HelperSupport>::save(const wchar_t * ws)
 {
     const std::size_t l = std::wcslen(ws);
     * this->This() << l;
@@ -71,9 +71,9 @@ text_oarchive_impl<Archive>::save(const wchar_t * ws)
 #endif
 
 #ifndef BOOST_NO_STD_WSTRING
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_DECL(void)
-text_oarchive_impl<Archive>::save(const std::wstring &ws)
+text_oarchive_impl<Archive, HelperSupport>::save(const std::wstring &ws)
 {
     const std::size_t l = ws.size();
     * this->This() << l;
@@ -83,9 +83,9 @@ text_oarchive_impl<Archive>::save(const std::wstring &ws)
 #endif
 #endif // BOOST_NO_CWCHAR
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_DECL(BOOST_PP_EMPTY()) 
-text_oarchive_impl<Archive>::text_oarchive_impl(
+text_oarchive_impl<Archive, HelperSupport>::text_oarchive_impl(
     std::ostream & os, 
     unsigned int flags
 ) :
@@ -93,19 +93,19 @@ text_oarchive_impl<Archive>::text_oarchive_impl(
         os, 
         0 != (flags & no_codecvt)
     ),
-    basic_text_oarchive<Archive>(flags)
+    basic_text_oarchive<Archive, HelperSupport>(flags)
 {
     if(0 == (flags & no_header))
         #if BOOST_WORKAROUND(__MWERKS__, BOOST_TESTED_AT(0x3205))
         this->init();
         #else
-        this->basic_text_oarchive<Archive>::init();
+        this->basic_text_oarchive<Archive, HelperSupport>::init();
         #endif
 }
 
-template<class Archive>
+template<class Archive, bool HelperSupport>
 BOOST_ARCHIVE_DECL(void)
-text_oarchive_impl<Archive>::save_binary(const void *address, std::size_t count){
+text_oarchive_impl<Archive, HelperSupport>::save_binary(const void *address, std::size_t count){
     put('\n');
     this->end_preamble();
     #if ! defined(__MWERKS__)

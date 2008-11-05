@@ -34,9 +34,9 @@ namespace archive {
 
 /////////////////////////////////////////////////////////////////////////
 // class xml_iarchive - read serialized objects from a input text stream
-template<class Archive>
+template<class Archive, bool HelperSupport>
 class basic_xml_iarchive :
-    public detail::common_iarchive<Archive>
+    public detail::common_iarchive<Archive, HelperSupport>
 {
 protected:
 #if BOOST_WORKAROUND(BOOST_MSVC, <= 1300)
@@ -44,9 +44,9 @@ public:
 #elif defined(BOOST_MSVC)
     // for some inexplicable reason insertion of "class" generates compile erro
     // on msvc 7.1
-    friend detail::interface_oarchive<Archive>;
+    friend detail::interface_oarchive<Archive, HelperSupport>;
 #else
-    friend class detail::interface_oarchive<Archive>;
+    friend class detail::interface_oarchive<Archive, HelperSupport>;
 #endif
     unsigned int depth;
     BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
@@ -68,7 +68,7 @@ public:
 
     // Anything not an attribute - see below - should be a name value
     // pair and be processed here
-    typedef detail::common_iarchive<Archive> detail_common_iarchive;
+    typedef detail::common_iarchive<Archive, HelperSupport> detail_common_iarchive;
     template<class T>
     void load_override(
         #ifndef BOOST_NO_FUNCTION_TEMPLATE_ORDERING
