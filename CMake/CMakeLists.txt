@@ -2,7 +2,7 @@
 
 cmake_minimum_required(VERSION 2.8)
 
-project("Serialization Library Test")
+project("SerializationLibraryTest")
 
 #
 # Compiler settings
@@ -22,8 +22,20 @@ elseif( CMAKE_CXX_COMPILER_ID STREQUAL "Clang" )
   set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++ -dead_strip")
 endif()
 
+#
+# IDE settings
+#
+
 if( CMAKE_HOST_APPLE )
-  set (CMAKE_OSX_ARCHITECTURES "x86_64" )
+  if(Boost_ADDRESS_MODEL EQUAL 64)
+    message("Address model is 64 bits")
+    set (CMAKE_OSX_ARCHITECTURES "x86_64" )
+  elseif(Boost_ADDRESS_MODEL EQUAL 32)
+    message("Address model is 32 bits")
+    set (CMAKE_OSX_ARCHITECTURES "i386" )
+  else()
+    message("Address model must be either 32 or 64")
+  endif()
 endif()
 
 #
@@ -32,8 +44,12 @@ endif()
 
 # Boost
 
+# note: we're assuming that boost has been built with:
+# ./b2 —-layout=versioned toolset=clang-darwin link=static address-model=64 stage
+
+set(Boost_ADDRESS_MODEL 64 CACHE INTEGER "32/64 bits")
+set(Boost_USE_STATIC_LIBS ON CACHE BOOL "Link to Boost static libraries")
 set(Boost_USE_MULTITHREADED ON)
-set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_STATIC_RUNTIME OFF)
 find_package(Boost REQUIRED COMPONENTS serialization wserialization system filesystem)
 
