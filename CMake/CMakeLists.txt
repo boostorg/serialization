@@ -2,7 +2,12 @@
 
 cmake_minimum_required(VERSION 2.8)
 
-project("SerializationLibraryTest")
+
+if(Boost_USE_STATIC_LIBS)
+  project("Serialization-Static")
+else()
+  project("Serialization-Shared")
+endif()
 
 #
 # Compiler settings
@@ -27,15 +32,16 @@ endif()
 #
 
 if( CMAKE_HOST_APPLE )
-  if(Boost_ADDRESS_MODEL EQUAL 64)
-    message(STATUS "Address model is 64 bits")
-    set (CMAKE_OSX_ARCHITECTURES "x86_64" )
-  elseif(Boost_ADDRESS_MODEL EQUAL 32)
-    message(STATUS "Address model is 32 bits")
-    set (CMAKE_OSX_ARCHITECTURES "i386" )
-  else()
-    message(FATAL_ERROR "Address model must be either 32 or 64")
-  endif()
+  # note: it seems that bjam builds both address models in any case
+  # so we can defer this decision to the IDE just as we do for debug/release
+  # so we'll not use this now
+  # set(Boost_ADDRESS_MODEL 64 CACHE INTEGER "32/64 bits")
+  set(Boost_USE_STATIC_LIBS ON CACHE BOOL "Link to Boost static libraries")
+  set(Boost_USE_MULTITHREADED ON)
+else()
+  set(Boost_ADDRESS_MODEL 64 CACHE INTEGER "32/64 bits")
+  set(Boost_USE_STATIC_LIBS ON CACHE BOOL "Link to Boost static libraries")
+  set(Boost_USE_MULTITHREADED ON)
 endif()
 
 #
@@ -45,12 +51,46 @@ endif()
 # Boost
 
 # note: we're assuming that boost has been built with:
-# ./b2 —-layout=versioned toolset=clang-darwin link=static address-model=64 stage
+# ./b2 —-layout=versioned toolset=clang-darwin link=static,shared variant=debug,release stage
 
-set(Boost_ADDRESS_MODEL 64 CACHE INTEGER "32/64 bits")
-set(Boost_USE_STATIC_LIBS ON CACHE BOOL "Link to Boost static libraries")
-set(Boost_USE_MULTITHREADED ON)
-set(Boost_USE_STATIC_RUNTIME OFF)
+###########################
+# special notes for Xcode.
+
+# these three should result in CMake setting the variables
+# Boost_SERIALIZATION_LIBRARY_DEBUG … to the correct values.  
+
+# But my current version of CMake doesn't automatically set the library names
+# to point to the the libraries to be used.  The variables are created
+# but they are not initialized.  So be prepared to set these variables by hand.
+# If you want to use the static libraries - point to the boost libraries ending
+# in ".a".  If you want to use the shared boost libraries - point to the libraries
+# ending in ".dylib".
+
+# But wait - there's more.
+# if both lib.a and lib.dylib both exist in the library directory, Xcode will
+# automatically chose the *.dylib one - and there's nothing you can do to fix this.
+# So my recommendation is 
+# a) to place the compiled libraries in two different directories
+#    - e.g. stage/lib-static/*.a and stage/lib-shared/*.dylib
+#    and set the CMake variable Boost_LIBRARY_DIR to point to one or the other
+# b) create two different CMake build directories - build-static and build-shared
+#    and switch between projects as desired.  I like to test both since
+#    there are things like dead code elimination and visibility which vary
+#    between the two environments.
+#
+#    caveat - as I write this, I've been unable to get the tests on the shared
+#    library to function. Problem is that one needs to either put the shared
+#    libraries in a special known place or set an environmental
+#    variable which points to the shared library directory.  I prefer the latter
+#    but I've been unable to figure out how to get Xcode to do on a global basis
+#    and it's not practical to do this for 247 test targets one at a time.
+
+# c) The targets in the project will by default be built as universal 32/64 binaries
+#    I have yet to experiment with these yet so I just set the target to 64 bit.
+
+# end special note for Xcode
+############################
+
 find_package(Boost REQUIRED COMPONENTS serialization wserialization system filesystem)
 
 if(Boost_FOUND)
