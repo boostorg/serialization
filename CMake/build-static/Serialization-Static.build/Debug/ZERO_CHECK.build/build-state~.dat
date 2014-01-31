@@ -1,29 +1,0 @@
-TZERO_CHECK
-v6
-r1
-cCheck dependencies
-cPhaseScriptExecution CMake\ Rules /Users/robertramey/WorkingProjects/modular-boost/libs/serialization/CMake/build-static/Serialization-Static.build/Debug/ZERO_CHECK.build/Script-B6B9A58F1A784204A35A50BC.sh
-
-N/Users/robertramey/WorkingProjects/modular-boost/libs/serialization/CMake/build-static/Serialization-Static.build/Debug/ZERO_CHECK.build/Script-B6B9A58F1A784204A35A50BC.sh
-c0000000052EAE1440000000000000107
-t1391124804
-s263
-
-CCheck dependencies
-r0
-lSLF06#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies18"Check dependenciesb8cb82c4189bb841^c7f583c4189bb841^---0#1#1#--18"Check dependencies36"964C48FB-8620-49B9-9ADF-8FB0C43CC86D-
-
-CPhaseScriptExecution CMake\ Rules /Users/robertramey/WorkingProjects/modular-boost/libs/serialization/CMake/build-static/Serialization-Static.build/Debug/ZERO_CHECK.build/Script-B6B9A58F1A784204A35A50BC.sh
-s412817604.516210
-e412817604.544794
-r1
-xPhaseScriptExecution
-xCMake Rules
-x/Users/robertramey/WorkingProjects/modular-boost/libs/serialization/CMake/build-static/Serialization-Static.build/Debug/ZERO_CHECK.build/Script-B6B9A58F1A784204A35A50BC.sh
-oecho ""
-o
-omake -f /Users/robertramey/WorkingProjects/modular-boost/libs/serialization/CMake/build-static/CMakeScripts/ReRunCMake.make
-omake[1]: `/Users/robertramey/WorkingProjects/modular-boost/libs/serialization/CMake/build-static/CMakeFiles/cmake.check_cache' is up to date.
-lSLF06#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection37"Run custom shell script 'CMake Rules'131"PhaseScriptExecution CMake\ Rules build-static/Serialization-Static.build/Debug/ZERO_CHECK.build/Script-B6B9A58F1A784204A35A50BC.sh376f84c4189bb841^68788bc4189bb841^-275"echo ""make -f /Users/robertramey/WorkingProjects/modular-boost/libs/serialization/CMake/build-static/CMakeScripts/ReRunCMake.makemake[1]: `/Users/robertramey/WorkingProjects/modular-boost/libs/serialization/CMake/build-static/CMakeFiles/cmake.check_cache' is up to date.3(21%IDEActivityLogMessage2@8"echo ""-412817604#0#8#-0#-----2@124"make -f /Users/robertramey/WorkingProjects/modular-boost/libs/serialization/CMake/build-static/CMakeScripts/ReRunCMake.make-412817604#9#124#-0#-----2@142"make[1]: `/Users/robertramey/WorkingProjects/modular-boost/libs/serialization/CMake/build-static/CMakeFiles/cmake.check_cache' is up to date.-412817604#133#142#-0#-----0#0#1#--400"PhaseScriptExecution CMake\ Rules build-static/Serialization-Static.build/Debug/ZERO_CHECK.build/Script-B6B9A58F1A784204A35A50BC.sh    cd /Users/robertramey/WorkingProjects/modular-boost/libs/serialization/CMake    /bin/sh -c /Users/robertramey/WorkingProjects/modular-boost/libs/serialization/CMake/build-static/Serialization-Static.build/Debug/ZERO_CHECK.build/Script-B6B9A58F1A784204A35A50BC.sh36"CD4A61F1-6431-4662-912F-5CB5799BEE74-
-b0DD5BC6F-D501-47F6-88DA-EBBCF9C2E1D1
-
