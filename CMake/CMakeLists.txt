@@ -91,7 +91,7 @@ endif()
 # end special note for Xcode
 ############################
 
-find_package(Boost REQUIRED COMPONENTS serialization wserialization system filesystem)
+find_package(Boost REQUIRED COMPONENTS system filesystem)
 
 if(Boost_FOUND)
     message(STATUS "Boost is ${BOOST_ROOT}")
@@ -99,17 +99,77 @@ if(Boost_FOUND)
     message(STATUS "Boost libraries found at ${Boost_LIBRARY_DIRS}")
     message(STATUS "Boost component libraries to be linked are ${Boost_LIBRARIES}")
     message(STATUS "Boost version found is ${Boost_VERSION}")
-    include_directories("${Boost_INCLUDE_DIRS}")
+    include_directories("../include" "${Boost_INCLUDE_DIRS}")
     link_directories("${Boost_LIBRARY_DIRS}")
 elseif()
     message("Boost NOT Found!")
 endif()
 
-if(0)
-add_library(serialization STATIC
-  archive_exception.cpp  basic_archive.cpp  basic_iarchive.cpp  basic_iserializer.cpp  basic_oarchive.cpp  basic_oserializer.cpp  basic_pointer_iserializer.cpp  basic_pointer_oserializer.cpp  basic_serializer_map.cpp  basic_text_iprimitive.cpp  basic_text_oprimitive.cpp  basic_text_wiprimitive.cpp  basic_text_woprimitive.cpp  basic_xml_archive.cpp  binary_iarchive.cpp  binary_oarchive.cpp  binary_wiarchive.cpp  binary_woarchive.cpp  codecvt_null.cpp  extended_type_info_no_rtti.cpp  extended_type_info_typeid.cpp  extended_type_info.cpp  polymorphic_iarchive.cpp  polymorphic_oarchive.cpp  shared_ptr_helper.cpp  stl_port.cpp  text_iarchive.cpp  text_oarchive.cpp  text_wiarchive.cpp  text_woarchive.cpp  utf8_codecvt_facet.cpp  void_cast.cpp  xml_archive_exception.cpp  xml_grammar.cpp  xml_iarchive.cpp  xml_oarchive.cpp  xml_wgrammar.cpp  xml_wiarchive.cpp  xml_woarchive.cpp
-)
+if(Boost_USE_STATIC_LIBS)
+  set(BUILD_SHARED_LIBRARIES OFF)
+else()
+  set(BUILD_SHARED_LIBRARIES ON)
 endif()
+
+###########################
+# library builds
+
+add_library(serialization
+  ../src/archive_exception.cpp
+  ../src/basic_archive.cpp
+  ../src/basic_iarchive.cpp
+  ../src/basic_iserializer.cpp
+  ../src/basic_oarchive.cpp
+  ../src/basic_oserializer.cpp
+  ../src/basic_pointer_iserializer.cpp
+  ../src/basic_pointer_oserializer.cpp
+  ../src/basic_serializer_map.cpp
+  ../src/basic_text_iprimitive.cpp
+  ../src/basic_text_oprimitive.cpp
+  ../src/basic_text_wiprimitive.cpp
+  ../src/basic_text_woprimitive.cpp
+  ../src/basic_xml_archive.cpp
+  ../src/binary_iarchive.cpp
+  ../src/binary_oarchive.cpp
+  ../src/binary_wiarchive.cpp
+  ../src/binary_woarchive.cpp
+  ../src/codecvt_null.cpp
+  ../src/extended_type_info_no_rtti.cpp
+  ../src/extended_type_info_typeid.cpp
+  ../src/extended_type_info.cpp
+  ../src/polymorphic_iarchive.cpp
+  ../src/polymorphic_oarchive.cpp
+  ../src/shared_ptr_helper.cpp
+  ../src/stl_port.cpp
+  ../src/text_iarchive.cpp
+  ../src/text_oarchive.cpp
+  ../src/text_wiarchive.cpp
+  ../src/text_woarchive.cpp
+  ../src/utf8_codecvt_facet.cpp
+  ../src/void_cast.cpp
+  ../src/xml_archive_exception.cpp
+  ../src/xml_grammar.cpp
+  ../src/xml_iarchive.cpp
+  ../src/xml_oarchive.cpp
+  ../src/xml_wgrammar.cpp
+  ../src/xml_wiarchive.cpp
+  ../src/xml_woarchive.cpp
+)
+
+add_library(wserialization
+  ../src/basic_text_wiprimitive.cpp
+  ../src/basic_text_woprimitive.cpp
+  ../src/text_wiarchive.cpp
+  ../src/text_woarchive.cpp
+  ../src/utf8_codecvt_facet.cpp
+  ../src/xml_wgrammar.cpp
+  ../src/xml_wiarchive.cpp
+  ../src/xml_woarchive.cpp
+  ../src/codecvt_null.cpp
+)
+
+# end library build
+###########################
 
 ###########################
 # test targets
@@ -121,7 +181,7 @@ function( serialization_test test_name)
   endforeach()
   message(STATUS ${test_name})
   add_executable( ${test_name} ../test/${test_name}.cpp ${arglist} )
-  target_link_libraries(${test_name} ${Boost_LIBRARIES})
+  target_link_libraries(${test_name} serialization wserialization ${Boost_LIBRARIES})
   add_test( ${test_name} ${test_name} )
 endfunction(serialization_test)
 
@@ -136,12 +196,12 @@ function(archive_test test_name)
   )
     set(amended_test_name ${test_name}_${archive-name})
     message(STATUS ${amended_test_name})
+   add_executable(${amended_test_name} ../test/${test_name}.cpp ${arglist})
     set_property(
-      SOURCE ../test/${test_name}.cpp 
+      TARGET ${amended_test_name}
       PROPERTY COMPILE_DEFINITIONS BOOST_ARCHIVE_TEST=${archive-name}.hpp
     )
-    add_executable(${amended_test_name} ../test/${test_name}.cpp ${arglist})
-    target_link_libraries(${amended_test_name} ${Boost_LIBRARIES})
+    target_link_libraries(${amended_test_name} serialization wserialization ${Boost_LIBRARIES})
     add_test(${amended_test_name} ${amended_test_name})
   endforeach()
 endfunction(archive_test)
@@ -157,12 +217,12 @@ function(polymorphic_archive_test test_name)
   )
     set(amended_test_name ${test_name}_polymorphic_${archive-name})
     message(STATUS ${amended_test_name})
+    add_executable(${amended_test_name} ../test/${test_name}.cpp ${arglist})
     set_property(
-      SOURCE ../test/${test_name}.cpp 
+      TARGET ${amended_test_name}
       PROPERTY COMPILE_DEFINITIONS BOOST_ARCHIVE_TEST=${archive-name}.hpp
     )
-    add_executable(${amended_test_name} ../test/${test_name}.cpp ${arglist})
-    target_link_libraries(${amended_test_name} ${Boost_LIBRARIES})
+    target_link_libraries(${amended_test_name} serialization wserialization ${Boost_LIBRARIES})
     add_test(${amended_test_name} ${amended_test_name})
   endforeach()
 endfunction(polymorphic_archive_test)

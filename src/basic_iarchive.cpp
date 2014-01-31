@@ -473,6 +473,10 @@ basic_iarchive_impl::load_pointer(
     // save state
     serialization::state_saver<object_id_type> w_start(m_moveable_objects.start);
 
+    // allocate space on the heap for the object - to be constructed later
+    t = bpis_ptr->heap_allocation();
+    BOOST_ASSERT(NULL != t);
+
     if(! tracking){
         bpis_ptr->load_object_ptr(ar, t, co.file_version);
     }
@@ -489,8 +493,7 @@ basic_iarchive_impl::load_pointer(
 
         serialization::state_saver<object_id_type> w_end(m_moveable_objects.end);
 
-        // because the following operation could move the items
-        // don't use co after this
+        
         // add to list of serialized objects so that we can properly handle
         // cyclic strucures
         object_id_vector.push_back(aobject(t, cid));
@@ -502,8 +505,6 @@ basic_iarchive_impl::load_pointer(
             t,
             m_pending.version
         );
-        BOOST_ASSERT(NULL != t);
-        object_id_vector[ui].address = t;
         object_id_vector[ui].loaded_as_pointer = true;
     }
 

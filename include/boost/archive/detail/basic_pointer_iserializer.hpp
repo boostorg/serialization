@@ -52,10 +52,11 @@ protected:
     #endif
     ~basic_pointer_iserializer();
 public:
+    virtual void * heap_allocation() const = 0;
     virtual const basic_iserializer & get_basic_serializer() const = 0;
     virtual void load_object_ptr(
         basic_iarchive & ar, 
-        void * & x,
+        void * x,
         const unsigned int file_version
     ) const = 0;
 };
