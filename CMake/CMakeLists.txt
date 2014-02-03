@@ -196,7 +196,7 @@ function(archive_test test_name)
   )
     set(amended_test_name ${test_name}_${archive-name})
     message(STATUS ${amended_test_name})
-   add_executable(${amended_test_name} ../test/${test_name}.cpp ${arglist})
+    add_executable(${amended_test_name} ../test/${test_name}.cpp ${arglist})
     set_property(
       TARGET ${amended_test_name}
       PROPERTY COMPILE_DEFINITIONS BOOST_ARCHIVE_TEST=${archive-name}.hpp
