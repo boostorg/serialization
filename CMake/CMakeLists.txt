@@ -21,7 +21,7 @@ elseif( CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" )
   add_definitions( /wd4996 )
 elseif( CMAKE_CXX_COMPILER_ID STREQUAL "Clang" )
   add_definitions( -ftemplate-depth=300 )
-  set (CMAKE_CXX_FLAGS "-std=c++11" )
+  # set (CMAKE_CXX_FLAGS "-std=c++11" )
   set (CMAKE_CXX_FLAGS_DEBUG "-g -O0" )
   set (CMAKE_CXX_FLAGS_RELWITHDEBINFO "-g -O3" )
   set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++ -dead_strip")
@@ -243,6 +243,7 @@ serialization_test(test_mult_archive_types)
 serialization_test(test_iterators)
 serialization_test(test_iterators_base64)
 serialization_test(test_inclusion)
+serialization_test(test_smart_cast)
 serialization_test(test_utf8_codecvt ../src/utf8_codecvt_facet)
 serialization_test(test_codecvt_null ../src/codecvt_null)
 
@@ -275,11 +276,15 @@ archive_test(test_non_default_ctor)
 archive_test(test_non_default_ctor2)
 archive_test(test_null_ptr)
 archive_test(test_nvp A)
+archive_test(test_private_base)
 archive_test(test_recursion A)
 archive_test(test_registered)
-archive_test(test_set)
+archive_test(test_set A)
 archive_test(test_simple_class A)
 archive_test(test_simple_class_ptr A)
+archive_test(test_stack A)
+archive_test(test_queue A)
+archive_test(test_priority_queue A)
 archive_test(test_split)
 archive_test(test_tracking)
 archive_test(test_unregistered)
@@ -297,3 +302,60 @@ polymorphic_archive_test(test_polymorphic2 test_polymorphic2imp)
 
 # end test targets
 ####################
+
+####################
+# add headers in IDE
+
+file(GLOB Archive 
+  RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" 
+  "${CMAKE_CURRENT_SOURCE_DIR}/../include/boost/archive/*.hpp"
+)
+add_custom_target(archive SOURCES ${Archive})
+set_property(TARGET archive PROPERTY FOLDER "serialization")
+
+file(GLOB Archive 
+  RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" 
+  "${CMAKE_CURRENT_SOURCE_DIR}/../include/boost/archive/detail/*.hpp"
+)
+add_custom_target(archive-detail SOURCES ${Archive})
+set_property(TARGET archive-detail PROPERTY FOLDER "serialization")
+
+file(GLOB Archive 
+  RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" 
+  "${CMAKE_CURRENT_SOURCE_DIR}/../include/boost/archive/impl/*.ipp"
+)
+add_custom_target(archive-impl SOURCES ${Archive})
+set_property(TARGET archive-impl PROPERTY FOLDER "serialization")
+
+file(GLOB Iterators
+  RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" 
+  "${CMAKE_CURRENT_SOURCE_DIR}/../include/boost/archive/iterators/*.hpp"
+)
+add_custom_target(archive-iterators SOURCES ${Iterators})
+set_property(TARGET archive-iterators PROPERTY FOLDER "serialization")
+
+file(GLOB Serialization 
+  RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" 
+  "${CMAKE_CURRENT_SOURCE_DIR}/../include/boost/serialization/*.hpp"
+)
+add_custom_target(serialization-headers SOURCES ${Serialization})
+set_property(TARGET serialization-headers PROPERTY FOLDER "serialization")
+
+file(GLOB Serialization 
+  RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" 
+  "${CMAKE_CURRENT_SOURCE_DIR}/../include/boost/serialization/detail/*.hpp"
+)
+add_custom_target(serialization-detail SOURCES ${Serialization})
+set_property(TARGET serialization-detail PROPERTY FOLDER "serialization")
+
+# end headers in IDE
+####################
+
+#####################
+# add test project to run misc tests
+
+add_executable( test_z ../test/test_z.cpp)
+target_link_libraries(test_z serialization wserialization ${Boost_LIBRARIES})
+
+# end test project
+#####################

@@ -23,8 +23,13 @@ namespace std{
 #include "test_tools.hpp"
 
 #include <boost/serialization/list.hpp>
+
 #ifdef BOOST_HAS_SLIST
 #include <boost/serialization/slist.hpp>
+#endif
+
+#ifndef BOOST_NO_CXX11_HDR_FORWARD_LIST
+#include <boost/serialization/forward_list.hpp>
 #endif
 
 #include "A.hpp"
@@ -65,10 +70,27 @@ int test_main( int /* argc */, char* /* argv */[] )
         test_istream is(testfile, TEST_STREAM_FLAGS);
         test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
         ia >> boost::serialization::make_nvp("aslist", aslist1);
-   }
+    }
     BOOST_CHECK(aslist == aslist1);
-    
     #endif
+    
+    #ifndef BOOST_NO_CXX11_HDR_FORWARD_LIST
+    std::forward_list<A> aslist;
+    aslist.push_front(A());
+    aslist.push_front(A());
+    {   
+        test_ostream os(testfile, TEST_STREAM_FLAGS);
+        test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
+        oa << boost::serialization::make_nvp("aslist", aslist);
+    }
+    std::forward_list<A> aslist1;{
+        test_istream is(testfile, TEST_STREAM_FLAGS);
+        test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
+        ia >> boost::serialization::make_nvp("aslist", aslist1);
+    }
+    BOOST_CHECK(aslist == aslist1);
+    #endif
+    
     std::remove(testfile);
     return EXIT_SUCCESS;
 }

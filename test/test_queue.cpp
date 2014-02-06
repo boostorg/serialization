@@ -1,5 +1,5 @@
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
-// test_vector.cpp
+// test_queue.cpp
 
 // (C) Copyright 2002 Robert Ramey - http://www.rrsd.com . 
 // Use, modification and distribution is subject to the Boost Software
@@ -8,7 +8,7 @@
 
 // should pass compilation and execution
 
-#include <cstddef> // NULL
+#include <cstddef>
 #include <fstream>
 
 #include <cstdio> // remove
@@ -19,49 +19,38 @@ namespace std{
 }
 #endif
 
+#include <boost/archive/archive_exception.hpp>
 #include "test_tools.hpp"
 
-#include <boost/serialization/vector.hpp>
+#include <boost/serialization/deque.hpp>
+#include <boost/serialization/queue.hpp>
 
 #include "A.hpp"
 #include "A.ipp"
 
-template <class T>
-int test_vector()
+int test_main( int /* argc */, char* /* argv */[] )
 {
     const char * testfile = boost::archive::tmpnam(NULL);
     BOOST_REQUIRE(NULL != testfile);
 
     // test array of objects
-    std::vector< T > avector;
-    avector.push_back(T());
-    avector.push_back(T());
-    {   
+    std::queue<A> aqueue, aqueue1;
+    aqueue.push(A());
+    aqueue.push(A());
+    {
         test_ostream os(testfile, TEST_STREAM_FLAGS);
         test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
-        oa << boost::serialization::make_nvp("avector", avector);
+        oa << boost::serialization::make_nvp("aqueue",aqueue);
     }
-    std::vector< T > avector1;
     {
         test_istream is(testfile, TEST_STREAM_FLAGS);
         test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
-        ia >> boost::serialization::make_nvp("avector", avector1);
+        ia >> boost::serialization::make_nvp("aqueue",aqueue1);
     }
-    BOOST_CHECK(avector == avector1);
+    BOOST_CHECK(aqueue == aqueue1);
+    
     std::remove(testfile);
     return EXIT_SUCCESS;
-}
-
-int test_main( int /* argc */, char* /* argv */[] )
-{
-   int res = test_vector<A>();
-    // test an int vector for which optimized versions should be available
-   if (res == EXIT_SUCCESS)
-     res = test_vector<int>();
-    // test a bool vector
-   if (res == EXIT_SUCCESS)
-     res = test_vector<bool>();
-   return res;
 }
 
 // EOF
