@@ -8,6 +8,8 @@
 
 // should pass compilation and execution
 
+#include <boost/config.hpp>
+
 #include <cstddef>
 #include <fstream>
 #ifndef BOOST_NO_CXX11_HDR_ARRAY
@@ -15,7 +17,6 @@
 #endif
 #include <algorithm> // equal
 #include <cstdio> // remove
-#include <boost/config.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)
 namespace std{ 
     using ::remove;
@@ -204,8 +205,9 @@ int test_main( int /* argc */, char* /* argv */[] )
     res = test_std_array<int>();
     if (res != EXIT_SUCCESS)
         return EXIT_FAILURE;
-    return EXIT_SUCCESS;
     #endif
+    
+    return EXIT_SUCCESS;
 }
 
 // EOF

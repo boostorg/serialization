@@ -215,6 +215,8 @@ test_hash_multimap(){
 }
 #endif
 
+#ifndef BOOST_NO_CXX11_HDR_UNORDERED_MAP
+
 #include <boost/serialization/unordered_map.hpp>
 #include <functional> // requires changeset [69520]; Ticket #5254
 
@@ -290,17 +292,23 @@ test_unordered_multimap(){
     std::remove(testfile);
 }
 
+#endif
 
 int test_main( int /* argc */, char* /* argv */[] )
 {
     test_map();
     test_map_2();
     test_multimap();
+    
     #ifdef BOOST_HAS_HASH
     test_hash_map();
     test_hash_multimap();
     #endif
+    
+    #ifndef BOOST_NO_CXX11_HDR_UNORDERED_MAP
     test_unordered_map();
     test_unordered_multimap();
+    #endif
+    
     return EXIT_SUCCESS;
 }

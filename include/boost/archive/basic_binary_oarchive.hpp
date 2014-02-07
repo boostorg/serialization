@@ -63,7 +63,13 @@ class basic_binary_oarchive :
     public archive::detail::common_oarchive<Archive>
 {
 protected:
+#if BOOST_WORKAROUND(BOOST_MSVC, < 1600)
+    // for some inexplicable reason insertion of "class" generates compile error
+    // on msvc versions befor 9.0
+    friend detail::interface_oarchive<Archive>;
+#else
     friend class detail::interface_oarchive<Archive>;
+#endif
     // any datatype not specifed below will be handled by base class
     typedef detail::common_oarchive<Archive> detail_common_oarchive;
     template<class T>

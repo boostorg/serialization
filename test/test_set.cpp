@@ -165,7 +165,8 @@ test_hash_multiset(){
 }
 #endif
 
-#ifndef BOOST_NO_CXX11_STD_UNORDERED
+#ifndef BOOST_NO_CXX11_HDR_UNORDERED_SET
+
 #include <boost/serialization/unordered_set.hpp>
 #include <functional> // requires changeset [69520]; Ticket #5254
 
@@ -246,13 +247,16 @@ test_unordered_multiset(){
 int test_main( int /* argc */, char* /* argv */[] ){
     test_set();
     test_multiset();
+    
     #ifdef BOOST_HAS_HASH
     test_hash_set();
     test_hash_multiset();
     #endif
-    #ifndef BOOST_NO_CXX11_STD_UNORDERED
+    
+    #ifndef BOOST_NO_CXX11_HDR_UNORDERED_SET
 	test_unordered_set();
 	test_unordered_multiset();
     #endif
+    
     return EXIT_SUCCESS;
 }

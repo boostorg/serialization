@@ -6,13 +6,14 @@
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
+#include <boost/config.hpp> // msvc 6.0 needs this for warning suppression
+
 #include <iostream>
 #include <cstddef> // std::size_t
 #ifndef BOOST_NO_CXX11_HDR_ARRAY
 #include <array>
 #endif
 
-#include <boost/config.hpp> // msvc 6.0 needs this for warning suppression
 #if defined(BOOST_NO_STDC_NAMESPACE)
 namespace std{ 
     using ::size_t; 
