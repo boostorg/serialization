@@ -12,9 +12,6 @@
 
 #include <cstddef>
 #include <fstream>
-#ifndef BOOST_NO_CXX11_HDR_ARRAY
-#include <array>
-#endif
 #include <algorithm> // equal
 #include <cstdio> // remove
 #if defined(BOOST_NO_STDC_NAMESPACE)
@@ -130,6 +127,8 @@ int test_boost_array(){
 }
 
 #ifndef BOOST_NO_CXX11_HDR_ARRAY
+#include <array>
+
 template <class T>
 int test_std_array(){
     const char * testfile = boost::archive::tmpnam(NULL);
