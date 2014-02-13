@@ -131,15 +131,14 @@ inline void load(
         ar >> boost::serialization::make_nvp("px", sp.px);
         ar >> boost::serialization::make_nvp("pn", sp.pn);
         // got to keep the sps around so the sp.pns don't disappear
-        ar.template get_helper<boost::serialization::detail::shared_ptr_helper>().append(sp);
+        ar.template get_helper<shared_ptr_helper>().append(sp);
         r = sp.get();
     }
     else{
         ar >> boost::serialization::make_nvp("px", r);
     }
-    ar.template get_helper<boost::serialization::detail::shared_ptr_helper>().reset(t,r);
+    ar.template get_helper<shared_ptr_helper>().reset(t,r);
 }
-
 #else
 template<class Archive, class T>
 inline void load(

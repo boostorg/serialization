@@ -140,6 +140,7 @@ add_library(serialization
   ../src/polymorphic_iarchive.cpp
   ../src/polymorphic_oarchive.cpp
   ../src/stl_port.cpp
+  ../src/shared_ptr_helper.cpp
   ../src/text_iarchive.cpp
   ../src/text_oarchive.cpp
   ../src/text_wiarchive.cpp

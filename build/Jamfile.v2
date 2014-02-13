@@ -80,6 +80,7 @@ SOURCES =
     xml_iarchive
     xml_oarchive
     xml_archive_exception
+    shared_ptr_helper
 ;
     
 WSOURCES = 

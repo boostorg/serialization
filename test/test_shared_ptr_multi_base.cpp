@@ -151,6 +151,7 @@ void shared_weak(
     const char * testfile = boost::archive::tmpnam(NULL);
     BOOST_REQUIRE(NULL != testfile);
     int firstm = first->m_x;
+    
     int secondm = second.lock()->m_x;
     save2(testfile, first, second);
 

@@ -95,8 +95,7 @@ void load(Archive & ar, my_string & str, unsigned int /* version */)
 } // namespace serialization
 } // namespace boost
 
-int test_helper_support()
-{
+int test_main( int /* argc */, char* /* argv */[] ){
     const char * testfile = boost::archive::tmpnam(NULL);
     BOOST_REQUIRE(NULL != testfile);
 
@@ -119,11 +118,6 @@ int test_helper_support()
     }
     std::remove(testfile);
     return EXIT_SUCCESS;
-}
-
-int test_main( int /* argc */, char* /* argv */[] )
-{
-   return test_helper_support();
 }
 
 // EOF
