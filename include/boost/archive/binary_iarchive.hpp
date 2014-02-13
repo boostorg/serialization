@@ -56,13 +56,7 @@ public:
 } // namespace archive
 } // namespace boost
 
-// note special treatment of shared_ptr. This type needs a special
-// structure associated with every archive.  We created a "mix-in"
-// class to provide this functionality.  Since shared_ptr holds a
-// special esteem in the boost library - we included it here by default.
-#include <boost/archive/shared_ptr_helper.hpp>
-
-namespace boost { 
+namespace boost {
 namespace archive {
 
 // do not derive from this class.  If you want to extend this functionality
@@ -73,9 +67,7 @@ class binary_iarchive :
         boost::archive::binary_iarchive, 
         std::istream::char_type, 
         std::istream::traits_type
-    >,
-    public detail::shared_ptr_helper
-{
+    >{
 public:
     binary_iarchive(std::istream & is, unsigned int flags = 0) :
         binary_iarchive_impl<

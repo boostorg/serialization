@@ -117,12 +117,6 @@ public:
 
 #include <boost/archive/detail/abi_suffix.hpp> // pops abi_suffix.hpp pragmas
 
-// note special treatment of shared_ptr. This type needs a special
-// structure associated with every archive.  We created a "mix-in"
-// class to provide this functionality.  Since shared_ptr holds a
-// special esteem in the boost library - we included it here by default.
-#include <boost/archive/shared_ptr_helper.hpp>
-
 #ifdef BOOST_MSVC
 #  pragma warning(push)
 #  pragma warning(disable : 4511 4512)
@@ -132,9 +126,7 @@ namespace boost {
 namespace archive {
 
 class text_wiarchive : 
-    public text_wiarchive_impl<text_wiarchive>,
-    public detail::shared_ptr_helper
-{
+    public text_wiarchive_impl<text_wiarchive>{
 public:
     text_wiarchive(std::wistream & is, unsigned int flags = 0) :
         text_wiarchive_impl<text_wiarchive>(is, flags)

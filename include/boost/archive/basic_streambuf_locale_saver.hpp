@@ -50,7 +50,7 @@ public:
     explicit basic_streambuf_locale_saver( state_type &s )
         : s_save_( s ), a_save_( s.getloc() )
         {}
-    basic_streambuf_locale_saver( state_type &s, aspect_type const &a )
+    explicit basic_streambuf_locale_saver( state_type &s, aspect_type const &a )
         : s_save_( s ), a_save_( s.pubimbue(a) )
         {}
     ~basic_streambuf_locale_saver()

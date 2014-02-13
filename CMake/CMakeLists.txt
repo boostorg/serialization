@@ -139,7 +139,6 @@ add_library(serialization
   ../src/extended_type_info.cpp
   ../src/polymorphic_iarchive.cpp
   ../src/polymorphic_oarchive.cpp
-  ../src/shared_ptr_helper.cpp
   ../src/stl_port.cpp
   ../src/text_iarchive.cpp
   ../src/text_oarchive.cpp
@@ -220,7 +219,7 @@ function(polymorphic_archive_test test_name)
     add_executable(${amended_test_name} ../test/${test_name}.cpp ${arglist})
     set_property(
       TARGET ${amended_test_name}
-      PROPERTY COMPILE_DEFINITIONS BOOST_ARCHIVE_TEST=${archive-name}.hpp
+      PROPERTY COMPILE_DEFINITIONS BOOST_ARCHIVE_TEST=polymorphic_${archive-name}.hpp
     )
     target_link_libraries(${amended_test_name} serialization wserialization ${Boost_LIBRARIES})
     add_test(${amended_test_name} ${amended_test_name})

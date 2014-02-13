@@ -25,6 +25,7 @@
 #include <boost/detail/workaround.hpp>
 #include <boost/shared_ptr.hpp>
 
+#include <boost/serialization/shared_ptr_helper.hpp>
 #include <boost/serialization/split_free.hpp>
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/version.hpp>
@@ -130,13 +131,13 @@ inline void load(
         ar >> boost::serialization::make_nvp("px", sp.px);
         ar >> boost::serialization::make_nvp("pn", sp.pn);
         // got to keep the sps around so the sp.pns don't disappear
-        ar.append(sp);
+        ar.template get_helper<boost::serialization::detail::shared_ptr_helper>().append(sp);
         r = sp.get();
     }
     else{
         ar >> boost::serialization::make_nvp("px", r);
     }
-    ar.reset(t,r);
+    ar.template get_helper<boost::serialization::detail::shared_ptr_helper>().reset(t,r);
 }
 
 #else
@@ -152,7 +153,7 @@ inline void load(
     BOOST_STATIC_ASSERT((tracking_level< T >::value != track_never));
     T* r;
     ar >> boost::serialization::make_nvp("px", r);
-    ar.reset(t,r);
+    ar.template get_helper<boost::serialization::detail::shared_ptr_helper>().reset(t,r);
 }
 #endif
 
