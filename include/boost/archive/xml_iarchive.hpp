@@ -106,21 +106,6 @@ protected:
     ~xml_iarchive_impl();
 };
 
-// do not derive from the classes below.  If you want to extend this functionality
-// via inhertance, derived from text_iarchive_impl instead.  This will
-// preserve correct static polymorphism.
-
-// same as xml_iarchive below - without the shared_ptr_helper
-class naked_xml_iarchive : 
-    public xml_iarchive_impl<naked_xml_iarchive>
-{
-public:
-    naked_xml_iarchive(std::istream & is, unsigned int flags = 0) :
-        xml_iarchive_impl<naked_xml_iarchive>(is, flags)
-    {}
-    ~naked_xml_iarchive(){}
-};
-
 } // namespace archive
 } // namespace boost
 

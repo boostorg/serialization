@@ -93,21 +93,6 @@ protected:
     ~text_wiarchive_impl(){};
 };
 
-// do not derive from the classes below.  If you want to extend this functionality
-// via inhertance, derived from text_iarchive_impl instead.  This will
-// preserve correct static polymorphism.
-
-// same as text_wiarchive below - without the shared_ptr_helper
-class naked_text_wiarchive : 
-    public text_wiarchive_impl<naked_text_wiarchive>
-{
-public:
-    naked_text_wiarchive(std::wistream & is, unsigned int flags = 0) :
-        text_wiarchive_impl<naked_text_wiarchive>(is, flags)
-    {}
-    ~naked_text_wiarchive(){}
-};
-
 } // namespace archive
 } // namespace boost
 

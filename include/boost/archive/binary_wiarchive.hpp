@@ -28,37 +28,6 @@
 namespace boost { 
 namespace archive {
 
-// same as binary_wiarchive below - without the shared_ptr_helper
-class naked_binary_wiarchive : 
-    public binary_iarchive_impl<
-        boost::archive::naked_binary_wiarchive, 
-        std::wistream::char_type, 
-        std::wistream::traits_type
-    >
-{
-public:
-    naked_binary_wiarchive(std::wistream & is, unsigned int flags = 0) :
-        binary_iarchive_impl<
-            naked_binary_wiarchive, 
-            std::wistream::char_type, 
-            std::wistream::traits_type
-        >(is, flags)
-    {}
-    naked_binary_wiarchive(std::wstreambuf & bsb, unsigned int flags = 0) :
-        binary_iarchive_impl<
-            naked_binary_wiarchive, 
-            std::wistream::char_type, 
-            std::wistream::traits_type
-        >(bsb, flags)
-    {}
-};
-
-} // namespace archive
-} // namespace boost
-
-namespace boost { 
-namespace archive {
-
 class binary_wiarchive : 
     public binary_iarchive_impl<
         binary_wiarchive, std::wistream::char_type, std::wistream::traits_type

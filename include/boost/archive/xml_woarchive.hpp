@@ -122,8 +122,6 @@ public:
     ~xml_woarchive(){}
 };
 
-typedef xml_woarchive naked_xml_woarchive;
-
 } // namespace archive
 } // namespace boost
 

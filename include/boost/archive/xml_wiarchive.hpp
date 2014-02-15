@@ -111,21 +111,6 @@ protected:
     ~xml_wiarchive_impl();
 };
 
-// do not derive from the classes below.  If you want to extend this functionality
-// via inhertance, derived from xml_wiarchive_impl instead.  This will
-// preserve correct static polymorphism.
-
-// same as xml_wiarchive below - without the shared_ptr_helper
-class naked_xml_wiarchive : 
-    public xml_wiarchive_impl<naked_xml_wiarchive>
-{
-public:
-    naked_xml_wiarchive(std::wistream & is, unsigned int flags = 0) :
-        xml_wiarchive_impl<naked_xml_wiarchive>(is, flags)
-    {}
-    ~naked_xml_wiarchive(){}
-};
-
 } // namespace archive
 } // namespace boost
 

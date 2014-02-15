@@ -30,10 +30,14 @@ namespace serialization {
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // a common class for holding various types of shared pointers
 
+struct null_deleter {
+    void operator()(void const *) const {}
+};
+
 // returns pointer to object and an indicator whether this is a
 // new entry (true) or a previous one (false)
 BOOST_ARCHIVE_DECL(shared_ptr<void>)
-shared_ptr_helper::get_od(
+shared_ptr_helper_base::get_od(
         const void * t,
         const boost::serialization::extended_type_info * true_type, 
         const boost::serialization::extended_type_info * this_type
@@ -87,7 +91,7 @@ shared_ptr_helper::get_od(
 }
 
 BOOST_ARCHIVE_DECL(void)
-shared_ptr_helper::append(const boost::shared_ptr<const void> &sp){
+shared_ptr_helper_base::append(const boost::shared_ptr<const void> &sp){
     // make tracking array if necessary
     if(NULL == m_pointers)
         m_pointers = new collection_type;
@@ -103,21 +107,23 @@ shared_ptr_helper::append(const boost::shared_ptr<const void> &sp){
 
 //  #ifdef BOOST_SERIALIZATION_SHARED_PTR_132_HPP
 BOOST_ARCHIVE_DECL(void)
-shared_ptr_helper::append(const boost_132::shared_ptr<const void> & t){
+shared_ptr_helper_base::append(const boost_132::shared_ptr<const void> & t){
     if(NULL == m_pointers_132)
         m_pointers_132 = new std::list<boost_132::shared_ptr<const void> >;
     m_pointers_132->push_back(t);
 }
 //  #endif
+
 BOOST_ARCHIVE_DECL(BOOST_PP_EMPTY())
-shared_ptr_helper::shared_ptr_helper() : 
+shared_ptr_helper_base::shared_ptr_helper_base() :
     m_pointers(NULL)
     #ifdef BOOST_SERIALIZATION_SHARED_PTR_132_HPP
         , m_pointers_132(NULL)
     #endif
 {}
+
 BOOST_ARCHIVE_DECL(BOOST_PP_EMPTY())
-shared_ptr_helper::~shared_ptr_helper(){
+shared_ptr_helper_base::~shared_ptr_helper_base(){
     if(NULL != m_pointers)
         delete m_pointers;
     #ifdef BOOST_SERIALIZATION_SHARED_PTR_132_HPP
