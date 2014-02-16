@@ -200,7 +200,7 @@ void load3(
     // note that we serialize the weak pointer first
     ia >> BOOST_SERIALIZATION_NVP(third);
     // inorder to test that a temporarily solitary weak pointer
-    // correcttly restored.
+    // correctly restored.
     ia >> BOOST_SERIALIZATION_NVP(first);
     ia >> BOOST_SERIALIZATION_NVP(second);
 }
@@ -316,7 +316,7 @@ int test_main(int /* argc */, char * /* argv */[])
 {
     bool result = true;
     result &= test<boost::shared_ptr, boost::weak_ptr>();
-    //result &= test<std::shared_ptr, std::weak_ptr>();
+    result &= test<std::shared_ptr, std::weak_ptr>();
     return result ? EXIT_SUCCESS : EXIT_FAILURE;
 }
 

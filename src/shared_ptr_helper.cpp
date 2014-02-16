@@ -12,6 +12,7 @@
 #include <list>
 #include <utility>
 #include <cstddef> // NULL
+#include <cassert>
 
 #define BOOST_ARCHIVE_SOURCE
 // include this to prevent linker errors when the
@@ -30,81 +31,6 @@ namespace serialization {
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // a common class for holding various types of shared pointers
 
-struct null_deleter {
-    void operator()(void const *) const {}
-};
-
-// returns pointer to object and an indicator whether this is a
-// new entry (true) or a previous one (false)
-BOOST_ARCHIVE_DECL(shared_ptr<void>)
-shared_ptr_helper_base::get_od(
-        const void * t,
-        const boost::serialization::extended_type_info * true_type, 
-        const boost::serialization::extended_type_info * this_type
-){
-    // get void pointer to the most derived type
-    // this uniquely identifies the object referred to
-    const void * od = void_downcast(
-        *true_type, 
-        *this_type, 
-        t
-    );
-    if(NULL == od)
-        boost::serialization::throw_exception(
-            boost::archive::archive_exception(
-                boost::archive::archive_exception::unregistered_cast,
-                true_type->get_debug_info(),
-                this_type->get_debug_info()
-            )
-        );
-
-    // make tracking array if necessary
-    if(NULL == m_pointers)
-        m_pointers = new collection_type;
-
-    //shared_ptr<const void> sp(od, null_deleter()); 
-    shared_ptr<const void> sp(od, null_deleter());
-    collection_type::iterator i = m_pointers->find(sp);
-
-    if(i == m_pointers->end()){
-        shared_ptr<void> np;
-        return np;
-    }
-    od = void_upcast(
-        *true_type, 
-        *this_type,
-        i->get()
-    );
-    if(NULL == od)
-        boost::serialization::throw_exception(
-            boost::archive::archive_exception(
-                boost::archive::archive_exception::unregistered_cast,
-                true_type->get_debug_info(),
-                this_type->get_debug_info()
-            )
-        );
-
-    return shared_ptr<void>(
-        const_pointer_cast<void>(*i), 
-        const_cast<void *>(od)
-    );
-}
-
-BOOST_ARCHIVE_DECL(void)
-shared_ptr_helper_base::append(const boost::shared_ptr<const void> &sp){
-    // make tracking array if necessary
-    if(NULL == m_pointers)
-        m_pointers = new collection_type;
-
-    collection_type::iterator i = m_pointers->find(sp);
-
-    if(i == m_pointers->end()){
-        std::pair<collection_type::iterator, bool> result;
-        result = m_pointers->insert(sp);
-        BOOST_ASSERT(result.second);
-    }
-}
-
 //  #ifdef BOOST_SERIALIZATION_SHARED_PTR_132_HPP
 BOOST_ARCHIVE_DECL(void)
 shared_ptr_helper_base::append(const boost_132::shared_ptr<const void> & t){
@@ -116,7 +42,7 @@ shared_ptr_helper_base::append(const boost_132::shared_ptr<const void> & t){
 
 BOOST_ARCHIVE_DECL(BOOST_PP_EMPTY())
 shared_ptr_helper_base::shared_ptr_helper_base() :
-    m_pointers(NULL)
+    m_o_sp(NULL)
     #ifdef BOOST_SERIALIZATION_SHARED_PTR_132_HPP
         , m_pointers_132(NULL)
     #endif
@@ -124,8 +50,8 @@ shared_ptr_helper_base::shared_ptr_helper_base() :
 
 BOOST_ARCHIVE_DECL(BOOST_PP_EMPTY())
 shared_ptr_helper_base::~shared_ptr_helper_base(){
-    if(NULL != m_pointers)
-        delete m_pointers;
+    if(NULL != m_o_sp)
+        delete m_o_sp;
     #ifdef BOOST_SERIALIZATION_SHARED_PTR_132_HPP
     if(NULL != m_pointers_132)
         delete m_pointers_132;
