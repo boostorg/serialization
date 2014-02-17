@@ -418,7 +418,6 @@ basic_iarchive_impl::load_pointer(
     const basic_pointer_iserializer * (*finder)(
         const boost::serialization::extended_type_info & type_
     )
-
 ){
     m_moveable_objects.is_pointer = true;
     serialization::state_saver<bool> w(m_moveable_objects.is_pointer);
@@ -452,7 +451,7 @@ basic_iarchive_impl::load_pointer(
             bpis_ptr = (*finder)(*eti);
         }
         BOOST_ASSERT(NULL != bpis_ptr);
-        class_id_type new_cid = register_type(bpis_ptr->get_basic_serializer());
+        // class_id_type new_cid = register_type(bpis_ptr->get_basic_serializer());
         BOOST_VERIFY(register_type(bpis_ptr->get_basic_serializer()) == cid);
         int i = cid;
         cobject_id_vector[i].bpis_ptr = bpis_ptr;

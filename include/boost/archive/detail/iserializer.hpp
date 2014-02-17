@@ -23,7 +23,6 @@
 //  See http://www.boost.org for updates, documentation, and revision history.
 
 #include <new>     // for placement new
-#include <memory>  // for auto_ptr
 #include <cstddef> // size_t, NULL
 
 #include <boost/config.hpp>

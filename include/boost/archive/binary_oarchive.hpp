@@ -50,8 +50,6 @@ public:
     {}
 };
 
-typedef binary_oarchive naked_binary_oarchive;
-
 } // namespace archive
 } // namespace boost
 
