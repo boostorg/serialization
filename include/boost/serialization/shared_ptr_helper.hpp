@@ -58,7 +58,7 @@ template<template<class T> class SPT>
 class shared_ptr_helper {
     typedef std::map<
         const void *, // address of object
-        const SPT<void>  // shared ptr to single instance
+        SPT<void> // address shared ptr to single instance
     > object_shared_pointer_map;
 
     // list of shared_pointers create accessable by raw pointer. This
@@ -153,7 +153,7 @@ public:
         // get void pointer to the most derived type
         // this uniquely identifies the object referred to
         // oid = "object identifier"
-        void * oid = void_downcast(
+        const void * oid = void_downcast(
             *true_type,
             *this_type,
             t
@@ -171,25 +171,18 @@ public:
         if(NULL == m_o_sp)
             m_o_sp = new object_shared_pointer_map;
 
-        typename object_shared_pointer_map::const_iterator i = m_o_sp->find(oid);
+        typename object_shared_pointer_map::iterator i = m_o_sp->find(oid);
 
         // if it's a new object
         if(i == m_o_sp->end()){
             s.reset(t);
             std::pair<typename object_shared_pointer_map::iterator, bool> result;
-            result = m_o_sp->insert(std::make_pair(oid, SPT<void>(s, oid)));
+            result = m_o_sp->insert(std::make_pair(oid, s));
             BOOST_ASSERT(result.second);
-            i = result.first;
         }
         // if the object has already been seen
         else{
-            s = *static_cast<SPT<T> *>(&(i->second));
-            /*
-            s = shared_ptr< T >(
-                i->second,
-                static_cast<T *>(i->second.get())
-            );
-            */
+            s = SPT<T>(i->second, t);
         }
     }
 
