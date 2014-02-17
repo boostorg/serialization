@@ -98,6 +98,7 @@ test-suite "serialization" :
      [ test-bsl-run_files test_stack : A ]
      [ test-bsl-run_files test_tracking ]
      [ test-bsl-run_files test_unregistered ]
+     [ test-bsl-run_files test_unique_ptr ]
      [ test-bsl-run_files test_valarray ]
      [ test-bsl-run_files test_variant : A ]
      [ test-bsl-run_files test_vector : A ]

@@ -126,13 +126,9 @@ add_library(serialization
   ../src/basic_serializer_map.cpp
   ../src/basic_text_iprimitive.cpp
   ../src/basic_text_oprimitive.cpp
-  ../src/basic_text_wiprimitive.cpp
-  ../src/basic_text_woprimitive.cpp
   ../src/basic_xml_archive.cpp
   ../src/binary_iarchive.cpp
   ../src/binary_oarchive.cpp
-  ../src/binary_wiarchive.cpp
-  ../src/binary_woarchive.cpp
   ../src/codecvt_null.cpp
   ../src/extended_type_info_no_rtti.cpp
   ../src/extended_type_info_typeid.cpp
@@ -140,7 +136,6 @@ add_library(serialization
   ../src/polymorphic_iarchive.cpp
   ../src/polymorphic_oarchive.cpp
   ../src/stl_port.cpp
-  ../src/shared_ptr_helper.cpp
   ../src/text_iarchive.cpp
   ../src/text_oarchive.cpp
   ../src/text_wiarchive.cpp
@@ -151,9 +146,6 @@ add_library(serialization
   ../src/xml_grammar.cpp
   ../src/xml_iarchive.cpp
   ../src/xml_oarchive.cpp
-  ../src/xml_wgrammar.cpp
-  ../src/xml_wiarchive.cpp
-  ../src/xml_woarchive.cpp
 )
 
 add_library(wserialization
@@ -270,33 +262,34 @@ archive_test(test_mi)
 archive_test(test_multiple_ptrs A)
 archive_test(test_multiple_inheritance)
 archive_test(test_no_rtti polymorphic_base polymorphic_derived1)
+archive_test(test_new_operator A)
 archive_test(test_non_intrusive)
 archive_test(test_non_default_ctor)
 archive_test(test_non_default_ctor2)
 archive_test(test_null_ptr)
 archive_test(test_nvp A)
 archive_test(test_object)
+archive_test(test_optional)
 archive_test(test_primitive)
-archive_test(test_private_base)
+archive_test(test_priority_queue A)
+# archive_test(test_private_base)
+archive_test(test_queue A)
 archive_test(test_recursion A)
 archive_test(test_registered)
 archive_test(test_set A)
-archive_test(test_simple_class A)
-archive_test(test_simple_class_ptr A)
-archive_test(test_stack A)
-archive_test(test_queue A)
-archive_test(test_priority_queue A)
-archive_test(test_split)
-archive_test(test_tracking)
-archive_test(test_unregistered)
-archive_test(test_valarray)
-archive_test(test_variant A)
-archive_test(test_vector A)
-archive_test(test_new_operator A)
-archive_test(test_optional)
 archive_test(test_shared_ptr)
 archive_test(test_shared_ptr_multi_base)
 archive_test(test_shared_ptr_132)
+archive_test(test_simple_class A)
+archive_test(test_simple_class_ptr A)
+archive_test(test_stack A)
+archive_test(test_split)
+archive_test(test_tracking)
+archive_test(test_unregistered)
+archive_test(test_unique_ptr)
+archive_test(test_valarray)
+archive_test(test_variant A)
+archive_test(test_vector A)
 
 polymorphic_archive_test(test_polymorphic test_polymorphic_A A )
 polymorphic_archive_test(test_polymorphic2 test_polymorphic2imp)
