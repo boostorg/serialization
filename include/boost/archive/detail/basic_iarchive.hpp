@@ -25,6 +25,7 @@
 #include <boost/serialization/tracking_enum.hpp>
 #include <boost/archive/basic_archive.hpp>
 #include <boost/archive/detail/decl.hpp>
+#include <boost/archive/detail/helper_collection.hpp>
 #include <boost/archive/detail/abi_prefix.hpp> // must be the last header
 
 namespace boost {
@@ -41,7 +42,8 @@ class BOOST_ARCHIVE_DECL(BOOST_PP_EMPTY()) basic_pointer_iserializer;
 //////////////////////////////////////////////////////////////////////
 // class basic_iarchive - read serialized objects from a input stream
 class BOOST_ARCHIVE_DECL(BOOST_PP_EMPTY()) basic_iarchive :
-    private boost::noncopyable
+    private boost::noncopyable,
+    public boost::archive::detail::helper_collection
 {
     friend class basic_iarchive_impl;
     // hide implementation of this class to minimize header conclusion

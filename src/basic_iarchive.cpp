@@ -418,7 +418,6 @@ basic_iarchive_impl::load_pointer(
     const basic_pointer_iserializer * (*finder)(
         const boost::serialization::extended_type_info & type_
     )
-
 ){
     m_moveable_objects.is_pointer = true;
     serialization::state_saver<bool> w(m_moveable_objects.is_pointer);
@@ -452,7 +451,7 @@ basic_iarchive_impl::load_pointer(
             bpis_ptr = (*finder)(*eti);
         }
         BOOST_ASSERT(NULL != bpis_ptr);
-        class_id_type new_cid = register_type(bpis_ptr->get_basic_serializer());
+        // class_id_type new_cid = register_type(bpis_ptr->get_basic_serializer());
         BOOST_VERIFY(register_type(bpis_ptr->get_basic_serializer()) == cid);
         int i = cid;
         cobject_id_vector[i].bpis_ptr = bpis_ptr;
@@ -473,6 +472,10 @@ basic_iarchive_impl::load_pointer(
     // save state
     serialization::state_saver<object_id_type> w_start(m_moveable_objects.start);
 
+    // allocate space on the heap for the object - to be constructed later
+    t = bpis_ptr->heap_allocation();
+    BOOST_ASSERT(NULL != t);
+
     if(! tracking){
         bpis_ptr->load_object_ptr(ar, t, co.file_version);
     }
@@ -489,8 +492,7 @@ basic_iarchive_impl::load_pointer(
 
         serialization::state_saver<object_id_type> w_end(m_moveable_objects.end);
 
-        // because the following operation could move the items
-        // don't use co after this
+        
         // add to list of serialized objects so that we can properly handle
         // cyclic strucures
         object_id_vector.push_back(aobject(t, cid));
@@ -502,8 +504,6 @@ basic_iarchive_impl::load_pointer(
             t,
             m_pending.version
         );
-        BOOST_ASSERT(NULL != t);
-        object_id_vector[ui].address = t;
         object_id_vector[ui].loaded_as_pointer = true;
     }
 

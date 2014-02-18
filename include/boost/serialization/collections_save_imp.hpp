@@ -34,14 +34,16 @@ namespace stl {
 //
 
 template<class Archive, class Container>
-inline void save_collection(Archive & ar, const Container &s)
+inline void save_collection(
+    Archive & ar,
+    const Container &s,
+    collection_size_type count)
 {
+    ar << BOOST_SERIALIZATION_NVP(count);
     // record number of elements
-    collection_size_type count(s.size());
     const item_version_type item_version(
         version<BOOST_DEDUCED_TYPENAME Container::value_type>::value
     );
-    ar << BOOST_SERIALIZATION_NVP(count);
     #if 0
         boost::archive::library_version_type library_version(
             ar.get_library_version()
@@ -63,6 +65,14 @@ inline void save_collection(Archive & ar, const Container &s)
         );
         ar << boost::serialization::make_nvp("item", *it++);
     }
+}
+
+template<class Archive, class Container>
+inline void save_collection(Archive & ar, const Container &s)
+{
+    // record number of elements
+    collection_size_type count(s.size());
+    save_collection(ar, s, count);
 }
 
 } // namespace stl 

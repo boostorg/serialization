@@ -46,7 +46,7 @@ us is that it takes as a parameter a base iterator from which it derives its
 input. This suggests that something like the following might be possible.
 <pre><code>
 typedef 
-    insert_linebreaks&lt;         // insert line breaks every 72 characters
+    insert_linebreaks&lt;         // insert line breaks every 76 characters
         base64_from_binary&lt;    // convert binary values ot base64 characters
             transform_width&lt;   // retrieve 6 bit integers from a sequence of 8 bit bytes
                 const char *,

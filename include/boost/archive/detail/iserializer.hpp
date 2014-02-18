@@ -23,7 +23,6 @@
 //  See http://www.boost.org for updates, documentation, and revision history.
 
 #include <new>     // for placement new
-#include <memory>  // for auto_ptr
 #include <cstddef> // size_t, NULL
 
 #include <boost/config.hpp>
@@ -59,13 +58,11 @@ namespace std{
 
 #include <boost/serialization/assume_abstract.hpp>
 
-#define DONT_USE_HAS_NEW_OPERATOR (                    \
+#if ! (                                                \
     defined(__BORLANDC__)                              \
     || BOOST_WORKAROUND(__IBMCPP__, < 1210)            \
     || defined(__SUNPRO_CC) && (__SUNPRO_CC < 0x590)   \
 )
-
-#if ! DONT_USE_HAS_NEW_OPERATOR
 #include <boost/type_traits/has_new_operator.hpp>
 #endif
 
@@ -196,101 +193,6 @@ BOOST_DLLEXPORT void iserializer<Archive, T>::load_object_data(
 #  pragma warning(disable : 4511 4512)
 #endif
 
-template<class Archive, class T>
-class pointer_iserializer :
-    public basic_pointer_iserializer
-{
-private:
-    virtual const basic_iserializer & get_basic_serializer() const {
-        return boost::serialization::singleton<
-            iserializer<Archive, T>
-        >::get_const_instance();
-    }
-    BOOST_DLLEXPORT virtual void load_object_ptr(
-        basic_iarchive & ar, 
-        void * & x,
-        const unsigned int file_version
-    ) const BOOST_USED;
-protected:
-    // this should alway be a singleton so make the constructor protected
-    pointer_iserializer();
-    ~pointer_iserializer();
-};
-
-#ifdef BOOST_MSVC
-#  pragma warning(pop)
-#endif
-
-// note trick to be sure that operator new is using class specific
-// version if such exists. Due to Peter Dimov.
-// note: the following fails if T has no default constructor.
-// otherwise it would have been ideal
-//struct heap_allocator : public T 
-//{
-//    T * invoke(){
-//        return ::new(sizeof(T));
-//    }
-//}
-
-#if 0
-template<class T>
-struct heap_allocator
-{
-    // boost::has_new_operator< T > doesn't work on these compilers
-    #if DONT_USE_HAS_NEW_OPERATOR
-        // This doesn't handle operator new overload for class T
-        static void * invoke(){
-            return static_cast<T *>(operator new(sizeof(T)));
-        }
-    #else
-        struct has_new_operator {
-            static void * invoke() {
-                return static_cast<T *>((T::operator new)(sizeof(T)));
-            }
-        };
-        struct doesnt_have_new_operator {
-            static void * invoke() {
-                return static_cast<T *>(operator new(sizeof(T)));
-            }
-        };
-        static void * invoke() {
-            typedef BOOST_DEDUCED_TYPENAME
-                mpl::eval_if<
-                    boost::has_new_operator< T >,
-                    mpl::identity<has_new_operator >,
-                    mpl::identity<doesnt_have_new_operator >    
-                >::type typex;
-            return typex::invoke();
-        }
-    #endif
-};
-
-// due to Martin Ecker
-template <typename T>
-class auto_ptr_with_deleter
-{
-public:
-    explicit auto_ptr_with_deleter(T* p) :
-        m_p(p)
-    {}
-    ~auto_ptr_with_deleter(){
-        if (m_p)
-            boost::serialization::access::destroy(m_p);
-    }
-    T* get() const {
-        return m_p;
-    }
-
-    T* release() {
-        T* p = m_p;
-        m_p = NULL;
-        return p;
-    }
-private:
-    T* m_p;
-};
-#endif
-
 // the purpose of this code is to allocate memory for an object
 // without requiring the constructor to be called.  Presumably
 // the allocated object will be subsequently initialized with
@@ -383,20 +285,49 @@ private:
     T* m_p;
 };
 
+template<class Archive, class T>
+class pointer_iserializer :
+    public basic_pointer_iserializer
+{
+private:
+    virtual void * heap_allocation() const {
+        detail::heap_allocation<T> h;
+        T * t = h.get();
+        h.release();
+        return t;
+    }
+    virtual const basic_iserializer & get_basic_serializer() const {
+        return boost::serialization::singleton<
+            iserializer<Archive, T>
+        >::get_const_instance();
+    }
+    BOOST_DLLEXPORT virtual void load_object_ptr(
+        basic_iarchive & ar, 
+        void * x,
+        const unsigned int file_version
+    ) const BOOST_USED;
+protected:
+    // this should alway be a singleton so make the constructor protected
+    pointer_iserializer();
+    ~pointer_iserializer();
+};
+
+#ifdef BOOST_MSVC
+#  pragma warning(pop)
+#endif
+
 // note: BOOST_DLLEXPORT is so that code for polymorphic class
 // serialized only through base class won't get optimized out
 template<class Archive, class T>
 BOOST_DLLEXPORT void pointer_iserializer<Archive, T>::load_object_ptr(
     basic_iarchive & ar, 
-    void * & t,
+    void * t,
     const unsigned int file_version
 ) const
 {
     Archive & ar_impl = 
         boost::serialization::smart_cast_reference<Archive &>(ar);
 
-    heap_allocation<T> h;
-    t = NULL;
     // note that the above will throw std::bad_alloc if the allocation
     // fails so we don't have to address this contingency here.
 
@@ -406,10 +337,10 @@ BOOST_DLLEXPORT void pointer_iserializer<Archive, T>::load_object_ptr(
     BOOST_TRY {
         // this addresses an obscure situation that occurs when 
         // load_constructor de-serializes something through a pointer.
-        ar.next_object_pointer(h.get());
+        ar.next_object_pointer(t);
         boost::serialization::load_construct_data_adl<Archive, T>(
             ar_impl,
-            h.get(), 
+            static_cast<T *>(t),
             file_version
         );
     }
@@ -421,11 +352,7 @@ BOOST_DLLEXPORT void pointer_iserializer<Archive, T>::load_object_ptr(
     }
     BOOST_CATCH_END
 
-    ar_impl >> boost::serialization::make_nvp(NULL, *h.get());
-    // success !!! - release the heap allocation so it
-    // doesn't delete the object we just loaded.
-    t = h.get();
-    h.release();
+    ar_impl >> boost::serialization::make_nvp(NULL, * static_cast<T *>(t));
 }
 
 template<class Archive, class T>
