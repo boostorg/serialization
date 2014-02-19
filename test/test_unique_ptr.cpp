@@ -6,11 +6,7 @@
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
-#include <list>
-#include <memory>
 #include <fstream>
-#include <string>
-
 #include <cstdio> // remove, std::autoptr inteface wrong in dinkumware
 #include <boost/config.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)
@@ -18,9 +14,11 @@ namespace std{
     using ::remove;
 }
 #endif
+#ifndef BOOST_NO_CXX11_SMART_PTR
+#include <boost/serialization/unique_ptr.hpp>
+#endif
 
 #include <boost/serialization/nvp.hpp>
-#include <boost/serialization/unique_ptr.hpp>
 
 #include "test_tools.hpp"
 
@@ -55,6 +53,7 @@ void load(std::unique_ptr<A> & spa, const char *filename)
 }
 
 int test_main(int /* argc */, char * /* argv */[]){
+    #ifndef BOOST_NO_CXX11_SMART_PTR
     const char * testfile = boost::archive::tmpnam(NULL);
     BOOST_REQUIRE(NULL != testfile);
 
@@ -72,5 +71,6 @@ int test_main(int /* argc */, char * /* argv */[]){
     // obj of type A gets destroyed
     // as auto_ptr goes out of scope
     std::remove(testfile);
+    #endif // BOOST_NO_CXX11_SMART_PTR
     return EXIT_SUCCESS;
 }

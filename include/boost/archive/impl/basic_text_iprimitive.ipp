@@ -30,10 +30,10 @@ namespace std{
 #include <boost/archive/iterators/binary_from_base64.hpp>
 #include <boost/archive/iterators/transform_width.hpp>
 
-namespace boost { 
+namespace boost {
 namespace archive {
 
-namespace {
+namespace detail {
     template<class CharType>
     bool is_whitespace(CharType c);
 
@@ -48,7 +48,7 @@ namespace {
         return 0 != std::iswspace(t);
     }
     #endif
-}
+} // detail
 
 // translate base64 text into binary and copy into buffer
 // until buffer is full.
@@ -106,7 +106,7 @@ basic_text_iprimitive<IStream>::load_binary(
         r = is.get();
         if(is.eof())
             break;
-        if(is_whitespace(static_cast<CharType>(r)))
+        if(detail::is_whitespace(static_cast<CharType>(r)))
             break;
     }
 }
