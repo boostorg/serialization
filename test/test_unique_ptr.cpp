@@ -38,39 +38,28 @@ public:
     ~A(){}   // default destructor
 };
 
-void save(const std::unique_ptr<A> & spa, const char *filename)
-{
-    test_ostream os(filename, TEST_STREAM_FLAGS);
-    test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
-    oa << BOOST_SERIALIZATION_NVP(spa);
-}
-
-void load(std::unique_ptr<A> & spa, const char *filename)
-{
-    test_istream is(filename, TEST_STREAM_FLAGS);
-    test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
-    ia >> BOOST_SERIALIZATION_NVP(spa);
-}
-
 int test_main(int /* argc */, char * /* argv */[]){
     #ifndef BOOST_NO_CXX11_SMART_PTR
-    const char * testfile = boost::archive::tmpnam(NULL);
-    BOOST_REQUIRE(NULL != testfile);
+    const char * filename = boost::archive::tmpnam(NULL);
+    BOOST_REQUIRE(NULL != filename);
 
     // create  a new auto pointer to ta new object of type A
     std::unique_ptr<A> spa(new A);
-    // serialize it
-    save(spa, testfile);
-    // reset the auto pointer to NULL
-    // thereby destroying the object of type A
-    // note that the reset automagically maintains the reference count
-    spa.reset();
-    // restore state to one equivalent to the original
-    // creating a new type A object
-    load(spa, testfile);
-    // obj of type A gets destroyed
-    // as auto_ptr goes out of scope
-    std::remove(testfile);
+    {
+        test_ostream os(filename, TEST_STREAM_FLAGS);
+        test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
+        oa << BOOST_SERIALIZATION_NVP(spa);
+    }
+    {
+        // reset the auto pointer to NULL
+        // thereby destroying the object of type A
+        // note that the reset automagically maintains the reference count
+        spa.reset();
+        test_istream is(filename, TEST_STREAM_FLAGS);
+        test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
+        ia >> BOOST_SERIALIZATION_NVP(spa);
+        std::remove(filename);
+    }
     #endif // BOOST_NO_CXX11_SMART_PTR
     return EXIT_SUCCESS;
 }
