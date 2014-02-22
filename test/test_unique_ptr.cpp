@@ -14,10 +14,6 @@ namespace std{
     using ::remove;
 }
 #endif
-#ifndef BOOST_NO_CXX11_SMART_PTR
-#include <boost/serialization/unique_ptr.hpp>
-#endif
-
 #include <boost/serialization/nvp.hpp>
 
 #include "test_tools.hpp"
@@ -38,8 +34,10 @@ public:
     ~A(){}   // default destructor
 };
 
+#ifndef BOOST_NO_CXX11_SMART_PTR
+#include <boost/serialization/unique_ptr.hpp>
+
 int test_main(int /* argc */, char * /* argv */[]){
-    #ifndef BOOST_NO_CXX11_SMART_PTR
     const char * filename = boost::archive::tmpnam(NULL);
     BOOST_REQUIRE(NULL != filename);
 
@@ -60,6 +58,13 @@ int test_main(int /* argc */, char * /* argv */[]){
         ia >> BOOST_SERIALIZATION_NVP(spa);
         std::remove(filename);
     }
-    #endif // BOOST_NO_CXX11_SMART_PTR
     return EXIT_SUCCESS;
 }
+
+#else
+
+int test_main(int /* argc */, char * /* argv */[]){
+    return EXIT_SUCCESS;
+}
+
+#endif // BOOST_NO_CXX11_SMART_PTR

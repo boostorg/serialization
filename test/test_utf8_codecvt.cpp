@@ -125,10 +125,9 @@ wchar_t test_data<4>::wchar_encoding[] = {
 
 int
 test_main(int /* argc */, char * /* argv */[]) {
-    std::locale old_loc;
     std::locale * utf8_locale
         = boost::archive::add_facet(
-            old_loc, 
+            std::locale::classic(),
             new boost::archive::detail::utf8_codecvt_facet
         );
 
@@ -140,7 +139,7 @@ test_main(int /* argc */, char * /* argv */[]) {
     // Send our test UTF-8 data to file
     {
         std::ofstream ofs;
-        ofs.open("test.dat", std::ios::binary);
+        ofs.open("test.dat");
         std::copy(
             td::utf8_encoding,
             #if ! defined(__BORLANDC__)
