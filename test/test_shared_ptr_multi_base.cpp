@@ -144,12 +144,14 @@ void load2(
 template<class T, class U>
 boost::shared_ptr<T> dynamic_pointer_cast(boost::shared_ptr<U> & u){
     return boost::dynamic_pointer_cast<T>(u);
-};
+}
 
+#ifndef BOOST_NO_CXX11_SMART_PTR
 template<class T, class U>
 std::shared_ptr<T> dynamic_pointer_cast(std::shared_ptr<U> & u){
     return std::dynamic_pointer_cast<T>(u);
-};
+}
+#endif
 
 // Serialization sequence
 // First,  shared_ptr
@@ -285,6 +287,8 @@ int test_main(int /* argc */, char * /* argv */[])
 {
     bool result = true;
     result &= test<boost::shared_ptr, boost::weak_ptr>();
+    #ifndef BOOST_NO_CXX11_SMART_PTR
     result &= test<std::shared_ptr, std::weak_ptr>();
+    #endif
     return result ? EXIT_SUCCESS : EXIT_FAILURE;
 }
