@@ -174,7 +174,7 @@ xml_wiarchive_impl<Archive>::xml_wiarchive_impl(
     if(0 == (flags & no_codecvt)){
         archive_locale.reset(
             add_facet(
-                std::locale::classic(),
+                is_.getloc(),
                 new boost::archive::detail::utf8_codecvt_facet
             )
         );

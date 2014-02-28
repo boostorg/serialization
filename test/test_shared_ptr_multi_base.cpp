@@ -142,13 +142,17 @@ void load2(
 // objects back from an archive.
 
 template<class T, class U>
-boost::shared_ptr<T> dynamic_pointer_cast(boost::shared_ptr<U> & u){
+boost::shared_ptr<T> dynamic_pointer_cast(boost::shared_ptr<U> const & u)
+BOOST_NOEXCEPT
+{
     return boost::dynamic_pointer_cast<T>(u);
 }
 
 #ifndef BOOST_NO_CXX11_SMART_PTR
 template<class T, class U>
-std::shared_ptr<T> dynamic_pointer_cast(std::shared_ptr<U> & u){
+std::shared_ptr<T> dynamic_pointer_cast(std::shared_ptr<U> const & u)
+BOOST_NOEXCEPT
+{
     return std::dynamic_pointer_cast<T>(u);
 }
 #endif
@@ -156,10 +160,10 @@ std::shared_ptr<T> dynamic_pointer_cast(std::shared_ptr<U> & u){
 // Serialization sequence
 // First,  shared_ptr
 // Second, weak_ptr
-template <class FIRST, class SECOND>
+template <class SP, class WP>
 void shared_weak(
-    FIRST & first,
-    SECOND & second
+    SP & first,
+    WP & second
 ){
     const char * testfile = boost::archive::tmpnam(NULL);
     BOOST_REQUIRE(NULL != testfile);
@@ -178,8 +182,8 @@ void shared_weak(
     BOOST_CHECK(firstm == first->m_x);
     BOOST_CHECK(secondm == second.lock()->m_x);
     // Check pointer to vtable
-    BOOST_CHECK(dynamic_pointer_cast<Sub>(first));
-    BOOST_CHECK(dynamic_pointer_cast<Sub>(second.lock()));
+    BOOST_CHECK(::dynamic_pointer_cast<Sub>(first));
+    BOOST_CHECK(::dynamic_pointer_cast<Sub>(second.lock()));
 
     std::remove(testfile);
 }
@@ -187,10 +191,10 @@ void shared_weak(
 // Serialization sequence
 // First,  weak_ptr
 // Second, shared_ptr
-template <class FIRST, class SECOND>
+template <class WP, class SP>
 void weak_shared(
-    FIRST & first,
-    SECOND & second
+    WP & first,
+    SP & second
 ){
     const char * testfile = boost::archive::tmpnam(NULL);
     BOOST_REQUIRE(NULL != testfile);
@@ -208,8 +212,8 @@ void weak_shared(
     BOOST_CHECK(firstm == first.lock()->m_x);
     BOOST_CHECK(secondm == second->m_x);
     // Check pointer to vtable
-    BOOST_CHECK(dynamic_pointer_cast<Sub>(first.lock()));
-    BOOST_CHECK(dynamic_pointer_cast<Sub>(second));
+    BOOST_CHECK(::dynamic_pointer_cast<Sub>(first.lock()));
+    BOOST_CHECK(::dynamic_pointer_cast<Sub>(second));
 
     std::remove(testfile);
 }

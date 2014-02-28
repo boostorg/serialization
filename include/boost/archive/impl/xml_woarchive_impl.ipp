@@ -155,7 +155,7 @@ xml_woarchive_impl<Archive>::xml_woarchive_impl(
         #else
             pfacet = new boost::archive::detail::utf8_codecvt_facet;
         #endif
-        archive_locale.reset(add_facet(std::locale::classic(), pfacet));
+        archive_locale.reset(add_facet(os_.getloc(), pfacet));
         os.imbue(* archive_locale);
     }
     if(0 == (flags & no_header))
