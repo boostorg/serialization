@@ -86,10 +86,8 @@ public:
     template<class T>
     void load(T & t)
     {
-        if(! is.fail()){
-            is >> t;
+        if(is >> t)
             return;
-        }
         boost::serialization::throw_exception(
             archive_exception(archive_exception::input_stream_error)
         );

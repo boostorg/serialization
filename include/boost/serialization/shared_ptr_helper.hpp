@@ -27,9 +27,10 @@
 #include <boost/mpl/if.hpp>
 
 #include <boost/serialization/type_info_implementation.hpp>
-#include <boost/serialization/shared_ptr_132.hpp>
+//#include <boost/serialization/shared_ptr_132.hpp>
+#include <boost/serialization/singleton.hpp>
 #include <boost/serialization/throw_exception.hpp>
-
+#include <boost/serialization/extended_type_info.hpp>
 #include <boost/archive/archive_exception.hpp>
 #include <boost/archive/detail/decl.hpp>
 
@@ -100,6 +101,26 @@ public:
         const unsigned int file_version
     );
 #endif
+    template<class U>
+    struct non_polymorphic {
+        static const boost::serialization::extended_type_info * 
+        get_object_type(U & ){
+            return & boost::serialization::singleton<
+                BOOST_DEDUCED_TYPENAME 
+                boost::serialization::type_info_implementation< U >::type
+            >::get_const_instance();
+        }
+    };
+    template<class U>
+    struct polymorphic {
+        static const boost::serialization::extended_type_info * 
+        get_object_type(U & u){
+            return boost::serialization::singleton<
+                BOOST_DEDUCED_TYPENAME 
+                boost::serialization::type_info_implementation< U >::type
+            >::get_const_instance().get_derived_extended_type_info(u);
+        }
+    };
 
 public:
     template<class T>
@@ -112,30 +133,12 @@ public:
             = & boost::serialization::type_info_implementation< T >::type
                     ::get_const_instance();
 
-        struct non_polymorphic {
-            static const boost::serialization::extended_type_info * 
-            get_object_type(T &){
-                return & boost::serialization::singleton<
-                    BOOST_DEDUCED_TYPENAME 
-                    boost::serialization::type_info_implementation< T >::type
-                >::get_const_instance();
-            }
-        };
-        struct polymorphic {
-            static const boost::serialization::extended_type_info * 
-            get_object_type(T & t){
-                return boost::serialization::singleton<
-                    BOOST_DEDUCED_TYPENAME 
-                    boost::serialization::type_info_implementation< T >::type
-                >::get_const_instance().get_derived_extended_type_info(t);
-            }
-        };
         // get pointer to the most derived object's eti.  This is effectively
         // the object type identifer
         typedef BOOST_DEDUCED_TYPENAME mpl::if_<
             is_polymorphic< T >,
-            polymorphic,
-            non_polymorphic
+            polymorphic<T>,
+            non_polymorphic<T>
         >::type type;
 
         const boost::serialization::extended_type_info * true_type

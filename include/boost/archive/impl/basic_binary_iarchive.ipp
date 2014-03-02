@@ -51,6 +51,8 @@ BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
 basic_binary_iarchive<Archive>::init(){
     // read signature in an archive version independent manner
     std::string file_signature;
+    
+    #if 0 // commented out since it interfers with derivation
     try {
         std::size_t l;
         this->This()->load(l);
@@ -69,6 +71,11 @@ basic_binary_iarchive<Archive>::init(){
         // will cause invalid_signature archive exception to be thrown below
         file_signature = "";   
     }
+    #else
+    // https://svn.boost.org/trac/boost/ticket/7301
+    * this->This() >> file_signature;
+    #endif
+
     if(file_signature != BOOST_ARCHIVE_SIGNATURE())
         boost::serialization::throw_exception(
             archive_exception(archive_exception::invalid_signature)

@@ -1,5 +1,5 @@
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
-// xml_wiprimitive.cpp:
+// xml_wiarchive_impl.ipp:
 
 // (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
 // Distributed under the Boost Software License, Version 1.0. (See
@@ -174,7 +174,7 @@ xml_wiarchive_impl<Archive>::xml_wiarchive_impl(
     if(0 == (flags & no_codecvt)){
         archive_locale.reset(
             add_facet(
-                std::locale::classic(),
+                is_.getloc(),
                 new boost::archive::detail::utf8_codecvt_facet
             )
         );

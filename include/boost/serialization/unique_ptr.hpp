@@ -15,6 +15,7 @@
 // http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org for updates, documentation, and revision history.
+#include <memory>
 #include <boost/serialization/split_free.hpp>
 #include <boost/serialization/nvp.hpp>
 
