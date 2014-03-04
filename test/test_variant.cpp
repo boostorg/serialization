@@ -19,7 +19,6 @@
 #include <cstdio> // remove
 #include <fstream>
 #include <boost/config.hpp>
-#include <cmath> // for fabs()
 #include <boost/math/special_functions/next.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)
 namespace std{ 

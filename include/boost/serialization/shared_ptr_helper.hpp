@@ -27,10 +27,7 @@
 #include <boost/mpl/if.hpp>
 
 #include <boost/serialization/type_info_implementation.hpp>
-//#include <boost/serialization/shared_ptr_132.hpp>
-#include <boost/serialization/singleton.hpp>
 #include <boost/serialization/throw_exception.hpp>
-#include <boost/serialization/extended_type_info.hpp>
 #include <boost/archive/archive_exception.hpp>
 #include <boost/archive/detail/decl.hpp>
 
@@ -40,17 +37,18 @@ namespace boost_132 {
     template<class T> class shared_ptr;
 }
 namespace boost {
-template<class T> class shared_ptr;
-
 namespace serialization {
 
 class extended_type_info;
-template<class Archive, class T>
+
+#ifndef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
+template<class Archive, template<class U> class SPT >
 inline void load(
     Archive & ar,
-    boost::shared_ptr< T > &t,
+    SPT< class U > &t,
     const unsigned int file_version
 );
+#endif
 
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // a common class for holding various types of shared pointers
@@ -94,10 +92,10 @@ class shared_ptr_helper {
 #ifdef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
 public:
 #else
-    template<class Archive, class T>
+    template<class Archive, class U>
     friend inline void boost::serialization::load(
         Archive & ar,
-        SPT< T > &t,
+        SPT< U > &t,
         const unsigned int file_version
     );
 #endif

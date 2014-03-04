@@ -16,7 +16,6 @@
 #include <cstdio>  // remove()
 #include <fstream>
 #include <cstdlib> // for rand()
-#include <cmath> // for fabs()
 #include <boost/config.hpp>
 #include <boost/detail/workaround.hpp>
 #include <boost/limits.hpp>
@@ -25,7 +24,6 @@
 #if defined(BOOST_NO_STDC_NAMESPACE)
 namespace std{
     using ::rand; 
-    using ::fabs; 
     using ::remove;
     #if BOOST_WORKAROUND(BOOST_MSVC, >= 1400) && !defined(UNDER_CE)
         using ::numeric_limits;

@@ -25,9 +25,6 @@ namespace std{
     #if BOOST_WORKAROUND(BOOST_MSVC, >= 1400) && !defined(UNDER_CE)
         using ::numeric_limits;
     #endif
-    #if !defined(__PGIC__)
-        using ::fabs;
-    #endif
 }
 #endif
 
