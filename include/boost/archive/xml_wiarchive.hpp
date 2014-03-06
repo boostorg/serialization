@@ -56,10 +56,18 @@ class xml_wiarchive_impl :
 #ifdef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
 public:
 #else
-    friend class detail::interface_iarchive<Archive>;
-    friend class basic_xml_iarchive<Archive>;
-    friend class load_access;
 protected:
+    #if BOOST_WORKAROUND(BOOST_MSVC, <= 1500)
+        // for some inexplicable reason insertion of "class" generates compile erro
+        // on msvc 8.0
+        friend detail::interface_iarchive<Archive>;
+        friend basic_xml_iarchive<Archive>;
+        friend load_access;
+    #else
+        friend class detail::interface_iarchive<Archive>;
+        friend class basic_xml_iarchive<Archive>;
+        friend class load_access;
+    #endif
 #endif
     // instances of micro xml parser to parse start preambles
     // scoped_ptr doesn't play nice with borland - so use a naked pointer

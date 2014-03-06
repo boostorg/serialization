@@ -41,10 +41,18 @@ class binary_iarchive_impl :
 #ifdef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
 public:
 #else
-    friend class detail::interface_iarchive<Archive>;
-    friend class basic_binary_iarchive<Archive>;
-    friend class load_access;
 protected:
+    #if BOOST_WORKAROUND(BOOST_MSVC, <= 1500)
+        // for some inexplicable reason insertion of "class" generates compile erro
+        // on msvc 8.0
+        friend detail::interface_iarchive<Archive>;
+        friend basic_binary_iarchive<Archive>;
+        friend load_access;
+    #else
+        friend class detail::interface_iarchive<Archive>;
+        friend class basic_binary_iarchive<Archive>;
+        friend class load_access;
+    #endif
 #endif
     // note: the following should not needed - but one compiler (vc 7.1)
     // fails to compile one test (test_shared_ptr) without it !!!

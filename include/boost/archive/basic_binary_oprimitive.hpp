@@ -58,14 +58,9 @@ namespace archive {
 // class basic_binary_oprimitive - binary output of prmitives
 
 template<class Archive, class Elem, class Tr>
-class basic_binary_oprimitive
-{
-#ifndef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
+class basic_binary_oprimitive {
     friend class save_access;
 protected:
-#else
-public:
-#endif
     std::basic_streambuf<Elem, Tr> & m_sb;
     // return a pointer to the most derived class
     Archive * This(){

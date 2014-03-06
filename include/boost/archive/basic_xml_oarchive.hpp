@@ -46,8 +46,18 @@ template<class Archive>
 class basic_xml_oarchive :
     public detail::common_oarchive<Archive>
 {
+#if BOOST_WORKAROUND(BOOST_MSVC, <= 1300)
+public:
+#else
 protected:
+#endif
+#if BOOST_WORKAROUND(BOOST_MSVC, <= 1500)
+    // for some inexplicable reason insertion of "class" generates compile erro
+    // on msvc 8.0
+    friend detail::interface_oarchive<Archive>;
+#else
     friend class detail::interface_oarchive<Archive>;
+#endif
     friend class save_access;
     // special stuff for xml output
     unsigned int depth;

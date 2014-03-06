@@ -52,12 +52,19 @@ template<class Archive>
 class basic_text_oarchive : 
     public detail::common_oarchive<Archive>
 {
-protected:
-#if BOOST_WORKAROUND(__BORLANDC__,BOOST_TESTED_AT(0x560))
+#ifdef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
 public:
 #else
-    friend class detail::interface_oarchive<Archive>;
+protected:
+    #if BOOST_WORKAROUND(BOOST_MSVC, <= 1500)
+        // for some inexplicable reason insertion of "class" generates compile erro
+        // on msvc 8.0
+        friend detail::interface_oarchive<Archive>;
+    #else
+        friend class detail::interface_oarchive<Archive>;
+    #endif
 #endif
+
     enum {
         none,
         eol,
