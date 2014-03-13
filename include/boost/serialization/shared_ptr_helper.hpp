@@ -43,7 +43,7 @@ class extended_type_info;
 
 #ifndef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
 template<class Archive, template<class U> class SPT >
-inline void load(
+void load(
     Archive & ar,
     SPT< class U > &t,
     const unsigned int file_version
@@ -93,7 +93,7 @@ class shared_ptr_helper {
 public:
 #else
     template<class Archive, class U>
-    friend inline void boost::serialization::load(
+    friend void boost::serialization::load(
         Archive & ar,
         SPT< U > &t,
         const unsigned int file_version

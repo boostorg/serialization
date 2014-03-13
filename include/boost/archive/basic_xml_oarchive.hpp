@@ -46,14 +46,14 @@ template<class Archive>
 class basic_xml_oarchive :
     public detail::common_oarchive<Archive>
 {
-#if BOOST_WORKAROUND(BOOST_MSVC, <= 1300)
+#ifdef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
 public:
 #else
 protected:
 #endif
-#if BOOST_WORKAROUND(BOOST_MSVC, <= 1500)
+#if BOOST_WORKAROUND(BOOST_MSVC, <= 1300)
     // for some inexplicable reason insertion of "class" generates compile erro
-    // on msvc 8.0
+    // on msvc 7.1
     friend detail::interface_oarchive<Archive>;
 #else
     friend class detail::interface_oarchive<Archive>;

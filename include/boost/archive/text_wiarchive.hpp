@@ -52,9 +52,9 @@ class text_wiarchive_impl :
 public:
 #else
 protected:
-    #if BOOST_WORKAROUND(BOOST_MSVC, <= 1500)
+    #if BOOST_WORKAROUND(BOOST_MSVC, <= 1300)
         // for some inexplicable reason insertion of "class" generates compile erro
-        // on msvc 8.0
+        // on msvc 7.1
         friend detail::interface_iarchive<Archive>;
         friend load_access;
     #else
