@@ -64,13 +64,8 @@ namespace archive {
 #endif
 
 template<class IStream>
-class basic_text_iprimitive
-{
-#ifndef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
+class basic_text_iprimitive {
 protected:
-#else
-public:
-#endif
     IStream &is;
     io::ios_flags_saver flags_saver;
     io::ios_precision_saver precision_saver;

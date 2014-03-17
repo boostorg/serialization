@@ -47,10 +47,16 @@ class text_iarchive_impl :
 #ifdef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
 public:
 #else
-    friend class detail::interface_iarchive<Archive>;
-    friend class basic_text_iarchive<Archive>;
-    friend class load_access;
 protected:
+    #if BOOST_WORKAROUND(BOOST_MSVC, <= 1300)
+        // for some inexplicable reason insertion of "class" generates compile erro
+        // on msvc 7.1
+        friend detail::interface_iarchive<Archive>;
+        friend load_access;
+    #else
+        friend class detail::interface_iarchive<Archive>;
+        friend class load_access;
+    #endif
 #endif
     template<class T>
     void load(T & t){

@@ -54,8 +54,18 @@ template<class Archive>
 class basic_binary_iarchive : 
     public detail::common_iarchive<Archive>
 {
+#ifdef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
+public:
+#else
 protected:
-    friend class detail::interface_iarchive<Archive>;
+    #if BOOST_WORKAROUND(BOOST_MSVC, <= 1300)
+        // for some inexplicable reason insertion of "class" generates compile erro
+        // on msvc 7.1
+        friend detail::interface_iarchive<Archive>;
+    #else
+        friend class detail::interface_iarchive<Archive>;
+    #endif
+#endif
     // intermediate level to support override of operators
     // fot templates in the absence of partial function 
     // template ordering. If we get here pass to base class

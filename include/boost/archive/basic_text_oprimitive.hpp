@@ -68,11 +68,7 @@ class save_access;
 template<class OStream>
 class basic_text_oprimitive
 {
-#ifndef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
 protected:
-#else
-public:
-#endif
     OStream &os;
     io::ios_flags_saver flags_saver;
     io::ios_precision_saver precision_saver;
