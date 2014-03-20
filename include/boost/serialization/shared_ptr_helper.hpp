@@ -89,7 +89,7 @@ class shared_ptr_helper {
     }
     #endif
 
-#ifdef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
+#if defined(BOOST_NO_MEMBER_TEMPLATE_FRIENDS) || defined(BOOST_MSVC)
 public:
 #else
     template<class Archive, class U>
@@ -99,8 +99,8 @@ public:
         const unsigned int file_version
     );
 #endif
-    template<class U>
     struct non_polymorphic {
+        template<class U>
         static const boost::serialization::extended_type_info * 
         get_object_type(U & ){
             return & boost::serialization::singleton<
@@ -109,8 +109,8 @@ public:
             >::get_const_instance();
         }
     };
-    template<class U>
     struct polymorphic {
+        template<class U>
         static const boost::serialization::extended_type_info * 
         get_object_type(U & u){
             return boost::serialization::singleton<
@@ -135,8 +135,8 @@ public:
         // the object type identifer
         typedef BOOST_DEDUCED_TYPENAME mpl::if_<
             is_polymorphic< T >,
-            polymorphic<T>,
-            non_polymorphic<T>
+            polymorphic,
+            non_polymorphic
         >::type type;
 
         const boost::serialization::extended_type_info * true_type
