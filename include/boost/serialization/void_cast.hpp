@@ -248,7 +248,7 @@ struct void_caster_base :
     public void_caster
 {
     typedef
-        BOOST_DEDUCED_TYPENAME mpl::eval_if<boost::is_virtual_base_of<Base,Derived>,
+        typename mpl::eval_if<boost::is_virtual_base_of<Base,Derived>,
             mpl::identity<
                 void_cast_detail::void_caster_virtual_base<Derived, Base>
             >
@@ -268,7 +268,7 @@ inline const void_cast_detail::void_caster & void_cast_register(
     Base const * /* bnull = NULL */
 ){
     typedef
-        BOOST_DEDUCED_TYPENAME mpl::eval_if<boost::is_virtual_base_of<Base,Derived>,
+        typename mpl::eval_if<boost::is_virtual_base_of<Base,Derived>,
             mpl::identity<
                 void_cast_detail::void_caster_virtual_base<Derived, Base>
             >

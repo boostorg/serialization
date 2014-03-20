@@ -43,7 +43,7 @@
         struct version< ::boost::shared_ptr< T > > {
             typedef mpl::integral_c_tag tag;
             #if BOOST_WORKAROUND(__MWERKS__, BOOST_TESTED_AT(0x3206))
-            typedef BOOST_DEDUCED_TYPENAME mpl::int_<1> type;
+            typedef typename mpl::int_<1> type;
             #else
             typedef mpl::int_<1> type;
             #endif
@@ -58,7 +58,7 @@
         struct tracking_level< ::boost::shared_ptr< T > > { 
             typedef mpl::integral_c_tag tag;
             #if BOOST_WORKAROUND(__MWERKS__, BOOST_TESTED_AT(0x3206))
-            typedef BOOST_DEDUCED_TYPENAME mpl::int_< ::boost::serialization::track_never> type;
+            typedef typename mpl::int_< ::boost::serialization::track_never> type;
             #else
             typedef mpl::int_< ::boost::serialization::track_never> type;
             #endif
@@ -199,7 +199,7 @@ inline void serialize(
         struct version< ::std::shared_ptr< T > > {
             typedef mpl::integral_c_tag tag;
             #if BOOST_WORKAROUND(__MWERKS__, BOOST_TESTED_AT(0x3206))
-            typedef BOOST_DEDUCED_TYPENAME mpl::int_<1> type;
+            typedef typename mpl::int_<1> type;
             #else
             typedef mpl::int_<1> type;
             #endif
@@ -214,7 +214,7 @@ inline void serialize(
         struct tracking_level< ::std::shared_ptr< T > > { 
             typedef mpl::integral_c_tag tag;
             #if BOOST_WORKAROUND(__MWERKS__, BOOST_TESTED_AT(0x3206))
-            typedef BOOST_DEDUCED_TYPENAME mpl::int_< ::boost::serialization::track_never> type;
+            typedef typename mpl::int_< ::boost::serialization::track_never> type;
             #else
             typedef mpl::int_< ::boost::serialization::track_never> type;
             #endif

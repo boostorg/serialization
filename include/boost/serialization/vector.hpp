@@ -121,9 +121,9 @@ inline void save(
     const std::vector<U, Allocator> &t,
     const unsigned int file_version
 ){
-    typedef BOOST_DEDUCED_TYPENAME 
+    typedef typename 
     boost::serialization::use_array_optimization<Archive>::template apply<
-        BOOST_DEDUCED_TYPENAME remove_const<U>::type 
+        typename remove_const<U>::type 
     >::type use_optimized;
     save(ar,t,file_version, use_optimized());
 }
@@ -141,9 +141,9 @@ inline void load(
       return;
     }
 #endif
-    typedef BOOST_DEDUCED_TYPENAME 
+    typedef typename 
     boost::serialization::use_array_optimization<Archive>::template apply<
-        BOOST_DEDUCED_TYPENAME remove_const<U>::type 
+        typename remove_const<U>::type 
     >::type use_optimized;
     load(ar,t,file_version, use_optimized());
 }

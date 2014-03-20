@@ -24,8 +24,6 @@
 // character and 8 bit bytes. Lowest common multiple is 24 => 4 6 bit characters
 // or 3 8 bit characters
 
-
-#include <boost/config.hpp> // for BOOST_DEDUCED_TYPENAME & PTFO
 #include <boost/serialization/pfto.hpp>
 
 #include <boost/iterator/iterator_adaptor.hpp>
@@ -44,7 +42,7 @@ template<
     class Base, 
     int BitsOut, 
     int BitsIn, 
-    class CharType = BOOST_DEDUCED_TYPENAME boost::iterator_value<Base>::type // output character
+    class CharType = typename boost::iterator_value<Base>::type // output character
 >
 class transform_width : 
     public boost::iterator_adaptor<
@@ -56,7 +54,7 @@ class transform_width :
     >
 {
     friend class boost::iterator_core_access;
-    typedef BOOST_DEDUCED_TYPENAME boost::iterator_adaptor<
+    typedef typename boost::iterator_adaptor<
         transform_width<Base, BitsOut, BitsIn, CharType>,
         Base,
         CharType,
@@ -65,7 +63,7 @@ class transform_width :
     > super_t;
 
     typedef transform_width<Base, BitsOut, BitsIn, CharType> this_t;
-    typedef BOOST_DEDUCED_TYPENAME iterator_value<Base>::type base_value_type;
+    typedef typename iterator_value<Base>::type base_value_type;
 
     void fill();
 

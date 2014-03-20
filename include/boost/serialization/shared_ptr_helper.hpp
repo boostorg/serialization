@@ -104,7 +104,7 @@ public:
         static const boost::serialization::extended_type_info * 
         get_object_type(U & ){
             return & boost::serialization::singleton<
-                BOOST_DEDUCED_TYPENAME 
+                typename 
                 boost::serialization::type_info_implementation< U >::type
             >::get_const_instance();
         }
@@ -114,7 +114,7 @@ public:
         static const boost::serialization::extended_type_info * 
         get_object_type(U & u){
             return boost::serialization::singleton<
-                BOOST_DEDUCED_TYPENAME 
+                typename 
                 boost::serialization::type_info_implementation< U >::type
             >::get_const_instance().get_derived_extended_type_info(u);
         }
@@ -133,7 +133,7 @@ public:
 
         // get pointer to the most derived object's eti.  This is effectively
         // the object type identifer
-        typedef BOOST_DEDUCED_TYPENAME mpl::if_<
+        typedef typename mpl::if_<
             is_polymorphic< T >,
             polymorphic,
             non_polymorphic

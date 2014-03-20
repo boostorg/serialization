@@ -34,7 +34,7 @@ struct stack_allocate
         return * address();
     }
 private:
-    typedef BOOST_DEDUCED_TYPENAME boost::aligned_storage<
+    typedef typename boost::aligned_storage<
         sizeof(T), 
         #if BOOST_WORKAROUND(__BORLANDC__,BOOST_TESTED_AT(0x560))
             8

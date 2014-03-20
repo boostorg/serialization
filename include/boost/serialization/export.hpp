@@ -103,14 +103,14 @@ ptr_serialization_support<Archive,Serializable>::instantiate()
 {
     export_impl<Archive,Serializable>::enable_save(
         #if ! defined(__BORLANDC__)
-        BOOST_DEDUCED_TYPENAME 
+        typename 
         #endif
         Archive::is_saving()
     );
 
     export_impl<Archive,Serializable>::enable_load(
         #if ! defined(__BORLANDC__)
-        BOOST_DEDUCED_TYPENAME 
+        typename 
         #endif
         Archive::is_loading()
     );

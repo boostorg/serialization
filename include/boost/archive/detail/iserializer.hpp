@@ -123,7 +123,7 @@ protected:
     explicit iserializer() :
         basic_iserializer(
             boost::serialization::singleton<
-                BOOST_DEDUCED_TYPENAME 
+                typename 
                 boost::serialization::type_info_implementation< T >::type
             >::get_const_instance()
         )
@@ -247,7 +247,7 @@ struct heap_allocation {
             }
         };
         static T * invoke_new() {
-            typedef BOOST_DEDUCED_TYPENAME
+            typedef typename
                 mpl::eval_if<
                     boost::has_new_operator< T >,
                     mpl::identity<has_new_operator >,
@@ -256,7 +256,7 @@ struct heap_allocation {
             return typex::invoke_new();
         }
         static void invoke_delete(T *t) {
-            typedef BOOST_DEDUCED_TYPENAME
+            typedef typename
                 mpl::eval_if<
                     boost::has_new_operator< T >,
                     mpl::identity<has_new_operator >,
@@ -359,7 +359,7 @@ template<class Archive, class T>
 pointer_iserializer<Archive, T>::pointer_iserializer() :
     basic_pointer_iserializer(
         boost::serialization::singleton<
-            BOOST_DEDUCED_TYPENAME 
+            typename 
             boost::serialization::type_info_implementation< T >::type
         >::get_const_instance()
     )
@@ -428,7 +428,7 @@ struct load_non_pointer_type {
 
     template<class T>
     static void invoke(Archive & ar, T &t){
-        typedef BOOST_DEDUCED_TYPENAME mpl::eval_if<
+        typedef typename mpl::eval_if<
                 // if its primitive
                 mpl::equal_to<
                     boost::serialization::implementation_level< T >,
@@ -436,7 +436,7 @@ struct load_non_pointer_type {
                 >,
                 mpl::identity<load_primitive>,
             // else
-            BOOST_DEDUCED_TYPENAME mpl::eval_if<
+            typename mpl::eval_if<
             // class info / version
             mpl::greater_equal<
                         boost::serialization::implementation_level< T >,
@@ -445,7 +445,7 @@ struct load_non_pointer_type {
             // do standard load
             mpl::identity<load_standard>,
         // else
-        BOOST_DEDUCED_TYPENAME mpl::eval_if<
+        typename mpl::eval_if<
             // no tracking
                     mpl::equal_to<
                         boost::serialization::tracking_level< T >,
@@ -489,7 +489,7 @@ struct load_pointer_type {
         // class pointer.  Inhibiting code generation for this
         // permits abstract base classes to be used - note: exception
         // virtual serialize functions used for plug-ins
-        typedef BOOST_DEDUCED_TYPENAME
+        typedef typename
             mpl::eval_if<
                 boost::serialization::is_abstract<const T>,
                 boost::mpl::identity<abstract>,
@@ -510,7 +510,7 @@ struct load_pointer_type {
                 boost::serialization::void_upcast(
                     eti,
                     boost::serialization::singleton<
-                        BOOST_DEDUCED_TYPENAME 
+                        typename 
                         boost::serialization::type_info_implementation< T >::type
                     >::get_const_instance(),
                     t
@@ -567,7 +567,7 @@ template<class Archive>
 struct load_array_type {
     template<class T>
     static void invoke(Archive &ar, T &t){
-        typedef BOOST_DEDUCED_TYPENAME remove_extent< T >::type value_type;
+        typedef typename remove_extent< T >::type value_type;
         
         // convert integers to correct enum to load
         // determine number of elements in the array. Consider the
@@ -599,13 +599,13 @@ inline void load(Archive & ar, T &t){
     // handled below.
     detail::check_const_loading< T >();
     typedef
-        BOOST_DEDUCED_TYPENAME mpl::eval_if<is_pointer< T >,
+        typename mpl::eval_if<is_pointer< T >,
             mpl::identity<detail::load_pointer_type<Archive> >
         ,//else
-        BOOST_DEDUCED_TYPENAME mpl::eval_if<is_array< T >,
+        typename mpl::eval_if<is_array< T >,
             mpl::identity<detail::load_array_type<Archive> >
         ,//else
-        BOOST_DEDUCED_TYPENAME mpl::eval_if<is_enum< T >,
+        typename mpl::eval_if<is_enum< T >,
             mpl::identity<detail::load_enum_type<Archive> >
         ,//else
             mpl::identity<detail::load_non_pointer_type<Archive> >

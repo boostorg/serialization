@@ -14,12 +14,11 @@
 #include <algorithm> // std::copy
 #include <locale>
 
-#include <boost/config.hpp> // msvc 6.0 needs this to suppress warnings 
-                            // for BOOST_DEDUCED_TYPENAME
 #include <cstring> // strlen
 #include <cstdlib> // mbtowc
 #include <cwchar>  // wcslen
 
+#include <boost/config.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)
 namespace std{ 
     using ::strlen; 

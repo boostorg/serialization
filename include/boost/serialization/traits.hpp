@@ -52,9 +52,9 @@ template<
 struct traits : public basic_traits {
     BOOST_STATIC_ASSERT(Version == 0 || Level >= object_class_info);
     BOOST_STATIC_ASSERT(Tracking == track_never || Level >= object_serializable);
-    typedef BOOST_DEDUCED_TYPENAME mpl::int_<Level> level;
-    typedef BOOST_DEDUCED_TYPENAME mpl::int_<Tracking> tracking;
-    typedef BOOST_DEDUCED_TYPENAME mpl::int_<Version> version;
+    typedef typename mpl::int_<Level> level;
+    typedef typename mpl::int_<Tracking> tracking;
+    typedef typename mpl::int_<Version> version;
     typedef ETII type_info_implementation;
     typedef Wrapper is_wrapper;
 };

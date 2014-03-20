@@ -54,8 +54,8 @@ inline void serialize(
     std::queue< T, C> & t,
     const unsigned int file_version 
 ){
-    typedef BOOST_DEDUCED_TYPENAME mpl::eval_if<
-        BOOST_DEDUCED_TYPENAME Archive::is_saving,
+    typedef typename mpl::eval_if<
+        typename Archive::is_saving,
         mpl::identity<detail::queue_save<T, C> >,
         mpl::identity<detail::queue_load<T, C> >
     >::type typex;

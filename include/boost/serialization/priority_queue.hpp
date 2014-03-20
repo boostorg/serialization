@@ -54,8 +54,8 @@ inline void serialize(
     std::priority_queue< T, Container, Compare> & t,
     const unsigned int file_version 
 ){
-    typedef BOOST_DEDUCED_TYPENAME mpl::eval_if<
-        BOOST_DEDUCED_TYPENAME Archive::is_saving,
+    typedef typename mpl::eval_if<
+        typename Archive::is_saving,
         mpl::identity<detail::priority_queue_save<T, Container, Compare> >,
         mpl::identity<detail::priority_queue_load<T, Container, Compare> >
     >::type typex;

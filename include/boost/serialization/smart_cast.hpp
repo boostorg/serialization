@@ -95,15 +95,15 @@ namespace smart_cast_impl {
                     // cross casting will be selected this will work but will
                     // not be the most efficient method. This will conflict with
                     // the original smart_cast motivation.
-                    typedef BOOST_DEDUCED_TYPENAME mpl::eval_if<
-                            BOOST_DEDUCED_TYPENAME mpl::and_<
+                    typedef typename mpl::eval_if<
+                            typename mpl::and_<
                                 mpl::not_<is_base_and_derived<
-                                    BOOST_DEDUCED_TYPENAME remove_reference< T >::type,
+                                    typename remove_reference< T >::type,
                                     U
                                 > >,
                                 mpl::not_<is_base_and_derived<
                                     U,
-                                    BOOST_DEDUCED_TYPENAME remove_reference< T >::type
+                                    typename remove_reference< T >::type
                                 > >
                             >,
                             // borland chokes w/o full qualification here
@@ -131,7 +131,7 @@ namespace smart_cast_impl {
                     mpl::identity<non_polymorphic>
                 >::type::cast(u);
             #else
-                typedef BOOST_DEDUCED_TYPENAME mpl::eval_if<
+                typedef typename mpl::eval_if<
                     boost::is_polymorphic<U>,
                     mpl::identity<polymorphic>,
                     mpl::identity<non_polymorphic>
@@ -180,15 +180,15 @@ namespace smart_cast_impl {
                     // not be the most efficient method. This will conflict with
                     // the original smart_cast motivation.
                     typedef
-                        BOOST_DEDUCED_TYPENAME mpl::eval_if<
-                            BOOST_DEDUCED_TYPENAME mpl::and_<
+                        typename mpl::eval_if<
+                            typename mpl::and_<
                                 mpl::not_<is_base_and_derived<
-                                    BOOST_DEDUCED_TYPENAME remove_pointer< T >::type,
+                                    typename remove_pointer< T >::type,
                                     U
                                 > >,
                                 mpl::not_<is_base_and_derived<
                                     U,
-                                    BOOST_DEDUCED_TYPENAME remove_pointer< T >::type
+                                    typename remove_pointer< T >::type
                                 > >
                             >,
                             // borland chokes w/o full qualification here
@@ -226,7 +226,7 @@ namespace smart_cast_impl {
                     mpl::identity<non_polymorphic>
                 >::type::cast(u);
             #else
-                typedef BOOST_DEDUCED_TYPENAME mpl::eval_if<
+                typedef typename mpl::eval_if<
                     boost::is_polymorphic<U>,
                     mpl::identity<polymorphic>,
                     mpl::identity<non_polymorphic>
@@ -267,8 +267,8 @@ namespace smart_cast_impl {
 template<class T, class U>
 T smart_cast(U u) {
     typedef
-        BOOST_DEDUCED_TYPENAME mpl::eval_if<
-            BOOST_DEDUCED_TYPENAME mpl::or_<
+        typename mpl::eval_if<
+            typename mpl::or_<
                 boost::is_same<void *, U>,
                 boost::is_same<void *, T>,
                 boost::is_same<const void *, U>,
@@ -276,10 +276,10 @@ T smart_cast(U u) {
             >,
             mpl::identity<smart_cast_impl::void_pointer< T > >,
         // else
-        BOOST_DEDUCED_TYPENAME mpl::eval_if<boost::is_pointer<U>,
+        typename mpl::eval_if<boost::is_pointer<U>,
             mpl::identity<smart_cast_impl::pointer< T > >,
         // else
-        BOOST_DEDUCED_TYPENAME mpl::eval_if<boost::is_reference<U>,
+        typename mpl::eval_if<boost::is_reference<U>,
             mpl::identity<smart_cast_impl::reference< T > >,
         // else
             mpl::identity<smart_cast_impl::error< T >

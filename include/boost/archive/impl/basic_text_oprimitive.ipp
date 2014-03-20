@@ -31,7 +31,7 @@ basic_text_oprimitive<OStream>::save_binary(
     const void *address, 
     std::size_t count
 ){
-    typedef BOOST_DEDUCED_TYPENAME OStream::char_type CharType;
+    typedef typename OStream::char_type CharType;
     
     if(0 == count)
         return;
@@ -91,7 +91,7 @@ basic_text_oprimitive<OStream>::basic_text_oprimitive(
         archive_locale.reset(
             add_facet(
                 std::locale::classic(), 
-                new codecvt_null<BOOST_DEDUCED_TYPENAME OStream::char_type>
+                new codecvt_null<typename OStream::char_type>
             )
         );
         os.imbue(* archive_locale);

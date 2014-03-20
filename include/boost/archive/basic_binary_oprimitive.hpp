@@ -117,7 +117,7 @@ public:
         template <class T>  
         #if defined(BOOST_NO_DEPENDENT_NESTED_DERIVATIONS)  
             struct apply {  
-                typedef BOOST_DEDUCED_TYPENAME boost::serialization::is_bitwise_serializable< T >::type type;  
+                typedef typename boost::serialization::is_bitwise_serializable< T >::type type;  
             };
         #else
             struct apply : public boost::serialization::is_bitwise_serializable< T > {};  
@@ -165,7 +165,7 @@ basic_binary_oprimitive<Archive, Elem, Tr>::save_binary(
             archive_exception(archive_exception::output_stream_error)
         );
     //os.write(
-    //    static_cast<const BOOST_DEDUCED_TYPENAME OStream::char_type *>(address), 
+    //    static_cast<const typename OStream::char_type *>(address), 
     //    count
     //);
     //BOOST_ASSERT(os.good());

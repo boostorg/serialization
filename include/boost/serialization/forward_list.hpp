@@ -81,7 +81,7 @@ inline void load(
     boost::serialization::detail::stack_construct<Archive, U> u(ar, item_version);
     ar >> boost::serialization::make_nvp("item", u.reference());
     t.push_front(u.reference());
-    BOOST_DEDUCED_TYPENAME std::forward_list<U, Allocator>::iterator last;
+    typename std::forward_list<U, Allocator>::iterator last;
     last = t.begin();
     while(--count > 0){
         boost::serialization::detail::stack_construct<Archive, U> 

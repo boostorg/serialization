@@ -76,8 +76,8 @@ protected:
     #ifndef BOOST_NO_STD_LOCALE
     boost::scoped_ptr<std::locale> archive_locale;
     basic_streambuf_locale_saver<
-        BOOST_DEDUCED_TYPENAME OStream::char_type, 
-        BOOST_DEDUCED_TYPENAME OStream::traits_type
+        typename OStream::char_type, 
+        typename OStream::traits_type
     > locale_saver;
     #endif
 
@@ -137,7 +137,7 @@ protected:
 
     template<class T>
     struct is_float {
-        typedef BOOST_DEDUCED_TYPENAME mpl::bool_< 
+        typedef typename mpl::bool_< 
             boost::is_floating_point<T>::value 
             || (std::numeric_limits<T>::is_specialized
             && !std::numeric_limits<T>::is_integer
@@ -172,7 +172,7 @@ protected:
     void save(const T & t){
         boost::io::ios_flags_saver fs(os);
         boost::io::ios_precision_saver ps(os);
-        BOOST_DEDUCED_TYPENAME is_float<T>::type tf;
+        typename is_float<T>::type tf;
         save_impl(t, tf);
     }
 
@@ -182,7 +182,7 @@ protected:
     ~basic_text_oprimitive();
 public:
     // unformatted append of one character
-    void put(BOOST_DEDUCED_TYPENAME OStream::char_type c){
+    void put(typename OStream::char_type c){
         if(os.fail())
             boost::serialization::throw_exception(
                 archive_exception(archive_exception::output_stream_error)

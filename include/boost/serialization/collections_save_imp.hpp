@@ -42,7 +42,7 @@ inline void save_collection(
     ar << BOOST_SERIALIZATION_NVP(count);
     // record number of elements
     const item_version_type item_version(
-        version<BOOST_DEDUCED_TYPENAME Container::value_type>::value
+        version<typename Container::value_type>::value
     );
     #if 0
         boost::archive::library_version_type library_version(
@@ -55,7 +55,7 @@ inline void save_collection(
         ar << BOOST_SERIALIZATION_NVP(item_version);
     #endif
 
-    BOOST_DEDUCED_TYPENAME Container::const_iterator it = s.begin();
+    typename Container::const_iterator it = s.begin();
     while(count-- > 0){
         // note borland emits a no-op without the explicit namespace
         boost::serialization::save_construct_data_adl(

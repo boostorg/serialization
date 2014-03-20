@@ -58,7 +58,7 @@ basic_text_iprimitive<IStream>::load_binary(
     void *address, 
     std::size_t count
 ){
-    typedef BOOST_DEDUCED_TYPENAME IStream::char_type CharType;
+    typedef typename IStream::char_type CharType;
     
     if(0 == count)
         return;
@@ -73,7 +73,7 @@ basic_text_iprimitive<IStream>::load_binary(
             archive_exception(archive_exception::input_stream_error)
         );
     // convert from base64 to binary
-    typedef BOOST_DEDUCED_TYPENAME
+    typedef typename
         iterators::transform_width<
             iterators::binary_from_base64<
                 iterators::remove_whitespace<
@@ -102,7 +102,7 @@ basic_text_iprimitive<IStream>::load_binary(
 
     // skip over any excess input
     for(;;){
-        BOOST_DEDUCED_TYPENAME IStream::int_type r;
+        typename IStream::int_type r;
         r = is.get();
         if(is.eof())
             break;
@@ -128,7 +128,7 @@ basic_text_iprimitive<IStream>::basic_text_iprimitive(
         archive_locale.reset(
             add_facet(
                 std::locale::classic(), 
-                new codecvt_null<BOOST_DEDUCED_TYPENAME IStream::char_type>
+                new codecvt_null<typename IStream::char_type>
             )
         );
         is.imbue(* archive_locale);

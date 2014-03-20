@@ -73,8 +73,8 @@ protected:
     #ifndef BOOST_NO_STD_LOCALE
     boost::scoped_ptr<std::locale> archive_locale;
     basic_streambuf_locale_saver<
-        BOOST_DEDUCED_TYPENAME IStream::char_type, 
-        BOOST_DEDUCED_TYPENAME IStream::traits_type
+        typename IStream::char_type, 
+        typename IStream::traits_type
     > locale_saver;
     #endif
 

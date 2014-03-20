@@ -77,7 +77,7 @@ public:
     
     ~state_saver() {
         #ifndef BOOST_NO_EXCEPTIONS
-            typedef BOOST_DEDUCED_TYPENAME mpl::eval_if<
+            typedef typename mpl::eval_if<
                 has_nothrow_copy< T >,
                 mpl::identity<restore>,
                 mpl::identity<restore_with_exception>

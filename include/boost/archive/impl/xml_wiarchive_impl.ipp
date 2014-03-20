@@ -8,8 +8,6 @@
 
 //  See http://www.boost.org for updates, documentation, and revision history.
 
-#include <boost/config.hpp> // for BOOST_DEDUCED_TYPENAME
-
 #include <cstring>
 #if defined(BOOST_NO_STDC_NAMESPACE)
 namespace std{ 

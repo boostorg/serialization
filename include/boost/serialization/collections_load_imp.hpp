@@ -51,14 +51,14 @@ namespace stl {
 template<class Archive, class Container>
 struct archive_input_seq
 {
-    inline BOOST_DEDUCED_TYPENAME Container::iterator
+    inline typename Container::iterator
     operator()(
         Archive &ar, 
         Container &s, 
         const unsigned int v,
-        BOOST_DEDUCED_TYPENAME Container::iterator hint
+        typename Container::iterator hint
     ){
-        typedef BOOST_DEDUCED_TYPENAME Container::value_type type;
+        typedef typename Container::value_type type;
         detail::stack_construct<Archive, type> t(ar, v);
         // borland fails silently w/o full namespace
         ar >> boost::serialization::make_nvp("item", t.reference());
@@ -72,18 +72,18 @@ struct archive_input_seq
 template<class Archive, class Container>
 struct archive_input_map
 {
-    inline BOOST_DEDUCED_TYPENAME Container::iterator
+    inline typename Container::iterator
     operator()(
         Archive &ar, 
         Container &s, 
         const unsigned int v,
-        BOOST_DEDUCED_TYPENAME Container::iterator hint
+        typename Container::iterator hint
     ){
-        typedef BOOST_DEDUCED_TYPENAME Container::value_type type;
+        typedef typename Container::value_type type;
         detail::stack_construct<Archive, type> t(ar, v);
         // borland fails silently w/o full namespace
         ar >> boost::serialization::make_nvp("item", t.reference());
-        BOOST_DEDUCED_TYPENAME Container::iterator result = 
+        typename Container::iterator result = 
             s.insert(hint, t.reference());
         // note: the following presumes that the map::value_type was NOT tracked
         // in the archive.  This is the usual case, but here there is no way
@@ -100,18 +100,18 @@ struct archive_input_map
 template<class Archive, class Container>
 struct archive_input_set
 {
-    inline BOOST_DEDUCED_TYPENAME Container::iterator
+    inline typename Container::iterator
     operator()(
         Archive &ar, 
         Container &s, 
         const unsigned int v,
-        BOOST_DEDUCED_TYPENAME Container::iterator hint
+        typename Container::iterator hint
     ){
-        typedef BOOST_DEDUCED_TYPENAME Container::value_type type;
+        typedef typename Container::value_type type;
         detail::stack_construct<Archive, type> t(ar, v);
         // borland fails silently w/o full namespace
         ar >> boost::serialization::make_nvp("item", t.reference());
-        BOOST_DEDUCED_TYPENAME Container::iterator result = 
+        typename Container::iterator result = 
             s.insert(hint, t.reference());
         ar.reset_object_address(& (* result), & t.reference());
         return result;
@@ -152,7 +152,7 @@ inline void load_collection(Archive & ar, Container &s)
     R rx;
     rx(s, count);
     InputFunction ifunc;
-    BOOST_DEDUCED_TYPENAME Container::iterator hint;
+    typename Container::iterator hint;
     hint = s.begin();
     while(count-- > 0){
         hint = ifunc(ar, s, item_version, hint);

@@ -18,7 +18,6 @@
 
 #include <boost/assert.hpp>
 
-#include <boost/config.hpp> // for BOOST_DEDUCED_TYPENAME
 #include <boost/serialization/throw_exception.hpp>
 #include <boost/serialization/pfto.hpp>
 #include <boost/static_assert.hpp>
@@ -67,7 +66,7 @@ struct to_6_bit {
 } // namespace detail
 
 // note: what we would like to do is
-// template<class Base, class CharType = BOOST_DEDUCED_TYPENAME Base::value_type>
+// template<class Base, class CharType = typename Base::value_type>
 //  typedef transform_iterator<
 //      from_6_bit<CharType>,
 //      transform_width<Base, 6, sizeof(Base::value_type) * 8, CharType>
@@ -81,7 +80,7 @@ struct to_6_bit {
 
 template<
     class Base, 
-    class CharType = BOOST_DEDUCED_TYPENAME boost::iterator_value<Base>::type
+    class CharType = typename boost::iterator_value<Base>::type
 >
 class binary_from_base64 : public
     transform_iterator<
