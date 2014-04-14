@@ -65,8 +65,12 @@ namespace archive {
 template<class Archive, class Elem, class Tr>
 class basic_binary_iprimitive
 {
-protected:
+#ifndef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
     friend class load_access;
+protected:
+#else
+public:
+#endif
     std::basic_streambuf<Elem, Tr> & m_sb;
     // return a pointer to the most derived class
     Archive * This(){
