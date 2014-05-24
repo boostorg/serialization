@@ -38,7 +38,7 @@ http://www.boost.org/LICENSE_1_0.txt)
   <dt><a href="#compiletime_messages">Compile Time Warnings and Errors</a>
 </dl>
 Serialization of data depends on the type of the data.  For example, for
-primitive types such as an <code style="white-space: normal">int</code>, it wouldn't make sense to save
+primitive types such as <code style="white-space: normal">int</code>, it wouldn't make sense to save
 a version number in the archive. Likewise, for a data type that is never
 serialized through a pointer, it would (almost) never make sense to track
 the address of objects saved to/loaded from the archive as it will never
@@ -232,12 +232,12 @@ statisfactory for our purposes for the following reasons:
   <li>There might be classes locally defined in different code modules
   that have the same name. 
   <li>There might be classes with different names that we want to
-  consider equivalent for purposes of of serialization.
+  consider equivalent for purposes of serialization.
 </ul>
 <p>
 So in the serialization library, this is addressed by invoking
 <code style="white-space: normal">BOOST_CLASS_EXPORT_KEY2(my_class, "my_class_external_identifier")</code>
-in the header file which declares he class.
+in the header file which declares the class.
 In a large majority of applications, the class name works just fine
 for the external identifier string so the following short cut is
 defined -
@@ -248,7 +248,7 @@ programs which do not use DLLS, one can specify
 <code style="white-space: normal">BOOST_CLASS_EXPORT(my_class)</code>
 or
 <code style="white-space: normal">BOOST_CLASS_EXPORT_GUID(my_class, "my_class_external_identifier")</code>
-in either he declaration header or definition.  These macros
+in either the declaration header or definition.  These macros
 expand to invocation of the of both of the macros described above.
 <i>(<b>GUID</b> stands for <b>G</b>lobally <b>U</b>nique <b>ID</b>entfier.)</i>
 <p>
