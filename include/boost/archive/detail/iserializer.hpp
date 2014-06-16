@@ -505,8 +505,7 @@ struct load_pointer_type {
         const T &
     ) {
         // tweak the pointer back to the base class
-        return static_cast<T *>(
-            const_cast<void *>(
+        void * upcast = const_cast<void *>(
                 boost::serialization::void_upcast(
                     eti,
                     boost::serialization::singleton<
@@ -517,6 +516,11 @@ struct load_pointer_type {
                 )
             )
         );
+        if(NULL == upcast)
+            boost::serialization::throw_exception(
+                archive_exception(archive_exception::unregistered_class)
+            );
+        return static_cast<T *>(upcast);
     }
 
     template<class T>

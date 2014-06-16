@@ -20,7 +20,7 @@
 #include <map>
 
 #include <boost/serialization/type_info_implementation.hpp>
-#include <boost/smart_ptr/shared_ptr.hpp>
+#include <boost/foreach.hpp>
 
 namespace boost {
 
@@ -36,15 +36,12 @@ class helper_collection
     helper_collection(const helper_collection&);              // non-copyable
     helper_collection& operator = (const helper_collection&); // non-copyable
 
-    // note: we dont' actually "share" the function object pointer
-    // we only use shared_ptr to make sure that it get's deleted
-
     // note: consider replacement of map with vector of pairs.  In practice
     // there will likely be only a couple of helper instances per
     // archive instance so map is way overkill in terms of time and space.
     typedef std::map<
         const boost::serialization::extended_type_info *,
-        boost::shared_ptr<void>
+        void *
     >  collection;
     typedef collection::value_type helper_value_type;
     typedef collection::iterator helper_iterator;
@@ -62,6 +59,9 @@ protected:
         m_helpers(NULL)
     {}
     ~helper_collection(){
+        BOOST_FOREACH(void * vp, m_helpers){
+            delete vp;
+        }
         delete m_helpers;
     }
 public:
@@ -75,7 +75,7 @@ public:
             it = helpers().insert(
                 helper_value_type(
                     eti,
-                    shared_ptr<void>(new Helper)
+                    new Helper
                 )
             ).first;
         }

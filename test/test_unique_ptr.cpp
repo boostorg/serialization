@@ -7,7 +7,7 @@
 // http://www.boost.org/LICENSE_1_0.txt)
 
 #include <fstream>
-#include <cstdio> // remove, std::autoptr inteface wrong in dinkumware
+#include <cstdio> // remove, std::auto_ptr interface wrong in dinkumware
 #include <boost/config.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)
 namespace std{ 
@@ -19,7 +19,7 @@ namespace std{
 #include "test_tools.hpp"
 
 /////////////////////////////////////////////////////////////
-// test auto_ptr serialization
+// test std::unique_ptr serialization
 class A
 {
 private:
@@ -49,7 +49,7 @@ int test_main(int /* argc */, char * /* argv */[]){
         oa << BOOST_SERIALIZATION_NVP(spa);
     }
     {
-        // reset the auto pointer to NULL
+        // reset the unique_ptr to NULL
         // thereby destroying the object of type A
         // note that the reset automagically maintains the reference count
         spa.reset();

@@ -32,7 +32,7 @@
 #include <boost/serialization/tracking.hpp>
 
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
-// shared_ptr serialization traits
+// boost:: shared_ptr serialization traits
 // version 1 to distinguish from boost 1.32 version. Note: we can only do this
 // for a template when the compiler supports partial template specialization
 
@@ -92,7 +92,7 @@ struct null_deleter {
 };
 
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
-// serialization for shared_ptr
+// serialization for boost::shared_ptr
 
 template<class Archive, class T>
 inline void save(
@@ -183,68 +183,45 @@ inline void serialize(
 } // namespace serialization
 } // namespace boost
 
-#ifndef BOOST_NO_CXX11_SMART_PTR
-
-#include <memory>
-
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
-// shared_ptr serialization traits
+// std::shared_ptr serialization traits
 // version 1 to distinguish from boost 1.32 version. Note: we can only do this
 // for a template when the compiler supports partial template specialization
 
+#ifndef BOOST_NO_CXX11_SMART_PTR
+#include <memory>
+
+// note: we presume that any compiler/library which supports C++11
+// std::pointers also supports template partial specialization
+// trap here if such presumption were to turn out to wrong!!!
 #ifndef BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-    namespace boost {
-    namespace serialization{
-        template<class T>
-        struct version< ::std::shared_ptr< T > > {
-            typedef mpl::integral_c_tag tag;
-            #if BOOST_WORKAROUND(__MWERKS__, BOOST_TESTED_AT(0x3206))
-            typedef typename mpl::int_<1> type;
-            #else
-            typedef mpl::int_<1> type;
-            #endif
-            #if BOOST_WORKAROUND(__BORLANDC__, BOOST_TESTED_AT(0x570))
-            BOOST_STATIC_CONSTANT(int, value = 1);
-            #else
-            BOOST_STATIC_CONSTANT(int, value = type::value);
-            #endif
-        };
-        // don't track shared pointers
-        template<class T>
-        struct tracking_level< ::std::shared_ptr< T > > { 
-            typedef mpl::integral_c_tag tag;
-            #if BOOST_WORKAROUND(__MWERKS__, BOOST_TESTED_AT(0x3206))
-            typedef typename mpl::int_< ::boost::serialization::track_never> type;
-            #else
-            typedef mpl::int_< ::boost::serialization::track_never> type;
-            #endif
-            #if BOOST_WORKAROUND(__BORLANDC__, BOOST_TESTED_AT(0x570))
-            BOOST_STATIC_CONSTANT(int, value = ::boost::serialization::track_never);
-            #else
-            BOOST_STATIC_CONSTANT(int, value = type::value);
-            #endif
-        };
-    }}
-    #define BOOST_SERIALIZATION_SHARED_PTR(T)
-#else
-    // define macro to let users of these compilers do this
-    #define BOOST_SERIALIZATION_SHARED_PTR(T)                         \
-    BOOST_CLASS_VERSION(                                              \
-        ::boost::shared_ptr< T >,                                     \
-        1                                                             \
-    )                                                                 \
-    BOOST_CLASS_TRACKING(                                             \
-        ::boost::shared_ptr< T >,                                     \
-        ::boost::serialization::track_never                           \
-    )                                                                 \
-    /**/
+    inline dummy(int x){ return x / 0 };
 #endif
+
+namespace boost {
+namespace serialization{
+    template<class T>
+    struct version< ::std::shared_ptr< T > > {
+        typedef mpl::integral_c_tag tag;
+        typedef mpl::int_<1> type;
+        BOOST_STATIC_CONSTANT(int, value = type::value);
+    };
+    // don't track shared pointers
+    template<class T>
+    struct tracking_level< ::std::shared_ptr< T > > { 
+        typedef mpl::integral_c_tag tag;
+        typedef mpl::int_< ::boost::serialization::track_never> type;
+        BOOST_STATIC_CONSTANT(int, value = type::value);
+    };
+}}
+// the following just keeps older programs from breaking
+#define BOOST_SERIALIZATION_SHARED_PTR(T)
 
 namespace boost {
 namespace serialization{
 
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
-// serialization for shared_ptr
+// serialization for std::shared_ptr
 
 template<class Archive, class T>
 inline void save(
@@ -275,7 +252,6 @@ inline void load(
     boost::serialization::shared_ptr_helper<std::shared_ptr> & h =
         ar.template get_helper<
             shared_ptr_helper<std::shared_ptr>
-            //boost::archive::detail::shared_ptr_helper
         >();
     h.reset(t,r);
 }

@@ -45,8 +45,11 @@ struct A {
     A();
 };
 </code></pre>
-Serialization of A requires access to the definition of B in order so it
-is defined in the separately compiled module:
+Serialization of A requires access to the definition of B. But that doesn't mean
+that it requires the this access from the header file.  Since B is a pointer,
+a declaration of class B is sufficient.  The implemenation of the serialization
+of A includes the definition of class B defined in the separately compiled module:
+
 <a href="../example/demo_pimpl_A.cpp" target="demo_impl_A_cpp">demo_pimpl_A.cpp</a>
 by:
 <pre><code>
