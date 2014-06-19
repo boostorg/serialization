@@ -17,16 +17,20 @@
 //  See http://www.boost.org for updates, documentation, and revision history.
 
 #include <cstddef> // NULL
+#include <typeinfo>
 #include <map>
+#include <utility>
 
-#include <boost/serialization/type_info_implementation.hpp>
-#include <boost/foreach.hpp>
+#include <boost/config.hpp>
+
+#ifndef BOOST_NO_CXX11_SMART_PTR
+    #include <memory>
+#else
+    #include <boost/serialization/type_info_implementation.hpp>
+    #include <boost/smart_ptr/shared_ptr.hpp>
+#endif
 
 namespace boost {
-
-namespace serialization {
-    class extended_type_info;
-}
 
 namespace archive {
 namespace detail {
@@ -36,46 +40,47 @@ class helper_collection
     helper_collection(const helper_collection&);              // non-copyable
     helper_collection& operator = (const helper_collection&); // non-copyable
 
+    // note: we dont' actually "share" the function object pointer
+    // we only use shared_ptr to make sure that it get's deleted
+
     // note: consider replacement of map with vector of pairs.  In practice
     // there will likely be only a couple of helper instances per
     // archive instance so map is way overkill in terms of time and space.
-    typedef std::map<
-        const boost::serialization::extended_type_info *,
-        void *
-    >  collection;
+
+    #ifndef BOOST_NO_CXX11_SMART_PTR
+        typedef std::map<
+            const std::type_info *,
+           std::shared_ptr<void>
+        >  collection;
+    #else
+    #endif
+
     typedef collection::value_type helper_value_type;
     typedef collection::iterator helper_iterator;
 
     // dynamically allocated to minimize penalty when not used
-    collection * m_helpers; 
+    std::unique_ptr<collection> m_helpers;
  
     collection & helpers(){
         if(!m_helpers)
-            m_helpers = new collection;
+            m_helpers = std::unique_ptr<collection>(new collection);
         return * m_helpers;
     };
 protected:
-    helper_collection() :
-        m_helpers(NULL)
+    helper_collection()
     {}
     ~helper_collection(){
-        BOOST_FOREACH(void * vp, m_helpers){
-            delete vp;
-        }
-        delete m_helpers;
     }
 public:
     template<typename Helper>
     Helper& get_helper(Helper * = NULL) {
-        const boost::serialization::extended_type_info * eti =
-            &boost::serialization::type_info_implementation<Helper>::
-                type::get_const_instance();
+        const std::type_info * eti = & typeid(Helper);
         helper_iterator it = helpers().find(eti);
         if(it == helpers().end()){
             it = helpers().insert(
-                helper_value_type(
+                std::make_pair(
                     eti,
-                    new Helper
+                    std::make_shared<Helper>()
                 )
             ).first;
         }

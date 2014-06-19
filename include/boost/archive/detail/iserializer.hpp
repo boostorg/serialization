@@ -506,14 +506,13 @@ struct load_pointer_type {
     ) {
         // tweak the pointer back to the base class
         void * upcast = const_cast<void *>(
-                boost::serialization::void_upcast(
-                    eti,
-                    boost::serialization::singleton<
-                        typename 
-                        boost::serialization::type_info_implementation< T >::type
-                    >::get_const_instance(),
-                    t
-                )
+            boost::serialization::void_upcast(
+                eti,
+                boost::serialization::singleton<
+                    typename 
+                    boost::serialization::type_info_implementation< T >::type
+                >::get_const_instance(),
+                t
             )
         );
         if(NULL == upcast)

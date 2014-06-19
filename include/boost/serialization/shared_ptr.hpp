@@ -189,13 +189,13 @@ inline void serialize(
 // for a template when the compiler supports partial template specialization
 
 #ifndef BOOST_NO_CXX11_SMART_PTR
-#include <memory>
+#include <boost/static_assert.hpp>
 
 // note: we presume that any compiler/library which supports C++11
 // std::pointers also supports template partial specialization
 // trap here if such presumption were to turn out to wrong!!!
-#ifndef BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-    inline dummy(int x){ return x / 0 };
+#ifdef BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+    BOOST_STATIC_ASSERT(false);
 #endif
 
 namespace boost {
