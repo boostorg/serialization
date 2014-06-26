@@ -21,11 +21,8 @@ namespace std{
 
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/export.hpp>
-
-#ifdef BOOST_NO_CXX11_SMART_PTR
 #include <boost/serialization/shared_ptr.hpp>
 #include <boost/serialization/weak_ptr.hpp>
-#endif
 
 #include "test_tools.hpp"
 

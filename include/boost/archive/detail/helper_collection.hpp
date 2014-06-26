@@ -18,16 +18,16 @@
 
 #include <cstddef> // NULL
 #include <typeinfo>
-#include <map>
+#include <vector>
 #include <utility>
+#include <memory>
+#include <algorithm>
 
 #include <boost/config.hpp>
 
-#ifndef BOOST_NO_CXX11_SMART_PTR
-    #include <memory>
-#else
-    #include <boost/serialization/type_info_implementation.hpp>
+#ifdef BOOST_NO_CXX11_SMART_PTR
     #include <boost/smart_ptr/shared_ptr.hpp>
+    #include <boost/smart_ptr/make_shared.hpp>
 #endif
 
 namespace boost {
@@ -43,48 +43,64 @@ class helper_collection
     // note: we dont' actually "share" the function object pointer
     // we only use shared_ptr to make sure that it get's deleted
 
-    // note: consider replacement of map with vector of pairs.  In practice
-    // there will likely be only a couple of helper instances per
-    // archive instance so map is way overkill in terms of time and space.
-
     #ifndef BOOST_NO_CXX11_SMART_PTR
-        typedef std::map<
+        typedef std::pair<
             const std::type_info *,
-           std::shared_ptr<void>
-        >  collection;
+            std::shared_ptr<void>
+        > helper_value_type;
+        template<class T>
+        std::shared_ptr<void> make_helper_ptr(){
+            return std::make_shared<T>();
+        }
     #else
+        typedef std::pair<
+            const std::type_info *,
+            boost::shared_ptr<void>
+        > helper_value_type;
+        template<class T>
+        boost::shared_ptr<void> make_helper_ptr(){
+            return boost::make_shared<T>();
+        }
     #endif
+    typedef std::vector<helper_value_type> collection;
+    collection m_collection;
 
-    typedef collection::value_type helper_value_type;
-    typedef collection::iterator helper_iterator;
-
-    // dynamically allocated to minimize penalty when not used
-    std::unique_ptr<collection> m_helpers;
- 
-    collection & helpers(){
-        if(!m_helpers)
-            m_helpers = std::unique_ptr<collection>(new collection);
-        return * m_helpers;
+    struct predicate {
+        const std::type_info * m_ti;
+        bool operator()(helper_value_type const &rhs) const {
+            return *m_ti == *rhs.first;
+        }
+        predicate(const std::type_info * ti) :
+            m_ti(ti)
+        {}
     };
 protected:
-    helper_collection()
-    {}
-    ~helper_collection(){
-    }
+    helper_collection(){}
+    ~helper_collection(){}
 public:
     template<typename Helper>
     Helper& get_helper(Helper * = NULL) {
+
         const std::type_info * eti = & typeid(Helper);
-        helper_iterator it = helpers().find(eti);
-        if(it == helpers().end()){
-            it = helpers().insert(
-                std::make_pair(
-                    eti,
-                    std::make_shared<Helper>()
-                )
-            ).first;
+
+        collection::const_iterator it =
+            std::find_if(
+                m_collection.begin(),
+                m_collection.end(),
+                predicate(eti)
+            );
+
+        void * rval;
+        if(it == m_collection.end()){
+            m_collection.push_back(
+                std::make_pair(eti, make_helper_ptr<Helper>())
+            );
+            rval = m_collection.back().second.get();
         }
-        return *static_cast<Helper *>(it->second.get());
+        else{
+            rval = it->second.get();
+        }
+        return *static_cast<Helper *>(rval);
     }
 };
 
