@@ -18,7 +18,7 @@
 
 #include <cstddef> // size_t
 #include <forward_list>
-#include <algorithm>
+#include <iterator>  // distance
 
 #include <boost/config.hpp> // msvc 6.0 needs this for warning suppression
 #if defined(BOOST_NO_STDC_NAMESPACE)
@@ -41,18 +41,7 @@ inline void save(
     const std::forward_list<U, Allocator> &t,
     const unsigned int file_version
 ){
-    // brute force method of figure number of elements
-    struct predicate {
-        bool operator()(const U &){
-            return true;
-        }
-    };
-    collection_size_type count(std::count_if(
-        t.begin(),
-        t.end(),
-        //[](const U &){ return true;} // don't require C++11 (yet)
-        predicate()
-    ));
+    const collection_size_type count(std::distance(t.cbegin(), t.cend()));
     boost::serialization::stl::save_collection<
         Archive,
         std::forward_list<U, Allocator>
