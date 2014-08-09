@@ -43,7 +43,7 @@ public:
 struct my_string_helper
 {
   typedef std::vector<my_string> table;
-  table t;
+  table m_t;
 };
 
 BOOST_SERIALIZATION_SPLIT_FREE(my_string)
@@ -52,31 +52,38 @@ namespace boost {
 namespace serialization {
 
 template<class Archive>
-void save(Archive & ar, const my_string & str, unsigned int /* version */)
+void save(Archive & ar, const my_string & str, const unsigned int /* version */)
 {
-    typedef my_string_helper::table table;
-    table& t = ar.get_helper(static_cast<my_string_helper *>(NULL)).t;
+    void (* const id)(Archive &, const my_string &, const unsigned int) = & save;
+    my_string_helper & msh = ar.template get_helper<my_string_helper>(
+        reinterpret_cast<void * const>(id)
+    );
 
-    table::iterator it = std::find(t.begin(), t.end(), str);
+    my_string_helper::table t = msh.m_t;
+    my_string_helper::table::iterator it = std::find(t.begin(), t.end(), str);
     if(it == t.end()){
-        table::size_type s = t.size();
+        my_string_helper::table::size_type s = t.size();
         ar << make_nvp("index", s);
         t.push_back(str);
         ar << make_nvp("string", static_cast<const std::string &>(str));
     }
     else{
-        table::size_type s = (table::size_type)(it - t.begin());
+        my_string_helper::table::size_type s = it - t.begin();
         ar << make_nvp("index", s);
     }
 }
 
 template<class Archive>
-void load(Archive & ar, my_string & str, unsigned int /* version */)
+void load(Archive & ar, my_string & str, const unsigned int /* version */)
 {
-    typedef my_string_helper::table table;
-    table& t = ar.get_helper(static_cast<my_string_helper *>(NULL)).t;
+    void (* const id)(Archive &, my_string &, const unsigned int) = & load;
+    my_string_helper & msh = ar.template get_helper<my_string_helper>(
+        reinterpret_cast<void * const>(id)
+    );
 
-    table::size_type s = 0;
+    my_string_helper::table t = msh.m_t;
+
+    my_string_helper::table::size_type s;
     ar >> make_nvp("index", s);
     t.reserve(s);
     if(s >= t.size()){
