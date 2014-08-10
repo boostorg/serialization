@@ -109,6 +109,8 @@ inline void save(
     ar << boost::serialization::make_nvp("px", t_ptr);
 }
 
+int shared_ptr_helper_id = 0;
+
 #ifdef BOOST_SERIALIZATION_SHARED_PTR_132_HPP
 template<class Archive, class T>
 inline void load(
@@ -121,7 +123,6 @@ inline void load(
     // is never tracked by default.  Wrap int in a trackable type
     BOOST_STATIC_ASSERT((tracking_level< T >::value != track_never));
     T* r;
-    void (* const id)(Archive &, boost::shared_ptr< T > &, const unsigned int) = & load;
     if(file_version < 1){
         ar.register_type(static_cast<
             boost_132::detail::sp_counted_base_impl<T *, null_deleter > *
@@ -132,7 +133,7 @@ inline void load(
         // got to keep the sps around so the sp.pns don't disappear
         boost::serialization::shared_ptr_helper<boost::shared_ptr> & h =
             ar.template get_helper< shared_ptr_helper<boost::shared_ptr> >(
-                reinterpret_cast<void * const>(id)
+                & shared_ptr_helper_id
             );
         h.append(sp);
         r = sp.get();
@@ -142,7 +143,7 @@ inline void load(
     }
     shared_ptr_helper<boost::shared_ptr> & h =
         ar.template get_helper<shared_ptr_helper<boost::shared_ptr> >(
-            reinterpret_cast<void * const>(id)
+            & shared_ptr_helper_id
         );
     h.reset(t,r);
 }
@@ -161,13 +162,11 @@ inline void load(
     T* r;
     ar >> boost::serialization::make_nvp("px", r);
 
-    void (* const id)(Archive &, boost::shared_ptr< T > &, const unsigned int) = &load;
-
     boost::serialization::shared_ptr_helper<boost::shared_ptr> & h =
         ar.template get_helper<shared_ptr_helper<boost::shared_ptr> >(
-            reinterpret_cast<void * const>(id)
+            & shared_ptr_helper_id
         );
-    h.reset(t,r);
+    h.reset(t,r);    
 }
 #endif
 
@@ -255,12 +254,12 @@ inline void load(
     BOOST_STATIC_ASSERT((tracking_level< T >::value != track_never));
     T* r;
     ar >> boost::serialization::make_nvp("px", r);
-    void (* const id)(Archive &, std::shared_ptr< T > &, const unsigned int) = & load;
+    //void (* const id)(Archive &, std::shared_ptr< T > &, const unsigned int) = & load;
     boost::serialization::shared_ptr_helper<std::shared_ptr> & h =
         ar.template get_helper<
             shared_ptr_helper<std::shared_ptr>
         >(
-            reinterpret_cast<void * const>(id)
+            & shared_ptr_helper_id
         );
     h.reset(t,r);
 }
