@@ -26,6 +26,8 @@
 #include <boost/type_traits/is_polymorphic.hpp>
 #include <boost/mpl/if.hpp>
 
+#include <boost/serialization/singleton.hpp>
+#include <boost/serialization/extended_type_info.hpp>
 #include <boost/serialization/type_info_implementation.hpp>
 #include <boost/serialization/throw_exception.hpp>
 #include <boost/archive/archive_exception.hpp>
