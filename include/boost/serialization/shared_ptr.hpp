@@ -95,6 +95,11 @@ struct null_deleter {
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // serialization for boost::shared_ptr
 
+// Using a constant means that all shared pointers are held in the same set.
+// Thus we detect handle multiple pointers to the same value instances
+// in the archive.
+void * const shared_ptr_helper_id = 0;
+
 template<class Archive, class T>
 inline void save(
     Archive & ar,
@@ -109,8 +114,6 @@ inline void save(
     ar << boost::serialization::make_nvp("px", t_ptr);
 }
 
-int shared_ptr_helper_id = 0;
-
 #ifdef BOOST_SERIALIZATION_SHARED_PTR_132_HPP
 template<class Archive, class T>
 inline void load(
@@ -118,7 +121,6 @@ inline void load(
     boost::shared_ptr< T > &t,
     const unsigned int file_version
 ){
-    // The most common cause of trapping here would be serializing
     // something like shared_ptr<int>.  This occurs because int
     // is never tracked by default.  Wrap int in a trackable type
     BOOST_STATIC_ASSERT((tracking_level< T >::value != track_never));
@@ -133,7 +135,7 @@ inline void load(
         // got to keep the sps around so the sp.pns don't disappear
         boost::serialization::shared_ptr_helper<boost::shared_ptr> & h =
             ar.template get_helper< shared_ptr_helper<boost::shared_ptr> >(
-                & shared_ptr_helper_id
+                shared_ptr_helper_id
             );
         h.append(sp);
         r = sp.get();
@@ -143,7 +145,7 @@ inline void load(
     }
     shared_ptr_helper<boost::shared_ptr> & h =
         ar.template get_helper<shared_ptr_helper<boost::shared_ptr> >(
-            & shared_ptr_helper_id
+            shared_ptr_helper_id
         );
     h.reset(t,r);
 }
@@ -164,7 +166,7 @@ inline void load(
 
     boost::serialization::shared_ptr_helper<boost::shared_ptr> & h =
         ar.template get_helper<shared_ptr_helper<boost::shared_ptr> >(
-            & shared_ptr_helper_id
+            shared_ptr_helper_id
         );
     h.reset(t,r);    
 }
@@ -259,7 +261,7 @@ inline void load(
         ar.template get_helper<
             shared_ptr_helper<std::shared_ptr>
         >(
-            & shared_ptr_helper_id
+            shared_ptr_helper_id
         );
     h.reset(t,r);
 }

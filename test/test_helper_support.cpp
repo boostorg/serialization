@@ -54,10 +54,9 @@ namespace serialization {
 template<class Archive>
 void save(Archive & ar, const my_string & str, const unsigned int /* version */)
 {
-    void (* const id)(Archive &, const my_string &, const unsigned int) = & save;
-    my_string_helper & msh = ar.template get_helper<my_string_helper>(
-        reinterpret_cast<void * const>(id)
-    );
+    void (* const idx)(Archive &, const my_string &, const unsigned int) = & save;
+    void * const id = reinterpret_cast<void * const>(idx);
+    my_string_helper & msh = ar.template get_helper<my_string_helper>(id);
 
     my_string_helper::table t = msh.m_t;
     my_string_helper::table::iterator it = std::find(t.begin(), t.end(), str);
@@ -76,10 +75,9 @@ void save(Archive & ar, const my_string & str, const unsigned int /* version */)
 template<class Archive>
 void load(Archive & ar, my_string & str, const unsigned int /* version */)
 {
-    void (* const id)(Archive &, my_string &, const unsigned int) = & load;
-    my_string_helper & msh = ar.template get_helper<my_string_helper>(
-        reinterpret_cast<void * const>(id)
-    );
+    void (* const idx)(Archive &, my_string &, const unsigned int) = & load;
+    void * const id = reinterpret_cast<void * const>(idx);
+    my_string_helper & msh = ar.template get_helper<my_string_helper>(id);
 
     my_string_helper::table t = msh.m_t;
 

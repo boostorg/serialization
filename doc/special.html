@@ -195,14 +195,16 @@ void save(Archive &amp; ar, const shared_ptr &amp; x, const unsigned int /* vers
 {
     // save shared ptr
     ...
-
 }
 
 template&lt;class Archive&gt;
 void load(Archive &amp; ar, shared_ptr &amp; x, const unsigned int /* version */)
 {
-    // get a unique identifier to keep multiple instances from conflicting.
-    void (* const helper_instance_id)(Archive &, boost::shared_ptr< T > &, const unsigned int) = & load;
+    // get a unique identifier.  Using a constant means that all shared pointers
+    // are held in the same set.  Thus we detect handle multiple pointers to the
+    // same value instances in the archive.
+    const void * shared_ptr_helper_id = 0;
+
     shared_ptr_serialization_helper &amp; hlp =
         ar.template get_helper&lt;shared_ptr_serialization_helper&gt;(helper_instance_id);
 
@@ -210,7 +212,7 @@ void load(Archive &amp; ar, shared_ptr &amp; x, const unsigned int /* version */
     ...
 
     shared_ptr_serialization_helper &amp; hlp =
-        ar.template get_helper&lt;shared_ptr_serialization_helper&gt;();
+        ar.template get_helper&lt;shared_ptr_serialization_helper&gt;(shared_ptr_helper_id);
 
     // look up object in helper object
     T * shared_object hlp.lookup(...);
