@@ -210,8 +210,8 @@ struct heap_allocation {
         static T * invoke_new(){
             return static_cast<T *>(operator new(sizeof(T)));
         }
-        static viod invoke_delete(){
-            (operator delete(sizeof(T)));
+        static void invoke_delete(T * t){
+            (operator delete(t));
         }
     #else
         // note: we presume that a true value for has_new_operator
