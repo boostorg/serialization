@@ -6,93 +6,62 @@
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
-#if 0
-// test template
-#include <cstddef>
+
+#include <iostream>
+#include <vector>
 #include <fstream>
 
-#include <cstdio> // remove
-#include <boost/config.hpp>
-#if defined(BOOST_NO_STDC_NAMESPACE)
-namespace std{ 
-    using ::remove;
-}
-#endif
+#include <boost/serialization/vector.hpp>
+#include <boost/archive/xml_oarchive.hpp>
+#include <boost/archive/xml_iarchive.hpp>
 
-#include <boost/archive/archive_exception.hpp>
-#include "test_tools.hpp"
-
-#include <boost/serialization/deque.hpp>
-
-#include "A.hpp"
-#include "A.ipp"
-
-int test_main( int /* argc */, char* /* argv */[] )
-{
-    const char * testfile = boost::archive::tmpnam(NULL);
-    BOOST_REQUIRE(NULL != testfile);
-
-    // test array of objects
-    std::deque<A> adeque, adeque1;
-    {   
-        test_ostream os(testfile, TEST_STREAM_FLAGS);
-        test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
-        oa << boost::serialization::make_nvp("adeque",adeque);
-    }
-    {
-        test_istream is(testfile, TEST_STREAM_FLAGS);
-        test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
-        ia >> boost::serialization::make_nvp("adeque",adeque1);
-    }
-    BOOST_CHECK(adeque == adeque1);
-    
-    std::remove(testfile);
-    return EXIT_SUCCESS;
-}
-#endif
-
-//============================================================================
-// Name        : boost_bug.cpp
-// Author      : 
-// Version     :
-// Copyright   : Your copyright notice
-//============================================================================
-
-#include <iostream>
-#include <fstream>
-#include <iostream>
-#include <iostream>
-#include <boost/archive/text_oarchive.hpp>
-
-
-class MyClassA
-{
-public:
-	MyClassA(int x):xx(x){};
-	int xx;
-private:
-
-	friend class boost::serialization::access;
-
-	template<class Archive>
-	void save(Archive & ar, const unsigned int version) const {
-		//ar << xx;
-	}
-
-	template<class Archive>
-	void load(Archive & ar, const unsigned int version) {
-		//ar >> xx;
-	}
-
-	BOOST_SERIALIZATION_SPLIT_MEMBER();
+struct dummy {
+    template<class Archive>
+    void serialize(Archive& ar, unsigned int version) {}
 };
 
 int main() {
-	 MyClassA clsA(12);
-	std::ofstream f("/tmp/boost_clsA", std::ios::binary);
-	if (f.fail()) return -1;
-	boost::archive::text_oarchive oa(f);
-	oa << clsA;
-	f.close();
-	return 0;
+    // One-level container 
+    // For comparison only. This shows the expected behaviour. 
+    {
+        std::cout << "One-level vector:" << std::endl;
+        std::vector<dummy> l(1);
+        dummy* pd = &l.back();
+        {
+            std::ofstream ofs("one_level.xml");
+            boost::archive::xml_oarchive oa(ofs);
+            oa << BOOST_SERIALIZATION_NVP(l) << BOOST_SERIALIZATION_NVP(pd);
+        }
+        {
+            std::ifstream ifs("one_level.xml");
+            boost::archive::xml_iarchive ia(ifs);
+            ia >> BOOST_SERIALIZATION_NVP(l) >> BOOST_SERIALIZATION_NVP(pd);
+        }
+        std::cout << &l.back() << " " << pd << std::endl;
+    }
+
+    std::cout << std::endl;
+
+    // Two-level container 
+    // This is buggy. 
+    {
+        std::cout << "Two-level vector:" <<std::endl;
+        std::vector<std::vector<dummy> > l(1, std::vector<dummy>(1));
+        dummy* pd = &l.back().back();
+        std::cout << pd << std::endl;
+        {
+            std::ofstream ofs("two_level.xml");
+            boost::archive::xml_oarchive oa(ofs);
+            oa << BOOST_SERIALIZATION_NVP(l) << BOOST_SERIALIZATION_NVP(pd);
+        }
+        {
+            std::ifstream ifs("two_level.xml");
+            boost::archive::xml_iarchive ia(ifs);
+            ia >> BOOST_SERIALIZATION_NVP(l) >> BOOST_SERIALIZATION_NVP(pd);
+        }
+        std::cout << &l.back().back() << " " << pd << std::endl;
+    }
+
+    return 0;
 }
+
