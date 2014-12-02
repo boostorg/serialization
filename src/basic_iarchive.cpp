@@ -252,8 +252,8 @@ basic_iarchive_impl::reset_object_address(
     //    but the code may work anyway.  Naturally, a bad practice on the part
     //    of the programmer but we can't detect it - as above.  So maybe we
     //    can save a few more people from themselves as above.
-    object_id_type i;
-    for(i = m_moveable_objects.recent; i < m_moveable_objects.end; ++i){
+    object_id_type i = m_moveable_objects.recent;
+    for(; i < m_moveable_objects.end; ++i){
         if(old_address == object_id_vector[i].address)
             break;
     }

@@ -1,6 +1,6 @@
 # CMake build control file for Serialization Library tests
 
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.0)
 
 
 if(Boost_USE_STATIC_LIBS)

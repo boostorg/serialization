@@ -38,13 +38,13 @@ namespace std{
 #include <boost/archive/iterators/dataflow_exception.hpp>
 
 #include <boost/archive/add_facet.hpp>
-#ifndef BOOST_NO_CXX11_HDR_CODECVT
+#ifdef BOOST_NO_CXX11_HDR_CODECVT
+    #include <boost/archive/detail/utf8_codecvt_facet.hpp>
+#else
     #include <codecvt>
     namespace boost { namespace archive { namespace detail {
         typedef std::codecvt_utf8<wchar_t> utf8_codecvt_facet;
     } } }
-#else
-    #include <boost/archive/detail/utf8_codecvt_facet.hpp>
 #endif
 
 namespace boost {

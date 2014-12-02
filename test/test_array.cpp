@@ -135,7 +135,7 @@ int test_std_array(){
     BOOST_REQUIRE(NULL != testfile);
 
     // test array of objects
-    const std::array<T, 10> a_array = {T(),T(),T(),T(),T(),T(),T(),T(),T(),T()};
+    const std::array<T, 10> a_array = {{T(),T(),T(),T(),T(),T(),T(),T(),T(),T()}};
     {
         test_ostream os(testfile, TEST_STREAM_FLAGS);
         test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
