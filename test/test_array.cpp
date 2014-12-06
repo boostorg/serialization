@@ -8,8 +8,9 @@
 
 // should pass compilation and execution
 
-#include <boost/config.hpp>
+#include <stdlib.h>
 
+#include <boost/config.hpp>
 #include <cstddef>
 #include <fstream>
 #include <algorithm> // equal
@@ -21,7 +22,7 @@ namespace std{
 #endif
 #include <boost/foreach.hpp>
 #include "test_tools.hpp"
-#include <boost/detail/no_exceptions_support.hpp>
+#include <boost/core/no_exceptions_support.hpp>
 #include <boost/archive/archive_exception.hpp>
 #include <boost/array.hpp>
 
@@ -46,10 +47,11 @@ int test_native_array(){
         T a_array1[10];
         T b_array1[2][3];
         test_istream is(testfile, TEST_STREAM_FLAGS);
-        test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
-        ia >> boost::serialization::make_nvp("a_array", a_array1);
-        ia >> boost::serialization::make_nvp("b_array", b_array1);
-
+        {
+            test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
+            ia >> boost::serialization::make_nvp("a_array", a_array1);
+            ia >> boost::serialization::make_nvp("b_array", b_array1);
+        }
         BOOST_CHECK(std::equal(& a_array[0], & a_array[10], & a_array1[0]));
         BOOST_CHECK(b_array[0][0] == b_array1[0][0]);
         BOOST_CHECK(b_array[1][0] == b_array1[1][0]);
@@ -57,24 +59,27 @@ int test_native_array(){
     {
         T a_array1[9];
         test_istream is(testfile, TEST_STREAM_FLAGS);
-        BOOST_TRY {
-            test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
-            bool exception_invoked = false;
+        {
             BOOST_TRY {
-                ia >> boost::serialization::make_nvp("a_array", a_array1);
+                test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
+                bool exception_invoked = false;
+                BOOST_TRY {
+                    ia >> boost::serialization::make_nvp("a_array", a_array1);
+                }
+                BOOST_CATCH (boost::archive::archive_exception ae){
+                    BOOST_CHECK(
+                        boost::archive::archive_exception::array_size_too_short
+                        == ae.code
+                    );
+                    exception_invoked = true;
+                }
+                BOOST_CATCH_END
+                BOOST_CHECK(exception_invoked);
             }
-            BOOST_CATCH (boost::archive::archive_exception ae){
-                BOOST_CHECK(
-                    boost::archive::archive_exception::array_size_too_short
-                    == ae.code
-                );
-                exception_invoked = true;
-            }
+            BOOST_CATCH (boost::archive::archive_exception ae){}
             BOOST_CATCH_END
-            BOOST_CHECK(exception_invoked);
         }
-        BOOST_CATCH (boost::archive::archive_exception ae){}
-        BOOST_CATCH_END
+        is.close();
     }
     std::remove(testfile);
     return EXIT_SUCCESS;
@@ -95,32 +100,37 @@ int test_boost_array(){
     {
         boost::array<T,10> a_array1;
         test_istream is(testfile, TEST_STREAM_FLAGS);
-        test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
-        ia >> boost::serialization::make_nvp("a_array", a_array1);
-
+        {
+            test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
+            ia >> boost::serialization::make_nvp("a_array", a_array1);
+        }
+        is.close();
         BOOST_CHECK(std::equal(a_array.begin(), a_array.end(), a_array1.begin()));
     }
     {
         boost::array<T, 9> a_array1;
         test_istream is(testfile, TEST_STREAM_FLAGS);
-        BOOST_TRY {
-            test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
-            bool exception_invoked = false;
+        {
             BOOST_TRY {
-                ia >> boost::serialization::make_nvp("a_array", a_array1);
+                test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
+                bool exception_invoked = false;
+                BOOST_TRY {
+                    ia >> boost::serialization::make_nvp("a_array", a_array1);
+                }
+                BOOST_CATCH (boost::archive::archive_exception ae){
+                    BOOST_CHECK(
+                        boost::archive::archive_exception::array_size_too_short
+                        == ae.code
+                    );
+                    exception_invoked = true;
+                }
+                BOOST_CATCH_END
+                BOOST_CHECK(exception_invoked);
             }
-            BOOST_CATCH (boost::archive::archive_exception ae){
-                BOOST_CHECK(
-                    boost::archive::archive_exception::array_size_too_short
-                    == ae.code
-                );
-                exception_invoked = true;
-            }
+            BOOST_CATCH (boost::archive::archive_exception ae){}
             BOOST_CATCH_END
-            BOOST_CHECK(exception_invoked);
         }
-        BOOST_CATCH (boost::archive::archive_exception ae){}
-        BOOST_CATCH_END
+        is.close();
     }
     std::remove(testfile);
     return EXIT_SUCCESS;
@@ -144,32 +154,36 @@ int test_std_array(){
     {
         std::array<T, 10> a_array1;
         test_istream is(testfile, TEST_STREAM_FLAGS);
-        test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
-        ia >> boost::serialization::make_nvp("a_array", a_array1);
-
+        {
+            test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
+            ia >> boost::serialization::make_nvp("a_array", a_array1);
+        }
         BOOST_CHECK(std::equal(a_array.begin(), a_array.end(), a_array1.begin()));
     }
     {
         std::array<T, 9> a_array1;
         test_istream is(testfile, TEST_STREAM_FLAGS);
-        BOOST_TRY {
-            test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
-            bool exception_invoked = false;
+        {
             BOOST_TRY {
-                ia >> boost::serialization::make_nvp("a_array", a_array1);
+                test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
+                bool exception_invoked = false;
+                BOOST_TRY {
+                    ia >> boost::serialization::make_nvp("a_array", a_array1);
+                }
+                BOOST_CATCH (boost::archive::archive_exception ae){
+                    BOOST_CHECK(
+                        boost::archive::archive_exception::array_size_too_short
+                        == ae.code
+                    );
+                    exception_invoked = true;
+                }
+                BOOST_CATCH_END
+                BOOST_CHECK(exception_invoked);
             }
-            BOOST_CATCH (boost::archive::archive_exception ae){
-                BOOST_CHECK(
-                    boost::archive::archive_exception::array_size_too_short
-                    == ae.code
-                );
-                exception_invoked = true;
-            }
+            BOOST_CATCH (boost::archive::archive_exception ae){}
             BOOST_CATCH_END
-            BOOST_CHECK(exception_invoked);
         }
-        BOOST_CATCH (boost::archive::archive_exception ae){}
-        BOOST_CATCH_END
+        is.close();
     }
     std::remove(testfile);
     return EXIT_SUCCESS;
@@ -179,7 +193,6 @@ int test_std_array(){
 int test_main( int /* argc */, char* /* argv */[] )
 {
     int res;
-    
     res = test_native_array<A>();
     if (res != EXIT_SUCCESS)
         return EXIT_FAILURE;
@@ -187,7 +200,6 @@ int test_main( int /* argc */, char* /* argv */[] )
     res = test_native_array<int>();
     if (res != EXIT_SUCCESS)
         return EXIT_FAILURE;
-    
     res = test_boost_array<A>();
     if (res != EXIT_SUCCESS)
         return EXIT_FAILURE;
@@ -195,7 +207,7 @@ int test_main( int /* argc */, char* /* argv */[] )
     res = test_boost_array<int>();
     if (res != EXIT_SUCCESS)
         return EXIT_FAILURE;
-    
+
     #ifndef BOOST_NO_CXX11_HDR_ARRAY
     res = test_std_array<A>();
     if (res != EXIT_SUCCESS)
@@ -205,7 +217,6 @@ int test_main( int /* argc */, char* /* argv */[] )
     if (res != EXIT_SUCCESS)
         return EXIT_FAILURE;
     #endif
-    
     return EXIT_SUCCESS;
 }
 

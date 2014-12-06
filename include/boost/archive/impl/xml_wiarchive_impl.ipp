@@ -27,7 +27,7 @@ namespace std{
 #endif
 
 #include <boost/io/ios_state.hpp>
-#include <boost/detail/no_exceptions_support.hpp>
+#include <boost/core/no_exceptions_support.hpp>
 #include <boost/serialization/pfto.hpp>
 
 #include <boost/serialization/string.hpp>
@@ -178,18 +178,8 @@ xml_wiarchive_impl<Archive>::xml_wiarchive_impl(
         );
         is.imbue(* archive_locale);
     }
-    if(0 == (flags & no_header)){
-        BOOST_TRY{
-            this->init();
-        }
-        BOOST_CATCH(...){
-            delete gimpl;
-            #ifndef BOOST_NO_EXCEPTIONS
-                throw; // re-throw
-            #endif
-        }
-        BOOST_CATCH_END
-    }
+    if(0 == (flags & no_header))
+        init();
 }
 
 template<class Archive>
@@ -202,7 +192,6 @@ xml_wiarchive_impl<Archive>::~xml_wiarchive_impl(){
         BOOST_CATCH(...){}
         BOOST_CATCH_END
     }
-    delete gimpl;
 }
 
 } // namespace archive

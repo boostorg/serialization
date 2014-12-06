@@ -21,6 +21,7 @@
 #error "wide char i/o not supported on this platform"
 #else
 
+#include <memory> // auto_ptr
 #include <istream>
 
 //#include <boost/scoped_ptr.hpp>
@@ -69,10 +70,8 @@ protected:
         friend class load_access;
     #endif
 #endif
-    // instances of micro xml parser to parse start preambles
-    // scoped_ptr doesn't play nice with borland - so use a naked pointer
-    // scoped_ptr<xml_wgrammar> gimpl;
-    xml_wgrammar *gimpl;
+    // use auto_ptr to guarentee deletion under exceptions
+    std::auto_ptr<xml_wgrammar> gimpl;
     std::wistream & get_is(){
         return is;
     }

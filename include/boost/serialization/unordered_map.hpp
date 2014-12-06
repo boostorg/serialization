@@ -24,6 +24,7 @@
 
 #include <boost/serialization/utility.hpp>
 #include <boost/serialization/unordered_collections_save_imp.hpp>
+#include <boost/serialization/unordered_collections_load_imp.hpp>
 #include <boost/serialization/split_free.hpp>
 
 namespace boost { 

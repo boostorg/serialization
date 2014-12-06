@@ -17,6 +17,7 @@
 //  See http://www.boost.org for updates, documentation, and revision history.
 
 #include <istream>
+#include <memory> // auto_ptr
 
 //#include <boost/scoped_ptr.hpp>
 #include <boost/archive/detail/auto_link_archive.hpp>
@@ -64,10 +65,8 @@ protected:
         friend class load_access;
     #endif
 #endif
-    // instances of micro xml parser to parse start preambles
-    // scoped_ptr doesn't play nice with borland - so use a naked pointer
-    // scoped_ptr<xml_grammar> gimpl;
-    xml_grammar *gimpl;
+    // use auto_ptr to implement automatic deletion;
+    std::auto_ptr<xml_grammar> gimpl;
 
     std::istream & get_is(){
         return is;

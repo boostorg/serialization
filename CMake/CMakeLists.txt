@@ -17,6 +17,8 @@ message(STATUS "compiler is ${CMAKE_CXX_COMPILER_ID}" )
 
 if( CMAKE_CXX_COMPILER_ID STREQUAL "GNU" )
   add_definitions( -ftemplate-depth=300 )
+  # we use gcc to test for C++03 compatibility
+  add_definitions( std=c++03 )
 elseif( CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" )
   add_definitions( /wd4996 )
 elseif( CMAKE_CXX_COMPILER_ID STREQUAL "Clang" )
@@ -143,9 +145,10 @@ add_library(serialization
   ../src/utf8_codecvt_facet.cpp
   ../src/void_cast.cpp
   ../src/xml_archive_exception.cpp
-  ../src/xml_grammar.cpp
   ../src/xml_iarchive.cpp
   ../src/xml_oarchive.cpp
+  ../src/xml_grammar.cpp
+  # ../src/basic_xml_grammar.ipp # doesn't show up in "Source Files" in Xcode"'
 )
 
 add_library(wserialization
@@ -154,10 +157,10 @@ add_library(wserialization
   ../src/text_wiarchive.cpp
   ../src/text_woarchive.cpp
   ../src/utf8_codecvt_facet.cpp
-  ../src/xml_wgrammar.cpp
   ../src/xml_wiarchive.cpp
   ../src/xml_woarchive.cpp
   ../src/codecvt_null.cpp
+  ../src/xml_wgrammar.cpp
 )
 
 # end library build
@@ -255,6 +258,7 @@ archive_test(test_diamond)
 archive_test(test_diamond_complex)
 archive_test(test_exported polymorphic_base)
 archive_test(test_helper_support)
+archive_test(test_interrupts)
 archive_test(test_list A)
 archive_test(test_list_ptrs A)
 archive_test(test_map A)
@@ -300,47 +304,59 @@ polymorphic_archive_test(test_polymorphic2 test_polymorphic2imp)
 ####################
 # add headers in IDE
 
-file(GLOB Archive 
+# for serialisation
+
+file(GLOB x 
   RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" 
   "${CMAKE_CURRENT_SOURCE_DIR}/../include/boost/archive/*.hpp"
 )
-add_custom_target(archive SOURCES ${Archive})
+add_custom_target(archive SOURCES ${x})
 set_property(TARGET archive PROPERTY FOLDER "serialization")
 
-file(GLOB Archive 
+file(GLOB x 
   RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" 
   "${CMAKE_CURRENT_SOURCE_DIR}/../include/boost/archive/detail/*.hpp"
 )
-add_custom_target(archive-detail SOURCES ${Archive})
+add_custom_target(archive-detail SOURCES ${x})
 set_property(TARGET archive-detail PROPERTY FOLDER "serialization")
 
-file(GLOB Archive 
+file(GLOB x 
   RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" 
   "${CMAKE_CURRENT_SOURCE_DIR}/../include/boost/archive/impl/*.ipp"
 )
-add_custom_target(archive-impl SOURCES ${Archive})
+add_custom_target(archive-impl SOURCES ${x})
 set_property(TARGET archive-impl PROPERTY FOLDER "serialization")
 
-file(GLOB Iterators
+file(GLOB x
   RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" 
   "${CMAKE_CURRENT_SOURCE_DIR}/../include/boost/archive/iterators/*.hpp"
 )
-add_custom_target(archive-iterators SOURCES ${Iterators})
+add_custom_target(archive-iterators SOURCES ${x})
 set_property(TARGET archive-iterators PROPERTY FOLDER "serialization")
 
-file(GLOB Serialization 
+file(GLOB x 
   RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" 
   "${CMAKE_CURRENT_SOURCE_DIR}/../include/boost/serialization/*.hpp"
 )
-add_custom_target(serialization-headers SOURCES ${Serialization})
+add_custom_target(serialization-headers SOURCES ${x})
 set_property(TARGET serialization-headers PROPERTY FOLDER "serialization")
 
-file(GLOB Serialization 
+file(GLOB x 
   RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" 
   "${CMAKE_CURRENT_SOURCE_DIR}/../include/boost/serialization/detail/*.hpp"
 )
-add_custom_target(serialization-detail SOURCES ${Serialization})
+add_custom_target(serialization-detail SOURCES ${x})
 set_property(TARGET serialization-detail PROPERTY FOLDER "serialization")
+
+# for wserialization
+
+file(GLOB x 
+  RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" 
+  "${CMAKE_CURRENT_SOURCE_DIR}/../include/boost/archive/*_w*.hpp"
+)
+
+add_custom_target(wserialization_headers SOURCES ${x} "${CMAKE_CURRENT_SOURCE_DIR}/../include/boost/archive/codecvt_null.hpp")
+set_property(TARGET wserialization_headers PROPERTY FOLDER "wserialization")
 
 # end headers in IDE
 ####################
