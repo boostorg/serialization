@@ -56,7 +56,7 @@ public:
     ~basic_streambuf_locale_saver()
         { this->restore(); }
     void  restore()
-        { s_save_.pubimbue( a_save_ ); }
+        { /*s_save_.pubimbue( a_save_ ); */}
 private:
     state_type &       s_save_;
     aspect_type const  a_save_;

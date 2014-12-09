@@ -58,6 +58,7 @@ int test_native_array(){
     }
     {
         T a_array1[9];
+        T b_array1[2][3];
         test_istream is(testfile, TEST_STREAM_FLAGS);
         {
             BOOST_TRY {
@@ -65,6 +66,7 @@ int test_native_array(){
                 bool exception_invoked = false;
                 BOOST_TRY {
                     ia >> boost::serialization::make_nvp("a_array", a_array1);
+                    ia >> boost::serialization::make_nvp("b_array", b_array1);
                 }
                 BOOST_CATCH (boost::archive::archive_exception ae){
                     BOOST_CHECK(
@@ -192,6 +194,7 @@ int test_std_array(){
 
 int test_main( int /* argc */, char* /* argv */[] )
 {
+    // native array
     int res;
     res = test_native_array<A>();
     if (res != EXIT_SUCCESS)
@@ -200,6 +203,7 @@ int test_main( int /* argc */, char* /* argv */[] )
     res = test_native_array<int>();
     if (res != EXIT_SUCCESS)
         return EXIT_FAILURE;
+    // boost array
     res = test_boost_array<A>();
     if (res != EXIT_SUCCESS)
         return EXIT_FAILURE;
@@ -208,6 +212,7 @@ int test_main( int /* argc */, char* /* argv */[] )
     if (res != EXIT_SUCCESS)
         return EXIT_FAILURE;
 
+    // std array
     #ifndef BOOST_NO_CXX11_HDR_ARRAY
     res = test_std_array<A>();
     if (res != EXIT_SUCCESS)

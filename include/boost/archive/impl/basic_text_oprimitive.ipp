@@ -84,7 +84,6 @@ basic_text_oprimitive<OStream>::basic_text_oprimitive(
     os(os_),
     flags_saver(os_),
     precision_saver(os_),
-    archive_locale(NULL),
     locale_saver(* os_.rdbuf())
 {
     if(! no_codecvt){

@@ -17,9 +17,8 @@
 //  See http://www.boost.org for updates, documentation, and revision history.
 
 #include <istream>
-#include <memory> // auto_ptr
 
-//#include <boost/scoped_ptr.hpp>
+#include <boost/scoped_ptr.hpp>
 #include <boost/archive/detail/auto_link_archive.hpp>
 #include <boost/archive/basic_text_iprimitive.hpp>
 #include <boost/archive/basic_xml_iarchive.hpp>
@@ -65,8 +64,8 @@ protected:
         friend class load_access;
     #endif
 #endif
-    // use auto_ptr to implement automatic deletion;
-    std::auto_ptr<xml_grammar> gimpl;
+    // use boost:scoped_ptr to implement automatic deletion;
+    boost::scoped_ptr<xml_grammar> gimpl;
 
     std::istream & get_is(){
         return is;

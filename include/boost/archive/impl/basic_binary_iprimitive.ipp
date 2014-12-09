@@ -152,7 +152,6 @@ basic_binary_iprimitive<Archive, Elem, Tr>::basic_binary_iprimitive(
 ) :
 #ifndef BOOST_NO_STD_LOCALE
     m_sb(sb),
-    archive_locale(NULL),
     locale_saver(m_sb)
 {
     if(! no_codecvt){

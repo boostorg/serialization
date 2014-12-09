@@ -121,7 +121,6 @@ basic_text_iprimitive<IStream>::basic_text_iprimitive(
     is(is_),
     flags_saver(is_),
     precision_saver(is_),
-    archive_locale(NULL),
     locale_saver(* is_.rdbuf())
 {
     if(! no_codecvt){

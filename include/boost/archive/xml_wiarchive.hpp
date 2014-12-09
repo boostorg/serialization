@@ -21,10 +21,9 @@
 #error "wide char i/o not supported on this platform"
 #else
 
-#include <memory> // auto_ptr
 #include <istream>
 
-//#include <boost/scoped_ptr.hpp>
+#include <boost/scoped_ptr.hpp>
 #include <boost/archive/detail/auto_link_warchive.hpp>
 #include <boost/archive/basic_text_iprimitive.hpp>
 #include <boost/archive/basic_xml_iarchive.hpp>
@@ -42,6 +41,7 @@ namespace boost {
 namespace archive {
 
 namespace detail {
+    class utf8_codecvt_facet;
     template<class Archive> class interface_iarchive;
 } // namespace detail
 
@@ -70,8 +70,8 @@ protected:
         friend class load_access;
     #endif
 #endif
-    // use auto_ptr to guarentee deletion under exceptions
-    std::auto_ptr<xml_wgrammar> gimpl;
+    boost::scoped_ptr<detail::utf8_codecvt_facet> codecvt_facet;
+    boost::scoped_ptr<xml_wgrammar> gimpl;
     std::wistream & get_is(){
         return is;
     }

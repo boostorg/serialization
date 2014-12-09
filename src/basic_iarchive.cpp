@@ -183,7 +183,6 @@ class basic_iarchive_impl {
         m_archive_library_version(BOOST_ARCHIVE_VERSION()),
         m_flags(flags)
     {}
-    ~basic_iarchive_impl(){}
     void set_library_version(library_version_type archive_library_version){
         m_archive_library_version = archive_library_version;
     }
@@ -228,7 +227,6 @@ class basic_iarchive_impl {
         const basic_pointer_iserializer * (*finder)(
             const boost::serialization::extended_type_info & type
         )
-
     );
 };
 
@@ -532,9 +530,7 @@ basic_iarchive::basic_iarchive(unsigned int flags) :
 
 BOOST_ARCHIVE_DECL(BOOST_PP_EMPTY())
 basic_iarchive::~basic_iarchive()
-{
-    delete pimpl;
-}
+{}
 
 BOOST_ARCHIVE_DECL(void)
 basic_iarchive::set_library_version(library_version_type archive_library_version){
