@@ -194,8 +194,8 @@ int test_std_array(){
 
 int test_main( int /* argc */, char* /* argv */[] )
 {
-    // native array
     int res;
+    // native array
     res = test_native_array<A>();
     if (res != EXIT_SUCCESS)
         return EXIT_FAILURE;
@@ -203,6 +203,7 @@ int test_main( int /* argc */, char* /* argv */[] )
     res = test_native_array<int>();
     if (res != EXIT_SUCCESS)
         return EXIT_FAILURE;
+
     // boost array
     res = test_boost_array<A>();
     if (res != EXIT_SUCCESS)

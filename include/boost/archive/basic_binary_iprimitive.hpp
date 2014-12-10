@@ -60,6 +60,9 @@ namespace std{
 namespace boost { 
 namespace archive {
 
+template<class Ch>
+class codecvt_null;
+
 /////////////////////////////////////////////////////////////////////////////
 // class binary_iarchive - read serialized objects from a input binary stream
 template<class Archive, class Elem, class Tr>
@@ -78,6 +81,7 @@ public:
     }
 
     #ifndef BOOST_NO_STD_LOCALE
+    boost::scoped_ptr<codecvt_null<Elem> > codecvt_facet;
     boost::scoped_ptr<std::locale> archive_locale;
     basic_streambuf_locale_saver<Elem, Tr> locale_saver;
     #endif

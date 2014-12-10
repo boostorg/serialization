@@ -30,6 +30,7 @@ namespace std{
 
 #include <ostream>
 
+#include <boost/smart_ptr/scoped_ptr.hpp>
 #include <boost/archive/detail/auto_link_warchive.hpp>
 #include <boost/archive/basic_text_oprimitive.hpp>
 #include <boost/archive/basic_xml_oarchive.hpp>
@@ -47,6 +48,7 @@ namespace boost {
 namespace archive {
 
 namespace detail {
+    class utf8_codecvt_facet;
     template<class Archive> class interface_oarchive;
 } // namespace detail
 
@@ -71,7 +73,8 @@ protected:
         friend class save_access;
     #endif
 #endif
-
+    boost::scoped_ptr<detail::utf8_codecvt_facet> codecvt_facet;
+    boost::scoped_ptr<std::locale> archive_locale;
     //void end_preamble(){
     //    basic_xml_oarchive<Archive>::end_preamble();
     //}
@@ -102,7 +105,7 @@ protected:
     #endif
     BOOST_WARCHIVE_DECL(BOOST_PP_EMPTY()) 
     xml_woarchive_impl(std::wostream & os, unsigned int flags);
-    ~xml_woarchive_impl(){}
+    ~xml_woarchive_impl();
 public:
     void 
     save_binary(const void *address, std::size_t count){

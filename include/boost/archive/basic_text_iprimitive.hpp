@@ -56,6 +56,9 @@ namespace std{
 namespace boost {
 namespace archive {
 
+template<class Ch>
+class codecvt_null;
+
 /////////////////////////////////////////////////////////////////////////
 // class basic_text_iarchive - load serialized objects from a input text stream
 #if defined(_MSC_VER)
@@ -71,6 +74,7 @@ protected:
     io::ios_precision_saver precision_saver;
 
     #ifndef BOOST_NO_STD_LOCALE
+    boost::scoped_ptr<codecvt_null<typename IStream::char_type> > codecvt_facet;
     boost::scoped_ptr<std::locale> archive_locale;
     basic_streambuf_locale_saver<
         typename IStream::char_type, 

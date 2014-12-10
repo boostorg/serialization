@@ -173,9 +173,7 @@ xml_wiarchive_impl<Archive>::xml_wiarchive_impl(
         // note usage of argument "1" so that the locale isn't
         // automatically delete the facet
         codecvt_facet.reset(new boost::archive::detail::utf8_codecvt_facet(1));
-        archive_locale.reset(
-            add_facet(is_.getloc(), codecvt_facet.get())
-        );
+        archive_locale.reset(add_facet(is_.getloc(), codecvt_facet.get()));
         is.imbue(* archive_locale);
     }
     if(0 == (flags & no_header))

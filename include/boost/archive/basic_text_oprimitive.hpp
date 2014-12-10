@@ -61,6 +61,9 @@ namespace std{
 namespace boost {
 namespace archive {
 
+template<class Ch>
+class codecvt_null;
+
 class save_access;
 
 /////////////////////////////////////////////////////////////////////////
@@ -74,6 +77,7 @@ protected:
     io::ios_precision_saver precision_saver;
 
     #ifndef BOOST_NO_STD_LOCALE
+    boost::scoped_ptr<codecvt_null<typename OStream::char_type> > codecvt_facet;
     boost::scoped_ptr<std::locale> archive_locale;
     basic_streambuf_locale_saver<
         typename OStream::char_type, 

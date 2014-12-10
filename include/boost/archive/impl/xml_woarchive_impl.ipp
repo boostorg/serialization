@@ -136,29 +136,17 @@ xml_woarchive_impl<Archive>::xml_woarchive_impl(
     // transforms (such as one to many transforms from getting
     // mixed up.
     if(0 == (flags & no_codecvt)){
-        boost::archive::detail::utf8_codecvt_facet *pfacet;
-        #if defined(__SGI_STL_PORT)
-            // Unfortunately, STLPort doesn't respect b) above
-            // so the restoration of the original archive locale done by
-            // the locale_saver doesn't get processed,
-            // before the current one is destroyed.
-            // so the codecvt doesn't get replaced with the orginal
-            // so closing the stream invokes codecvt::do_unshift
-            // so it crashes because the corresponding locale that contained
-            // the codecvt isn't around any more.
-            // we can hack around this by using a static codecvt that never
-            // gets destroyed.
-            static boost::archive::detail::utf8_codecvt_facet
-                facet(static_cast<size_t>(1));
-            pfacet = & facet;
-        #else
-            pfacet = new boost::archive::detail::utf8_codecvt_facet;
-        #endif
-        archive_locale.reset(add_facet(os_.getloc(), pfacet));
+        codecvt_facet.reset(new boost::archive::detail::utf8_codecvt_facet(1));
+        archive_locale.reset(add_facet(os_.getloc(), codecvt_facet.get()));
         os.imbue(* archive_locale);
     }
     if(0 == (flags & no_header))
         this->init();
+}
+
+template<class Archive>
+BOOST_WARCHIVE_DECL(BOOST_PP_EMPTY())
+xml_woarchive_impl<Archive>::~xml_woarchive_impl(){
 }
 
 } // namespace archive

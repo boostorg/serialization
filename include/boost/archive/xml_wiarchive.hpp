@@ -23,7 +23,7 @@
 
 #include <istream>
 
-#include <boost/scoped_ptr.hpp>
+#include <boost/smart_ptr/scoped_ptr.hpp>
 #include <boost/archive/detail/auto_link_warchive.hpp>
 #include <boost/archive/basic_text_iprimitive.hpp>
 #include <boost/archive/basic_xml_iarchive.hpp>
@@ -71,6 +71,7 @@ protected:
     #endif
 #endif
     boost::scoped_ptr<detail::utf8_codecvt_facet> codecvt_facet;
+    boost::scoped_ptr<std::locale> archive_locale;
     boost::scoped_ptr<xml_wgrammar> gimpl;
     std::wistream & get_is(){
         return is;
