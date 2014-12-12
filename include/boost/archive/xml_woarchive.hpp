@@ -73,17 +73,9 @@ protected:
         friend class save_access;
     #endif
 #endif
-    #ifndef BOOST_NO_STD_LOCALE
-    boost::scoped_ptr<detail::utf8_codecvt_facet> codecvt_facet;
-    boost::scoped_ptr<std::locale> archive_locale;
-    basic_streambuf_locale_saver<
-        typename std::wostream::char_type,
-        typename std::wostream::traits_type
-    > locale_saver;
     //void end_preamble(){
     //    basic_xml_oarchive<Archive>::end_preamble();
     //}
-    #endif
     template<class T>
     void 
     save(const T & t){

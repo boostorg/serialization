@@ -70,14 +70,6 @@ protected:
         friend class load_access;
     #endif
 #endif
-    #ifndef BOOST_NO_STD_LOCALE
-    boost::scoped_ptr<detail::utf8_codecvt_facet> codecvt_facet;
-    boost::scoped_ptr<std::locale> archive_locale;
-    basic_streambuf_locale_saver<
-        typename std::wistream::char_type,
-        typename std::wistream::traits_type
-    > locale_saver;
-    #endif
     boost::scoped_ptr<xml_wgrammar> gimpl;
     std::wistream & get_is(){
         return is;

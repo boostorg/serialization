@@ -87,13 +87,13 @@ basic_text_oprimitive<OStream>::basic_text_oprimitive(
     locale_saver(* os_.rdbuf())
 {
     if(! no_codecvt){
-        // note usage of argument "1" so that the locale isn't
-        // automatically delete the facet
-        codecvt_facet.reset(new codecvt_null<typename OStream::char_type>(1));
         archive_locale.reset(
-            add_facet(std::locale::classic(),codecvt_facet.get())
+            add_facet(
+                std::locale::classic(),
+                new boost::archive::codecvt_null<typename OStream::char_type>
+            )
         );
-        os.imbue(* archive_locale);
+        //os.imbue(* archive_locale);
     }
     os << std::noboolalpha;
 }

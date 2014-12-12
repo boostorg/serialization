@@ -124,11 +124,13 @@ basic_text_iprimitive<IStream>::basic_text_iprimitive(
     locale_saver(* is_.rdbuf())
 {
     if(! no_codecvt){
-        codecvt_facet.reset(new boost::archive::codecvt_null<typename IStream::char_type>(1));
         archive_locale.reset(
-            add_facet(std::locale::classic(),codecvt_facet.get())
+            add_facet(
+                std::locale::classic(),
+                new boost::archive::codecvt_null<typename IStream::char_type>
+            )
         );
-        is.imbue(* archive_locale);
+        //is.imbue(* archive_locale);
     }
     is >> std::noboolalpha;
 }

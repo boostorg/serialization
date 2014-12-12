@@ -128,8 +128,7 @@ xml_woarchive_impl<Archive>::xml_woarchive_impl(
         os_,
         true // don't change the codecvt - use the one below
     ),
-    basic_xml_oarchive<Archive>(flags),
-    locale_saver(*os_.rdbuf())
+    basic_xml_oarchive<Archive>(flags)
 {
     // Standard behavior is that imbue can be called
     // a) before output is invoked or
@@ -137,9 +136,13 @@ xml_woarchive_impl<Archive>::xml_woarchive_impl(
     // transforms (such as one to many transforms from getting
     // mixed up.
     if(0 == (flags & no_codecvt)){
-        codecvt_facet.reset(new boost::archive::detail::utf8_codecvt_facet(1));
-        archive_locale.reset(add_facet(os_.getloc(), codecvt_facet.get()));
-        os.imbue(* archive_locale);
+        archive_locale.reset(
+            add_facet(
+                os_.getloc(),
+                new boost::archive::detail::utf8_codecvt_facet
+            )
+        );
+        //os.imbue(* archive_locale);
     }
     if(0 == (flags & no_header))
         this->init();
