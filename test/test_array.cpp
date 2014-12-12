@@ -39,9 +39,12 @@ int test_native_array(){
     const T b_array[2][3]={{T(),T(),T()},{T(),T(),T()}};
     {
         test_ostream os(testfile, TEST_STREAM_FLAGS);
-        test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
-        oa << boost::serialization::make_nvp("a_array", a_array);
-        oa << boost::serialization::make_nvp("b_array", b_array);
+        {
+            test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
+            oa << boost::serialization::make_nvp("a_array", a_array);
+            oa << boost::serialization::make_nvp("b_array", b_array);
+        }
+        os.close();
     }
     {
         T a_array1[10];
@@ -52,6 +55,7 @@ int test_native_array(){
             ia >> boost::serialization::make_nvp("a_array", a_array1);
             ia >> boost::serialization::make_nvp("b_array", b_array1);
         }
+        is.close();
         BOOST_CHECK(std::equal(& a_array[0], & a_array[10], & a_array1[0]));
         BOOST_CHECK(b_array[0][0] == b_array1[0][0]);
         BOOST_CHECK(b_array[1][0] == b_array1[1][0]);

@@ -29,8 +29,11 @@ namespace std{
 #include <boost/io/ios_state.hpp>
 #include <boost/core/no_exceptions_support.hpp>
 #include <boost/serialization/pfto.hpp>
-
 #include <boost/serialization/string.hpp>
+
+#include <boost/archive/basic_xml_archive.hpp>
+#include <boost/archive/xml_wiarchive.hpp>
+
 #include <boost/archive/add_facet.hpp>
 #ifdef BOOST_NO_CXX11_HDR_CODECVT
     #include <boost/archive/detail/utf8_codecvt_facet.hpp>
@@ -43,9 +46,6 @@ namespace std{
 
 #include <boost/archive/xml_archive_exception.hpp>
 #include <boost/archive/iterators/mb_from_wchar.hpp>
-
-#include <boost/archive/basic_xml_archive.hpp>
-#include <boost/archive/xml_wiarchive.hpp>
 
 #include "basic_xml_grammar.hpp"
 
@@ -167,6 +167,7 @@ xml_wiarchive_impl<Archive>::xml_wiarchive_impl(
         true // don't change the codecvt - use the one below
     ),
     basic_xml_iarchive<Archive>(flags),
+    locale_saver(*is_.rdbuf()),
     gimpl(new xml_wgrammar())
 {
     if(0 == (flags & no_codecvt)){

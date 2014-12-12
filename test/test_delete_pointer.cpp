@@ -38,12 +38,7 @@ class A
     template<class Archive>
     void load(Archive & ar, const unsigned int /* file_version */)
     {
-        static int i = 0;
         ar >> BOOST_SERIALIZATION_NVP(next_);
-        //if(++i == 3)
-        //    boost::serialization::throw_exception(boost::archive::archive_exception(
-        //        boost::archive::archive_exception::no_exception
-        //    ));
         ++loadcount;
     }
     BOOST_SERIALIZATION_SPLIT_MEMBER()

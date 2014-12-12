@@ -106,7 +106,7 @@ basic_binary_oprimitive<Archive, Elem, Tr>::basic_binary_oprimitive(
     locale_saver(m_sb)
 {
     if(! no_codecvt){
-        codecvt_facet = new codecvt_null<Elem>(1);
+        codecvt_facet.reset(new codecvt_null<Elem>(1));
         archive_locale.reset(add_facet(std::locale::classic(),codecvt_facet.get()));
         m_sb.pubimbue(* archive_locale);
     }
