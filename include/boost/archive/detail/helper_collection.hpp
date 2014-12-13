@@ -42,25 +42,17 @@ class helper_collection
     // note: we dont' actually "share" the function object pointer
     // we only use shared_ptr to make sure that it get's deleted
 
-    #ifndef BOOST_NO_CXX11_SMART_PTR
-        typedef std::pair<
-            const void *,
-            std::shared_ptr<void>
-        > helper_value_type;
-        template<class T>
-        std::shared_ptr<void> make_helper_ptr(){
-            return std::make_shared<T>();
-        }
-    #else
-        typedef std::pair<
-            const void *,
-            boost::shared_ptr<void>
-        > helper_value_type;
-        template<class T>
-        boost::shared_ptr<void> make_helper_ptr(){
-            return boost::make_shared<T>();
-        }
-    #endif
+    typedef std::pair<
+        const void *,
+        boost::shared_ptr<void>
+    > helper_value_type;
+    template<class T>
+    boost::shared_ptr<void> make_helper_ptr(){
+        // use boost::shared_ptr rather than std::shared_ptr to maintain
+        // c++03 compatibility
+        return boost::make_shared<T>();
+    }
+
     typedef std::vector<helper_value_type> collection;
     collection m_collection;
 

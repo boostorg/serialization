@@ -27,6 +27,10 @@ namespace std{
 #include <string>
 #include <vector>
 
+// this test uses a special string (my_string) whose contents are shared
+// and hence saved in the archive only once.  We need a helper in order
+// to convert my_string into a serializable type
+
 class my_string:public std::string
 {
     typedef std::string super;

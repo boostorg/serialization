@@ -37,6 +37,15 @@ namespace std{
 #include <boost/archive/detail/register_archive.hpp>
 #include <boost/serialization/item_version_type.hpp>
 
+#ifdef BOOST_NO_CXX11_HDR_CODECVT
+    #include <boost/archive/detail/utf8_codecvt_facet.hpp>
+#else
+    #include <codecvt>
+    namespace boost { namespace archive { namespace detail {
+        typedef std::codecvt_utf8<wchar_t> utf8_codecvt_facet;
+    } } }
+#endif
+
 #include <boost/archive/detail/abi_prefix.hpp> // must be the last header
 
 #ifdef BOOST_MSVC
@@ -48,7 +57,6 @@ namespace boost {
 namespace archive {
 
 namespace detail {
-    class utf8_codecvt_facet;
     template<class Archive> class interface_oarchive;
 } // namespace detail
 
@@ -103,6 +111,7 @@ protected:
     #endif
     BOOST_WARCHIVE_DECL(BOOST_PP_EMPTY()) 
     xml_woarchive_impl(std::wostream & os, unsigned int flags);
+    BOOST_WARCHIVE_DECL(BOOST_PP_EMPTY()) 
     ~xml_woarchive_impl();
 public:
     void 
