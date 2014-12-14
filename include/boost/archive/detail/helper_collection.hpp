@@ -24,10 +24,8 @@
 
 #include <boost/config.hpp>
 
-#ifdef BOOST_NO_CXX11_SMART_PTR
-    #include <boost/smart_ptr/shared_ptr.hpp>
-    #include <boost/smart_ptr/make_shared.hpp>
-#endif
+#include <boost/smart_ptr/shared_ptr.hpp>
+#include <boost/smart_ptr/make_shared.hpp>
 
 namespace boost {
 
@@ -72,7 +70,6 @@ protected:
 public:
     template<typename Helper>
     Helper& get_helper(void * const id = 0) {
-
         collection::const_iterator it =
             std::find_if(
                 m_collection.begin(),
@@ -80,7 +77,7 @@ public:
                 predicate(id)
             );
 
-        void * rval;
+        void * rval = 0;
         if(it == m_collection.end()){
             m_collection.push_back(
                 std::make_pair(id, make_helper_ptr<Helper>())
