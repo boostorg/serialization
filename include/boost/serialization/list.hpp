@@ -28,6 +28,7 @@
 #include <boost/serialization/collection_size_type.hpp>
 #include <boost/serialization/item_version_type.hpp>
 #include <boost/serialization/split_free.hpp>
+#include <boost/serialization/detail/stack_constructor.hpp>
 
 namespace boost { 
 namespace serialization {
@@ -60,11 +61,21 @@ inline void load(
     if(boost::archive::library_version_type(3) < library_version){
         ar >> BOOST_SERIALIZATION_NVP(item_version);
     }
-    t.resize(count);
-    typename std::list<U, Allocator>::iterator hint;
-    hint = t.begin();
-    while(count-- > 0){
-        ar >> boost::serialization::make_nvp("item", *hint++);
+    if(boost::has_trivial_default_constructor<U>()){
+        t.resize(count);
+        typename std::list<U, Allocator>::iterator hint;
+        hint = t.begin();
+        while(count-- > 0){
+            ar >> boost::serialization::make_nvp("item", *hint++);
+        }
+    }
+    else{
+        while(count-- > 0){
+            detail::stack_construct<Archive, U> u(ar, item_version);
+            ar >> boost::serialization::make_nvp("item", u.reference());
+            t.push_back(u.reference());
+            ar.reset_object_address(& t.back() , & u.reference());
+         }
     }
 }
 

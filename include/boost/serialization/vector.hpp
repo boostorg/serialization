@@ -32,6 +32,7 @@
 #include <boost/serialization/split_free.hpp>
 #include <boost/serialization/array.hpp>
 #include <boost/serialization/detail/get_data.hpp>
+#include <boost/serialization/detail/stack_constructor.hpp>
 #include <boost/mpl/bool.hpp>
 
 // default is being compatible with version 1.34.1 files, not 1.35 files
@@ -84,12 +85,22 @@ inline void load(
     if(boost::archive::library_version_type(3) < library_version){
         ar >> BOOST_SERIALIZATION_NVP(item_version);
     }
-    t.reserve(count);
-    t.resize(count);
-    typename std::vector<U, Allocator>::iterator hint;
-    hint = t.begin();
-    while(count-- > 0){
-        ar >> boost::serialization::make_nvp("item", *hint++);
+    if(boost::has_trivial_default_constructor<U>()){
+        t.resize(count);
+        typename std::vector<U, Allocator>::iterator hint;
+        hint = t.begin();
+        while(count-- > 0){
+            ar >> boost::serialization::make_nvp("item", *hint++);
+        }
+    }
+    else{
+        t.reserve(count);
+        while(count-- > 0){
+            detail::stack_construct<Archive, U> u(ar, item_version);
+            ar >> boost::serialization::make_nvp("item", u.reference());
+            t.push_back(u.reference());
+            ar.reset_object_address(& t.back() , & u.reference());
+         }
     }
 }
 
@@ -199,11 +210,12 @@ inline void load(
     // retrieve number of elements
     collection_size_type count;
     ar >> BOOST_SERIALIZATION_NVP(count);
-    t.clear();
-    while(count-- > 0){
-        bool i;
-        ar >> boost::serialization::make_nvp("item", i);
-        t.push_back(i);
+    t.resize(count);
+    int i;
+    for(i = 0; i < count; ++i){
+        bool b;
+        ar >> boost::serialization::make_nvp("item", b);
+        t[i] = b;
     }
 }
 
