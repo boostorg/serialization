@@ -34,6 +34,8 @@ namespace std{
 #include <boost/serialization/collection_size_type.hpp>
 #include <boost/serialization/item_version_type.hpp>
 #include <boost/serialization/split_free.hpp>
+#include <boost/serialization/detail/stack_constructor.hpp>
+#include <boost/serialization/detail/is_default_constructible.hpp>
 
 namespace boost { 
 namespace serialization {
@@ -67,7 +69,7 @@ inline void load(
     if(boost::archive::library_version_type(3) < library_version){
         ar >> BOOST_SERIALIZATION_NVP(item_version);
     }
-    if(boost::has_trivial_default_constructor<U>()){
+    if(detail::is_default_constructible<U>()){
         t.resize(count);
         typename std::forward_list<U, Allocator>::iterator hint;
         hint = t.begin();

@@ -33,6 +33,7 @@
 #include <boost/serialization/array.hpp>
 #include <boost/serialization/detail/get_data.hpp>
 #include <boost/serialization/detail/stack_constructor.hpp>
+#include <boost/serialization/detail/is_default_constructible.hpp>
 #include <boost/mpl/bool.hpp>
 
 // default is being compatible with version 1.34.1 files, not 1.35 files
@@ -85,7 +86,7 @@ inline void load(
     if(boost::archive::library_version_type(3) < library_version){
         ar >> BOOST_SERIALIZATION_NVP(item_version);
     }
-    if(boost::has_trivial_default_constructor<U>()){
+    if(detail::is_default_constructible<U>()){
         t.resize(count);
         typename std::vector<U, Allocator>::iterator hint;
         hint = t.begin();
