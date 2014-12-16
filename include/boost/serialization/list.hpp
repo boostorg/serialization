@@ -71,6 +71,7 @@ inline void load(
         }
     }
     else{
+        t.clear();
         while(count-- > 0){
             detail::stack_construct<Archive, U> u(ar, item_version);
             ar >> boost::serialization::make_nvp("item", u.reference());

@@ -73,13 +73,19 @@ inline void load(
         }
     }
     else{
-        t.reserve(count);
-        while(count-- > 0){
+        t.clear();
+        boost::serialization::detail::stack_construct<Archive, U> u(ar, item_version);
+        ar >> boost::serialization::make_nvp("item", u.reference());
+        t.push_front(u.reference());
+        typename BOOST_STD_EXTENSION_NAMESPACE::slist<U, Allocator>::iterator last;
+        last = t.begin();
+        ar.reset_object_address(&(*t.begin()) , & u.reference());
+        while(--count > 0){
             detail::stack_construct<Archive, U> u(ar, item_version);
             ar >> boost::serialization::make_nvp("item", u.reference());
-            t.push_back(u.reference());
-            ar.reset_object_address(& t.back() , & u.reference());
-         }
+            last = t.insert_after(last, u.reference());
+            ar.reset_object_address(&(*last) , & u.reference());
+        }
     }
 }
 
