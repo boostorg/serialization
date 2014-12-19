@@ -29,8 +29,8 @@ namespace std{
 } // namespace std
 #endif
 
+#include <boost/archive/xml_woarchive.hpp>
 #include <boost/serialization/throw_exception.hpp>
-#include <boost/serialization/pfto.hpp>
 
 #include <boost/archive/iterators/xml_escape.hpp>
 #include <boost/archive/iterators/wchar_from_mb.hpp>

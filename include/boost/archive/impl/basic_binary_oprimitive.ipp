@@ -32,6 +32,7 @@ namespace std{ using ::wcslen; }
 #include <boost/archive/add_facet.hpp>
 #include <boost/archive/codecvt_null.hpp>
 #include <boost/archive/basic_binary_oprimitive.hpp>
+#include <boost/core/no_exceptions_support.hpp>
 
 namespace boost {
 namespace archive {
@@ -149,11 +150,12 @@ BOOST_ARCHIVE_OR_WARCHIVE_DECL(BOOST_PP_EMPTY())
 basic_binary_oprimitive<Archive, Elem, Tr>::~basic_binary_oprimitive(){
     // flush buffer
     //destructor can't throw
-    try{
+    BOOST_TRY{
         static_cast<detail::output_streambuf_access<Elem, Tr> &>(m_sb).sync();
     }
-    catch(...){
+    BOOST_CATCH(...){
     }
+    BOOST_CATCH_END
 }
 
 } // namespace archive
