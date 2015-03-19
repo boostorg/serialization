@@ -83,7 +83,7 @@ public:
         const char * e1 = NULL,
         const char * e2 = NULL
     );
-    virtual ~archive_exception() throw();
+    virtual ~archive_exception();
     virtual const char *what() const throw();
 protected:
     unsigned int
