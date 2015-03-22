@@ -27,53 +27,19 @@
 #if defined(BOOST_HAS_DECLSPEC)
     #if (defined(BOOST_ALL_DYN_LINK) || defined(BOOST_SERIALIZATION_DYN_LINK))
         #if defined(BOOST_ARCHIVE_SOURCE)
-            #if defined(__BORLANDC__)
-            #define BOOST_ARCHIVE_DECL(T) T __export
-            #define BOOST_ARCHIVE_OR_WARCHIVE_DECL(T)  T __export
-            #elif defined(BOOST_GCC) && BOOST_GCC >= 4
-            #define BOOST_ARCHIVE_DECL(T) __attribute__ ((visibility ("default")))
-            #define BOOST_ARCHIVE_OR_WARCHIVE_DECL(T) __attribute__ ((visibility ("default")))
-            #else
-            #define BOOST_ARCHIVE_DECL(T) __declspec(dllexport) T
-            #define BOOST_ARCHIVE_OR_WARCHIVE_DECL(T)  __declspec(dllexport) T
-            #endif
+            #define BOOST_ARCHIVE_DECL(T) BOOST_SYMBOL_EXPORT T
+            #define BOOST_ARCHIVE_OR_WARCHIVE_DECL(T)  BOOST_SYMBOL_EXPORT T
         #else
-            #if defined(__BORLANDC__)
-            #define BOOST_ARCHIVE_DECL(T) T __import
-            #elif defined(BOOST_GCC) && BOOST_GCC >= 4
-            #define BOOST_ARCHIVE_DECL(T) __attribute__ ((visibility ("default")))
-            #define BOOST_ARCHIVE_OR_WARCHIVE_DECL(T) __attribute__ ((visibility ("default")))
-            #else
-            #define BOOST_ARCHIVE_DECL(T) __declspec(dllimport) T
-            #endif
+            #define BOOST_ARCHIVE_DECL(T) BOOST_SYMBOL_IMPORT T
         #endif
         #if defined(BOOST_WARCHIVE_SOURCE)
-            #if defined(__BORLANDC__)
-            #define BOOST_WARCHIVE_DECL(T) T __export
-            #define BOOST_ARCHIVE_OR_WARCHIVE_DECL(T) T __export
-            #elif defined(BOOST_GCC) && BOOST_GCC >= 4
-            #define BOOST_WARCHIVE_DECL(T) __attribute__ ((visibility ("default")))
-            #define BOOST_ARCHIVE_OR_WARCHIVE_DECL(T) __attribute__ ((visibility ("default")))
-            #else
-            #define BOOST_WARCHIVE_DECL(T) __declspec(dllexport) T
-            #define BOOST_ARCHIVE_OR_WARCHIVE_DECL(T) __declspec(dllexport) T
-            #endif
+            #define BOOST_WARCHIVE_DECL(T) BOOST_SYMBOL_EXPORT T
+            #define BOOST_ARCHIVE_OR_WARCHIVE_DECL(T) BOOST_SYMBOL_EXPORT T
         #else
-            #if defined(__BORLANDC__)
-            #define BOOST_WARCHIVE_DECL(T) T __import
-            #elif defined(BOOST_GCC) && BOOST_GCC >= 4
-            #define BOOST_WARCHIVE_DECL(T) __attribute__ ((visibility ("default")))
-            #define BOOST_ARCHIVE_OR_WARCHIVE_DECL(T) __attribute__ ((visibility ("default")))
-            #else
-            #define BOOST_WARCHIVE_DECL(T) __declspec(dllimport) T
-            #endif
+            #define BOOST_WARCHIVE_DECL(T) BOOST_SYMBOL_IMPORT T
         #endif
         #if !defined(BOOST_WARCHIVE_SOURCE) && !defined(BOOST_ARCHIVE_SOURCE)
-            #if defined(__BORLANDC__)
-            #define BOOST_ARCHIVE_OR_WARCHIVE_DECL(T) T __import
-            #else
-            #define BOOST_ARCHIVE_OR_WARCHIVE_DECL(T) __declspec(dllimport) T
-            #endif
+            #define BOOST_ARCHIVE_OR_WARCHIVE_DECL(T) BOOST_SYMBOL_IMPORT T
         #endif
     #endif
 #endif // BOOST_HAS_DECLSPEC
