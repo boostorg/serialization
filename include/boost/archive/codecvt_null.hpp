@@ -49,7 +49,7 @@ class codecvt_null;
 template<>
 class codecvt_null<char> : public std::codecvt<char, char, std::mbstate_t>
 {
-    virtual bool do_always_noconv() const throw() {
+    virtual bool do_always_noconv() const BOOST_NOEXCEPT_OR_NOTHROW {
         return true;
     }
 public:

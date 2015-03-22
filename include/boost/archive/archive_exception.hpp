@@ -40,7 +40,7 @@ namespace archive {
 //////////////////////////////////////////////////////////////////////
 // exceptions thrown by archives
 //
-class BOOST_ARCHIVE_DECL(BOOST_PP_EMPTY()) archive_exception : 
+class BOOST_SYMBOL_VISIBLE archive_exception : 
     public virtual std::exception
 {
 protected:
@@ -82,13 +82,13 @@ public:
         exception_code c, 
         const char * e1 = NULL,
         const char * e2 = NULL
-    );
-    virtual ~archive_exception() throw();
-    virtual const char *what() const throw();
+    ) BOOST_NOEXCEPT;
+    virtual ~archive_exception() BOOST_NOEXCEPT_OR_NOTHROW ;
+    virtual const char *what() const BOOST_NOEXCEPT_OR_NOTHROW ;
 protected:
     unsigned int
     append(unsigned int l, const char * a);
-    archive_exception();
+    archive_exception() BOOST_NOEXCEPT;
 };
 
 }// namespace archive

@@ -39,7 +39,7 @@ archive_exception::archive_exception(
     exception_code c, 
     const char * e1,
     const char * e2
-) : 
+) BOOST_NOEXCEPT :
     code(c)
 {
     unsigned int length = 0;
@@ -111,16 +111,15 @@ archive_exception::archive_exception(
     }
 }
 BOOST_ARCHIVE_DECL(BOOST_PP_EMPTY())
-archive_exception::~archive_exception() throw() {}
+archive_exception::~archive_exception() BOOST_NOEXCEPT_OR_NOTHROW {}
 
 BOOST_ARCHIVE_DECL(const char *)
-archive_exception::what( ) const throw()
-{
+archive_exception::what( ) const BOOST_NOEXCEPT_OR_NOTHROW {
     return m_buffer;
 }
 BOOST_ARCHIVE_DECL(BOOST_PP_EMPTY())
-archive_exception::archive_exception() : 
-        code(no_exception)
+archive_exception::archive_exception() BOOST_NOEXCEPT :
+    code(no_exception)
 {}
 
 } // archive
