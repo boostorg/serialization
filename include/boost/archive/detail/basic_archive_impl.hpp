@@ -29,7 +29,7 @@ namespace archive {
 namespace detail {
 
 //////////////////////////////////////////////////////////////////////
-class BOOST_ARCHIVE_DECL(BOOST_PP_EMPTY()) basic_archive_impl
+class BOOST_ARCHIVE_DECL basic_archive_impl
 {
 };
 

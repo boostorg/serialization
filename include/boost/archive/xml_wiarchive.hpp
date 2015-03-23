@@ -99,29 +99,29 @@ protected:
         load(v);
         t = boost::serialization::item_version_type(v);
     }
-    BOOST_WARCHIVE_DECL(void)
+    BOOST_WARCHIVE_DECL void
     load(char * t);
     #ifndef BOOST_NO_INTRINSIC_WCHAR_T
-    BOOST_WARCHIVE_DECL(void)
+    BOOST_WARCHIVE_DECL void
     load(wchar_t * t);
     #endif
-    BOOST_WARCHIVE_DECL(void)
+    BOOST_WARCHIVE_DECL void
     load(std::string &s);
     #ifndef BOOST_NO_STD_WSTRING
-    BOOST_WARCHIVE_DECL(void)
+    BOOST_WARCHIVE_DECL void
     load(std::wstring &ws);
     #endif
     template<class T>
     void load_override(T & t, BOOST_PFTO int){
         basic_xml_iarchive<Archive>::load_override(t, 0);
     }
-    BOOST_WARCHIVE_DECL(void)
+    BOOST_WARCHIVE_DECL void
     load_override(class_name_type & t, int);
-    BOOST_WARCHIVE_DECL(void) 
+    BOOST_WARCHIVE_DECL void 
     init();
-    BOOST_WARCHIVE_DECL(BOOST_PP_EMPTY()) 
+    BOOST_WARCHIVE_DECL 
     xml_wiarchive_impl(std::wistream & is, unsigned int flags) ;
-    BOOST_WARCHIVE_DECL(BOOST_PP_EMPTY()) 
+    BOOST_WARCHIVE_DECL 
     ~xml_wiarchive_impl();
 };
 

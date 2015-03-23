@@ -59,7 +59,7 @@ void save_iterator(std::wostream &os, InputIterator begin, InputIterator end){
 }
 
 template<class Archive>
-BOOST_WARCHIVE_DECL(void)
+BOOST_WARCHIVE_DECL void
 xml_woarchive_impl<Archive>::save(const std::string & s){
     // note: we don't use s.begin() and s.end() because dinkumware
     // doesn't have string::value_type defined. So use a wrapper
@@ -71,7 +71,7 @@ xml_woarchive_impl<Archive>::save(const std::string & s){
 
 #ifndef BOOST_NO_STD_WSTRING
 template<class Archive>
-BOOST_WARCHIVE_DECL(void)
+BOOST_WARCHIVE_DECL void
 xml_woarchive_impl<Archive>::save(const std::wstring & ws){
 #if 0
     typedef iterators::xml_escape<std::wstring::const_iterator> xmbtows;
@@ -91,14 +91,14 @@ xml_woarchive_impl<Archive>::save(const std::wstring & ws){
 #endif //BOOST_NO_STD_WSTRING
 
 template<class Archive>
-BOOST_WARCHIVE_DECL(void)
+BOOST_WARCHIVE_DECL void
 xml_woarchive_impl<Archive>::save(const char * s){
    save_iterator(os, s, s + std::strlen(s));
 }
 
 #ifndef BOOST_NO_INTRINSIC_WCHAR_T
 template<class Archive>
-BOOST_WARCHIVE_DECL(void)
+BOOST_WARCHIVE_DECL void
 xml_woarchive_impl<Archive>::save(const wchar_t * ws){
     os << ws;
     typedef iterators::xml_escape<const wchar_t *> xmbtows;
@@ -111,7 +111,7 @@ xml_woarchive_impl<Archive>::save(const wchar_t * ws){
 #endif
 
 template<class Archive>
-BOOST_WARCHIVE_DECL(BOOST_PP_EMPTY())
+BOOST_WARCHIVE_DECL
 xml_woarchive_impl<Archive>::xml_woarchive_impl(
     std::wostream & os_,
     unsigned int flags
@@ -141,7 +141,7 @@ xml_woarchive_impl<Archive>::xml_woarchive_impl(
 }
 
 template<class Archive>
-BOOST_WARCHIVE_DECL(BOOST_PP_EMPTY())
+BOOST_WARCHIVE_DECL
 xml_woarchive_impl<Archive>::~xml_woarchive_impl(){
 }
 

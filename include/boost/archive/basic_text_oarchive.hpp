@@ -69,7 +69,7 @@ protected:
         space
     } delimiter;
 
-    BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
+    BOOST_ARCHIVE_OR_WARCHIVE_DECL void
     newtoken();
 
     void newline(){
@@ -98,7 +98,7 @@ protected:
         * this->This() << s;
     }
 
-    BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
+    BOOST_ARCHIVE_OR_WARCHIVE_DECL void
     init();
 
     basic_text_oarchive(unsigned int flags) :

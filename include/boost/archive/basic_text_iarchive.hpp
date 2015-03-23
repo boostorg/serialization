@@ -73,10 +73,10 @@ protected:
     // text file don't include the optional information 
     void load_override(class_id_optional_type & /*t*/, int){}
 
-    BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
+    BOOST_ARCHIVE_OR_WARCHIVE_DECL void
     load_override(class_name_type & t, int);
 
-    BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
+    BOOST_ARCHIVE_OR_WARCHIVE_DECL void
     init(void);
 
     basic_text_iarchive(unsigned int flags) : 

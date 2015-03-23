@@ -41,7 +41,7 @@ namespace archive {
 // constants used in archive signature
 //This should never ever change. note that is not an std::string
 // string.
-BOOST_ARCHIVE_DECL(const char *) 
+BOOST_ARCHIVE_DECL const char * 
 BOOST_ARCHIVE_SIGNATURE(){
     return "serialization::archive";
 }
@@ -74,7 +74,7 @@ BOOST_ARCHIVE_SIGNATURE(){
 // 11- not changes
 // 12- improved serialization of collections
 
-BOOST_ARCHIVE_DECL(library_version_type)
+BOOST_ARCHIVE_DECL library_version_type
 BOOST_ARCHIVE_VERSION(){
     return library_version_type(12);
 }

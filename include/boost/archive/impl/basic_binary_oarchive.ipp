@@ -29,7 +29,7 @@ namespace archive {
 
 template<class Archive>
 #if !defined(__BORLANDC__)
-BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
+BOOST_ARCHIVE_OR_WARCHIVE_DECL void
 #else
 void
 #endif

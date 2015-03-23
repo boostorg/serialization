@@ -92,7 +92,7 @@ public:
     // by a change in load_construct_data below.  It makes this file suitable
     // only for loading pointers into a 1.33 or later boost system.
     std::list<boost_132::shared_ptr<const void> > * m_pointers_132;
-    BOOST_ARCHIVE_DECL(void)
+    BOOST_ARCHIVE_DECL void
     append(const boost_132::shared_ptr<const void> & t){
         if(NULL == m_pointers_132)
             m_pointers_132 = new std::list<boost_132::shared_ptr<const void> >;

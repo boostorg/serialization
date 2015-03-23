@@ -166,7 +166,7 @@ protected:
         }
     }
     #endif
-    BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
+    BOOST_ARCHIVE_OR_WARCHIVE_DECL void
     init();
 
     basic_binary_oarchive(unsigned int flags) :

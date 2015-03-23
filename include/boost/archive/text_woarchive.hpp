@@ -83,16 +83,16 @@ protected:
     void save(const boost::serialization::item_version_type & t){
         save(static_cast<const unsigned int>(t));
     }
-    BOOST_WARCHIVE_DECL(void)
+    BOOST_WARCHIVE_DECL void
     save(const char * t);
     #ifndef BOOST_NO_INTRINSIC_WCHAR_T
-    BOOST_WARCHIVE_DECL(void)
+    BOOST_WARCHIVE_DECL void
     save(const wchar_t * t);
     #endif
-    BOOST_WARCHIVE_DECL(void)
+    BOOST_WARCHIVE_DECL void
     save(const std::string &s);
     #ifndef BOOST_NO_STD_WSTRING
-    BOOST_WARCHIVE_DECL(void)
+    BOOST_WARCHIVE_DECL void
     save(const std::wstring &ws);
     #endif
     text_woarchive_impl(std::wostream & os, unsigned int flags) :

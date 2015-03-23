@@ -35,12 +35,12 @@ namespace archive {
 namespace detail {
 
 class basic_oarchive_impl;
-class BOOST_ARCHIVE_DECL(BOOST_PP_EMPTY()) basic_oserializer;
-class BOOST_ARCHIVE_DECL(BOOST_PP_EMPTY()) basic_pointer_oserializer;
+class BOOST_ARCHIVE_DECL basic_oserializer;
+class BOOST_ARCHIVE_DECL basic_pointer_oserializer;
 
 //////////////////////////////////////////////////////////////////////
 // class basic_oarchive - write serialized objects to an output stream
-class BOOST_ARCHIVE_OR_WARCHIVE_DECL(BOOST_PP_EMPTY()) basic_oarchive :
+class BOOST_ARCHIVE_OR_WARCHIVE_DECL basic_oarchive :
     private boost::noncopyable,
     public boost::archive::detail::helper_collection
 {

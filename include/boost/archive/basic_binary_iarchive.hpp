@@ -206,9 +206,9 @@ protected:
         } 
     }
 
-    BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
+    BOOST_ARCHIVE_OR_WARCHIVE_DECL void
     load_override(class_name_type & t, int);
-    BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
+    BOOST_ARCHIVE_OR_WARCHIVE_DECL void
     init();
    
     basic_binary_iarchive(unsigned int flags) :

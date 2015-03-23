@@ -32,7 +32,7 @@ namespace archive {
 //////////////////////////////////////////////////////////////////////
 // exceptions thrown by xml archives
 //
-class BOOST_ARCHIVE_DECL(BOOST_PP_EMPTY()) xml_archive_exception : 
+class BOOST_ARCHIVE_DECL xml_archive_exception : 
     public virtual boost::archive::archive_exception
 {
 public:

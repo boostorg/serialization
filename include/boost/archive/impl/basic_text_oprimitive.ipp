@@ -26,7 +26,7 @@ namespace archive {
 
 // translate to base64 and copy in to buffer.
 template<class OStream>
-BOOST_ARCHIVE_OR_WARCHIVE_DECL(void)
+BOOST_ARCHIVE_OR_WARCHIVE_DECL void
 basic_text_oprimitive<OStream>::save_binary(
     const void *address, 
     std::size_t count
@@ -75,7 +75,7 @@ basic_text_oprimitive<OStream>::save_binary(
 }
 
 template<class OStream>
-BOOST_ARCHIVE_OR_WARCHIVE_DECL(BOOST_PP_EMPTY())
+BOOST_ARCHIVE_OR_WARCHIVE_DECL
 basic_text_oprimitive<OStream>::basic_text_oprimitive(
     OStream & os_,
     bool no_codecvt
@@ -105,7 +105,7 @@ basic_text_oprimitive<OStream>::basic_text_oprimitive(
 #endif
 
 template<class OStream>
-BOOST_ARCHIVE_OR_WARCHIVE_DECL(BOOST_PP_EMPTY())
+BOOST_ARCHIVE_OR_WARCHIVE_DECL
 basic_text_oprimitive<OStream>::~basic_text_oprimitive(){
     os << std::endl;
 }

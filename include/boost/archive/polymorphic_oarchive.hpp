@@ -43,8 +43,8 @@ namespace serialization {
 } // namespace serialization
 namespace archive {
 namespace detail {
-    class BOOST_ARCHIVE_DECL(BOOST_PP_EMPTY()) basic_oarchive;
-    class BOOST_ARCHIVE_DECL(BOOST_PP_EMPTY()) basic_oserializer;
+    class BOOST_ARCHIVE_DECL basic_oarchive;
+    class BOOST_ARCHIVE_DECL basic_oserializer;
 }
 
 class polymorphic_oarchive;

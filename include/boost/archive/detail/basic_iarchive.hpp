@@ -37,11 +37,11 @@ namespace archive {
 namespace detail {
 
 class basic_iarchive_impl;
-class BOOST_ARCHIVE_DECL(BOOST_PP_EMPTY()) basic_iserializer;
-class BOOST_ARCHIVE_DECL(BOOST_PP_EMPTY()) basic_pointer_iserializer;
+class BOOST_ARCHIVE_DECL basic_iserializer;
+class BOOST_ARCHIVE_DECL basic_pointer_iserializer;
 //////////////////////////////////////////////////////////////////////
 // class basic_iarchive - read serialized objects from a input stream
-class BOOST_ARCHIVE_DECL(BOOST_PP_EMPTY()) basic_iarchive :
+class BOOST_ARCHIVE_DECL basic_iarchive :
     private boost::noncopyable,
     public boost::archive::detail::helper_collection
 {
