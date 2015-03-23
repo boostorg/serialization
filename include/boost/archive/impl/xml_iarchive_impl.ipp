@@ -141,7 +141,7 @@ xml_iarchive_impl<Archive>::load(char * s){
 
 template<class Archive>
 BOOST_ARCHIVE_DECL void
-xml_iarchive_impl<Archive>::load_override(class_name_type & t, int){
+xml_iarchive_impl<Archive>::load_override(class_name_type & t){
     const std::string & s = gimpl->rv.class_name;
     if(s.size() > BOOST_SERIALIZATION_MAX_KEY_SIZE - 1)
         boost::serialization::throw_exception(

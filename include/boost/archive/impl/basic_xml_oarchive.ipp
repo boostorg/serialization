@@ -149,7 +149,7 @@ basic_xml_oarchive<Archive>::end_preamble(){
 #if 0
 template<class Archive>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL void
-basic_xml_oarchive<Archive>::save_override(const object_id_type & t, int)
+basic_xml_oarchive<Archive>::save_override(const object_id_type & t)
 {
     int i = t.t; // extra .t is for borland
     write_attribute(BOOST_ARCHIVE_XML_OBJECT_ID(), i, "=\"_");
@@ -165,7 +165,7 @@ basic_xml_oarchive<Archive>::save_override(
 }
 template<class Archive>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL void
-basic_xml_oarchive<Archive>::save_override(const version_type & t, int)
+basic_xml_oarchive<Archive>::save_override(const version_type & t)
 {
     int i = t.t; // extra .t is for borland
     write_attribute(BOOST_ARCHIVE_XML_VERSION(), i);
@@ -174,7 +174,7 @@ basic_xml_oarchive<Archive>::save_override(const version_type & t, int)
 
 template<class Archive>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL void
-basic_xml_oarchive<Archive>::save_override(const object_id_type & t, int)
+basic_xml_oarchive<Archive>::save_override(const object_id_type & t)
 {
     // borland doesn't do conversion of STRONG_TYPEDEFs very well
     const unsigned int i = t;
@@ -183,15 +183,14 @@ basic_xml_oarchive<Archive>::save_override(const object_id_type & t, int)
 template<class Archive>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL void
 basic_xml_oarchive<Archive>::save_override(
-    const object_reference_type & t,
-    int
+    const object_reference_type & t
 ){
     const unsigned int i = t;
     write_attribute(BOOST_ARCHIVE_XML_OBJECT_REFERENCE(), i, "=\"_");
 }
 template<class Archive>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL void
-basic_xml_oarchive<Archive>::save_override(const version_type & t, int)
+basic_xml_oarchive<Archive>::save_override(const version_type & t)
 {
     const unsigned int i = t;
     write_attribute(BOOST_ARCHIVE_XML_VERSION(), i);
@@ -199,29 +198,27 @@ basic_xml_oarchive<Archive>::save_override(const version_type & t, int)
 
 template<class Archive>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL void
-basic_xml_oarchive<Archive>::save_override(const class_id_type & t, int)
+basic_xml_oarchive<Archive>::save_override(const class_id_type & t)
 {
     write_attribute(BOOST_ARCHIVE_XML_CLASS_ID(), t);
 }
 template<class Archive>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL void
 basic_xml_oarchive<Archive>::save_override(
-    const class_id_reference_type & t,
-    int
+    const class_id_reference_type & t
 ){
     write_attribute(BOOST_ARCHIVE_XML_CLASS_ID_REFERENCE(), t);
 }
 template<class Archive>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL void
 basic_xml_oarchive<Archive>::save_override(
-    const class_id_optional_type & t,
-    int
+    const class_id_optional_type & t
 ){
     write_attribute(BOOST_ARCHIVE_XML_CLASS_ID(), t);
 }
 template<class Archive>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL void
-basic_xml_oarchive<Archive>::save_override(const class_name_type & t, int)
+basic_xml_oarchive<Archive>::save_override(const class_name_type & t)
 {
     const char * key = t;
     if(NULL == key)
@@ -231,7 +228,7 @@ basic_xml_oarchive<Archive>::save_override(const class_name_type & t, int)
 
 template<class Archive>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL void
-basic_xml_oarchive<Archive>::save_override(const tracking_type & t, int)
+basic_xml_oarchive<Archive>::save_override(const tracking_type & t)
 {
     write_attribute(BOOST_ARCHIVE_XML_TRACKING(), t.t);
 }

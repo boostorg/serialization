@@ -88,11 +88,9 @@ protected:
     BOOST_WARCHIVE_DECL void
     load(std::wstring &ws);
     #endif
-    // note: the following should not needed - but one compiler (vc 7.1)
-    // fails to compile one test (test_shared_ptr) without it !!!
     template<class T>
-    void load_override(T & t, BOOST_PFTO int){
-        basic_text_iarchive<Archive>::load_override(t, 0);
+    void load_override(T & t){
+        basic_text_iarchive<Archive>::load_override(t);
     }
     BOOST_WARCHIVE_DECL 
     text_wiarchive_impl(std::wistream & is, unsigned int flags);

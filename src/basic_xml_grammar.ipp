@@ -33,7 +33,6 @@
 // for head_iterator test
 //#include <boost/bind.hpp> 
 #include <boost/function.hpp>
-#include <boost/serialization/pfto.hpp>
 
 #include <boost/io/ios_state.hpp>
 #include <boost/serialization/throw_exception.hpp>

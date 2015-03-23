@@ -10,7 +10,6 @@
 
 #include <cstddef> // NULL
 #include <algorithm> // std::copy
-#include <boost/serialization/pfto.hpp>
 
 #include <boost/archive/basic_text_oprimitive.hpp>
 #include <boost/archive/codecvt_null.hpp>
@@ -59,9 +58,9 @@ basic_text_oprimitive<OStream>::save_binary(
 
     boost::archive::iterators::ostream_iterator<CharType> oi(os);
     std::copy(
-        base64_text(BOOST_MAKE_PFTO_WRAPPER(static_cast<const char *>(address))),
+        base64_text(static_cast<const char *>(address)),
         base64_text(
-            BOOST_MAKE_PFTO_WRAPPER(static_cast<const char *>(address) + count)
+            static_cast<const char *>(address) + count
         ),
         oi
     );

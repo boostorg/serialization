@@ -18,7 +18,6 @@
 
 #include <boost/config.hpp>
 #include <boost/mpl/assert.hpp>
-#include <boost/serialization/pfto.hpp>
 #include <boost/detail/workaround.hpp>
 
 #include <boost/archive/detail/common_oarchive.hpp>
@@ -91,13 +90,13 @@ protected:
     // Anything not an attribute and not a name-value pair is an
     // error and should be trapped here.
     template<class T>
-    void save_override(T & t, BOOST_PFTO int)
+    void save_override(T & t)
     {
         // If your program fails to compile here, its most likely due to
         // not specifying an nvp wrapper around the variable to
         // be serialized.
         BOOST_MPL_ASSERT((serialization::is_wrapper< T >));
-        this->detail_common_oarchive::save_override(t, 0);
+        this->detail_common_oarchive::save_override(t);
     }
 
     // special treatment for name-value pairs.
@@ -107,32 +106,31 @@ protected:
         #ifndef BOOST_NO_FUNCTION_TEMPLATE_ORDERING
         const
         #endif
-        ::boost::serialization::nvp< T > & t,
-        int
+        ::boost::serialization::nvp< T > & t
     ){
         this->This()->save_start(t.name());
-        this->detail_common_oarchive::save_override(t.const_value(), 0);
+        this->detail_common_oarchive::save_override(t.const_value());
         this->This()->save_end(t.name());
     }
 
     // specific overrides for attributes - not name value pairs so we
     // want to trap them before the above "fall through"
     BOOST_ARCHIVE_OR_WARCHIVE_DECL void
-    save_override(const object_id_type & t, int);
+    save_override(const object_id_type & t);
     BOOST_ARCHIVE_OR_WARCHIVE_DECL void
-    save_override(const object_reference_type & t, int);
+    save_override(const object_reference_type & t);
     BOOST_ARCHIVE_OR_WARCHIVE_DECL void
-    save_override(const version_type & t, int);
+    save_override(const version_type & t);
     BOOST_ARCHIVE_OR_WARCHIVE_DECL void
-    save_override(const class_id_type & t, int);
+    save_override(const class_id_type & t);
     BOOST_ARCHIVE_OR_WARCHIVE_DECL void
-    save_override(const class_id_optional_type & t, int);
+    save_override(const class_id_optional_type & t);
     BOOST_ARCHIVE_OR_WARCHIVE_DECL void
-    save_override(const class_id_reference_type & t, int);
+    save_override(const class_id_reference_type & t);
     BOOST_ARCHIVE_OR_WARCHIVE_DECL void
-    save_override(const class_name_type & t, int);
+    save_override(const class_name_type & t);
     BOOST_ARCHIVE_OR_WARCHIVE_DECL void
-    save_override(const tracking_type & t, int);
+    save_override(const tracking_type & t);
 
     BOOST_ARCHIVE_OR_WARCHIVE_DECL
     basic_xml_oarchive(unsigned int flags);

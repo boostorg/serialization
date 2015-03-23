@@ -94,8 +94,8 @@ text_iarchive_impl<Archive>::load(std::wstring &ws)
 
 template<class Archive>
 BOOST_ARCHIVE_DECL void
-text_iarchive_impl<Archive>::load_override(class_name_type & t, int){
-    basic_text_iarchive<Archive>::load_override(t, 0);
+text_iarchive_impl<Archive>::load_override(class_name_type & t){
+    basic_text_iarchive<Archive>::load_override(t);
 }
 
 template<class Archive>

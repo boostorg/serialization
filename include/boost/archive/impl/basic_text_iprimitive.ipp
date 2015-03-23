@@ -19,7 +19,6 @@ namespace std{
 #endif
 
 #include <boost/serialization/throw_exception.hpp>
-#include <boost/serialization/pfto.hpp>
 
 #include <boost/archive/basic_text_iprimitive.hpp>
 #include <boost/archive/codecvt_null.hpp>
@@ -87,11 +86,7 @@ basic_text_iprimitive<IStream>::load_binary(
         > 
         binary;
         
-    binary i = binary(
-        BOOST_MAKE_PFTO_WRAPPER(
-            iterators::istream_iterator<CharType>(is)
-        )
-    );
+    binary i = binary(iterators::istream_iterator<CharType>(is));
 
     char * caddr = static_cast<char *>(address);
     

@@ -99,11 +99,11 @@ protected:
     load(std::wstring &ws);
     #endif
     template<class T>
-    void load_override(T & t, BOOST_PFTO int){
-        basic_xml_iarchive<Archive>::load_override(t, 0);
+    void load_override(T & t){
+        basic_xml_iarchive<Archive>::load_override(t);
     }
     BOOST_ARCHIVE_DECL void
-    load_override(class_name_type & t, int);
+    load_override(class_name_type & t);
     BOOST_ARCHIVE_DECL void
     init();
     BOOST_ARCHIVE_DECL 

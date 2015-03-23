@@ -42,8 +42,8 @@ void save_iterator(std::ostream &os, InputIterator begin, InputIterator end){
         boost::archive::iterators::xml_escape<InputIterator>
     > translator;
     std::copy(
-        translator(BOOST_MAKE_PFTO_WRAPPER(begin)), 
-        translator(BOOST_MAKE_PFTO_WRAPPER(end)), 
+        translator(begin),
+        translator(end),
         boost::archive::iterators::ostream_iterator<char>(os)
     );
 }
@@ -78,8 +78,8 @@ xml_oarchive_impl<Archive>::save(const std::string & s){
         const char * 
     > xml_escape_translator;
     std::copy(
-        xml_escape_translator(BOOST_MAKE_PFTO_WRAPPER(s.data())),
-        xml_escape_translator(BOOST_MAKE_PFTO_WRAPPER(s.data()+ s.size())), 
+        xml_escape_translator(s.data()),
+        xml_escape_translator(s.data()+ s.size()),
         boost::archive::iterators::ostream_iterator<char>(os)
     );
 }
@@ -91,8 +91,8 @@ xml_oarchive_impl<Archive>::save(const char * s){
         const char * 
     > xml_escape_translator;
     std::copy(
-        xml_escape_translator(BOOST_MAKE_PFTO_WRAPPER(s)),
-        xml_escape_translator(BOOST_MAKE_PFTO_WRAPPER(s + std::strlen(s))), 
+        xml_escape_translator(s),
+        xml_escape_translator(s + std::strlen(s)),
         boost::archive::iterators::ostream_iterator<char>(os)
     );
 }

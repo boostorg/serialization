@@ -57,7 +57,7 @@ public:
     }
     template<class T>
     Archive & operator>>(T & t){
-        this->This()->load_override(t, 0);
+        this->This()->load_override(t);
         return * this->This();
     }
 

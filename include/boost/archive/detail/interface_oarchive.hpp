@@ -60,7 +60,7 @@ public:
 
     template<class T>
     Archive & operator<<(T & t){
-        this->This()->save_override(t, 0);
+        this->This()->save_override(t);
         return * this->This();
     }
     

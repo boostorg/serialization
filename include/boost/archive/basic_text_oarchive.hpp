@@ -25,7 +25,6 @@
 // use two template parameters
 
 #include <boost/config.hpp>
-#include <boost/serialization/pfto.hpp>
 #include <boost/detail/workaround.hpp>
 #include <boost/archive/detail/common_oarchive.hpp>
 #include <boost/serialization/string.hpp>
@@ -80,20 +79,20 @@ protected:
     // extra stuff to get it passed borland compilers
     typedef detail::common_oarchive<Archive> detail_common_oarchive;
     template<class T>
-    void save_override(T & t, BOOST_PFTO int){
-        this->detail_common_oarchive::save_override(t, 0);
+    void save_override(T & t){
+        this->detail_common_oarchive::save_override(t);
     }
 
     // start new objects on a new line
-    void save_override(const object_id_type & t, int){
+    void save_override(const object_id_type & t){
         this->This()->newline();
-        this->detail_common_oarchive::save_override(t, 0);
+        this->detail_common_oarchive::save_override(t);
     }
 
     // text file don't include the optional information 
-    void save_override(const class_id_optional_type & /* t */, int){}
+    void save_override(const class_id_optional_type & /* t */){}
 
-    void save_override(const class_name_type & t, int){
+    void save_override(const class_name_type & t){
         const std::string s(t);
         * this->This() << s;
     }

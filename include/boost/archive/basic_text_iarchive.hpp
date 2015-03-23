@@ -25,7 +25,6 @@
 // use two template parameters
 
 #include <boost/config.hpp>
-#include <boost/serialization/pfto.hpp>
 #include <boost/detail/workaround.hpp>
 
 #include <boost/archive/detail/common_iarchive.hpp>
@@ -67,14 +66,14 @@ protected:
     // template ordering
     typedef detail::common_iarchive<Archive> detail_common_iarchive;
     template<class T>
-    void load_override(T & t, BOOST_PFTO int){
-        this->detail_common_iarchive::load_override(t, 0);
+    void load_override(T & t){
+        this->detail_common_iarchive::load_override(t);
     }
     // text file don't include the optional information 
-    void load_override(class_id_optional_type & /*t*/, int){}
+    void load_override(class_id_optional_type & /*t*/){}
 
     BOOST_ARCHIVE_OR_WARCHIVE_DECL void
-    load_override(class_name_type & t, int);
+    load_override(class_name_type & t);
 
     BOOST_ARCHIVE_OR_WARCHIVE_DECL void
     init(void);

@@ -52,8 +52,8 @@ void save_iterator(std::wostream &os, InputIterator begin, InputIterator end){
         iterators::xml_escape<InputIterator>
     > xmbtows;
     std::copy(
-        xmbtows(BOOST_MAKE_PFTO_WRAPPER(begin)),
-        xmbtows(BOOST_MAKE_PFTO_WRAPPER(end)),
+        xmbtows(begin),
+        xmbtows(end),
         boost::archive::iterators::ostream_iterator<wchar_t>(os)
     );
 }
@@ -76,15 +76,15 @@ xml_woarchive_impl<Archive>::save(const std::wstring & ws){
 #if 0
     typedef iterators::xml_escape<std::wstring::const_iterator> xmbtows;
     std::copy(
-        xmbtows(BOOST_MAKE_PFTO_WRAPPER(ws.begin())),
-        xmbtows(BOOST_MAKE_PFTO_WRAPPER(ws.end())),
+        xmbtows(ws.begin()),
+        xmbtows(ws.end()),
         boost::archive::iterators::ostream_iterator<wchar_t>(os)
     );
 #endif
     typedef iterators::xml_escape<const wchar_t *> xmbtows;
     std::copy(
-        xmbtows(BOOST_MAKE_PFTO_WRAPPER(ws.data())),
-        xmbtows(BOOST_MAKE_PFTO_WRAPPER(ws.data() + ws.size())),
+        xmbtows(ws.data()),
+        xmbtows(ws.data() + ws.size()),
         boost::archive::iterators::ostream_iterator<wchar_t>(os)
     );
 }
@@ -103,8 +103,8 @@ xml_woarchive_impl<Archive>::save(const wchar_t * ws){
     os << ws;
     typedef iterators::xml_escape<const wchar_t *> xmbtows;
     std::copy(
-        xmbtows(BOOST_MAKE_PFTO_WRAPPER(ws)),
-        xmbtows(BOOST_MAKE_PFTO_WRAPPER(ws + std::wcslen(ws))),
+        xmbtows(ws),
+        xmbtows(ws + std::wcslen(ws)),
         boost::archive::iterators::ostream_iterator<wchar_t>(os)
     );
 }

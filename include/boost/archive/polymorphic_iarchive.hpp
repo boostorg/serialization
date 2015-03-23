@@ -29,7 +29,6 @@ namespace std{
 
 #include <boost/cstdint.hpp>
 
-#include <boost/serialization/pfto.hpp>
 #include <boost/archive/detail/iserializer.hpp>
 #include <boost/archive/detail/interface_iarchive.hpp>
 #include <boost/serialization/nvp.hpp>
@@ -102,7 +101,7 @@ public:
     // msvc and borland won't automatically pass these to the base class so
     // make it explicit here
     template<class T>
-    void load_override(T & t, BOOST_PFTO int)
+    void load_override(T & t)
     {
         archive::load(* this->This(), t);
     }
