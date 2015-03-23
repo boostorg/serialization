@@ -73,10 +73,11 @@ BOOST_ARCHIVE_SIGNATURE(){
 // 10- fixed base64 output/input.
 // 11- not changes
 // 12- improved serialization of collections
+// 13- simplified visibility, removed Borland, removed pfto
 
 BOOST_ARCHIVE_DECL library_version_type
 BOOST_ARCHIVE_VERSION(){
-    return library_version_type(12);
+    return library_version_type(13);
 }
 
 } // namespace archive
