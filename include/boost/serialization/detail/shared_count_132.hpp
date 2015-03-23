@@ -45,11 +45,6 @@ namespace std{
 } // namespace std
 #endif
 
-#ifdef __BORLANDC__
-# pragma warn -8026     // Functions with excep. spec. are not expanded inline
-# pragma warn -8027     // Functions containing try are not expanded inline
-#endif
-
 namespace boost_132 {
 
 // Debug hooks
@@ -71,10 +66,6 @@ void sp_array_destructor_hook(void * px);
 // Hence, the temporary #pragma option -pc below. The version
 // check is deliberately conservative.
 
-#if defined(__BORLANDC__) && __BORLANDC__ == 0x551
-# pragma option push -pc
-#endif
-
 class bad_weak_ptr: public std::exception
 {
 public:
@@ -84,10 +75,6 @@ public:
         return "boost::bad_weak_ptr";
     }
 };
-
-#if defined(__BORLANDC__) && __BORLANDC__ == 0x551
-# pragma option pop
-#endif
 
 namespace detail{
 
@@ -560,10 +547,5 @@ inline shared_count::shared_count(weak_count const & r): pi_(r.pi_)
 } // namespace boost
 
 BOOST_SERIALIZATION_ASSUME_ABSTRACT(boost_132::detail::sp_counted_base)
-
-#ifdef __BORLANDC__
-# pragma warn .8027     // Functions containing try are not expanded inline
-# pragma warn .8026     // Functions with excep. spec. are not expanded inline
-#endif
 
 #endif  // #ifndef BOOST_DETAIL_SHARED_COUNT_HPP_INCLUDED
