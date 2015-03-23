@@ -30,9 +30,9 @@
 #if defined(BOOST_ALL_DYN_LINK) || defined(BOOST_ARCHIVE_DYN_LINK)
 // export if this is our own source, otherwise import:
 #ifdef BOOST_ARCHIVE_SOURCE
-# define BOOST_ARCHIVE_DECL __declspec(dllexport)
+# define BOOST_ARCHIVE_DECL BOOST_SYMBOL_EXPORT
 #else
-# define BOOST_ARCHIVE_DECL __declspec(dllimport)
+# define BOOST_ARCHIVE_DECL BOOST_SYMBOL_IMPORT
 #endif  // BOOST_ARCHIVE_SOURCE
 #endif  // DYN_LINK
 #endif  // BOOST_HAS_DECLSPEC

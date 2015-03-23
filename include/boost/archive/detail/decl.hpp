@@ -22,7 +22,6 @@
 // http://www.boost.org/more/separate_compilation.html
 
 #include <boost/config.hpp>
-#include <boost/preprocessor/facilities/empty.hpp>
 
 #if defined(BOOST_HAS_DECLSPEC)
     #if (defined(BOOST_ALL_DYN_LINK) || defined(BOOST_SERIALIZATION_DYN_LINK))

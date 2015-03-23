@@ -21,7 +21,6 @@
 #include <string>
 
 #include <boost/config.hpp> 
-#include <boost/preprocessor/empty.hpp>
 #include <boost/archive/detail/decl.hpp>
 
 // note: the only reason this is in here is that windows header

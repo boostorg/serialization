@@ -47,7 +47,7 @@ class extended_type_info;
 // Return the altered pointer. If there exists no sequence of casts that
 // can transform from_type to to_type, return a NULL.  
 
-BOOST_SERIALIZATION_DECL(void const *)
+BOOST_SERIALIZATION_DECL void const *
 void_upcast(
     extended_type_info const & derived,  
     extended_type_info const & base, 
@@ -67,7 +67,7 @@ void_upcast(
     ));
 }
 
-BOOST_SERIALIZATION_DECL(void const *)
+BOOST_SERIALIZATION_DECL void const *
 void_downcast(
     extended_type_info const & derived,  
     extended_type_info const & base, 
@@ -89,18 +89,18 @@ void_downcast(
 
 namespace void_cast_detail {
 
-class BOOST_SERIALIZATION_DECL(BOOST_PP_EMPTY()) void_caster :
+class BOOST_SERIALIZATION_DECL void_caster :
     private boost::noncopyable
 {
     friend 
-    BOOST_SERIALIZATION_DECL(void const *)
+    BOOST_SERIALIZATION_DECL void const *
     boost::serialization::void_upcast(
         extended_type_info const & derived,
         extended_type_info const & base,
         void const * const
     );
     friend 
-    BOOST_SERIALIZATION_DECL(void const *)  
+    BOOST_SERIALIZATION_DECL void const *
     boost::serialization::void_downcast(
         extended_type_info const & derived,
         extended_type_info const & base,

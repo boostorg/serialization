@@ -17,7 +17,6 @@
 
 #include <boost/config.hpp>
 #include <boost/detail/workaround.hpp>
-#include <boost/preprocessor/facilities/empty.hpp>
 
 // note: this version incorporates the related code into the the 
 // the same library as BOOST_ARCHIVE.  This could change some day in the
@@ -39,24 +38,16 @@
     #endif
     // export if this is our own source, otherwise import:
     #if defined(BOOST_SERIALIZATION_SOURCE)
-        #if defined(__BORLANDC__)
-            #define BOOST_SERIALIZATION_DECL(T) T __export
-        #else
-            #define BOOST_SERIALIZATION_DECL(T) __declspec(dllexport) T
-        #endif
+        #define BOOST_SERIALIZATION_DECL BOOST_SYMBOL_EXPORT
     #else
-        #if defined(__BORLANDC__)
-            #define BOOST_SERIALIZATION_DECL(T) T __import
-        #else
-            #define BOOST_SERIALIZATION_DECL(T) __declspec(dllimport) T
-        #endif
+        #define BOOST_SERIALIZATION_DECL BOOST_SYMBOL_IMPORT
     #endif // defined(BOOST_SERIALIZATION_SOURCE)
 #endif // defined(BOOST_ALL_DYN_LINK) || defined(BOOST_SERIALIZATION_DYN_LINK)
 #endif // BOOST_HAS_DECLSPEC
 
 // if BOOST_SERIALIZATION_DECL isn't defined yet define it now:
 #ifndef BOOST_SERIALIZATION_DECL
-    #define BOOST_SERIALIZATION_DECL(T) T
+    #define BOOST_SERIALIZATION_DECL
 #endif
 
 //  enable automatic library variant selection  ------------------------------// 

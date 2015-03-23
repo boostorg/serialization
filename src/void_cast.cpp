@@ -212,7 +212,7 @@ public:
 #endif
 
 // implementation of void caster base class
-BOOST_SERIALIZATION_DECL(void)
+BOOST_SERIALIZATION_DECL void
 void_caster::recursive_register(bool includes_virtual_base) const {
     void_cast_detail::set_type & s
         = void_cast_detail::void_caster_registry::get_mutable_instance();
@@ -270,7 +270,7 @@ void_caster::recursive_register(bool includes_virtual_base) const {
     }
 }
 
-BOOST_SERIALIZATION_DECL(void)
+BOOST_SERIALIZATION_DECL void
 void_caster::recursive_unregister() const {
     if(void_caster_registry::is_destroyed())
         return;
@@ -310,7 +310,7 @@ void_caster::recursive_unregister() const {
 // and alter it so that it would point to an instance of a related type.
 // Return the altered pointer. If there exists no sequence of casts that
 // can transform from_type to to_type, return a NULL.  
-BOOST_SERIALIZATION_DECL(void const *)  
+BOOST_SERIALIZATION_DECL void const *
 void_upcast(
     extended_type_info const & derived,
     extended_type_info const & base,
@@ -333,7 +333,7 @@ void_upcast(
     return NULL;
 }
 
-BOOST_SERIALIZATION_DECL(void const *)  
+BOOST_SERIALIZATION_DECL void const *
 void_downcast(
     extended_type_info const & derived,
     extended_type_info const & base,

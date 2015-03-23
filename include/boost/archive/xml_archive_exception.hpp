@@ -20,7 +20,6 @@
 #include <boost/assert.hpp>
 
 #include <boost/config.hpp> 
-#include <boost/preprocessor/empty.hpp>
 #include <boost/archive/detail/decl.hpp>
 #include <boost/archive/archive_exception.hpp>
 
