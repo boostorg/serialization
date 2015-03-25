@@ -168,9 +168,6 @@ test_main(int /* argc */, char * /* argv */[]) {
         }
     }
 
-    // compare the data read back in with the orginal
-    BOOST_CHECK(from_file.size() == 6);
-
     BOOST_CHECK(std::equal(from_file.begin(), from_file.end(), td::wchar_encoding));
   
     // Send the UCS4_data back out, converting to UTF-8
