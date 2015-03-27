@@ -118,13 +118,13 @@ bool detail::singleton_wrapper< T >::m_is_destroyed = false;
 } // detail
 
 template <class T>
-class BOOST_DLLEXPORT singleton : public singleton_module
+class singleton : public singleton_module
 {
 private:
-    static T & instance;
+    BOOST_DLLEXPORT static T & instance;
     // include this to provoke instantiation at pre-execution time
     static void use(T const &) {}
-    static T & get_instance() {
+    BOOST_DLLEXPORT static T & get_instance() {
         static detail::singleton_wrapper< T > t;
         // refer to instance, causing it to be instantiated (and
         // initialized at startup on working compilers)
@@ -133,14 +133,14 @@ private:
         return static_cast<T &>(t);
     }
 public:
-    static T & get_mutable_instance(){
+    BOOST_DLLEXPORT static T & get_mutable_instance(){
         BOOST_ASSERT(! is_locked());
         return get_instance();
     }
-    static const T & get_const_instance(){
+    BOOST_DLLEXPORT static const T & get_const_instance(){
         return get_instance();
     }
-    static bool is_destroyed(){
+    BOOST_DLLEXPORT static bool is_destroyed(){
         return detail::singleton_wrapper< T >::m_is_destroyed;
     }
 };
