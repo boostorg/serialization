@@ -39,7 +39,7 @@ namespace archive {
 //////////////////////////////////////////////////////////////////////
 // exceptions thrown by archives
 //
-class BOOST_SYMBOL_VISIBLE archive_exception : 
+class BOOST_ARCHIVE_DECL archive_exception : 
     public virtual std::exception
 {
 protected:
