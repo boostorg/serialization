@@ -47,7 +47,7 @@ namespace detail {
 } // namespace detail
 
 template<class Archive>
-class xml_oarchive_impl : 
+class BOOST_SYMBOL_VISIBLE xml_oarchive_impl : 
     public basic_text_oprimitive<std::ostream>,
     public basic_xml_oarchive<Archive>
 {
@@ -118,7 +118,7 @@ public:
 // do not derive from this class.  If you want to extend this functionality
 // via inhertance, derived from xml_oarchive_impl instead.  This will
 // preserve correct static polymorphism.
-class xml_oarchive : 
+class BOOST_SYMBOL_VISIBLE xml_oarchive : 
     public xml_oarchive_impl<xml_oarchive>
 {
 public:

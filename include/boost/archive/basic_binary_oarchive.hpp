@@ -58,8 +58,8 @@ namespace detail {
 // does have the virtue of buiding the smalles archive in the minimum amount
 // of time.  So under some circumstances it may be he right choice.
 template<class Archive>
-class basic_binary_oarchive : 
-    public archive::detail::common_oarchive<Archive>
+class BOOST_SYMBOL_VISIBLE basic_binary_oarchive : 
+    public detail::common_oarchive<Archive>
 {
 #ifdef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
 public:

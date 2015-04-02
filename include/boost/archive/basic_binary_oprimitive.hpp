@@ -61,7 +61,7 @@ class codecvt_null;
 // class basic_binary_oprimitive - binary output of prmitives
 
 template<class Archive, class Elem, class Tr>
-class basic_binary_oprimitive {
+class BOOST_SYMBOL_VISIBLE basic_binary_oprimitive {
 #ifndef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
     friend class save_access;
 protected:

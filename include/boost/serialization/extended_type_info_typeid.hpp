@@ -49,7 +49,7 @@ namespace boost {
 namespace serialization {
 namespace typeid_system {
 
-class BOOST_SERIALIZATION_DECL extended_type_info_typeid_0 : 
+class BOOST_SYMBOL_VISIBLE extended_type_info_typeid_0 :
     public extended_type_info
 {
     virtual const char * get_debug_info() const {

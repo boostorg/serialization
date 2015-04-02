@@ -31,7 +31,7 @@ namespace archive {
 //////////////////////////////////////////////////////////////////////
 // exceptions thrown by xml archives
 //
-class BOOST_ARCHIVE_DECL xml_archive_exception : 
+class BOOST_SYMBOL_VISIBLE xml_archive_exception : 
     public virtual boost::archive::archive_exception
 {
 public:

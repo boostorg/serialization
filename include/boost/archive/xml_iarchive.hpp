@@ -44,7 +44,7 @@ class basic_xml_grammar;
 typedef basic_xml_grammar<char> xml_grammar;
 
 template<class Archive>
-class xml_iarchive_impl : 
+class BOOST_SYMBOL_VISIBLE xml_iarchive_impl : 
     public basic_text_iprimitive<std::istream>,
     public basic_xml_iarchive<Archive>
 {
@@ -128,7 +128,7 @@ protected:
 namespace boost { 
 namespace archive {
 
-class xml_iarchive : 
+class BOOST_SYMBOL_VISIBLE xml_iarchive : 
     public xml_iarchive_impl<xml_iarchive>{
 public:
     xml_iarchive(std::istream & is, unsigned int flags = 0) :

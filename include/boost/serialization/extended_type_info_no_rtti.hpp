@@ -52,7 +52,7 @@ namespace no_rtti_system {
 
 // common base class to share type_info_key.  This is used to 
 // identify the method used to keep track of the extended type
-class BOOST_SERIALIZATION_DECL extended_type_info_no_rtti_0 : 
+class BOOST_SYMBOL_VISIBLE extended_type_info_no_rtti_0 :
     public extended_type_info
 {
 protected:

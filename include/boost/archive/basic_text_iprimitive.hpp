@@ -64,7 +64,7 @@ namespace archive {
 #endif
 
 template<class IStream>
-class basic_text_iprimitive {
+class BOOST_SYMBOL_VISIBLE basic_text_iprimitive {
 protected:
     IStream &is;
     io::ios_flags_saver flags_saver;

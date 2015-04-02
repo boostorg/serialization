@@ -48,7 +48,7 @@ basic_binary_iarchive<Archive>::load_override(class_name_type & t){
 
 template<class Archive>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL void
-basic_binary_iarchive<Archive>::init(){
+basic_binary_iarchive<Archive>::init(void){
     // read signature in an archive version independent manner
     std::string file_signature;
     

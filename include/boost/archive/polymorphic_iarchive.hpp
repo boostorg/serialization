@@ -49,7 +49,7 @@ namespace detail {
 
 class polymorphic_iarchive;
 
-class polymorphic_iarchive_impl :
+class BOOST_SYMBOL_VISIBLE polymorphic_iarchive_impl :
     public detail::interface_iarchive<polymorphic_iarchive>
 {
 #ifdef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
@@ -154,7 +154,7 @@ public:
 namespace boost {
 namespace archive {
 
-class polymorphic_iarchive : 
+class BOOST_SYMBOL_VISIBLE polymorphic_iarchive :
     public polymorphic_iarchive_impl
 {
 public:

@@ -67,8 +67,7 @@ class codecvt_null;
 /////////////////////////////////////////////////////////////////////////////
 // class binary_iarchive - read serialized objects from a input binary stream
 template<class Archive, class Elem, class Tr>
-class basic_binary_iprimitive
-{
+class BOOST_SYMBOL_VISIBLE basic_binary_iprimitive {
 #ifndef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
     friend class load_access;
 protected:

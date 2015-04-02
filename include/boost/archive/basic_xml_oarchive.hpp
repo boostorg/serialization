@@ -44,7 +44,7 @@ namespace detail {
 //////////////////////////////////////////////////////////////////////
 // class basic_xml_oarchive - write serialized objects to a xml output stream
 template<class Archive>
-class basic_xml_oarchive :
+class BOOST_SYMBOL_VISIBLE basic_xml_oarchive :
     public detail::common_oarchive<Archive>
 {
 #ifdef BOOST_NO_MEMBER_TEMPLATE_FRIENDS

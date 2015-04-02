@@ -36,10 +36,10 @@ namespace serialization {
 namespace archive {
 namespace detail {
 
-class BOOST_ARCHIVE_DECL basic_oarchive;
-class BOOST_ARCHIVE_DECL basic_oserializer;
+class basic_oarchive;
+class basic_oserializer;
 
-class BOOST_ARCHIVE_DECL basic_pointer_oserializer : 
+class BOOST_SYMBOL_VISIBLE basic_pointer_oserializer : 
     public basic_serializer
 {
 protected:

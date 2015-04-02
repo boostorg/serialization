@@ -34,7 +34,7 @@ namespace detail {
 
 class basic_serializer;
 
-class BOOST_ARCHIVE_OR_WARCHIVE_DECL
+class BOOST_SYMBOL_VISIBLE
 basic_serializer_map : public
     boost::noncopyable
 {

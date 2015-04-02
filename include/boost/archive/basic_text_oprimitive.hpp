@@ -64,7 +64,7 @@ namespace archive {
 /////////////////////////////////////////////////////////////////////////
 // class basic_text_oprimitive - output of prmitives to stream
 template<class OStream>
-class basic_text_oprimitive
+class BOOST_SYMBOL_VISIBLE basic_text_oprimitive
 {
 protected:
     OStream &os;
