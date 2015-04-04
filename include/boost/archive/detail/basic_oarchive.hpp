@@ -35,8 +35,8 @@ namespace archive {
 namespace detail {
 
 class basic_oarchive_impl;
-class BOOST_SYMBOL_VISIBLE basic_oserializer;
-class BOOST_SYMBOL_VISIBLE basic_pointer_oserializer;
+class basic_oserializer;
+class basic_pointer_oserializer;
 
 //////////////////////////////////////////////////////////////////////
 // class basic_oarchive - write serialized objects to an output stream

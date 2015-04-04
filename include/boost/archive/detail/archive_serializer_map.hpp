@@ -38,9 +38,9 @@ class basic_serializer;
 template<class Archive>
 class BOOST_SYMBOL_VISIBLE archive_serializer_map {
 public:
-    static bool insert(const basic_serializer * bs);
-    static void erase(const basic_serializer * bs);
-    static const basic_serializer * find(
+    static bool BOOST_ARCHIVE_OR_WARCHIVE_DECL insert(const basic_serializer * bs);
+    static void BOOST_ARCHIVE_OR_WARCHIVE_DECL erase(const basic_serializer * bs);
+    static const basic_serializer * BOOST_ARCHIVE_OR_WARCHIVE_DECL find(
         const boost::serialization::extended_type_info & type_
     );
 };

@@ -55,11 +55,12 @@ class helper_collection
     collection m_collection;
 
     struct predicate {
+        BOOST_DELETED_FUNCTION(predicate & operator=(const predicate & rhs));
+    public:
         const void * const m_ti;
         bool operator()(helper_value_type const &rhs) const {
             return m_ti == rhs.first;
         }
-        predicate & operator=(const void * ti); // to suppress warning
         predicate(const void * ti) :
             m_ti(ti)
         {}

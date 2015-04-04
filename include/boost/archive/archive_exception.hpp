@@ -86,7 +86,7 @@ public:
         const char * e2 = NULL
     ) BOOST_NOEXCEPT;
     virtual BOOST_ARCHIVE_DECL ~archive_exception() BOOST_NOEXCEPT_OR_NOTHROW ;
-    virtual BOOST_ARCHIVE_DECL const char * what() const BOOST_NOEXCEPT_OR_NOTHROW ;
+    virtual const char * BOOST_ARCHIVE_DECL what() const BOOST_NOEXCEPT_OR_NOTHROW ;
 };
 
 }// namespace archive
