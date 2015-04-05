@@ -48,14 +48,14 @@ class BOOST_SYMBOL_VISIBLE basic_iserializer :
 private:
     basic_pointer_iserializer *m_bpis;
 protected:
-    explicit basic_iserializer(
+    explicit BOOST_ARCHIVE_DECL basic_iserializer(
         const boost::serialization::extended_type_info & type
     );
     // account for bogus gcc warning
     #if defined(__GNUC__)
     virtual
     #endif
-    ~basic_iserializer();
+    BOOST_ARCHIVE_DECL ~basic_iserializer();
 public:
     bool serialized_as_pointer() const {
         return m_bpis != NULL;

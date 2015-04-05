@@ -56,23 +56,23 @@ class BOOST_SYMBOL_VISIBLE basic_iarchive :
     virtual void vload(class_name_type &t) = 0;
     virtual void vload(tracking_type &t) = 0;
 protected:
-    basic_iarchive(unsigned int flags);
+    BOOST_ARCHIVE_DECL basic_iarchive(unsigned int flags);
 public:
     // account for bogus gcc warning
     #if defined(__GNUC__)
     virtual
     #endif
-    ~basic_iarchive();
+    BOOST_ARCHIVE_DECL ~basic_iarchive();
     // note: NOT part of the public API.
-    void next_object_pointer(void *t);
-    void register_basic_serializer(
+    BOOST_ARCHIVE_DECL void next_object_pointer(void *t);
+    BOOST_ARCHIVE_DECL void register_basic_serializer(
         const basic_iserializer & bis
     );
-    void load_object(
+    BOOST_ARCHIVE_DECL void load_object(
         void *t, 
         const basic_iserializer & bis
     );
-    const basic_pointer_iserializer * 
+    BOOST_ARCHIVE_DECL const basic_pointer_iserializer * 
     load_pointer(
         void * & t, 
         const basic_pointer_iserializer * bpis_ptr,
@@ -82,15 +82,15 @@ public:
 
     );
     // real public API starts here
-    void 
+    BOOST_ARCHIVE_DECL void 
     set_library_version(library_version_type archive_library_version);
-    library_version_type 
+    BOOST_ARCHIVE_DECL library_version_type 
     get_library_version() const;
-    unsigned int
+    BOOST_ARCHIVE_DECL unsigned int
     get_flags() const;
-    void 
+    BOOST_ARCHIVE_DECL void 
     reset_object_address(const void * new_address, const void * old_address);
-    void 
+    BOOST_ARCHIVE_DECL void 
     delete_created_pointers();
 };
 

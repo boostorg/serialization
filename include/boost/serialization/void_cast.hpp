@@ -107,8 +107,8 @@ class BOOST_SYMBOL_VISIBLE void_caster :
         void const * const
     );
 protected:
-    void recursive_register(bool includes_virtual_base = false) const;
-    void recursive_unregister() const;
+    BOOST_SERIALIZATION_DECL void recursive_register(bool includes_virtual_base = false) const;
+    BOOST_SERIALIZATION_DECL void recursive_unregister() const;
     virtual bool has_virtual_base() const = 0;
 public:
     // Data members

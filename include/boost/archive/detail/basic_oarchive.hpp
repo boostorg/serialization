@@ -59,22 +59,22 @@ class BOOST_SYMBOL_VISIBLE basic_oarchive :
     virtual void vsave(const class_name_type & t) = 0;
     virtual void vsave(const tracking_type t) = 0;
 protected:
-    basic_oarchive(unsigned int flags = 0);
+    BOOST_ARCHIVE_DECL basic_oarchive(unsigned int flags = 0);
     // account for bogus gcc warning
     #if defined(__GNUC__)
     virtual
     #endif
-    ~basic_oarchive();
+    BOOST_ARCHIVE_DECL ~basic_oarchive();
 public:
     // note: NOT part of the public interface
-    void register_basic_serializer(
+    BOOST_ARCHIVE_DECL void register_basic_serializer(
         const basic_oserializer & bos
     );
-    void save_object(
+    BOOST_ARCHIVE_DECL void save_object(
         const void *x, 
         const basic_oserializer & bos
     );
-    void save_pointer(
+    BOOST_ARCHIVE_DECL void save_pointer(
         const void * t, 
         const basic_pointer_oserializer * bpos_ptr
     );
@@ -82,9 +82,9 @@ public:
         vsave(NULL_POINTER_TAG);
     }
     // real public interface starts here
-    void end_preamble(); // default implementation does nothing
-    library_version_type get_library_version() const;
-    unsigned int get_flags() const;
+    BOOST_ARCHIVE_DECL void end_preamble(); // default implementation does nothing
+    BOOST_ARCHIVE_DECL library_version_type get_library_version() const;
+    BOOST_ARCHIVE_DECL unsigned int get_flags() const;
 };
 
 } // namespace detail
