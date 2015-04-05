@@ -44,9 +44,10 @@ class BOOST_SYMBOL_VISIBLE archive_exception :
 {
     char m_buffer[128];
 protected:
-    unsigned int
-    BOOST_ARCHIVE_DECL append(unsigned int l, const char * a);
-    BOOST_ARCHIVE_DECL archive_exception() BOOST_NOEXCEPT;
+    BOOST_ARCHIVE_DECL unsigned int
+    append(unsigned int l, const char * a);
+    BOOST_ARCHIVE_DECL
+    archive_exception() BOOST_NOEXCEPT;
 public:
     typedef enum {
         no_exception,       // initialized without code
