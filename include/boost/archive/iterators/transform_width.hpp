@@ -113,11 +113,10 @@ public:
     transform_width(BOOST_PFTO_WRAPPER(T) start) : 
         super_t(Base(BOOST_MAKE_PFTO_WRAPPER(static_cast< T >(start)))),
         m_buffer_out_full(false),
-        m_buffer_out(),
         // To disable GCC warning, but not truly necessary 
 	    //(m_buffer_in will be initialized later before being 
 	    //used because m_remaining_bits == 0)
-        m_buffer_in(), 
+        m_buffer_in(0), 
         m_remaining_bits(0),
         m_end_of_sequence(false)
     {}
