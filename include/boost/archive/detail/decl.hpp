@@ -30,9 +30,6 @@
             #if defined(__BORLANDC__)
             #define BOOST_ARCHIVE_DECL(T) T __export
             #define BOOST_ARCHIVE_OR_WARCHIVE_DECL(T)  T __export
-            #elif defined(BOOST_GCC) && BOOST_GCC >= 4
-            #define BOOST_ARCHIVE_DECL(T) __attribute__ ((visibility ("default")))
-            #define BOOST_ARCHIVE_OR_WARCHIVE_DECL(T) __attribute__ ((visibility ("default")))
             #else
             #define BOOST_ARCHIVE_DECL(T) __declspec(dllexport) T
             #define BOOST_ARCHIVE_OR_WARCHIVE_DECL(T)  __declspec(dllexport) T
@@ -40,9 +37,6 @@
         #else
             #if defined(__BORLANDC__)
             #define BOOST_ARCHIVE_DECL(T) T __import
-            #elif defined(BOOST_GCC) && BOOST_GCC >= 4
-            #define BOOST_ARCHIVE_DECL(T) __attribute__ ((visibility ("default")))
-            #define BOOST_ARCHIVE_OR_WARCHIVE_DECL(T) __attribute__ ((visibility ("default")))
             #else
             #define BOOST_ARCHIVE_DECL(T) __declspec(dllimport) T
             #endif
@@ -51,9 +45,6 @@
             #if defined(__BORLANDC__)
             #define BOOST_WARCHIVE_DECL(T) T __export
             #define BOOST_ARCHIVE_OR_WARCHIVE_DECL(T) T __export
-            #elif defined(BOOST_GCC) && BOOST_GCC >= 4
-            #define BOOST_WARCHIVE_DECL(T) __attribute__ ((visibility ("default")))
-            #define BOOST_ARCHIVE_OR_WARCHIVE_DECL(T) __attribute__ ((visibility ("default")))
             #else
             #define BOOST_WARCHIVE_DECL(T) __declspec(dllexport) T
             #define BOOST_ARCHIVE_OR_WARCHIVE_DECL(T) __declspec(dllexport) T
@@ -61,9 +52,6 @@
         #else
             #if defined(__BORLANDC__)
             #define BOOST_WARCHIVE_DECL(T) T __import
-            #elif defined(BOOST_GCC) && BOOST_GCC >= 4
-            #define BOOST_WARCHIVE_DECL(T) __attribute__ ((visibility ("default")))
-            #define BOOST_ARCHIVE_OR_WARCHIVE_DECL(T) __attribute__ ((visibility ("default")))
             #else
             #define BOOST_WARCHIVE_DECL(T) __declspec(dllimport) T
             #endif
