@@ -97,6 +97,7 @@ public:
     virtual void load_start(const char * name) = 0;
     virtual void load_end(const char * name) = 0;
     virtual void register_basic_serializer(const detail::basic_iserializer & bis) = 0;
+    virtual detail::helper_collection & get_helper_collection() = 0;
 
     // msvc and borland won't automatically pass these to the base class so
     // make it explicit here

@@ -296,8 +296,9 @@ archive_test(test_valarray)
 archive_test(test_variant A)
 archive_test(test_vector A)
 
-polymorphic_archive_test(test_polymorphic test_polymorphic_A A )
+polymorphic_archive_test(test_polymorphic test_polymorphic_A A)
 polymorphic_archive_test(test_polymorphic2 test_polymorphic2imp)
+polymorphic_archive_test(test_polymorphic_helper)
 
 # end test targets
 ####################

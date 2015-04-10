@@ -97,6 +97,7 @@ public:
     virtual void save_start(const char * name) = 0;
     virtual void save_end(const char * name) = 0;
     virtual void register_basic_serializer(const detail::basic_oserializer & bos) = 0;
+    virtual detail::helper_collection & get_helper_collection() = 0;
 
     virtual void end_preamble() = 0;
 

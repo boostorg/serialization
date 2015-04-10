@@ -70,7 +70,7 @@ protected:
     ~helper_collection(){}
 public:
     template<typename Helper>
-    Helper& get_helper(void * const id = 0) {
+    Helper& find_helper(void * const id = 0) {
         collection::const_iterator it =
             std::find_if(
                 m_collection.begin(),

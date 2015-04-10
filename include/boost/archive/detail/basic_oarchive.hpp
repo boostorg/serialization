@@ -60,6 +60,10 @@ class BOOST_SYMBOL_VISIBLE basic_oarchive :
     virtual void vsave(const tracking_type t) = 0;
 protected:
     BOOST_ARCHIVE_DECL basic_oarchive(unsigned int flags = 0);
+    BOOST_ARCHIVE_DECL boost::archive::detail::helper_collection &
+    get_helper_collection(){
+        return *this;
+    }
     // account for bogus gcc warning
     #if defined(__GNUC__)
     virtual

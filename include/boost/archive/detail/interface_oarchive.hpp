@@ -57,6 +57,13 @@ public:
         this->This()->register_basic_serializer(bpos.get_basic_serializer());
         return & bpos;
     }
+    
+    template<class Helper>
+    Helper &
+    get_helper(void * const id = 0){
+        helper_collection & hc = this->This()->get_helper_collection();
+        return hc.template find_helper<Helper>(id);
+    }
 
     template<class T>
     Archive & operator<<(T & t){

@@ -39,6 +39,7 @@ namespace detail {
 class basic_iarchive_impl;
 class basic_iserializer;
 class basic_pointer_iserializer;
+
 //////////////////////////////////////////////////////////////////////
 // class basic_iarchive - read serialized objects from a input stream
 class BOOST_SYMBOL_VISIBLE basic_iarchive :
@@ -57,12 +58,16 @@ class BOOST_SYMBOL_VISIBLE basic_iarchive :
     virtual void vload(tracking_type &t) = 0;
 protected:
     BOOST_ARCHIVE_DECL basic_iarchive(unsigned int flags);
-public:
+    BOOST_ARCHIVE_DECL boost::archive::detail::helper_collection &
+    get_helper_collection(){
+        return *this;
+    }
     // account for bogus gcc warning
     #if defined(__GNUC__)
     virtual
     #endif
     BOOST_ARCHIVE_DECL ~basic_iarchive();
+public:
     // note: NOT part of the public API.
     BOOST_ARCHIVE_DECL void next_object_pointer(void *t);
     BOOST_ARCHIVE_DECL void register_basic_serializer(
@@ -79,7 +84,6 @@ public:
         const basic_pointer_iserializer * (*finder)(
             const boost::serialization::extended_type_info & eti
         )
-
     );
     // real public API starts here
     BOOST_ARCHIVE_DECL void 
