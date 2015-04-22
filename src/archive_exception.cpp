@@ -13,7 +13,6 @@
 #endif
 
 #include <exception>
-//#include <boost/assert.hpp>
 #include <string>
 
 #define BOOST_ARCHIVE_SOURCE

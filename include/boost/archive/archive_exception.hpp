@@ -42,6 +42,7 @@ namespace archive {
 class BOOST_SYMBOL_VISIBLE archive_exception : 
     public virtual std::exception
 {
+private:
     char m_buffer[128];
 protected:
     BOOST_ARCHIVE_DECL unsigned int
@@ -79,8 +80,8 @@ public:
                             // type has been instantiated in more than one module.
         output_stream_error // error on input stream
     } exception_code;
-
     exception_code code;
+
     BOOST_ARCHIVE_DECL archive_exception(
         exception_code c, 
         const char * e1 = NULL,

@@ -55,7 +55,7 @@ class helper_collection
     collection m_collection;
 
     struct predicate {
-        BOOST_DELETED_FUNCTION(predicate & operator=(const predicate & rhs));
+        BOOST_DELETED_FUNCTION(predicate & operator=(const predicate & rhs))
     public:
         const void * const m_ti;
         bool operator()(helper_value_type const &rhs) const {
