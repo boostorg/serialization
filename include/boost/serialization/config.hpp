@@ -50,10 +50,14 @@
     #define BOOST_SERIALIZATION_DECL
 #endif
 
-#undef BOOST_SYMBOL_VISIBLE
-#define BOOST_SYMBOL_VISIBLE BOOST_SERIALIZATION_DECL
-
-//  enable automatic library variant selection  ------------------------------// 
+// All Win32 development environments, including 64-bit Windows and MinGW, define
+// _WIN32 or one of its variant spellings. Note that Cygwin is a POSIX environment,
+// so does not define _WIN32 or its variants.
+#if (defined(_WIN32) || defined(__WIN32__) || defined(WIN32)) && !defined(__CYGWIN__)
+    #define BOOST_SERIALIZATION_SYMBOL_VISIBLE BOOST_SERIALIZATION_DECL
+#else
+    #define BOOST_SERIALIZATION_SYMBOL_VISIBLE BOOST_SYMBOL_VISIBLE
+#endif
 
 #if !defined(BOOST_ALL_NO_LIB) && !defined(BOOST_SERIALIZATION_NO_LIB) \
 &&  !defined(BOOST_ARCHIVE_SOURCE) && !defined(BOOST_WARCHIVE_SOURCE)  \

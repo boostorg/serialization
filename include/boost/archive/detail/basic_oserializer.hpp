@@ -43,7 +43,7 @@ namespace detail {
 class basic_oarchive;
 class basic_pointer_oserializer;
 
-class BOOST_SYMBOL_VISIBLE basic_oserializer :
+class BOOST_ARCHIVE_SYMBOL_VISIBLE basic_oserializer :
     public basic_serializer
 {
 private:

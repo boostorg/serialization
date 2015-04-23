@@ -48,7 +48,7 @@ namespace detail {
 
 class polymorphic_oarchive;
 
-class BOOST_SYMBOL_VISIBLE polymorphic_oarchive_impl :
+class BOOST_ARCHIVE_SYMBOL_VISIBLE polymorphic_oarchive_impl :
     public detail::interface_oarchive<polymorphic_oarchive>
 {
 #ifdef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
@@ -139,7 +139,7 @@ public:
 };
 
 // note: preserve naming symmetry
-class BOOST_SYMBOL_VISIBLE polymorphic_oarchive : 
+class BOOST_ARCHIVE_SYMBOL_VISIBLE polymorphic_oarchive : 
     public polymorphic_oarchive_impl
 {
 public:

@@ -40,7 +40,7 @@ namespace detail {
 } // namespace detail
 
 template<class Archive>
-class BOOST_SYMBOL_VISIBLE text_iarchive_impl :
+class BOOST_ARCHIVE_SYMBOL_VISIBLE text_iarchive_impl :
     public basic_text_iprimitive<std::istream>,
     public basic_text_iarchive<Archive>
 {
@@ -116,7 +116,7 @@ protected:
 namespace boost { 
 namespace archive {
 
-class BOOST_SYMBOL_VISIBLE text_iarchive : 
+class BOOST_ARCHIVE_SYMBOL_VISIBLE text_iarchive : 
     public text_iarchive_impl<text_iarchive>{
 public:
     text_iarchive(std::istream & is_, unsigned int flags = 0) :

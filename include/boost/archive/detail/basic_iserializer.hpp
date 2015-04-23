@@ -42,7 +42,7 @@ namespace detail {
 class basic_iarchive;
 class basic_pointer_iserializer;
 
-class BOOST_SYMBOL_VISIBLE basic_iserializer : 
+class BOOST_ARCHIVE_SYMBOL_VISIBLE basic_iserializer : 
     public basic_serializer
 {
 private:

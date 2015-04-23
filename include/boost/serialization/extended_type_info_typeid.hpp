@@ -49,7 +49,7 @@ namespace boost {
 namespace serialization {
 namespace typeid_system {
 
-class BOOST_SYMBOL_VISIBLE extended_type_info_typeid_0 :
+class BOOST_SERIALIZATION_SYMBOL_VISIBLE extended_type_info_typeid_0 :
     public extended_type_info
 {
     virtual const char * get_debug_info() const {
@@ -78,7 +78,7 @@ public:
 } // typeid_system
 
 template<class T>
-class extended_type_info_typeid : 
+class BOOST_SERIALIZATION_SYMBOL_VISIBLE extended_type_info_typeid :
     public typeid_system::extended_type_info_typeid_0,
     public singleton<extended_type_info_typeid< T > >
 {

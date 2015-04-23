@@ -44,7 +44,7 @@ namespace detail {
 } // namespace detail
 
 template<class Archive>
-class BOOST_SYMBOL_VISIBLE text_wiarchive_impl :
+class BOOST_WARCHIVE_SYMBOL_VISIBLE text_wiarchive_impl :
     public basic_text_iprimitive<std::wistream>,
     public basic_text_iarchive<Archive>
 {
@@ -114,7 +114,7 @@ protected:
 namespace boost { 
 namespace archive {
 
-class BOOST_SYMBOL_VISIBLE text_wiarchive : 
+class BOOST_ARCHIVE_SYMBOL_VISIBLE text_wiarchive : 
     public text_wiarchive_impl<text_wiarchive>{
 public:
     text_wiarchive(std::wistream & is, unsigned int flags = 0) :

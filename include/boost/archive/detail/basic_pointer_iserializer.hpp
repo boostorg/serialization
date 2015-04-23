@@ -40,7 +40,7 @@ namespace detail {
 class basic_iarchive;
 class basic_iserializer;
 
-class BOOST_SYMBOL_VISIBLE basic_pointer_iserializer
+class BOOST_ARCHIVE_SYMBOL_VISIBLE basic_pointer_iserializer
     : public basic_serializer {
 protected:
     explicit BOOST_ARCHIVE_DECL basic_pointer_iserializer(
