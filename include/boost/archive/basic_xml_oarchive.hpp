@@ -103,10 +103,7 @@ protected:
     typedef detail::common_oarchive<Archive> detail_common_oarchive;
     template<class T>
     void save_override(
-        #ifndef BOOST_NO_FUNCTION_TEMPLATE_ORDERING
-        const
-        #endif
-        ::boost::serialization::nvp< T > & t
+        const ::boost::serialization::nvp< T > & t
     ){
         this->This()->save_start(t.name());
         this->detail_common_oarchive::save_override(t.const_value());

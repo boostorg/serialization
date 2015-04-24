@@ -122,12 +122,8 @@ inline void serialize_adl(
     // Note that this trick generates problems for compiles which don't support
     // PFTO, suppress it here.  As far as we know, there are no compilers
     // which fail to support PFTO while supporting two-phase lookup.
-    #if ! defined(BOOST_NO_FUNCTION_TEMPLATE_ORDERING)
-        const version_type v(file_version);
-        serialize(ar, t, v);
-    #else
-        serialize(ar, t, file_version);
-    #endif
+    const version_type v(file_version);
+    serialize(ar, t, v);
 }
 
 template<class Archive, class T>
@@ -137,12 +133,8 @@ inline void save_construct_data_adl(
     const unsigned int file_version
 ){
     // see above
-    #if ! defined(BOOST_NO_FUNCTION_TEMPLATE_ORDERING)
-        const version_type v(file_version);
-        save_construct_data(ar, t, v);
-    #else
-        save_construct_data(ar, t, file_version);
-    #endif
+    const version_type v(file_version);
+    save_construct_data(ar, t, v);
 }
 
 template<class Archive, class T>
@@ -152,12 +144,8 @@ inline void load_construct_data_adl(
     const unsigned int file_version
 ){
     // see above comment
-    #if ! defined(BOOST_NO_FUNCTION_TEMPLATE_ORDERING)
-        const version_type v(file_version);
-        load_construct_data(ar, t, v);
-    #else
-        load_construct_data(ar, t, file_version);
-    #endif
+    const version_type v(file_version);
+    load_construct_data(ar, t, v);
 }
 
 } // namespace serialization

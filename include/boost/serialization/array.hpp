@@ -116,10 +116,7 @@ private:
 
 template<class T>
 inline
-#ifndef BOOST_NO_FUNCTION_TEMPLATE_ORDERING
-const
-#endif
-array< T > make_array( T* t, std::size_t s){
+const array< T > make_array( T* t, std::size_t s){
     return array< T >(t, s);
 }
 

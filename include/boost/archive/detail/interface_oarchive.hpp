@@ -74,12 +74,8 @@ public:
     // the & operator 
     template<class T>
     Archive & operator&(const T & t){
-        #ifndef BOOST_NO_FUNCTION_TEMPLATE_ORDERING
-            return * this->This() << const_cast<const T &>(t);
-        #else
-            return * this->This() << t;
-        #endif
-    }
+        return * this ->This() << t;
+    };
 };
 
 } // namespace detail

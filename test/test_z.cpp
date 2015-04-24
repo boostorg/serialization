@@ -1,45 +1,40 @@
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/serialization/vector.hpp>
 
-/*
-#include <boost/config.hpp>
+#include <vector>
+#include <fstream>
 
-#include <iostream>
-#include <type_traits>
+using namespace std;
 
-struct A {
-    A();
+struct Data {
+  vector<int> v;
 };
 
-struct NA {
-    NA(int);
-};
+namespace boost {
+  namespace serialization {
 
-#ifndef BOOST_NO_CXX11_HDR_TYPE_TRAITS
-    #pragma message("BOOST_NO_CXX11_HDR_TYPE_TRAITS NOT defined")
-#else
-    #pragma message("BOOST_NO_CXX11_HDR_TYPE_TRAITS defined")
-#endif
+    template<class Archive>
+      void serialize(Archive & a, Data &d, const unsigned int version)
+      {
+        a & d.v;
+      }
 
-int main(int argc, char * argv[]){
-    static_assert(
-        std::is_default_constructible<A>::value,
-        "A is NOT default constructible"
-    );
-    static_assert(
-        ! std::is_default_constructible<NA>::value,
-        "NA IS default constructible"
-    );
-
-    std::cout << std::boolalpha
-    << "A is default-constructible? "
-    << std::is_default_constructible<A>::value << '\n'
-    << "A is trivially default-constructible? "
-    << std::is_trivially_default_constructible<A>::value << '\n'
-    << "NA is default-constructible? "
-    << std::is_default_constructible<NA>::value << '\n'
-    << "NA is trivially default-constructible? "
-    << std::is_trivially_default_constructible<NA>::value << '\n'
-    ;
-    return 0;
+  }
 }
-*/
-#include "../../config/test/config_info.cpp"
+
+int main(int argc, char **argv)
+{
+  if (argc > 10) {
+    ifstream f("/dev/null");
+    boost::archive::text_iarchive a(f);
+    Data d;
+    a >> d;
+  } else {
+    ofstream f("/dev/null");
+    boost::archive::text_oarchive a(f);
+    Data d;
+    a << d;
+  }
+  return 0;
+}

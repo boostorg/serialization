@@ -81,10 +81,7 @@ protected:
     typedef detail::common_iarchive<Archive> detail_common_iarchive;
     template<class T>
     void load_override(
-        #ifndef BOOST_NO_FUNCTION_TEMPLATE_ORDERING
-        const
-        #endif
-        boost::serialization::nvp< T > & t
+        const boost::serialization::nvp< T > & t
     ){
         this->This()->load_start(t.name());
         this->detail_common_iarchive::load_override(t.value());
