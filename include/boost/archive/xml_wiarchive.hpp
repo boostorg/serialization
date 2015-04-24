@@ -58,7 +58,7 @@ class basic_xml_grammar;
 typedef basic_xml_grammar<wchar_t> xml_wgrammar;
 
 template<class Archive>
-class BOOST_WARCHIVE_SYMBOL_VISIBLE xml_wiarchive_impl :
+class BOOST_SYMBOL_VISIBLE xml_wiarchive_impl : 
     public basic_text_iprimitive<std::wistream>,
     public basic_xml_iarchive<Archive>
 {
@@ -142,7 +142,7 @@ protected:
 namespace boost { 
 namespace archive {
 
-class BOOST_ARCHIVE_SYMBOL_VISIBLE xml_wiarchive :
+class BOOST_SYMBOL_VISIBLE xml_wiarchive :
     public xml_wiarchive_impl<xml_wiarchive>{
 public:
     xml_wiarchive(std::wistream & is, unsigned int flags = 0) :

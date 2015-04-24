@@ -307,7 +307,7 @@ void_caster::recursive_unregister() const {
 
 } // namespace void_cast_detail
 
-BOOST_SERIALIZATION_SYMBOL_VISIBLE void const *
+BOOST_SYMBOL_VISIBLE void const *
 void_upcast(
     extended_type_info const & derived,
     extended_type_info const & base,
@@ -341,7 +341,7 @@ void_upcast(
     return NULL;
 }
 
-BOOST_SERIALIZATION_SYMBOL_VISIBLE void const *
+BOOST_SYMBOL_VISIBLE void const *
 void_downcast(
     extended_type_info const & derived,
     extended_type_info const & base,

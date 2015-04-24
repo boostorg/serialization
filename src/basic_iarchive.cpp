@@ -561,6 +561,7 @@ basic_iarchive::load_pointer(
     const basic_pointer_iserializer * (*finder)(
         const boost::serialization::extended_type_info & type_
     )
+
 ){
     return pimpl->load_pointer(*this, t, bpis_ptr, finder);
 }

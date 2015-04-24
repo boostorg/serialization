@@ -54,7 +54,7 @@ void_upcast(
     void const * const t
 );
 
-BOOST_SERIALIZATION_DECL inline void *
+inline void *
 void_upcast(
     extended_type_info const & derived,
     extended_type_info const & base,
@@ -74,7 +74,7 @@ void_downcast(
     void const * const t
 );
 
-BOOST_SERIALIZATION_DECL inline void *
+inline void *
 void_downcast(
     extended_type_info const & derived,
     extended_type_info const & base,
@@ -89,7 +89,7 @@ void_downcast(
 
 namespace void_cast_detail {
 
-class BOOST_SERIALIZATION_SYMBOL_VISIBLE void_caster :
+class BOOST_SYMBOL_VISIBLE void_caster :
     private boost::noncopyable
 {
     friend 
@@ -151,7 +151,7 @@ public:
 #endif
 
 template <class Derived, class Base>
-class BOOST_SERIALIZATION_SYMBOL_VISIBLE void_caster_primitive :
+class BOOST_SYMBOL_VISIBLE void_caster_primitive :
     public void_caster
 {
     virtual void const * downcast(void const * const t) const {
@@ -199,7 +199,7 @@ void_caster_primitive<Derived, Base>::~void_caster_primitive(){
 }
 
 template <class Derived, class Base>
-class BOOST_SERIALIZATION_SYMBOL_VISIBLE void_caster_virtual_base :
+class BOOST_SYMBOL_VISIBLE void_caster_virtual_base :
     public void_caster
 {
     virtual bool has_virtual_base() const {
@@ -244,7 +244,7 @@ void_caster_virtual_base<Derived,Base>::~void_caster_virtual_base(){
 }
 
 template <class Derived, class Base>
-struct BOOST_SERIALIZATION_SYMBOL_VISIBLE void_caster_base :
+struct BOOST_SYMBOL_VISIBLE void_caster_base :
     public void_caster
 {
     typedef
@@ -281,7 +281,7 @@ inline const void_cast_detail::void_caster & void_cast_register(
 }
 
 template<class Derived, class Base>
-class BOOST_SERIALIZATION_SYMBOL_VISIBLE void_caster :
+class BOOST_SYMBOL_VISIBLE void_caster :
     public void_cast_detail::void_caster_base<Derived, Base>::type
 {
 };

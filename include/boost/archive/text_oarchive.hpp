@@ -47,7 +47,7 @@ namespace detail {
 } // namespace detail
 
 template<class Archive>
-class BOOST_ARCHIVE_SYMBOL_VISIBLE text_oarchive_impl :
+class BOOST_SYMBOL_VISIBLE text_oarchive_impl :
      /* protected ? */ public basic_text_oprimitive<std::ostream>,
      public basic_text_oarchive<Archive>
 {
@@ -103,7 +103,7 @@ public:
 // do not derive from this class.  If you want to extend this functionality
 // via inhertance, derived from text_oarchive_impl instead.  This will
 // preserve correct static polymorphism.
-class BOOST_ARCHIVE_SYMBOL_VISIBLE text_oarchive : 
+class BOOST_SYMBOL_VISIBLE text_oarchive : 
     public text_oarchive_impl<text_oarchive>
 {
 public:

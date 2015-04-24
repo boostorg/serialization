@@ -42,7 +42,7 @@ class basic_pointer_iserializer;
 
 //////////////////////////////////////////////////////////////////////
 // class basic_iarchive - read serialized objects from a input stream
-class BOOST_ARCHIVE_SYMBOL_VISIBLE basic_iarchive :
+class BOOST_SYMBOL_VISIBLE basic_iarchive :
     private boost::noncopyable,
     public boost::archive::detail::helper_collection
 {

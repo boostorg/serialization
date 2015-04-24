@@ -43,7 +43,7 @@ namespace detail {
 /////////////////////////////////////////////////////////////////////////
 // class xml_iarchive - read serialized objects from a input text stream
 template<class Archive>
-class BOOST_ARCHIVE_OR_WARCHIVE_SYMBOL_VISIBLE basic_xml_iarchive :
+class BOOST_SYMBOL_VISIBLE basic_xml_iarchive :
     public detail::common_iarchive<Archive>
 {
 #ifdef BOOST_NO_MEMBER_TEMPLATE_FRIENDS

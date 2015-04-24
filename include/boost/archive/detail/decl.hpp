@@ -28,7 +28,7 @@
         #if defined(BOOST_ARCHIVE_SOURCE)
             #define BOOST_ARCHIVE_DECL BOOST_SYMBOL_EXPORT
             #define BOOST_ARCHIVE_OR_WARCHIVE_DECL  BOOST_SYMBOL_EXPORT
-            #define BOOST_ARCHIVE_SYMBOL_VISIBLE BOOST_SYMBOL_EXPORT
+            #define BOOST_SYMBOL_VISIBLE BOOST_SYMBOL_EXPORT
         #else
             #define BOOST_ARCHIVE_DECL BOOST_SYMBOL_IMPORT
         #endif
@@ -54,17 +54,7 @@
     #define BOOST_ARCHIVE_OR_WARCHIVE_DECL
 #endif
 
-// All Win32 development environments, including 64-bit Windows and MinGW, define
-// _WIN32 or one of its variant spellings. Note that Cygwin is a POSIX environment,
-// so does not define _WIN32 or its variants.
-#if (defined(_WIN32) || defined(__WIN32__) || defined(WIN32)) && !defined(__CYGWIN__)
-    #define BOOST_ARCHIVE_SYMBOL_VISIBLE BOOST_ARCHIVE_DECL
-    #define BOOST_WARCHIVE_SYMBOL_VISIBLE BOOST_WARCHIVE_DECL
-    #define BOOST_ARCHIVE_OR_WARCHIVE_SYMBOL_VISIBLE BOOST_ARCHIVE_OR_WARCHIVE_DECL
-#else
-    #define BOOST_ARCHIVE_SYMBOL_VISIBLE BOOST_SYMBOL_VISIBLE
-    #define BOOST_WARCHIVE_SYMBOL_VISIBLE BOOST_SYMBOL_VISIBLE
-    #define BOOST_ARCHIVE_OR_WARCHIVE_SYMBOL_VISIBLE BOOST_SYMBOL_VISIBLE
-#endif
+#undef BOOST_SYMBOL_VISIBLE
+#define BOOST_SYMBOL_VISIBLE BOOST_ARCHIVE_DECL
 
 #endif // BOOST_ARCHIVE_DETAIL_DECL_HPP
