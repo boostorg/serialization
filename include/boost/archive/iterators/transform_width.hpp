@@ -153,7 +153,7 @@ void transform_width<Base, BitsOut, BitsIn, CharType>::fill() {
 
         // append these bits to the next output
         // up to the size of the output
-        unsigned int i = std::min(missing_bits, m_remaining_bits);
+        unsigned int i = (std::min)(missing_bits, m_remaining_bits);
         // shift interesting bits to least significant position
         base_value_type j = m_buffer_in >> (m_remaining_bits - i);
         // and mask off the un interesting higher bits
