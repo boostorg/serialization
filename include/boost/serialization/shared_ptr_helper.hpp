@@ -57,7 +57,7 @@ template<template<class T> class SPT>
 class shared_ptr_helper {
     typedef std::map<
         const void *, // address of object
-        SPT<void> // address shared ptr to single instance
+        SPT<const void> // address shared ptr to single instance
     > object_shared_pointer_map;
 
     // list of shared_pointers create accessable by raw pointer. This

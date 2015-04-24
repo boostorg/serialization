@@ -66,14 +66,14 @@ public:
     }
 
     template<class T>
-    Archive & operator<<(T & t){
+    Archive & operator<<(const T & t){
         this->This()->save_override(t);
         return * this->This();
     }
     
     // the & operator 
     template<class T>
-    Archive & operator&(T & t){
+    Archive & operator&(const T & t){
         #ifndef BOOST_NO_FUNCTION_TEMPLATE_ORDERING
             return * this->This() << const_cast<const T &>(t);
         #else
