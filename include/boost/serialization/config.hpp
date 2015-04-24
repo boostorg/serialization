@@ -27,31 +27,26 @@
     #undef BOOST_SERIALIZATION_DECL
 #endif
 
-#ifdef BOOST_HAS_DECLSPEC // defined in config system
-    // we need to import/export our code only if the user has specifically
-    // asked for it by defining either BOOST_ALL_DYN_LINK if they want all boost
-    // libraries to be dynamically linked, or BOOST_SERIALIZATION_DYN_LINK
-    // if they want just this one to be dynamically liked:
-    #if defined(BOOST_ALL_DYN_LINK) || defined(BOOST_SERIALIZATION_DYN_LINK)
-        #if !defined(BOOST_DYN_LINK)
-            #define BOOST_DYN_LINK
-        #endif
-        // export if this is our own source, otherwise import:
-        #if defined(BOOST_SERIALIZATION_SOURCE)
-            #define BOOST_SERIALIZATION_DECL BOOST_SYMBOL_EXPORT
-        #else
-            #define BOOST_SERIALIZATION_DECL BOOST_SYMBOL_IMPORT
-        #endif // defined(BOOST_SERIALIZATION_SOURCE)
-    #endif // defined(BOOST_ALL_DYN_LINK) || defined(BOOST_SERIALIZATION_DYN_LINK)
-#endif // BOOST_HAS_DECLSPEC
+// we need to import/export our code only if the user has specifically
+// asked for it by defining either BOOST_ALL_DYN_LINK if they want all boost
+// libraries to be dynamically linked, or BOOST_SERIALIZATION_DYN_LINK
+// if they want just this one to be dynamically liked:
+#if defined(BOOST_ALL_DYN_LINK) || defined(BOOST_SERIALIZATION_DYN_LINK)
+    #if !defined(BOOST_DYN_LINK)
+        #define BOOST_DYN_LINK
+    #endif
+    // export if this is our own source, otherwise import:
+    #if defined(BOOST_SERIALIZATION_SOURCE)
+        #define BOOST_SERIALIZATION_DECL BOOST_SYMBOL_EXPORT
+    #else
+        #define BOOST_SERIALIZATION_DECL BOOST_SYMBOL_IMPORT
+    #endif // defined(BOOST_SERIALIZATION_SOURCE)
+#endif // defined(BOOST_ALL_DYN_LINK) || defined(BOOST_SERIALIZATION_DYN_LINK)
 
 // if BOOST_SERIALIZATION_DECL isn't defined yet define it now:
 #ifndef BOOST_SERIALIZATION_DECL
     #define BOOST_SERIALIZATION_DECL
 #endif
-
-#undef BOOST_SYMBOL_VISIBLE
-#define BOOST_SYMBOL_VISIBLE BOOST_SERIALIZATION_DECL
 
 //  enable automatic library variant selection  ------------------------------// 
 
