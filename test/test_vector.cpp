@@ -23,20 +23,18 @@ namespace std{
 
 #include <boost/serialization/vector.hpp>
 
+// normal class with default constructor
 #include "A.hpp"
 #include "A.ipp"
 
 template <class T>
-int test_vector()
+int test_vector_detail(const std::vector<T> & avector)
 {
     const char * testfile = boost::archive::tmpnam(NULL);
     BOOST_REQUIRE(NULL != testfile);
 
     // test array of objects
-    std::vector< T > avector;
-    avector.push_back(T());
-    avector.push_back(T());
-    {   
+    {
         test_ostream os(testfile, TEST_STREAM_FLAGS);
         test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
         oa << boost::serialization::make_nvp("avector", avector);
@@ -52,16 +50,69 @@ int test_vector()
     return EXIT_SUCCESS;
 }
 
+template <class T>
+int test_default_constructable()
+{
+    // test array of objects
+    std::vector<T> avector;
+    avector.push_back(T());
+    avector.push_back(T());
+    return test_vector_detail(avector);
+}
+
+// class without default constructor
+struct X {
+    int m_i;
+    X(const int & i){}
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int version){
+        ar & m_i;
+    }
+};
+
+template<class Archive>
+inline void save_construct_data(
+    Archive & ar, 
+    const X * x,
+    const unsigned int /* file_version */
+){
+    // variable used for construction
+    ar << boost::serialization::make_nvp("i", x.m_i);
+}
+
+template<class Archive>
+inline void load_construct_data(
+    Archive & ar, 
+    X * x,
+    const unsigned int /* file_version */
+){
+    int i;
+    ar >> boost::serialization::make_nvp("i", i);
+    ::new(x)X(i);
+}
+
+int test_non_default_constructable()
+{
+
+    // test array of objects
+    std::vector<X> avector;
+    avector.push_back(X(123));
+    avector.push_back(X(456));
+    return test_vector_detail(avector);
+}
+
 int test_main( int /* argc */, char* /* argv */[] )
 {
-   int res = test_vector<A>();
+    int res = test_default_constructable<A>();
     // test an int vector for which optimized versions should be available
-   if (res == EXIT_SUCCESS)
-     res = test_vector<int>();
+    if (res == EXIT_SUCCESS)
+        res = test_default_constructable<int>();
     // test a bool vector
-   if (res == EXIT_SUCCESS)
-     res = test_vector<bool>();
-   return res;
+    if (res == EXIT_SUCCESS)
+        res = test_default_constructable<bool>();
+    if (res == EXIT_SUCCESS)
+        res = test_non_default_constructable();
+    return res;
 }
 
 // EOF
