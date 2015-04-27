@@ -149,6 +149,27 @@ inline void load(
     // message like "default const
     t.reserve(count);
     vector_load_impl<Archive>::invoke(ar, t, count, item_version);
+/*
+    if(detail::is_default_constructible<U>::value){
+    BOOST_STATIC_ASSERT(std::is_default_constructible<U>::value);
+    BOOST_STATIC_ASSERT(boost::serialization::detail::is_default_constructible<U>::value);
+        t.resize(count);
+        typename std::vector<U, Allocator>::iterator hint;
+        hint = t.begin();
+        while(count-- > 0){
+            ar >> boost::serialization::make_nvp("item", *hint++);
+        }
+    }
+    else{
+        t.clear();
+        while(count-- > 0){
+            detail::stack_construct<Archive, U> u(ar, item_version);
+            ar >> boost::serialization::make_nvp("item", u.reference());
+            t.push_back(u.reference());
+            ar.reset_object_address(& t.back() , & u.reference());
+         }
+    }
+*/
 }
 
 // the optimized versions
