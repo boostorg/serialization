@@ -116,7 +116,7 @@ struct vector_load_impl {
         item_version_type item_version
     ){
         typedef typename boost::mpl::if_c<
-            std::is_default_constructible<typename T::value_type>::value,
+            detail::is_default_constructible<typename T::value_type>::value,
             default_constructible,
             not_default_constructible
         >::type type;
