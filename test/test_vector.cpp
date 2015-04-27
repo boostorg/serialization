@@ -52,7 +52,7 @@ int test_vector_detail(const std::vector<T> & avector)
 }
 
 template <class T>
-int test_default_constructable()
+int test_default_constructible()
 {
     // test array of objects
     std::vector<T> avector;
@@ -77,7 +77,7 @@ public:
     }
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version){
-        ar & m_i;
+        ar & BOOST_SERIALIZATION_NVP(m_i);
     }
 };
 
@@ -102,7 +102,7 @@ inline void load_construct_data(
     ::new(x)X(i);
 }
 
-int test_non_default_constructable()
+int test_non_default_constructible()
 {
     // test array of objects
     std::vector<X> avector;
@@ -114,15 +114,15 @@ int test_non_default_constructable()
 int test_main( int /* argc */, char* /* argv */[] )
 {
     int res;
-    res = test_default_constructable<A>();
+    res = test_default_constructible<A>();
     // test an int vector for which optimized versions should be available
     if (res == EXIT_SUCCESS)
-        res = test_default_constructable<int>();
+        res = test_default_constructible<int>();
     // test a bool vector
     if (res == EXIT_SUCCESS)
-        res = test_default_constructable<bool>();
+        res = test_default_constructible<bool>();
     if (res == EXIT_SUCCESS)
-        res = test_non_default_constructable();
+        res = test_non_default_constructible();
     return res;
 }
 
