@@ -35,6 +35,7 @@
 #include <boost/serialization/detail/stack_constructor.hpp>
 #include <boost/serialization/detail/is_default_constructible.hpp>
 #include <boost/mpl/bool.hpp>
+#include <boost/mpl/if.hpp>
 
 // default is being compatible with version 1.34.1 files, not 1.35 files
 #ifndef BOOST_SERIALIZATION_VECTOR_VERSIONED
@@ -69,6 +70,60 @@ inline void save(
     );
 }
 
+template<class Archive>
+struct vector_load_impl {
+    struct default_constructible {
+        template<class T>
+        static void invoke(
+            Archive & ar,
+            T & t,
+            collection_size_type count,
+            item_version_type item_version
+        ){
+            t.resize(count);
+            typename T::iterator hint;
+            hint = t.begin();
+            while(count-- > 0){
+                ar >> boost::serialization::make_nvp("item", *hint++);
+            }
+        }
+    };
+    struct not_default_constructible {
+        template<class T>
+        static void invoke(
+            Archive & ar,
+            T & t,
+            collection_size_type count,
+            item_version_type item_version
+        ){
+            t.clear();
+            while(count-- > 0){
+                detail::stack_construct<
+                    Archive,
+                    typename T::value_type
+                > u(ar, item_version);
+                ar >> boost::serialization::make_nvp("item", u.reference());
+                t.push_back(u.reference());
+                ar.reset_object_address(& t.back() , & u.reference());
+             }
+        }
+    };
+    template<class T>
+    static void invoke(
+        Archive & ar,
+        T & t,
+        collection_size_type count,
+        item_version_type item_version
+    ){
+        typedef typename boost::mpl::if_c<
+            std::is_default_constructible<typename T::value_type>::value,
+            default_constructible,
+            not_default_constructible
+        >::type type;
+        type::invoke(ar, t, count, item_version);
+    }
+};
+
 template<class Archive, class U, class Allocator>
 inline void load(
     Archive & ar,
@@ -86,7 +141,18 @@ inline void load(
     if(boost::archive::library_version_type(3) < library_version){
         ar >> BOOST_SERIALIZATION_NVP(item_version);
     }
-    if(detail::is_default_constructible<U>()){
+    // note: for some data types in certain compilers
+    // is_default_constructible<U> returns the incorrect value.
+    // that is it may return true when in fact the type is
+    // not default constructable.  In such cases, loading of a
+    // vector of such types will fail with a reference error
+    // message like "default const
+    t.reserve(count);
+    vector_load_impl<Archive>::invoke(ar, t, count, item_version);
+/*
+    if(detail::is_default_constructible<U>::value){
+    BOOST_STATIC_ASSERT(std::is_default_constructible<U>::value);
+    BOOST_STATIC_ASSERT(boost::serialization::detail::is_default_constructible<U>::value);
         t.resize(count);
         typename std::vector<U, Allocator>::iterator hint;
         hint = t.begin();
@@ -95,8 +161,7 @@ inline void load(
         }
     }
     else{
-        t.reserve(count);
-        t.resize(0);
+        t.clear();
         while(count-- > 0){
             detail::stack_construct<Archive, U> u(ar, item_version);
             ar >> boost::serialization::make_nvp("item", u.reference());
@@ -104,6 +169,7 @@ inline void load(
             ar.reset_object_address(& t.back() , & u.reference());
          }
     }
+*/
 }
 
 // the optimized versions

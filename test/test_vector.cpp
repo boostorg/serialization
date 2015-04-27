@@ -18,7 +18,8 @@ namespace std{
     using ::remove;
 }
 #endif
-
+#include <boost/serialization/detail/is_default_constructible.hpp>
+#include <boost/static_assert.hpp>
 #include "test_tools.hpp"
 
 #include <boost/serialization/vector.hpp>
@@ -62,8 +63,18 @@ int test_default_constructable()
 
 // class without default constructor
 struct X {
+    //BOOST_DELETED_FUNCTION(X());
+public:
     int m_i;
-    X(const int & i){}
+    X(const X & x) :
+        m_i(x.m_i)
+    {}
+    X(const int & i) :
+        m_i(i)
+    {}
+    bool operator==(const X & rhs) const {
+        return m_i == rhs.m_i;
+    }
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version){
         ar & m_i;
@@ -77,7 +88,7 @@ inline void save_construct_data(
     const unsigned int /* file_version */
 ){
     // variable used for construction
-    ar << boost::serialization::make_nvp("i", x.m_i);
+    ar << boost::serialization::make_nvp("i", x->m_i);
 }
 
 template<class Archive>
@@ -93,7 +104,6 @@ inline void load_construct_data(
 
 int test_non_default_constructable()
 {
-
     // test array of objects
     std::vector<X> avector;
     avector.push_back(X(123));
@@ -103,7 +113,8 @@ int test_non_default_constructable()
 
 int test_main( int /* argc */, char* /* argv */[] )
 {
-    int res = test_default_constructable<A>();
+    int res;
+    res = test_default_constructable<A>();
     // test an int vector for which optimized versions should be available
     if (res == EXIT_SUCCESS)
         res = test_default_constructable<int>();
