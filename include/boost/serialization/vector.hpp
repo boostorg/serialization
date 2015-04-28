@@ -141,12 +141,6 @@ inline void load(
     if(boost::archive::library_version_type(3) < library_version){
         ar >> BOOST_SERIALIZATION_NVP(item_version);
     }
-    // note: for some data types in certain compilers
-    // is_default_constructible<U> returns the incorrect value.
-    // that is it may return true when in fact the type is
-    // not default constructable.  In such cases, loading of a
-    // vector of such types will fail with a reference error
-    // message like "default const
     t.reserve(count);
     vector_load_impl<Archive>::invoke(ar, t, count, item_version);
 }
