@@ -252,8 +252,7 @@ inline void load(
     collection_size_type count;
     ar >> BOOST_SERIALIZATION_NVP(count);
     t.resize(count);
-    int i;
-    for(i = 0; i < count; ++i){
+    for(collection_size_type i = collection_size_type(0); i < count; ++i){
         bool b;
         ar >> boost::serialization::make_nvp("item", b);
         t[i] = b;
