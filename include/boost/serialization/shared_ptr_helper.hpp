@@ -71,7 +71,7 @@ class shared_ptr_helper {
         void operator()(void const *) const {}
     };
 
-#if defined(BOOST_NO_MEMBER_TEMPLATE_FRIENDS) 
+#if defined(BOOST_NO_MEMBER_TEMPLATE_FRIENDS) \
 || defined(BOOST_MSVC) \
 || defined(__SUNPRO_CC)
 public:
