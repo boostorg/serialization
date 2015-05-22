@@ -18,7 +18,6 @@ namespace std{
     using ::remove;
 }
 #endif
-#include <boost/serialization/detail/is_default_constructible.hpp>
 #include <boost/static_assert.hpp>
 #include "test_tools.hpp"
 

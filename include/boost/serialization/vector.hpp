@@ -29,11 +29,11 @@
 #include <boost/serialization/item_version_type.hpp>
 
 #include <boost/serialization/collections_save_imp.hpp>
+#include <boost/serialization/collections_load_imp.hpp>
 #include <boost/serialization/split_free.hpp>
 #include <boost/serialization/array.hpp>
 #include <boost/serialization/detail/get_data.hpp>
 #include <boost/serialization/detail/stack_constructor.hpp>
-#include <boost/serialization/detail/is_default_constructible.hpp>
 #include <boost/mpl/bool.hpp>
 #include <boost/mpl/if.hpp>
 
@@ -70,60 +70,6 @@ inline void save(
     );
 }
 
-template<class Archive>
-struct vector_load_impl {
-    struct default_constructible {
-        template<class T>
-        static void invoke(
-            Archive & ar,
-            T & t,
-            collection_size_type count,
-            item_version_type item_version
-        ){
-            t.resize(count);
-            typename T::iterator hint;
-            hint = t.begin();
-            while(count-- > 0){
-                ar >> boost::serialization::make_nvp("item", *hint++);
-            }
-        }
-    };
-    struct not_default_constructible {
-        template<class T>
-        static void invoke(
-            Archive & ar,
-            T & t,
-            collection_size_type count,
-            item_version_type item_version
-        ){
-            t.clear();
-            while(count-- > 0){
-                detail::stack_construct<
-                    Archive,
-                    typename T::value_type
-                > u(ar, item_version);
-                ar >> boost::serialization::make_nvp("item", u.reference());
-                t.push_back(u.reference());
-                ar.reset_object_address(& t.back() , & u.reference());
-             }
-        }
-    };
-    template<class T>
-    static void invoke(
-        Archive & ar,
-        T & t,
-        collection_size_type count,
-        item_version_type item_version
-    ){
-        typedef typename boost::mpl::if_c<
-            detail::is_default_constructible<typename T::value_type>::value,
-            default_constructible,
-            not_default_constructible
-        >::type type;
-        type::invoke(ar, t, count, item_version);
-    }
-};
-
 template<class Archive, class U, class Allocator>
 inline void load(
     Archive & ar,
@@ -142,7 +88,7 @@ inline void load(
         ar >> BOOST_SERIALIZATION_NVP(item_version);
     }
     t.reserve(count);
-    vector_load_impl<Archive>::invoke(ar, t, count, item_version);
+    stl::collection_load_impl(ar, t, count, item_version);
 }
 
 // the optimized versions
