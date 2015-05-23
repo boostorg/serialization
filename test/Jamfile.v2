@@ -110,6 +110,7 @@ test-suite "serialization" :
      [ test-bsl-run_files test_shared_ptr_132 ]
      [ test-bsl-run_polymorphic_archive test_polymorphic : test_polymorphic_A A ]
      [ test-bsl-run_polymorphic_archive test_polymorphic2 : test_polymorphic2imp ]
+     [ test-bsl-run_polymorphic_archive test_polymorphic_helper ]
     ;
 
 if ! $(BOOST_ARCHIVE_LIST) {
@@ -139,7 +140,7 @@ if ! $(BOOST_ARCHIVE_LIST) {
             : <dependency>../../config/test/all//BOOST_NO_STD_WSTREAMBUF
         ]
 
-	[ test-bsl-run-no-lib test_z ]
+        #[ test-bsl-run-no-lib test_z ]
 
         # should fail compilation
         [ compile-fail test_not_serializable.cpp ]
