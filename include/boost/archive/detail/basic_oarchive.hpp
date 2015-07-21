@@ -61,9 +61,7 @@ class BOOST_SYMBOL_VISIBLE basic_oarchive :
 protected:
     BOOST_ARCHIVE_DECL basic_oarchive(unsigned int flags = 0);
     BOOST_ARCHIVE_DECL boost::archive::detail::helper_collection &
-    get_helper_collection(){
-        return *this;
-    }
+    get_helper_collection();
     // account for bogus gcc warning
     #if defined(__GNUC__)
     virtual
