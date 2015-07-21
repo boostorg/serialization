@@ -21,6 +21,7 @@
 namespace boost {
 namespace archive {
 
+BOOST_ARCHIVE_DECL
 unsigned int
 archive_exception::append(unsigned int l, const char * a){
     while(l < (sizeof(m_buffer) - 1)){
