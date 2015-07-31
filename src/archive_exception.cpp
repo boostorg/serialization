@@ -114,6 +114,7 @@ archive_exception::archive_exception(
 
 BOOST_ARCHIVE_DECL
 archive_exception::archive_exception(archive_exception const & oth) BOOST_NOEXCEPT :
+	std::exception(oth),
 	code(oth.code)
 {
 	std::memcpy(m_buffer,oth.m_buffer,sizeof m_buffer);

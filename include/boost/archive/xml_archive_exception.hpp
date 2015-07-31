@@ -45,6 +45,8 @@ public:
         const char * e1 = NULL,
         const char * e2 = NULL
     );
+    BOOST_ARCHIVE_DECL xml_archive_exception(xml_archive_exception const &) ;
+    BOOST_ARCHIVE_DECL const char * what() const BOOST_NOEXCEPT_OR_NOTHROW ;
 };
 
 }// namespace archive
