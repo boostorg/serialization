@@ -58,11 +58,7 @@ xml_archive_exception::xml_archive_exception(xml_archive_exception const & oth) 
 	{
 	}
 	
-BOOST_ARCHIVE_DECL const char * 
-xml_archive_exception::what() const BOOST_NOEXCEPT_OR_NOTHROW
-	{
-	return archive_exception::what();
-	}
+BOOST_ARCHIVE_DECL xml_archive_exception::~xml_archive_exception() BOOST_NOEXCEPT_OR_NOTHROW {}
 
 } // archive
 } // boost
