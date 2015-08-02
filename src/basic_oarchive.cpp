@@ -454,6 +454,11 @@ BOOST_ARCHIVE_DECL void
 basic_oarchive::end_preamble(){
 }
 
+BOOST_ARCHIVE_DECL helper_collection &
+basic_oarchive::get_helper_collection(){
+	return *this;
+}
+
 } // namespace detail
 } // namespace archive
 } // namespace boost
