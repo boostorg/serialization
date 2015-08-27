@@ -19,13 +19,13 @@
 #include <boost/assert.hpp>
 #include <cctype>
 #include <cstddef> // size_t
-#include <cstdlib> // mblen
+#include <cwchar> // mbstate_t and mbrtowc
 
 #include <boost/config.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)
 namespace std{ 
-    using ::mblen; 
-    using ::mbtowc; 
+    using ::mbstate_t;
+    using ::mbrtowc;
 } // namespace std
 #endif
 
@@ -101,23 +101,19 @@ public:
 
 template<class Base>
 wchar_t wchar_from_mb<Base>::drain(){
-    char buffer[9];
-    char * bptr = buffer;
-    char val;
-    for(std::size_t i = 0; i++ < (unsigned)MB_CUR_MAX;){
-        val = * this->base_reference();
-        *bptr++ = val;
-        int result = std::mblen(buffer, i);
-        if(-1 != result)
-            break;
-        ++(this->base_reference());
-    }
+    std::mbstate_t mbs;
+    std::mbrtowc(0, 0, 0, &mbs);
     wchar_t retval;
-    int result = std::mbtowc(& retval, buffer, MB_CUR_MAX);
-    if(0 >= result)
-        boost::serialization::throw_exception(iterators::dataflow_exception(
-            iterators::dataflow_exception::invalid_conversion
-        ));
+    int result;
+    do {
+        char val = *this->base_reference();
+        result = std::mbrtowc(&retval, &val, 1, &mbs);
+        if(result == -1)
+            boost::serialization::throw_exception(iterators::dataflow_exception(
+                iterators::dataflow_exception::invalid_conversion
+            ));
+        ++(this->base_reference());
+    } while (result == -2);
     return retval;
 }
 
