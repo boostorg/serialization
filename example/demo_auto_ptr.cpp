@@ -11,7 +11,7 @@
 #include <fstream>
 #include <string>
 
-#include <cstdio> // remove, std::autoptr inteface wrong in dinkumware
+#include <cstdio> // remove, std::autoptr interface wrong in dinkumware
 #include <boost/config.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)
 namespace std{ 
