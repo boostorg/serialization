@@ -29,7 +29,7 @@ namespace boost {
 namespace archive {
 namespace detail {
 
-class BOOST_ARCHIVE_OR_WARCHIVE_DECL basic_pointer_oserializer;
+class basic_pointer_oserializer;
 
 template<class Archive>
 class interface_oarchive 
