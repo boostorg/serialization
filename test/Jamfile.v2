@@ -11,6 +11,9 @@ project libs/serialization/test
     : requirements <source>/boost/filesystem
     ;
 
+# import rules for testing conditional on config file variables
+import ../../config/checks/config : requires ;
+
 # import rules from the boost serialization test
 # import ../util/test : test-bsl-run-no-lib ;
 import ../util/test :
@@ -93,6 +96,8 @@ test-suite "serialization" :
      [ test-bsl-run_files test_recursion : A ]
      [ test-bsl-run_files test_registered ]
      [ test-bsl-run_files test_set : A ]
+     [ test-bsl-run_files test_set_hashed : A : : [ requires hash ] ] # BOOST_HAS_HASH
+     [ test-bsl-run_files test_set_unordered : A : :  [ requires cxx11_hdr_unordered_set ] ] # BOOST_NO_CXX11_HDR_UNORDERED_SET
      [ test-bsl-run_files test_simple_class : A ]
      [ test-bsl-run_files test_simple_class_ptr : A ]
      [ test-bsl-run_files test_split ]
