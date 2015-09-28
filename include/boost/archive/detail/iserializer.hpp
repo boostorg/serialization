@@ -57,10 +57,16 @@ namespace std{
 #include <boost/type_traits/is_polymorphic.hpp>
 
 #include <boost/serialization/assume_abstract.hpp>
-#define DONT_USE_HAS_NEW_OPERATOR (                    \
-       BOOST_WORKAROUND(__IBMCPP__, < 1210)            \
-    || defined(__SUNPRO_CC) && (__SUNPRO_CC < 0x590)   \
-)
+
+#ifndef BOOST_MSVC
+    #define DONT_USE_HAS_NEW_OPERATOR (                    \
+           BOOST_WORKAROUND(__IBMCPP__, < 1210)            \
+        || defined(__SUNPRO_CC) && (__SUNPRO_CC < 0x590)   \
+    )
+#else
+    #define DONT_USE_HAS_NEW_OPERATOR 0
+#endif
+
 #if ! DONT_USE_HAS_NEW_OPERATOR
 #include <boost/type_traits/has_new_operator.hpp>
 #endif
@@ -229,9 +235,7 @@ struct heap_allocation {
                 // the standard(3.7.4.2) says "
                 // "If a class T has a member deallocation function named
                 // 'operator delete' with exactly one parameter, then that function 
-                // is a usual (non-placement) deallocation function" which I take
-                // to mean that it will call the destructor of type T which we don't
-                // want to do here.
+                // is a usual (non-placement) deallocation function"
                 // Note: reliance upon automatic conversion from T * to void * here
                 (T::operator delete)(t, sizeof(T));
             }
