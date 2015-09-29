@@ -51,6 +51,14 @@ xml_archive_exception::xml_archive_exception(
             break;
         }
     }
+    
+BOOST_ARCHIVE_DECL
+xml_archive_exception::xml_archive_exception(xml_archive_exception const & oth) :
+ 	archive_exception(oth)
+	{
+	}
+	
+BOOST_ARCHIVE_DECL xml_archive_exception::~xml_archive_exception() BOOST_NOEXCEPT_OR_NOTHROW {}
 
 } // archive
 } // boost
