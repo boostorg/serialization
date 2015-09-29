@@ -64,11 +64,7 @@ protected:
     get_helper_collection(){
         return *this;
     }
-    // account for bogus gcc warning
-    #if defined(__GNUC__)
-    virtual
-    #endif
-    BOOST_ARCHIVE_DECL ~basic_oarchive();
+    virtual BOOST_ARCHIVE_DECL ~basic_oarchive();
 public:
     // note: NOT part of the public interface
     BOOST_ARCHIVE_DECL void register_basic_serializer(
