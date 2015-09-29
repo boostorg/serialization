@@ -149,9 +149,7 @@ basic_binary_oprimitive<Archive, Elem, Tr>::save_binary(
     const void *address, 
     std::size_t count
 ){
-    //BOOST_ASSERT(
-    //    static_cast<std::size_t>((std::numeric_limits<std::streamsize>::max)()) >= count
-    //);
+    // BOOST_ASSERT(count <= std::size_t(boost::integer_traits<std::streamsize>::const_max));
     // note: if the following assertions fail
     // a likely cause is that the output stream is set to "text"
     // mode where by cr characters recieve special treatment.
@@ -161,9 +159,7 @@ basic_binary_oprimitive<Archive, Elem, Tr>::save_binary(
     //        archive_exception(archive_exception::output_stream_error)
     //    );
     // figure number of elements to output - round up
-    count = ( count + sizeof(Elem) - 1) 
-        / sizeof(Elem);
-    BOOST_ASSERT(count <= std::size_t(boost::integer_traits<std::streamsize>::const_max));
+    count = ( count + sizeof(Elem) - 1) / sizeof(Elem);
     std::streamsize scount = m_sb.sputn(
         static_cast<const Elem *>(address), 
         static_cast<std::streamsize>(count)
