@@ -102,18 +102,16 @@ public:
 template<class Base>
 wchar_t wchar_from_mb<Base>::drain(){
     std::mbstate_t mbs;
-    std::mbrtowc(0, 0, 0, &mbs);
     wchar_t retval;
-    int result;
+    std::size_t result;
     do {
         char val = *this->base_reference();
         result = std::mbrtowc(&retval, &val, 1, &mbs);
-        if(result == -1)
+        if(result == static_cast<std::size_t>(-1))
             boost::serialization::throw_exception(iterators::dataflow_exception(
                 iterators::dataflow_exception::invalid_conversion
             ));
-        ++(this->base_reference());
-    } while (result == -2);
+    } while (result == static_cast<std::size_t>(-2));
     return retval;
 }
 

@@ -66,22 +66,21 @@ xml_iarchive_impl<Archive>::load(std::wstring &ws){
     #endif
         ws.resize(0);
     std::mbstate_t mbs;
-    std::mbrtowc(0, 0, 0, &mbs);
     const char * start = s.data();
     const char * end = start + s.size();
     while(start < end){
         wchar_t wc;
-        int resultx = std::mbrtowc(&wc, start, end - start, &mbs);
-        if(0 < resultx){
-            start += resultx;
-            ws += wc;
+        std::size_t result = std::mbrtowc(&wc, start, end - start, &mbs);
+        if(result == static_cast<std::size_t>(-1))
+            boost::serialization::throw_exception(
+                iterators::dataflow_exception(
+                    iterators::dataflow_exception::invalid_conversion
+                )
+            );
+        if(result == static_cast<std::size_t>(-2))
             continue;
-        }
-        boost::serialization::throw_exception(
-            iterators::dataflow_exception(
-                iterators::dataflow_exception::invalid_conversion
-            )
-        );
+        start += result;
+        ws += wc;
     }
 }
 #endif // BOOST_NO_STD_WSTRING
@@ -94,26 +93,28 @@ xml_iarchive_impl<Archive>::load(wchar_t * ws){
     bool result = gimpl->parse_string(is, s);
     if(! result)
         boost::serialization::throw_exception(
-            xml_archive_exception(xml_archive_exception::xml_archive_parsing_error)
+            xml_archive_exception(
+                xml_archive_exception::xml_archive_parsing_error
+            )
         );
         
     std::mbstate_t mbs;
-    std::mbrtowc(0, 0, 0, &mbs);
     const char * start = s.data();
     const char * end = start + s.size();
     while(start < end){
         wchar_t wc;
-        int length = std::mbrtowc(&wc, start, end - start, &mbs);
-        if(0 < length){
-            start += length;
-            *ws++ = wc;
+        std::size_t length = std::mbrtowc(&wc, start, end - start, &mbs);
+        if(static_cast<std::size_t>(-1) == length)
+            boost::serialization::throw_exception(
+                iterators::dataflow_exception(
+                    iterators::dataflow_exception::invalid_conversion
+                )
+            );
+        if(static_cast<std::size_t>(-2) == length)
             continue;
-        }
-        boost::serialization::throw_exception(
-            iterators::dataflow_exception(
-                iterators::dataflow_exception::invalid_conversion
-            )
-        );
+
+        start += length;
+        *ws++ = wc;
     }
     *ws = L'\0';
 }
