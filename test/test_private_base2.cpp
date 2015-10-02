@@ -38,21 +38,17 @@ protected:
     Base(int i = 0) :
         m_i(i)
     {}
+    virtual ~Base(){};
 public:
+    virtual bool operator==(const Base &rhs) const {
+        return false;
+    }// = 0;
 };
 
 class Derived : private Base {
     friend class boost::serialization::access;
-private:
-    Base & base_cast(){
-        return static_cast<Base &>(*this);
-    }
-    template<class Archive>
-    void serialize(Archive & ar, const unsigned int version){
-        ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(Base);
-    }
 public:
-    bool operator==(const Derived &rhs) const {
+    virtual bool operator==(const Derived &rhs) const {
         return Base::equals(static_cast<const Base &>(rhs));
     }
     Derived(int i = 0) :
@@ -60,7 +56,9 @@ public:
     {}
 };
 
-int
+//BOOST_CLASS_EXPORT(Derived)
+
+int 
 test_main( int /* argc */, char* /* argv */[] )
 {
     const char * testfile = boost::archive::tmpnam(NULL);
@@ -78,6 +76,28 @@ test_main( int /* argc */, char* /* argv */[] )
         ia >> boost::serialization::make_nvp("a", a1);
     }
     BOOST_CHECK_EQUAL(a, a1);
+    std::remove(testfile);
+
+    //Base *ta = static_cast<Base *>(&a);
+    //Base *ta1 = NULL;
+
+    Derived *ta = &a;
+    Derived *ta1 = NULL;
+
+    {   
+        test_ostream os(testfile, TEST_STREAM_FLAGS);
+        test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
+        oa << boost::serialization::make_nvp("ta", ta);
+    }
+    {
+        test_istream is(testfile, TEST_STREAM_FLAGS);
+        test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
+        ia >> boost::serialization::make_nvp("ta", ta1);
+    }
+    BOOST_CHECK(ta != ta1);
+    BOOST_CHECK(*ta == *ta1);
+    //BOOST_CHECK(*static_cast<Derived *>(ta) == *static_cast<Derived *>(ta1));
+    
     std::remove(testfile);
 
     return 0;
