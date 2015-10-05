@@ -226,18 +226,25 @@ struct heap_allocation {
             static T * invoke_new() {
                 return static_cast<T *>((T::operator new)(sizeof(T)));
             }
+            template<void D(void *, std::size_t)>
+            static void deleter(void * t, std::size_t s){
+                D(t, s);
+            }
+
+            template<void D(void *)>
+            static void deleter(void * t, std::size_t s){
+                D(t);
+            }
             static void invoke_delete(T * t) {
                 // if compilation fails here, the likely cause that the class
                 // T has a class specific new operator but no class specific
-                // delete operator which matches the following signature.  Fix
-                // your program to have this.  Note that adding operator delete
-                // with only one parameter doesn't seem correct to me since 
-                // the standard(3.7.4.2) says "
-                // "If a class T has a member deallocation function named
-                // 'operator delete' with exactly one parameter, then that function 
-                // is a usual (non-placement) deallocation function"
-                // Note: reliance upon automatic conversion from T * to void * here
-                (T::operator delete)(t, sizeof(T));
+                // delete operator which matches the following signature.
+                // note that this solution addresses the issue that two
+                // possible signatures.  But it doesn't address the possibility
+                // that the class might have class specific new with NO
+                // class specific delete at all.  Patches (compatible with
+                // C++03) welcome!
+                deleter<T::operator delete>(t, sizeof(T));
             }
         };
         struct doesnt_have_new_operator {
