@@ -33,8 +33,6 @@ namespace std{
 #include <boost/archive/basic_xml_archive.hpp>
 #include <boost/archive/xml_wiarchive.hpp>
 
-#include <boost/archive/add_facet.hpp>
-
 #include <boost/archive/xml_archive_exception.hpp>
 #include <boost/archive/iterators/mb_from_wchar.hpp>
 

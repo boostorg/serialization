@@ -26,7 +26,6 @@ namespace std{ using ::wcslen; }
 #endif
 #endif
 
-#include <boost/archive/add_facet.hpp>
 #include <boost/archive/text_oarchive.hpp>
 
 namespace boost { 

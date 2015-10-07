@@ -20,14 +20,9 @@ namespace std{
 } // namespace std
 #endif
 
-#include <boost/detail/workaround.hpp> // fixup for RogueWave
-
 #include <boost/serialization/throw_exception.hpp>
-
 #include <boost/core/no_exceptions_support.hpp>
 #include <boost/archive/archive_exception.hpp>
-#include <boost/archive/codecvt_null.hpp>
-#include <boost/archive/add_facet.hpp>
 #include <boost/archive/basic_binary_iprimitive.hpp> 
 
 namespace boost {
