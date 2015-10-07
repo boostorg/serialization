@@ -44,25 +44,21 @@ namespace std{
 #endif
 
 #include <boost/cstdint.hpp>
-#include <boost/scoped_ptr.hpp>
 #include <boost/serialization/throw_exception.hpp>
 #include <boost/integer.hpp>
 #include <boost/integer_traits.hpp>
 
-#include <boost/mpl/placeholders.hpp>
+//#include <boost/mpl/placeholders.hpp>
 #include <boost/serialization/is_bitwise_serializable.hpp>
 #include <boost/serialization/array.hpp>
 
-#include <boost/archive/basic_streambuf_locale_saver.hpp>
+#include <boost/archive/codecvt_null.hpp>
 #include <boost/archive/archive_exception.hpp>
 #include <boost/archive/detail/auto_link_archive.hpp>
 #include <boost/archive/detail/abi_prefix.hpp> // must be the last header
 
 namespace boost { 
 namespace archive {
-
-template<class Ch>
-class codecvt_null;
 
 /////////////////////////////////////////////////////////////////////////////
 // class binary_iarchive - read serialized objects from a input binary stream
@@ -81,9 +77,8 @@ public:
     }
 
     #ifndef BOOST_NO_STD_LOCALE
-    boost::scoped_ptr<codecvt_null<Elem> > codecvt_facet;
-    boost::scoped_ptr<std::locale> archive_locale;
-    basic_streambuf_locale_saver<Elem, Tr> locale_saver;
+    boost::archive::codecvt_null<Elem> codecvt_null_facet;
+    std::locale archive_locale;
     #endif
 
     // main template for serilization of primitive types

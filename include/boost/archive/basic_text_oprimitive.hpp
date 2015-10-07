@@ -26,14 +26,13 @@
 
 #include <iomanip>
 #include <locale>
-#include <boost/assert.hpp>
 #include <cstddef> // size_t
 
 #include <boost/config.hpp>
 #include <boost/static_assert.hpp>
-#include <boost/detail/workaround.hpp>
 #include <boost/io/ios_state.hpp>
 
+#include <boost/detail/workaround.hpp>
 #if BOOST_WORKAROUND(BOOST_DINKUMWARE_STDLIB, == 1)
 #include <boost/archive/dinkumware.hpp>
 #endif
@@ -52,10 +51,9 @@ namespace std{
 #include <boost/limits.hpp>
 #include <boost/integer.hpp>
 #include <boost/io/ios_state.hpp>
-#include <boost/scoped_ptr.hpp>
 #include <boost/serialization/throw_exception.hpp>
+#include <boost/archive/codecvt_null.hpp>
 #include <boost/archive/archive_exception.hpp>
-#include <boost/archive/basic_streambuf_locale_saver.hpp>
 #include <boost/archive/detail/abi_prefix.hpp> // must be the last header
 
 namespace boost {
@@ -72,11 +70,8 @@ protected:
     io::ios_precision_saver precision_saver;
 
     #ifndef BOOST_NO_STD_LOCALE
-    boost::scoped_ptr<std::locale> archive_locale;
-    basic_streambuf_locale_saver<
-        typename OStream::char_type, 
-        typename OStream::traits_type
-    > locale_saver;
+    boost::archive::codecvt_null<typename OStream::char_type> codecvt_null_facet;
+    std::locale archive_locale;
     #endif
 
     /////////////////////////////////////////////////////////

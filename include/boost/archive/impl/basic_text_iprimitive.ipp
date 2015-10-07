@@ -112,34 +112,25 @@ basic_text_iprimitive<IStream>::basic_text_iprimitive(
     IStream  &is_,
     bool no_codecvt
 ) :
-#ifndef BOOST_NO_STD_LOCALE
     is(is_),
     flags_saver(is_),
     precision_saver(is_),
-    locale_saver(* is_.rdbuf())
+#ifndef BOOST_NO_STD_LOCALE
+    codecvt_null_facet(1),
+    archive_locale(is_.getloc(), & codecvt_null_facet)
 {
     if(! no_codecvt){
-        archive_locale.reset(
-            add_facet(
-                std::locale::classic(),
-                new boost::archive::codecvt_null<typename IStream::char_type>
-            )
-        );
-        //is.imbue(* archive_locale);
+        is.imbue(archive_locale);
     }
     is >> std::noboolalpha;
 }
 #else
-    is(is_),
-    flags_saver(is_),
-    precision_saver(is_)
 {}
 #endif
 
 template<class IStream>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL
 basic_text_iprimitive<IStream>::~basic_text_iprimitive(){
-    is.sync();
 }
 
 } // namespace archive

@@ -158,18 +158,12 @@ xml_wiarchive_impl<Archive>::xml_wiarchive_impl(
         true // don't change the codecvt - use the one below
     ),
     basic_xml_iarchive<Archive>(flags),
+    codecvt_utf8_facet(1),
+    archive_locale(is_.getloc(), & codecvt_utf8_facet),
     gimpl(new xml_wgrammar())
 {
     if(0 == (flags & no_codecvt)){
-        // note usage of argument "1" so that the locale isn't
-        // automatically delete the facet
-        archive_locale.reset(
-            add_facet(
-                is_.getloc(),
-                new boost::archive::detail::utf8_codecvt_facet
-            )
-        );
-        //is.imbue(* archive_locale);
+        is.imbue(archive_locale);
     }
     if(0 == (flags & no_header))
         init();
@@ -179,11 +173,7 @@ template<class Archive>
 BOOST_WARCHIVE_DECL
 xml_wiarchive_impl<Archive>::~xml_wiarchive_impl(){
     if(0 == (this->get_flags() & no_header)){
-        BOOST_TRY{
-            gimpl->windup(is);
-        }
-        BOOST_CATCH(...){}
-        BOOST_CATCH_END
+        gimpl->windup(is);
     }
 }
 

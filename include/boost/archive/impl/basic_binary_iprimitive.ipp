@@ -152,16 +152,11 @@ basic_binary_iprimitive<Archive, Elem, Tr>::basic_binary_iprimitive(
 ) :
 #ifndef BOOST_NO_STD_LOCALE
     m_sb(sb),
-    locale_saver(m_sb)
+    codecvt_null_facet(1),
+    archive_locale(sb.getloc(), & codecvt_null_facet)
 {
     if(! no_codecvt){
-        archive_locale.reset(
-            add_facet(
-                std::locale::classic(),
-                new codecvt_null<Elem>
-            )
-        );
-        //m_sb.pubimbue(* archive_locale);
+        m_sb.pubimbue(archive_locale);
     }
 }
 #else

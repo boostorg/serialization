@@ -10,7 +10,6 @@
 
 #include <string>
 #include <boost/config.hpp>
-#include <locale>
 #include <cstddef> // size_t
 
 #include <boost/config.hpp>

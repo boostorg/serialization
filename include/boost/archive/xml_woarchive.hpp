@@ -81,6 +81,8 @@ protected:
         friend class save_access;
     #endif
 #endif
+    boost::archive::detail::utf8_codecvt_facet codecvt_utf8_facet;
+    std::locale archive_locale;
     //void end_preamble(){
     //    basic_xml_oarchive<Archive>::end_preamble();
     //}

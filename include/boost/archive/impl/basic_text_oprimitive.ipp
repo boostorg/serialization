@@ -11,6 +11,13 @@
 #include <cstddef> // NULL
 #include <algorithm> // std::copy
 
+#include <boost/config.hpp>
+#if defined(BOOST_NO_STDC_NAMESPACE)
+namespace std{ 
+    using ::size_t; 
+} // namespace std
+#endif
+
 #include <boost/archive/basic_text_oprimitive.hpp>
 #include <boost/archive/codecvt_null.hpp>
 #include <boost/archive/add_facet.hpp>
@@ -79,29 +86,22 @@ basic_text_oprimitive<OStream>::basic_text_oprimitive(
     OStream & os_,
     bool no_codecvt
 ) : 
-#ifndef BOOST_NO_STD_LOCALE
     os(os_),
     flags_saver(os_),
     precision_saver(os_),
-    locale_saver(* os_.rdbuf())
+#ifndef BOOST_NO_STD_LOCALE
+    codecvt_null_facet(1),
+    archive_locale(os_.getloc(), & codecvt_null_facet)
 {
     if(! no_codecvt){
-        archive_locale.reset(
-            add_facet(
-                std::locale::classic(),
-                new boost::archive::codecvt_null<typename OStream::char_type>
-            )
-        );
-        //os.imbue(* archive_locale);
+        os.imbue(archive_locale);
     }
     os << std::noboolalpha;
 }
 #else
-    os(os_),
-    flags_saver(os_),
-    precision_saver(os_)
 {}
 #endif
+
 
 template<class OStream>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL
