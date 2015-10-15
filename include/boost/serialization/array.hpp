@@ -54,6 +54,7 @@ public:
     array & operator=(const array & rhs){
         m_t = rhs.m_t;
         m_element_count = rhs.m_element_count;
+        return *this;
     }
 
     // default implementation
