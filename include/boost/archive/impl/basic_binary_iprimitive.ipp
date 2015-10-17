@@ -151,8 +151,10 @@ basic_binary_iprimitive<Archive, Elem, Tr>::basic_binary_iprimitive(
     archive_locale(sb.getloc(), & codecvt_null_facet)
 {
     if(! no_codecvt){
-        m_sb.pubimbue(archive_locale);
+        archive_locale = m_sb.pubimbue(archive_locale);
     }
+    else
+        archive_locale = m_sb.getloc();
 }
 #else
     m_sb(sb)
@@ -190,6 +192,9 @@ basic_binary_iprimitive<Archive, Elem, Tr>::~basic_binary_iprimitive(){
     //destructor can't throw !
     BOOST_TRY{
         static_cast<detail::input_streambuf_access<Elem, Tr> &>(m_sb).sync();
+#ifndef BOOST_NO_STD_LOCALE
+        m_sb.pubimbue(archive_locale);
+#endif
     }
     BOOST_CATCH(...){
     }
