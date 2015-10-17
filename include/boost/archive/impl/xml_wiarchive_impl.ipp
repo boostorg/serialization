@@ -164,7 +164,7 @@ xml_wiarchive_impl<Archive>::xml_wiarchive_impl(
         archive_locale = is.imbue(archive_locale);
     }
     else
-        archive_locale = std::locale();
+        archive_locale = is.getloc();
     if(0 == (flags & no_header))
         init();
 }

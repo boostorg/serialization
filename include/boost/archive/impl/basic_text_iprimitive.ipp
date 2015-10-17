@@ -121,7 +121,7 @@ basic_text_iprimitive<IStream>::basic_text_iprimitive(
         archive_locale = is.imbue(archive_locale);
     }
     else
-        archive_locale = std::locale();
+        archive_locale = is.getloc();
     is >> std::noboolalpha;
 }
 #else

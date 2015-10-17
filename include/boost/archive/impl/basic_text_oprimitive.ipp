@@ -95,7 +95,7 @@ basic_text_oprimitive<OStream>::basic_text_oprimitive(
         archive_locale = os.imbue(archive_locale);
     }
     else
-        archive_locale = std::locale();
+        archive_locale = os.getloc();
     os << std::noboolalpha;
 }
 #else

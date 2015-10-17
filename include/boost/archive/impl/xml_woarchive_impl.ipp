@@ -131,7 +131,7 @@ xml_woarchive_impl<Archive>::xml_woarchive_impl(
         archive_locale = os.imbue(archive_locale);
     }
     else
-        archive_locale = std::locale();
+        archive_locale = os.getloc();
     if(0 == (flags & no_header))
         this->init();
 }

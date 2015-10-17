@@ -154,7 +154,7 @@ basic_binary_iprimitive<Archive, Elem, Tr>::basic_binary_iprimitive(
         archive_locale = m_sb.pubimbue(archive_locale);
     }
     else
-        archive_locale = std::locale();
+        archive_locale = m_sb.getloc();
 }
 #else
     m_sb(sb)
