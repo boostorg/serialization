@@ -94,16 +94,14 @@ WSOURCES =
     codecvt_null
 ;
 
-
 lib boost_serialization 
     : $(SOURCES).cpp
     : 
     <toolset>msvc:<cxxflags>/Gy
     <toolset>msvc:<define>_SCL_SECURE_NO_WARNINGS
-    <toolset>gcc:<cxxflags>"-fvisibility=hidden"
-    <toolset>gcc:<cxxflags>"-fvisibility-inlines-hidden"
-    <toolset>darwin:<cxxflags>"-fvisibility=hidden"
-    <toolset>darwin:<cxxflags>"-fvisibility-inlines-hidden"
+    <toolset>clang:<cxxflags>"-fvisibility=hidden -fvisibility-inlines-hidden"
+    <toolset>gcc:<cxxflags>"-fvisibility=hidden -fvisibility-inlines-hidden"
+    <toolset>darwin:<cxxflags>"-fvisibility=hidden -fvisibility-inlines-hidden"
     <link>shared:<define>BOOST_SERIALIZATION_DYN_LINK=1
     ;
 
@@ -112,10 +110,9 @@ lib boost_wserialization
     :     
     <toolset>msvc:<cxxflags>/Gy 
     <toolset>msvc:<define>_SCL_SECURE_NO_WARNINGS
-    <toolset>gcc:<cxxflags>"-fvisibility=hidden"
-    <toolset>gcc:<cxxflags>"-fvisibility-inlines-hidden"
-    <toolset>darwin:<cxxflags>"-fvisibility=hidden"
-    <toolset>darwin:<cxxflags>"-fvisibility-inlines-hidden"
+    <toolset>clang:<cxxflags>"-fvisibility=hidden -fvisibility-inlines-hidden"
+    <toolset>gcc:<cxxflags>"-fvisibility=hidden -fvisibility-inlines-hidden"
+    <toolset>darwin:<cxxflags>"-fvisibility=hidden -fvisibility-inlines-hidden"
     <link>shared:<define>BOOST_SERIALIZATION_DYN_LINK=1
     ;
 
