@@ -161,8 +161,10 @@ xml_wiarchive_impl<Archive>::xml_wiarchive_impl(
     gimpl(new xml_wgrammar())
 {
     if(0 == (flags & no_codecvt)){
-        is.imbue(archive_locale);
+        archive_locale = is.imbue(archive_locale);
     }
+    else
+        archive_locale = std::locale();
     if(0 == (flags & no_header))
         init();
 }
@@ -173,6 +175,7 @@ xml_wiarchive_impl<Archive>::~xml_wiarchive_impl(){
     if(0 == (this->get_flags() & no_header)){
         gimpl->windup(is);
     }
+    is.imbue(archive_locale);
 }
 
 } // namespace archive

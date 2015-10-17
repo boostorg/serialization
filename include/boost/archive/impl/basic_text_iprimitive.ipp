@@ -118,8 +118,10 @@ basic_text_iprimitive<IStream>::basic_text_iprimitive(
     archive_locale(is_.getloc(), & codecvt_null_facet)
 {
     if(! no_codecvt){
-        is.imbue(archive_locale);
+        archive_locale = is.imbue(archive_locale);
     }
+    else
+        archive_locale = std::locale();
     is >> std::noboolalpha;
 }
 #else
@@ -129,6 +131,9 @@ basic_text_iprimitive<IStream>::basic_text_iprimitive(
 template<class IStream>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL
 basic_text_iprimitive<IStream>::~basic_text_iprimitive(){
+#ifndef BOOST_NO_STD_LOCALE
+    is.imbue(archive_locale);
+#endif
 }
 
 } // namespace archive

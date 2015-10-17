@@ -128,8 +128,10 @@ xml_woarchive_impl<Archive>::xml_woarchive_impl(
     // transforms (such as one to many transforms from getting
     // mixed up.
     if(0 == (flags & no_codecvt)){
-        os.imbue(archive_locale);
+        archive_locale = os.imbue(archive_locale);
     }
+    else
+        archive_locale = std::locale();
     if(0 == (flags & no_header))
         this->init();
 }
@@ -137,6 +139,7 @@ xml_woarchive_impl<Archive>::xml_woarchive_impl(
 template<class Archive>
 BOOST_WARCHIVE_DECL
 xml_woarchive_impl<Archive>::~xml_woarchive_impl(){
+    os.imbue(archive_locale);
 }
 
 } // namespace archive

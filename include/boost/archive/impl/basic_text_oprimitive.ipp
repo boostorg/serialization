@@ -92,8 +92,10 @@ basic_text_oprimitive<OStream>::basic_text_oprimitive(
     archive_locale(os_.getloc(), & codecvt_null_facet)
 {
     if(! no_codecvt){
-        os.imbue(archive_locale);
+        archive_locale = os.imbue(archive_locale);
     }
+    else
+        archive_locale = std::locale();
     os << std::noboolalpha;
 }
 #else
@@ -105,6 +107,9 @@ template<class OStream>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL
 basic_text_oprimitive<OStream>::~basic_text_oprimitive(){
     os << std::endl;
+#ifndef BOOST_NO_STD_LOCALE
+    os.imbue(archive_locale);
+#endif
 }
 
 } //namespace boost 

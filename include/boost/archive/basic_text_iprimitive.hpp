@@ -26,6 +26,7 @@
 
 #include <locale>
 #include <cstddef> // size_t
+#include <limits>
 
 #include <boost/config.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)
