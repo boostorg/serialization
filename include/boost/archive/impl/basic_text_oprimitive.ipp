@@ -88,6 +88,7 @@ basic_text_oprimitive<OStream>::basic_text_oprimitive(
     flags_saver(os_),
     precision_saver(os_),
 #ifndef BOOST_NO_STD_LOCALE
+    locale_saver(* os_.rdbuf()),
     codecvt_null_facet(1),
     archive_locale(os_.getloc(), & codecvt_null_facet)
 {

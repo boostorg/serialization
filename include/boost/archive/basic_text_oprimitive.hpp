@@ -54,6 +54,7 @@ namespace std{
 #include <boost/serialization/throw_exception.hpp>
 #include <boost/archive/codecvt_null.hpp>
 #include <boost/archive/archive_exception.hpp>
+#include <boost/archive/basic_streambuf_locale_saver.hpp>
 #include <boost/archive/detail/abi_prefix.hpp> // must be the last header
 
 namespace boost {
@@ -70,6 +71,10 @@ protected:
     io::ios_precision_saver precision_saver;
 
     #ifndef BOOST_NO_STD_LOCALE
+    basic_streambuf_locale_saver<
+        typename OStream::char_type,
+        typename OStream::traits_type
+    > locale_saver;
     boost::archive::codecvt_null<typename OStream::char_type> codecvt_null_facet;
     std::locale archive_locale;
     #endif
