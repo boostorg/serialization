@@ -128,7 +128,7 @@ xml_woarchive_impl<Archive>::xml_woarchive_impl(
     // transforms (such as one to many transforms from getting
     // mixed up.
     if(0 == (flags & no_codecvt)){
-        os.imbue(archive_locale);
+        os.rdbuf()->pubimbue(archive_locale);
     }
     if(0 == (flags & no_header))
         this->init();

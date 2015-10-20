@@ -161,7 +161,7 @@ xml_wiarchive_impl<Archive>::xml_wiarchive_impl(
     gimpl(new xml_wgrammar())
 {
     if(0 == (flags & no_codecvt)){
-        is.imbue(archive_locale);
+        is.rdbuf()->pubimbue(archive_locale);
     }
     if(0 == (flags & no_header))
         init();

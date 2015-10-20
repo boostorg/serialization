@@ -114,12 +114,12 @@ basic_text_iprimitive<IStream>::basic_text_iprimitive(
     flags_saver(is_),
     precision_saver(is_),
 #ifndef BOOST_NO_STD_LOCALE
-    locale_saver(* is_.rdbuf()),
+    locale_saver(* is.rdbuf()),
     codecvt_null_facet(1),
-    archive_locale(is_.getloc(), & codecvt_null_facet)
+    archive_locale(is.rdbuf()->getloc(), & codecvt_null_facet)
 {
     if(! no_codecvt){
-        is.imbue(archive_locale);
+        is.rdbuf()->pubimbue(archive_locale);
     }
     is >> std::noboolalpha;
 }

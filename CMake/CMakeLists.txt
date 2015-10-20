@@ -152,20 +152,24 @@ add_library(serialization
   ../src/xml_iarchive.cpp
   ../src/xml_oarchive.cpp
   ../src/xml_grammar.cpp
-  # ../src/basic_xml_grammar.ipp # doesn't show up in "Source Files" in Xcode"'
+# ../src/basic_xml_grammar.ipp # doesn't show up in "Source Files" in Xcode"'
 )
+
+target_compile_options(serialization PRIVATE -fvisibility=hidden -fvisibility-inlines-hidden )
 
 add_library(wserialization
   ../src/basic_text_wiprimitive.cpp
   ../src/basic_text_woprimitive.cpp
   ../src/text_wiarchive.cpp
   ../src/text_woarchive.cpp
-  ../src/utf8_codecvt_facet.cpp
   ../src/xml_wiarchive.cpp
   ../src/xml_woarchive.cpp
   ../src/codecvt_null.cpp
+  ../src/utf8_codecvt_facet.cpp
   ../src/xml_wgrammar.cpp
 )
+
+target_compile_options(wserialization PRIVATE -fvisibility=hidden -fvisibility-inlines-hidden )
 
 # end library build
 ###########################
