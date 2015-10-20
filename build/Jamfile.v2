@@ -102,6 +102,9 @@ lib boost_serialization
     <toolset>clang:<cxxflags>"-fvisibility=hidden -fvisibility-inlines-hidden"
     <toolset>gcc:<cxxflags>"-fvisibility=hidden -fvisibility-inlines-hidden"
     <toolset>darwin:<cxxflags>"-fvisibility=hidden -fvisibility-inlines-hidden"
+    <toolset>gcc:<cxxflags>"-ftemplate-depth-255"
+    <toolset>clang:<cxxflags>"-ftemplate-depth-255"
+    <toolset>darwin:<cxxflags>"-ftemplate-depth-255"
     <link>shared:<define>BOOST_SERIALIZATION_DYN_LINK=1
     ;
 
@@ -113,6 +116,9 @@ lib boost_wserialization
     <toolset>clang:<cxxflags>"-fvisibility=hidden -fvisibility-inlines-hidden"
     <toolset>gcc:<cxxflags>"-fvisibility=hidden -fvisibility-inlines-hidden"
     <toolset>darwin:<cxxflags>"-fvisibility=hidden -fvisibility-inlines-hidden"
+    <toolset>gcc:<cxxflags>"-ftemplate-depth-255"
+    <toolset>clang:<cxxflags>"-ftemplate-depth-255"
+    <toolset>darwin:<cxxflags>"-ftemplate-depth-255"
     <link>shared:<define>BOOST_SERIALIZATION_DYN_LINK=1
     ;
 
