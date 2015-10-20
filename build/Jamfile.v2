@@ -80,6 +80,7 @@ SOURCES =
     xml_iarchive
     xml_oarchive
     xml_archive_exception
+    utf8_codecvt_facet
 ;
     
 WSOURCES = 
@@ -91,7 +92,6 @@ WSOURCES =
     xml_wiarchive
     xml_woarchive
     codecvt_null
-    utf8_codecvt_facet
 ;
 
 lib boost_serialization 
