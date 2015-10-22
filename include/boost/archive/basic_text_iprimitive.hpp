@@ -68,12 +68,12 @@ protected:
     io::ios_precision_saver precision_saver;
 
     #ifndef BOOST_NO_STD_LOCALE
+    boost::archive::codecvt_null<typename IStream::char_type> codecvt_null_facet;
+    std::locale archive_locale;
     basic_streambuf_locale_saver<
         typename IStream::char_type, 
         typename IStream::traits_type
     > locale_saver;
-    boost::archive::codecvt_null<typename IStream::char_type> codecvt_null_facet;
-    std::locale archive_locale;
     #endif
 
     template<class T>
