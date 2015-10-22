@@ -20,7 +20,6 @@
 #ifdef BOOST_NO_STD_WSTREAMBUF
 #error "wide char i/o not supported on this platform"
 #else
-
 #include <cstddef> // size_t
 #if defined(BOOST_NO_STDC_NAMESPACE)
 namespace std{ 
@@ -36,15 +35,7 @@ namespace std{
 #include <boost/archive/basic_xml_oarchive.hpp>
 #include <boost/archive/detail/register_archive.hpp>
 #include <boost/serialization/item_version_type.hpp>
-
-#ifdef BOOST_NO_CXX11_HDR_CODECVT
-    #include <boost/archive/detail/utf8_codecvt_facet.hpp>
-#else
-    #include <codecvt>
-    namespace boost { namespace archive { namespace detail {
-        typedef std::codecvt_utf8<wchar_t> utf8_codecvt_facet;
-    } } }
-#endif
+#include <boost/archive/detail/utf8_codecvt_facet.hpp>
 
 #include <boost/archive/detail/abi_prefix.hpp> // must be the last header
 

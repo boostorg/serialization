@@ -61,8 +61,8 @@ lib dll_polymorphic_derived2_lib
 test-suite "serialization" :
      [ test-bsl-run_files test_array : A ]
      [ test-bsl-run_files test_binary ]
-     [ test-bsl-run_files test_class_info_load ]
      [ test-bsl-run_files test_class_info_save ]
+     [ test-bsl-run_files test_class_info_load ]
      [ test-bsl-run_files test_bitset ]
      [ test-bsl-run_files test_complex ]
      [ test-bsl-run_files test_contained_class : A ]
@@ -133,7 +133,7 @@ if ! $(BOOST_ARCHIVE_LIST) {
         [ test-bsl-run test_reset_object_address : A ]
         [ test-bsl-run test_void_cast ]
         [ test-bsl-run test_mult_archive_types ]
-        [ test-bsl-run test_iterators : : ../build//boost_wserialization ]
+        [ test-bsl-run test_iterators : : ../build//boost_serialization ]
 
         [ test-bsl-run-no-lib test_iterators_base64 ]
         [ test-bsl-run-no-lib test_inclusion ]

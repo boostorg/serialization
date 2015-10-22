@@ -101,7 +101,8 @@ basic_binary_oprimitive<Archive, Elem, Tr>::basic_binary_oprimitive(
 #ifndef BOOST_NO_STD_LOCALE
     m_sb(sb),
     codecvt_null_facet(1),
-    archive_locale(sb.getloc(), & codecvt_null_facet)
+    archive_locale(sb.getloc(), & codecvt_null_facet),
+    locale_saver(m_sb)
 {
     if(! no_codecvt){
         m_sb.pubimbue(archive_locale);
@@ -112,6 +113,7 @@ basic_binary_oprimitive<Archive, Elem, Tr>::basic_binary_oprimitive(
 {}
 #endif
 
+/*
 // some libraries including stl and libcomo fail if the
 // buffer isn't flushed before the code_cvt facet is changed.
 // I think this is a bug.  We explicity invoke sync to when
@@ -133,21 +135,13 @@ class output_streambuf_access : public std::basic_streambuf<Elem, Tr> {
         }
 };
 } // detail
+*/
 
 // scoped_ptr requires that g be a complete type at time of
 // destruction so define destructor here rather than in the header
 template<class Archive, class Elem, class Tr>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL
-basic_binary_oprimitive<Archive, Elem, Tr>::~basic_binary_oprimitive(){
-    // flush buffer
-    //destructor can't throw
-    BOOST_TRY{
-        static_cast<detail::output_streambuf_access<Elem, Tr> &>(m_sb).sync();
-    }
-    BOOST_CATCH(...){
-    }
-    BOOST_CATCH_END
-}
+basic_binary_oprimitive<Archive, Elem, Tr>::~basic_binary_oprimitive(){}
 
 } // namespace archive
 } // namespace boost

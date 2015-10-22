@@ -45,18 +45,9 @@ class basic_streambuf_locale_saver :
     private boost::noncopyable
 {
 public:
-    typedef ::std::basic_streambuf<Ch, Tr> state_type;
-    typedef ::std::locale aspect_type;
     explicit basic_streambuf_locale_saver(std::basic_streambuf<Ch, Tr> &s) :
         m_streambuf(s),
         m_locale(s.getloc())
-    {}
-    explicit basic_streambuf_locale_saver(
-        std::basic_streambuf<Ch, Tr> &s,
-        std::locale const &l
-    ) :
-        m_streambuf(s),
-        m_locale(s.pubimbue(l))
     {}
     ~basic_streambuf_locale_saver(){
         m_streambuf.pubsync();

@@ -120,13 +120,7 @@ xml_woarchive_impl<Archive>::xml_woarchive_impl(
     ),
     basic_xml_oarchive<Archive>(flags),
     codecvt_utf8_facet(1),
-    archive_locale(os_.getloc(), & codecvt_utf8_facet)
-{
-    // Standard behavior is that imbue can be called
-    // a) before output is invoked or
-    // b) after flush has been called.  This prevents one-to-many
-    // transforms (such as one to many transforms from getting
-    // mixed up.
+    archive_locale(os_.rdbuf()->getloc(), & codecvt_utf8_facet){
     if(0 == (flags & no_codecvt)){
         os.rdbuf()->pubimbue(archive_locale);
     }

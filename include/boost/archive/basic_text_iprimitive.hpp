@@ -68,12 +68,19 @@ protected:
     io::ios_precision_saver precision_saver;
 
     #ifndef BOOST_NO_STD_LOCALE
-    basic_streambuf_locale_saver<
-        typename IStream::char_type, 
-        typename IStream::traits_type
-    > locale_saver;
+    // note order! - if you change this, libstd++ will fail!
+    // a) create new locale with new codecvt facet
+    // b) save current locale
+    // c) change locale to new one
+    // d) use stream buffer
+    // e) change locale back to original
+    // f) destroy new codecvt facet
     boost::archive::codecvt_null<typename IStream::char_type> codecvt_null_facet;
     std::locale archive_locale;
+    basic_streambuf_locale_saver<
+        typename IStream::char_type,
+        typename IStream::traits_type
+    > locale_saver;
     #endif
 
     template<class T>

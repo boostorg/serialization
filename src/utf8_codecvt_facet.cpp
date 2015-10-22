@@ -5,7 +5,10 @@
 
 #define BOOST_ARCHIVE_SOURCE
 #include <boost/config.hpp>
+
 #include <boost/archive/detail/auto_link_archive.hpp>
+#include <boost/archive/detail/utf8_codecvt_facet.hpp>
+
 #ifdef BOOST_NO_STD_WSTREAMBUF
 #error "wide char i/o not supported on this platform"
 #else

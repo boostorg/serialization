@@ -52,9 +52,9 @@ namespace std{
 #include <boost/integer.hpp>
 #include <boost/io/ios_state.hpp>
 #include <boost/serialization/throw_exception.hpp>
+#include <boost/archive/basic_streambuf_locale_saver.hpp>
 #include <boost/archive/codecvt_null.hpp>
 #include <boost/archive/archive_exception.hpp>
-#include <boost/archive/basic_streambuf_locale_saver.hpp>
 #include <boost/archive/detail/abi_prefix.hpp> // must be the last header
 
 namespace boost {
@@ -71,12 +71,19 @@ protected:
     io::ios_precision_saver precision_saver;
 
     #ifndef BOOST_NO_STD_LOCALE
+    // note order! - if you change this, libstd++ will fail!
+    // a) create new locale with new codecvt facet
+    // b) save current locale
+    // c) change locale to new one
+    // d) use stream buffer
+    // e) change locale back to original
+    // f) destroy new codecvt facet
+    boost::archive::codecvt_null<typename OStream::char_type> codecvt_null_facet;
+    std::locale archive_locale;
     basic_streambuf_locale_saver<
         typename OStream::char_type,
         typename OStream::traits_type
     > locale_saver;
-    boost::archive::codecvt_null<typename OStream::char_type> codecvt_null_facet;
-    std::locale archive_locale;
     #endif
 
     /////////////////////////////////////////////////////////

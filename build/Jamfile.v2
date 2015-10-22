@@ -81,6 +81,7 @@ SOURCES =
     xml_oarchive
     xml_archive_exception
     utf8_codecvt_facet
+    codecvt_null
 ;
     
 WSOURCES = 
@@ -91,7 +92,6 @@ WSOURCES =
     xml_wgrammar
     xml_wiarchive
     xml_woarchive
-    codecvt_null
 ;
 
 lib boost_serialization 
@@ -99,9 +99,9 @@ lib boost_serialization
     : 
     <toolset>msvc:<cxxflags>/Gy
     <toolset>msvc:<define>_SCL_SECURE_NO_WARNINGS
-    <toolset>clang:<cxxflags>"-fvisibility=hidden -fvisibility-inlines-hidden"
-    <toolset>gcc:<cxxflags>"-fvisibility=hidden -fvisibility-inlines-hidden"
-    <toolset>darwin:<cxxflags>"-fvisibility=hidden -fvisibility-inlines-hidden"
+    # <toolset>clang:<cxxflags>"-fvisibility=hidden -fvisibility-inlines-hidden"
+    # <toolset>gcc:<cxxflags>"-fvisibility=hidden -fvisibility-inlines-hidden"
+    # <toolset>darwin:<cxxflags>"-fvisibility=hidden -fvisibility-inlines-hidden"
     <toolset>gcc:<cxxflags>"-ftemplate-depth-255"
     <toolset>clang:<cxxflags>"-ftemplate-depth-255"
     <toolset>darwin:<cxxflags>"-ftemplate-depth-255"
@@ -113,9 +113,9 @@ lib boost_wserialization
     :     
     <toolset>msvc:<cxxflags>/Gy 
     <toolset>msvc:<define>_SCL_SECURE_NO_WARNINGS
-    <toolset>clang:<cxxflags>"-fvisibility=hidden -fvisibility-inlines-hidden"
-    <toolset>gcc:<cxxflags>"-fvisibility=hidden -fvisibility-inlines-hidden"
-    <toolset>darwin:<cxxflags>"-fvisibility=hidden -fvisibility-inlines-hidden"
+    # <toolset>clang:<cxxflags>"-fvisibility=hidden -fvisibility-inlines-hidden"
+    # <toolset>gcc:<cxxflags>"-fvisibility=hidden -fvisibility-inlines-hidden"
+    # <toolset>darwin:<cxxflags>"-fvisibility=hidden -fvisibility-inlines-hidden"
     <toolset>gcc:<cxxflags>"-ftemplate-depth-255"
     <toolset>clang:<cxxflags>"-ftemplate-depth-255"
     <toolset>darwin:<cxxflags>"-ftemplate-depth-255"

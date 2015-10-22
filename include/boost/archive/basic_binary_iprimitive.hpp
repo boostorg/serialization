@@ -52,6 +52,7 @@ namespace std{
 #include <boost/serialization/is_bitwise_serializable.hpp>
 #include <boost/serialization/array.hpp>
 
+#include <boost/archive/basic_streambuf_locale_saver.hpp>
 #include <boost/archive/codecvt_null.hpp>
 #include <boost/archive/archive_exception.hpp>
 #include <boost/archive/detail/auto_link_archive.hpp>
@@ -77,7 +78,15 @@ public:
     }
 
     #ifndef BOOST_NO_STD_LOCALE
+    // note order! - if you change this, libstd++ will fail!
+    // a) create new locale with new codecvt facet
+    // b) save current locale
+    // c) change locale to new one
+    // d) use stream buffer
+    // e) change locale back to original
+    // f) destroy new codecvt facet
     boost::archive::codecvt_null<Elem> codecvt_null_facet;
+    basic_streambuf_locale_saver<Elem, Tr> locale_saver;
     std::locale archive_locale;
     #endif
 

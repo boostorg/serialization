@@ -21,7 +21,6 @@
 #include <cstddef> // size_t
 #include <cwchar>  // mbstate_t
 #include <algorithm> // copy
-#include <boost/array.hpp>
 
 #include <boost/config.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)
@@ -29,18 +28,11 @@ namespace std{
     using ::mbstate_t;
 } // namespace std
 #endif
-#ifdef BOOST_NO_CXX11_HDR_CODECVT
-    #include <boost/archive/detail/utf8_codecvt_facet.hpp>
-#else
-    #include <codecvt>
-    namespace boost { namespace archive { namespace detail {
-        typedef std::codecvt_utf8<wchar_t> utf8_codecvt_facet;
-    } } }
-#endif
-
-#include <boost/serialization/throw_exception.hpp>
-#include <boost/archive/iterators/dataflow_exception.hpp>
+#include <boost/array.hpp>
 #include <boost/iterator/iterator_adaptor.hpp>
+#include <boost/archive/detail/utf8_codecvt_facet.hpp>
+#include <boost/archive/iterators/dataflow_exception.hpp>
+#include <boost/serialization/throw_exception.hpp>
 
 #include <iostream>
 

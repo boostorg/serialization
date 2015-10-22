@@ -157,7 +157,7 @@ xml_wiarchive_impl<Archive>::xml_wiarchive_impl(
     ),
     basic_xml_iarchive<Archive>(flags),
     codecvt_utf8_facet(1),
-    archive_locale(is_.getloc(), & codecvt_utf8_facet),
+    archive_locale(is_.rdbuf()->getloc(), & codecvt_utf8_facet),
     gimpl(new xml_wgrammar())
 {
     if(0 == (flags & no_codecvt)){

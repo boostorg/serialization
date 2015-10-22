@@ -18,6 +18,8 @@
 #include <cwchar>
 #include <boost/config.hpp>
 
+#include <boost/archive/detail/utf8_codecvt_facet.hpp>
+
 #if defined(BOOST_NO_STDC_NAMESPACE)
 namespace std{ 
     using ::size_t; 
@@ -40,15 +42,6 @@ namespace std{
 #endif
 
 #include "test_tools.hpp"
-
-#ifndef BOOST_NO_CXX11_HDR_CODECVT
-    #include <codecvt>
-    namespace boost { namespace archive { namespace detail {
-        typedef std::codecvt_utf8<wchar_t> utf8_codecvt_facet;
-    } } }
-#else
-    #include <boost/archive/detail/utf8_codecvt_facet.hpp>
-#endif
 
 template<std::size_t s>
 struct test_data

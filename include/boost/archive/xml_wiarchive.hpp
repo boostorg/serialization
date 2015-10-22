@@ -29,15 +29,7 @@
 #include <boost/archive/basic_xml_iarchive.hpp>
 #include <boost/archive/detail/register_archive.hpp>
 #include <boost/serialization/item_version_type.hpp>
-
-#ifdef BOOST_NO_CXX11_HDR_CODECVT
-    #include <boost/archive/detail/utf8_codecvt_facet.hpp>
-#else
-    #include <codecvt>
-    namespace boost { namespace archive { namespace detail {
-        typedef std::codecvt_utf8<wchar_t> utf8_codecvt_facet;
-    } } }
-#endif
+#include <boost/archive/detail/utf8_codecvt_facet.hpp>
 
 #include <boost/archive/detail/abi_prefix.hpp> // must be the last header
 
