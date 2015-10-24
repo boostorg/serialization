@@ -96,7 +96,8 @@ protected:
     #endif
     BOOST_ARCHIVE_DECL 
     xml_oarchive_impl(std::ostream & os, unsigned int flags);
-    ~xml_oarchive_impl(){}
+    BOOST_ARCHIVE_DECL 
+    ~xml_oarchive_impl();
 public:
     void save_binary(const void *address, std::size_t count){
         this->end_preamble();

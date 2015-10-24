@@ -118,11 +118,14 @@ xml_woarchive_impl<Archive>::xml_woarchive_impl(
         os_,
         true // don't change the codecvt - use the one below
     ),
-    basic_xml_oarchive<Archive>(flags),
-    codecvt_utf8_facet(1),
-    archive_locale(os_.rdbuf()->getloc(), & codecvt_utf8_facet){
+    basic_xml_oarchive<Archive>(flags)
+{
     if(0 == (flags & no_codecvt)){
-        os.rdbuf()->pubimbue(archive_locale);
+        std::locale l = std::locale(
+            os_.getloc(),
+            new boost::archive::detail::utf8_codecvt_facet
+        );
+        os.imbue(l);
     }
     if(0 == (flags & no_header))
         this->init();
@@ -131,6 +134,9 @@ xml_woarchive_impl<Archive>::xml_woarchive_impl(
 template<class Archive>
 BOOST_WARCHIVE_DECL
 xml_woarchive_impl<Archive>::~xml_woarchive_impl(){
+    if(0 == (this->get_flags() & no_header)){
+        save(L"</boost_serialization>\n");
+    }
 }
 
 } // namespace archive

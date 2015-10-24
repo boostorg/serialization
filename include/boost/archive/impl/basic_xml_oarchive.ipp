@@ -259,9 +259,6 @@ basic_xml_oarchive<Archive>::basic_xml_oarchive(unsigned int flags) :
 template<class Archive>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL
 basic_xml_oarchive<Archive>::~basic_xml_oarchive(){
-    if(0 == (this->get_flags() & no_header)){
-        this->This()->put("</boost_serialization>\n");
-    }
 }
 
 } // namespace archive

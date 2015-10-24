@@ -27,6 +27,7 @@
 #ifndef BOOST_NO_STD_LOCALE
 
 #include <locale>     // for std::locale
+#include <ios>
 #include <streambuf>  // for std::basic_streambuf
 
 #include <boost/config.hpp>
@@ -55,6 +56,23 @@ public:
     }
 private:
     std::basic_streambuf<Ch, Tr> &       m_streambuf;
+    std::locale const  m_locale;
+};
+
+template < typename Ch, class Tr >
+class basic_ios_locale_saver :
+    private boost::noncopyable
+{
+public:
+    explicit basic_ios_locale_saver(std::basic_ios<Ch, Tr> &s) :
+        m_ios(s),
+        m_locale(s.getloc())
+    {}
+    ~basic_ios_locale_saver(){
+        m_ios.imbue(m_locale);
+    }
+private:
+    std::basic_ios<Ch, Tr> & m_ios;
     std::locale const  m_locale;
 };
 

@@ -113,5 +113,13 @@ xml_oarchive_impl<Archive>::xml_oarchive_impl(
         this->init();
 }
 
+template<class Archive>
+BOOST_ARCHIVE_DECL
+xml_oarchive_impl<Archive>::~xml_oarchive_impl(){
+    if(0 == (this->get_flags() & no_header)){
+        save("</boost_serialization>\n");
+    }
+}
+
 } // namespace archive
 } // namespace boost

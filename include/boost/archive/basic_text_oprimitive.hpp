@@ -80,7 +80,7 @@ protected:
     // f) destroy new codecvt facet
     boost::archive::codecvt_null<typename OStream::char_type> codecvt_null_facet;
     std::locale archive_locale;
-    basic_streambuf_locale_saver<
+    basic_ios_locale_saver<
         typename OStream::char_type,
         typename OStream::traits_type
     > locale_saver;

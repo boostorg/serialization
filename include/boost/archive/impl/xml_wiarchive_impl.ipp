@@ -156,12 +156,14 @@ xml_wiarchive_impl<Archive>::xml_wiarchive_impl(
         true // don't change the codecvt - use the one below
     ),
     basic_xml_iarchive<Archive>(flags),
-    codecvt_utf8_facet(1),
-    archive_locale(is_.rdbuf()->getloc(), & codecvt_utf8_facet),
     gimpl(new xml_wgrammar())
 {
     if(0 == (flags & no_codecvt)){
-        is.rdbuf()->pubimbue(archive_locale);
+        std::locale l = std::locale(
+            is_.getloc(),
+            new boost::archive::detail::utf8_codecvt_facet
+        );
+        is.imbue(l);
     }
     if(0 == (flags & no_header))
         init();
