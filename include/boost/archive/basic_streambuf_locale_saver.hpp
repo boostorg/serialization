@@ -69,6 +69,7 @@ public:
         m_locale(s.getloc())
     {}
     ~basic_ios_locale_saver(){
+        m_ios.sync();
         m_ios.imbue(m_locale);
     }
 private:

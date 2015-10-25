@@ -125,6 +125,7 @@ xml_woarchive_impl<Archive>::xml_woarchive_impl(
             os_.getloc(),
             new boost::archive::detail::utf8_codecvt_facet
         );
+        os.sync();
         os.imbue(l);
     }
     if(0 == (flags & no_header))
