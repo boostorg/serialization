@@ -148,8 +148,8 @@ basic_binary_iprimitive<Archive, Elem, Tr>::basic_binary_iprimitive(
 #ifndef BOOST_NO_STD_LOCALE
     m_sb(sb),
     codecvt_null_facet(1),
-    archive_locale(sb.getloc(), & codecvt_null_facet),
-    locale_saver(m_sb)
+    locale_saver(m_sb),
+    archive_locale(sb.getloc(), & codecvt_null_facet)
 {
     if(! no_codecvt){
         m_sb.pubimbue(archive_locale);

@@ -39,6 +39,10 @@
 #include <boost/noncopyable.hpp>
 #include <boost/serialization/force_include.hpp>
 
+#include <boost/archive/detail/auto_link_archive.hpp>
+#include <boost/serialization/config.hpp>
+#include <boost/archive/detail/abi_prefix.hpp> // must be the last header
+
 #ifdef BOOST_MSVC
 #  pragma warning(push)
 #  pragma warning(disable : 4511 4512)
@@ -81,10 +85,7 @@ class singleton_module :
     public boost::noncopyable
 {
 private:
-    static bool & get_lock(){
-        static bool lock = false;
-        return lock;
-    }
+    BOOST_SERIALIZATION_DECL static bool & get_lock();
 public:
 //    static const void * get_module_handle(){
 //        return static_cast<const void *>(get_module_handle);
@@ -99,6 +100,8 @@ public:
         return get_lock();
     }
 };
+
+#include <boost/archive/detail/abi_suffix.hpp> // pops abi_suffix.hpp pragmas
 
 namespace detail {
 

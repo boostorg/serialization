@@ -117,6 +117,7 @@ if(Boost_USE_STATIC_LIBS)
   set(BUILD_SHARED_LIBRARIES OFF)
 else()
   set(BUILD_SHARED_LIBRARIES ON)
+  # set(ENV{DYLD_LIBRARY_PATH} "${Boost_LIBRARY_DIRS}" ")
 endif()
 
 ###########################
@@ -143,6 +144,7 @@ add_library(serialization
   ../src/extended_type_info.cpp
   ../src/polymorphic_iarchive.cpp
   ../src/polymorphic_oarchive.cpp
+  ../src/singleton.cpp
   ../src/stl_port.cpp
   ../src/text_iarchive.cpp
   ../src/text_oarchive.cpp
@@ -164,8 +166,6 @@ add_library(wserialization
   ../src/text_woarchive.cpp
   ../src/xml_wiarchive.cpp
   ../src/xml_woarchive.cpp
-  ../src/codecvt_null.cpp
-  ../src/utf8_codecvt_facet.cpp
   ../src/xml_wgrammar.cpp
 )
 
