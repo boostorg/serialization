@@ -69,7 +69,11 @@ public:
         m_locale(s.getloc())
     {}
     ~basic_ios_locale_saver(){
+        // libc++ doesn't support std::[w]ostream.sync()
+        // but gcc will throw an error if sync() isn't invoked
+        #ifndef _LIBCPP_VERSION
         m_ios.sync();
+        #endif
         m_ios.imbue(m_locale);
     }
 private:

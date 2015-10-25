@@ -125,8 +125,12 @@ xml_woarchive_impl<Archive>::xml_woarchive_impl(
             os_.getloc(),
             new boost::archive::detail::utf8_codecvt_facet
         );
-        os.sync();
-        os.imbue(l);
+        // libc++ doesn't support std::[w]ostream.sync()
+        // but gcc will throw an error if sync() isn't invoked
+        #ifndef _LIBCPP_VERSION
+        os_.sync();
+        #endif
+        os_.imbue(l);
     }
     if(0 == (flags & no_header))
         this->init();

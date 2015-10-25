@@ -93,9 +93,14 @@ basic_text_oprimitive<OStream>::basic_text_oprimitive(
     locale_saver(os)
 {
     if(! no_codecvt){
-        os.imbue(archive_locale);
+        // libc++ doesn't support std::wostream.sync()
+        // but gcc will throw an error if sync() isn't invoked
+        #ifndef _LIBCPP_VERSION
+        os_.sync();
+        #endif
+        os_.imbue(archive_locale);
     }
-    os << std::noboolalpha;
+    os_ << std::noboolalpha;
 }
 #else
 {}

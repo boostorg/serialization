@@ -119,9 +119,10 @@ basic_text_iprimitive<IStream>::basic_text_iprimitive(
     locale_saver(is)
 {
     if(! no_codecvt){
-        is.imbue(archive_locale);
+        is_.sync();
+        is_.imbue(archive_locale);
     }
-    is >> std::noboolalpha;
+    is_ >> std::noboolalpha;
 }
 #else
 {}

@@ -163,8 +163,8 @@ xml_wiarchive_impl<Archive>::xml_wiarchive_impl(
             is_.getloc(),
             new boost::archive::detail::utf8_codecvt_facet
         );
-        is.sync();
-        is.imbue(l);
+        is_.sync();
+        is_.imbue(l);
     }
     if(0 == (flags & no_header))
         init();
