@@ -60,7 +60,7 @@ public:
 };
 
 template<>
-class codecvt_null<wchar_t> : public std::codecvt<wchar_t, char, std::mbstate_t>
+class BOOST_SYMBOL_VISIBLE codecvt_null<wchar_t> : public std::codecvt<wchar_t, char, std::mbstate_t>
 {
     virtual BOOST_WARCHIVE_DECL std::codecvt_base::result
     do_out(
