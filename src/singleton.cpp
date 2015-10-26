@@ -13,10 +13,19 @@
 namespace boost { 
 namespace serialization { 
 
-BOOST_SERIALIZATION_DECL
 bool & singleton_module::get_lock(){
     static bool lock = false;
     return lock;
+}
+
+BOOST_SERIALIZATION_DECL void singleton_module::lock(){
+    get_lock() = true;
+}
+BOOST_SERIALIZATION_DECL void singleton_module::unlock(){
+    get_lock() = false;
+}
+BOOST_SERIALIZATION_DECL bool singleton_module::is_locked() {
+    return get_lock();
 }
 
 } // namespace serialization

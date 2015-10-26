@@ -105,6 +105,7 @@ basic_binary_oprimitive<Archive, Elem, Tr>::basic_binary_oprimitive(
     archive_locale(sb.getloc(), & codecvt_null_facet)
 {
     if(! no_codecvt){
+        m_sb.pubsync();
         m_sb.pubimbue(archive_locale);
     }
 }
