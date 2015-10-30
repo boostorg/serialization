@@ -9,22 +9,24 @@
 
 #include <boost/config.hpp>
 
+#define BOOST_UTF8_BEGIN_NAMESPACE \
+    namespace boost { namespace archive { namespace detail {
+#define BOOST_UTF8_END_NAMESPACE }}}
+
 #ifdef BOOST_NO_CXX11_HDR_CODECVT
-    #define BOOST_UTF8_BEGIN_NAMESPACE \
-         namespace boost { namespace archive { namespace detail {
-    #define BOOST_UTF8_DECL
-    #define BOOST_UTF8_END_NAMESPACE }}}
-
-    #include <boost/detail/utf8_codecvt_facet.hpp>
-
-    #undef BOOST_UTF8_END_NAMESPACE
-    #undef BOOST_UTF8_DECL
-    #undef BOOST_UTF8_BEGIN_NAMESPACE
+    #include <boost/locale/utf8_codecvt.hpp>
+    BOOST_UTF8_BEGIN_NAMESPACE
+        typedef boost::locale::utf8_codecvt<wchar_t> utf8_codecvt_facet;
+    BOOST_UTF8_END_NAMESPACE
 #else
     #include <codecvt>
-    namespace boost { namespace archive { namespace detail {
+    BOOST_UTF8_BEGIN_NAMESPACE
         typedef std::codecvt_utf8<wchar_t> utf8_codecvt_facet;
-    } } }
+    BOOST_UTF8_END_NAMESPACE
 #endif // BOOST_NO_CXX11_HDR_CODECVT
 
+#undef BOOST_UTF8_BEGIN_NAMESPACE
+#undef BOOST_UTF8_END_NAMESPACE
+
 #endif // BOOST_ARCHIVE_DETAIL_UTF8_CODECVT_FACET_HPP
+

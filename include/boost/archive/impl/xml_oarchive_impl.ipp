@@ -10,6 +10,7 @@
 #include <iomanip>
 #include <algorithm> // std::copy
 #include <string>
+#include <exception>
 
 #include <cstring> // strlen
 #include <boost/config.hpp> // msvc 6.0 needs this to suppress warnings
@@ -116,6 +117,8 @@ xml_oarchive_impl<Archive>::xml_oarchive_impl(
 template<class Archive>
 BOOST_ARCHIVE_DECL
 xml_oarchive_impl<Archive>::~xml_oarchive_impl(){
+    if(std::uncaught_exception())
+        return;
     if(0 == (this->get_flags() & no_header)){
         save("</boost_serialization>\n");
     }

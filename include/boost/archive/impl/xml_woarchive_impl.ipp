@@ -13,6 +13,7 @@
 #include <string>
 #include <algorithm> // std::copy
 #include <locale>
+#include <exception>
 
 #include <cstring> // strlen
 #include <cstdlib> // mbtowc
@@ -30,6 +31,8 @@ namespace std{
 #endif
 
 #include <boost/archive/xml_woarchive.hpp>
+#include <boost/archive/detail/utf8_codecvt_facet.hpp>
+
 #include <boost/serialization/throw_exception.hpp>
 
 #include <boost/archive/iterators/xml_escape.hpp>
@@ -125,11 +128,7 @@ xml_woarchive_impl<Archive>::xml_woarchive_impl(
             os_.getloc(),
             new boost::archive::detail::utf8_codecvt_facet
         );
-        // libc++ doesn't support std::[w]ostream.sync()
-        // but gcc will throw an error if sync() isn't invoked
-        #ifndef _LIBCPP_VERSION
-        os_.sync();
-        #endif
+        os_.flush();
         os_.imbue(l);
     }
     if(0 == (flags & no_header))
@@ -139,6 +138,8 @@ xml_woarchive_impl<Archive>::xml_woarchive_impl(
 template<class Archive>
 BOOST_WARCHIVE_DECL
 xml_woarchive_impl<Archive>::~xml_woarchive_impl(){
+    if(std::uncaught_exception())
+        return;
     if(0 == (this->get_flags() & no_header)){
         save(L"</boost_serialization>\n");
     }

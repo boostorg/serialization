@@ -60,26 +60,42 @@ private:
 };
 
 template < typename Ch, class Tr >
-class basic_ios_locale_saver :
+class basic_istream_locale_saver :
     private boost::noncopyable
 {
 public:
-    explicit basic_ios_locale_saver(std::basic_ios<Ch, Tr> &s) :
-        m_ios(s),
+    explicit basic_istream_locale_saver(std::basic_istream<Ch, Tr> &s) :
+        m_istream(s),
         m_locale(s.getloc())
     {}
-    ~basic_ios_locale_saver(){
-        // libc++ doesn't support std::[w]ostream.sync()
-        // but gcc will throw an error if sync() isn't invoked
-        #ifndef _LIBCPP_VERSION
-        m_ios.sync();
-        #endif
-        m_ios.imbue(m_locale);
+    ~basic_istream_locale_saver(){
+        // libstdc++ crashes without this
+        m_istream.sync();
+        m_istream.imbue(m_locale);
     }
 private:
-    std::basic_ios<Ch, Tr> & m_ios;
+    std::basic_istream<Ch, Tr> & m_istream;
     std::locale const  m_locale;
 };
+
+template < typename Ch, class Tr >
+class basic_ostream_locale_saver :
+    private boost::noncopyable
+{
+public:
+    explicit basic_ostream_locale_saver(std::basic_ostream<Ch, Tr> &s) :
+        m_ostream(s),
+        m_locale(s.getloc())
+    {}
+    ~basic_ostream_locale_saver(){
+        m_ostream.flush();
+        m_ostream.imbue(m_locale);
+    }
+private:
+    std::basic_ostream<Ch, Tr> & m_ostream;
+    std::locale const  m_locale;
+};
+
 
 } // archive
 } // boost

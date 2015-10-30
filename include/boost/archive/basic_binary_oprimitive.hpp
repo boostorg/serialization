@@ -137,11 +137,10 @@ public:
             struct apply : public boost::serialization::is_bitwise_serializable< T > {};  
         #endif
     };
-    
 
     // the optimized save_array dispatches to save_binary 
     template <class ValueType>
-    void save_array(boost::serialization::array<ValueType> const& a, unsigned int)
+    void save_array(boost::serialization::array_wrapper<ValueType> const& a, unsigned int)
     {
       save_binary(a.address(),a.count()*sizeof(ValueType));
     }

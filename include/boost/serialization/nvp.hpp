@@ -39,14 +39,17 @@ struct nvp :
     public std::pair<const char *, T *>,
     public wrapper_traits<const nvp< T > >
 {
+//private:
+    //friend const nvp< T > make_nvp(const char * name, T & t);
+    nvp(const nvp & rhs) :
+        // note: redundant cast works around borland issue
+        std::pair<const char *, T *>(rhs.first, (T*)rhs.second)
+    {}
+public:
     explicit nvp(const char * name_, T & t) :
         // note: redundant cast works around borland issue
         // note: added _ to suppress useless gcc warning
         std::pair<const char *, T *>(name_, (T*)(& t))
-    {}
-    nvp(const nvp & rhs) : 
-        // note: redundant cast works around borland issue
-        std::pair<const char *, T *>(rhs.first, (T*)rhs.second)
     {}
 
     const char * name() const {

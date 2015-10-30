@@ -143,7 +143,7 @@ public:
 
     // the optimized load_array dispatches to load_binary 
     template <class ValueType>
-    void load_array(serialization::array<ValueType>& a, unsigned int)
+    void load_array(serialization::array_wrapper<ValueType>& a, unsigned int)
     {
       load_binary(a.address(),a.count()*sizeof(ValueType));
     }

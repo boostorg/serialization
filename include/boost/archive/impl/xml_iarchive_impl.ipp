@@ -11,6 +11,8 @@
 #include <boost/config.hpp>
 #include <cstring> // memcpy
 #include <cstddef> // NULL
+#include <exception>
+
 #if defined(BOOST_NO_STDC_NAMESPACE)
 namespace std{ 
     using ::memcpy;
@@ -187,6 +189,8 @@ xml_iarchive_impl<Archive>::xml_iarchive_impl(
 template<class Archive>
 BOOST_ARCHIVE_DECL
 xml_iarchive_impl<Archive>::~xml_iarchive_impl(){
+    if(std::uncaught_exception())
+        return;
     if(0 == (this->get_flags() & no_header)){
         gimpl->windup(is);
     }

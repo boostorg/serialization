@@ -10,7 +10,7 @@
 
 #include <cstddef> // NULL
 #include <algorithm> // std::copy
-
+#include <exception> // std::uncaught_exception
 #include <boost/config.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)
 namespace std{ 
@@ -93,11 +93,7 @@ basic_text_oprimitive<OStream>::basic_text_oprimitive(
     locale_saver(os)
 {
     if(! no_codecvt){
-        // libc++ doesn't support std::wostream.sync()
-        // but gcc will throw an error if sync() isn't invoked
-        #ifndef _LIBCPP_VERSION
-        os_.sync();
-        #endif
+        os_.flush();
         os_.imbue(archive_locale);
     }
     os_ << std::noboolalpha;
@@ -110,6 +106,8 @@ basic_text_oprimitive<OStream>::basic_text_oprimitive(
 template<class OStream>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL
 basic_text_oprimitive<OStream>::~basic_text_oprimitive(){
+    if(std::uncaught_exception())
+        return;
     os << std::endl;
 }
 
