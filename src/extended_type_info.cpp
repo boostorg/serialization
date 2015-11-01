@@ -26,10 +26,11 @@ namespace std{ using ::strcmp; }
 #endif
 
 #include <boost/core/no_exceptions_support.hpp>
+
+#define BOOST_SERIALIZATION_SOURCE
 #include <boost/serialization/singleton.hpp>
 #include <boost/serialization/force_include.hpp>
 
-#define BOOST_SERIALIZATION_SOURCE
 #include <boost/serialization/extended_type_info.hpp>
 
 #ifdef BOOST_MSVC

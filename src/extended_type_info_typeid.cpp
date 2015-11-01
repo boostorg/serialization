@@ -17,9 +17,9 @@
 
 #include <boost/core/no_exceptions_support.hpp>
 
+#define BOOST_SERIALIZATION_SOURCE
 #include <boost/serialization/singleton.hpp>
 
-#define BOOST_SERIALIZATION_SOURCE
 #include <boost/serialization/extended_type_info_typeid.hpp>
 
 namespace boost { 
