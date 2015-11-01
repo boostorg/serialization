@@ -18,6 +18,7 @@
 #include <boost/serialization/state_saver.hpp>
 #include <boost/serialization/throw_exception.hpp>
 
+#include <boost/serialization/config.hpp>
 // including this here to work around an ICC in intel 7.0
 // normally this would be part of basic_oarchive.hpp below.
 #define BOOST_ARCHIVE_SOURCE

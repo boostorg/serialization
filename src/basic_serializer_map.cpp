@@ -15,6 +15,7 @@
 #include <set>
 #include <utility>
 
+#include <boost/serialization/config.hpp>
 #define BOOST_ARCHIVE_SOURCE
 // include this to prevent linker errors when the
 // same modules are marked export and import.
