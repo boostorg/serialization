@@ -90,7 +90,8 @@ public:
     }
 
     istream_iterator() :
-        m_istream(NULL)
+        m_istream(NULL),
+        m_current_value(NULL)
     {}
 
     istream_iterator(const istream_iterator<Elem> & rhs) :
