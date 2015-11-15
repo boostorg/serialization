@@ -20,6 +20,7 @@
 #endif
 
 #define BOOST_WARCHIVE_SOURCE
+#include <boost/serialization/config.hpp>
 
 #include <boost/archive/xml_wiarchive.hpp>
 #include <boost/archive/detail/archive_serializer_map.hpp>

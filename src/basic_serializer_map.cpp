@@ -15,15 +15,14 @@
 #include <set>
 #include <utility>
 
-#include <boost/serialization/config.hpp>
 #define BOOST_ARCHIVE_SOURCE
 // include this to prevent linker errors when the
 // same modules are marked export and import.
 #define BOOST_SERIALIZATION_SOURCE
-
-#include <boost/archive/archive_exception.hpp>
+#include <boost/serialization/config.hpp>
 #include <boost/serialization/throw_exception.hpp>
 
+#include <boost/archive/archive_exception.hpp>
 #include <boost/archive/detail/basic_serializer.hpp>
 #include <boost/archive/detail/basic_serializer_map.hpp>
 

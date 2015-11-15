@@ -15,16 +15,17 @@
 #include <cstddef> // NULL
 
 #include <boost/limits.hpp>
-#include <boost/serialization/state_saver.hpp>
-#include <boost/serialization/throw_exception.hpp>
 
-#include <boost/serialization/config.hpp>
 // including this here to work around an ICC in intel 7.0
 // normally this would be part of basic_oarchive.hpp below.
 #define BOOST_ARCHIVE_SOURCE
 // include this to prevent linker errors when the
 // same modules are marked export and import.
 #define BOOST_SERIALIZATION_SOURCE
+#include <boost/serialization/config.hpp>
+#include <boost/serialization/state_saver.hpp>
+#include <boost/serialization/throw_exception.hpp>
+#include <boost/serialization/extended_type_info.hpp>
 
 #include <boost/archive/detail/decl.hpp>
 #include <boost/archive/basic_archive.hpp>
@@ -32,7 +33,6 @@
 #include <boost/archive/detail/basic_pointer_oserializer.hpp>
 #include <boost/archive/detail/basic_oarchive.hpp>
 #include <boost/archive/archive_exception.hpp>
-#include <boost/serialization/extended_type_info.hpp>
 
 #ifdef BOOST_MSVC
 #  pragma warning(push)

@@ -14,10 +14,12 @@
 
 
 #include <exception>
-#include <boost/assert.hpp>
 #include <string>
 
+#include <boost/assert.hpp>
+
 #define BOOST_ARCHIVE_SOURCE
+#include <boost/serialization/config.hpp>
 #include <boost/archive/xml_archive_exception.hpp>
 
 namespace boost {

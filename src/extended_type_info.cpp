@@ -18,12 +18,12 @@
 #include <boost/assert.hpp>
 #include <cstddef> // NULL
 
-#include <boost/config.hpp> // msvc needs this to suppress warning
-
 #include <cstring>
 #if defined(BOOST_NO_STDC_NAMESPACE)
 namespace std{ using ::strcmp; }
 #endif
+
+#include <boost/config.hpp> // msvc needs this to suppress warning
 
 #include <boost/core/no_exceptions_support.hpp>
 
