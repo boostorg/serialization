@@ -247,6 +247,7 @@ serialization_test(test_iterators)
 serialization_test(test_iterators_base64)
 serialization_test(test_inclusion)
 serialization_test(test_smart_cast)
+serialization_test(test_utf8_codecvt )
 serialization_test(test_codecvt_null ../src/codecvt_null)
 
 archive_test(test_native_array A)
