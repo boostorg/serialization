@@ -116,6 +116,7 @@ public:
     template<class T>
     mb_from_wchar(T start) :
         super_t(Base(static_cast< T >(start))),
+        m_mbs(std::mbstate_t()),
         m_bend(0),
         m_bnext(0),
         m_full(false)

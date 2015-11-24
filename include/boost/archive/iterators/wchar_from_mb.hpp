@@ -124,8 +124,10 @@ public:
     // make composible buy using templated constructor
     template<class T>
     wchar_from_mb(T start) : 
-        super_t(Base(static_cast< T >(start)))
+        super_t(Base(static_cast< T >(start))),
+        m_mbs(std::mbstate_t())
     {
+        BOOST_ASSERT(std::mbsinit(&m_mbs));
         drain();
     }
     // copy ctor
