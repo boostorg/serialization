@@ -40,11 +40,11 @@ template BOOST_SYMBOL_EXPORT void derived2::serialize(
 #include <boost/archive/polymorphic_oarchive.hpp>
 #include <boost/archive/polymorphic_iarchive.hpp>
 
-template BOOST_SYMBOL_EXPORT derived2::serialize(
+template BOOST_SYMBOL_EXPORT void derived2::serialize(
     boost::archive::polymorphic_oarchive & ar,
     const unsigned int version
 );
-template BOOST_SYMBOL_EXPORT derived2::serialize(
+template BOOST_SYMBOL_EXPORT void derived2::serialize(
     boost::archive::polymorphic_iarchive & ar,
     const unsigned int version
 );
