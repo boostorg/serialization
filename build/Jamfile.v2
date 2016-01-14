@@ -81,6 +81,7 @@ SOURCES =
     xml_oarchive
     xml_archive_exception
     codecvt_null
+    utf8_codecvt_facet
     singleton
 ;
     
