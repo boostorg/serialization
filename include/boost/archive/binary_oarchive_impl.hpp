@@ -59,8 +59,9 @@ protected:
         this->basic_binary_oarchive<Archive>::save_override(t);
     }
     void init(unsigned int flags) {
-        if(0 != (flags & no_header))
+        if(0 != (flags & no_header)){
             return;
+        }
         #if ! defined(__MWERKS__)
             this->basic_binary_oarchive<Archive>::init();
             this->basic_binary_oprimitive<Archive, Elem, Tr>::init();

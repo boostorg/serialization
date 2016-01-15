@@ -58,8 +58,9 @@ protected:
         this->basic_binary_iarchive<Archive>::load_override(t);
     }
     void init(unsigned int flags){
-        if(0 != (flags & no_header))
+        if(0 != (flags & no_header)){
             return;
+        }
         #if ! defined(__MWERKS__)
             this->basic_binary_iarchive<Archive>::init();
             this->basic_binary_iprimitive<Archive, Elem, Tr>::init();
