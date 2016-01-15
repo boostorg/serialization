@@ -67,7 +67,7 @@ xml_iarchive_impl<Archive>::load(std::wstring &ws){
     if(NULL != ws.data())
     #endif
         ws.resize(0);
-    std::mbstate_t mbs;
+    std::mbstate_t mbs = std::mbstate_t();
     const char * start = s.data();
     const char * end = start + s.size();
     while(start < end){

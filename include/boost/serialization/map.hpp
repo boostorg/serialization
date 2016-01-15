@@ -62,6 +62,7 @@ inline void load_map_collection(Archive & ar, Container &s)
         typename Container::iterator result = s.insert(hint, t.reference());
         ar.reset_object_address(& (result->second), & t.reference().second);
         hint = result;
+        ++hint;
     }
 }
 
