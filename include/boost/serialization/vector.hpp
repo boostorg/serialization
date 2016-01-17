@@ -34,7 +34,7 @@
 #include <boost/serialization/array.hpp>
 #include <boost/serialization/detail/get_data.hpp>
 #include <boost/serialization/detail/stack_constructor.hpp>
-#include <boost/mpl/bool.hpp>
+#include <boost/mpl/bool_fwd.hpp>
 #include <boost/mpl/if.hpp>
 
 // default is being compatible with version 1.34.1 files, not 1.35 files

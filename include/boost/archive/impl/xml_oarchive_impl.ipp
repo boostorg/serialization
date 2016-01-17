@@ -115,6 +115,21 @@ xml_oarchive_impl<Archive>::xml_oarchive_impl(
 }
 
 template<class Archive>
+BOOST_ARCHIVE_DECL void
+xml_oarchive_impl<Archive>::save_binary(const void *address, std::size_t count){
+    this->end_preamble();
+    #if ! defined(__MWERKS__)
+    this->basic_text_oprimitive<std::ostream>::save_binary(
+    #else
+    this->basic_text_oprimitive::save_binary(
+    #endif
+        address, 
+        count
+    );
+    this->indent_next = true;
+}
+
+template<class Archive>
 BOOST_ARCHIVE_DECL
 xml_oarchive_impl<Archive>::~xml_oarchive_impl(){
     if(std::uncaught_exception())

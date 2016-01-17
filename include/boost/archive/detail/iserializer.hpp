@@ -39,7 +39,6 @@ namespace std{
 #include <boost/mpl/identity.hpp>
 #include <boost/mpl/greater_equal.hpp>
 #include <boost/mpl/equal_to.hpp>
-#include <boost/mpl/bool.hpp>
 #include <boost/core/no_exceptions_support.hpp>
 
 #ifndef BOOST_SERIALIZATION_DEFAULT_TYPE_INFO   

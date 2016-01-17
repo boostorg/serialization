@@ -22,7 +22,7 @@ namespace std{
 #include <boost/serialization/collection_size_type.hpp>
 #include <boost/mpl/always.hpp>
 #include <boost/mpl/apply.hpp>
-#include <boost/mpl/bool.hpp>
+#include <boost/mpl/bool_fwd.hpp>
 #include <boost/type_traits/remove_const.hpp>
 #include <boost/type_traits/is_integral.hpp>
 #include <boost/static_assert.hpp>

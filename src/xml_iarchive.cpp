@@ -12,12 +12,8 @@
 #  pragma warning (disable : 4786) // too long name, harmless warning
 #endif
 
-#include <boost/config.hpp>
-#include <boost/detail/workaround.hpp>
-
 #define BOOST_ARCHIVE_SOURCE
 #include <boost/serialization/config.hpp>
-
 #include <boost/archive/xml_iarchive.hpp>
 #include <boost/archive/detail/archive_serializer_map.hpp>
 

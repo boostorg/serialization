@@ -67,9 +67,6 @@ protected:
         friend class save_access;
     #endif
 #endif
-    //void end_preamble(){
-    //    basic_xml_oarchive<Archive>::end_preamble();
-    //}
     template<class T>
     void save(const T & t){
         basic_text_oprimitive<std::ostream>::save(t);
@@ -99,18 +96,7 @@ protected:
     BOOST_ARCHIVE_DECL 
     ~xml_oarchive_impl();
 public:
-    void save_binary(const void *address, std::size_t count){
-        this->end_preamble();
-        #if ! defined(__MWERKS__)
-        this->basic_text_oprimitive<std::ostream>::save_binary(
-        #else
-        this->basic_text_oprimitive::save_binary(
-        #endif
-            address, 
-            count
-        );
-        this->indent_next = true;
-    }
+    void save_binary(const void *address, std::size_t count);
 };
 
 // we use the following because we can't use

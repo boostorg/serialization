@@ -118,6 +118,8 @@ if(Boost_USE_STATIC_LIBS)
 else()
   set(BUILD_SHARED_LIBRARIES ON)
   # set(ENV{DYLD_LIBRARY_PATH} "${Boost_LIBRARY_DIRS}" ")
+  # set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+  # set(VISIBILITY_INLINES_HIDDEN)
 endif()
 
 ###########################
@@ -156,7 +158,7 @@ add_library(serialization
   ../src/basic_xml_grammar.ipp # doesn't show up in "Source Files" in Xcode"'
 )
 
-target_compile_options(serialization PRIVATE -fvisibility=hidden -fvisibility-inlines-hidden )
+# target_compile_options(serialization PRIVATE -fvisibility=hidden -fvisibility-inlines-hidden )
 
 add_library(wserialization
   ../src/basic_text_wiprimitive.cpp
@@ -169,7 +171,7 @@ add_library(wserialization
   ../src/basic_xml_grammar.ipp # doesn't show up in "Source Files" in Xcode"'
 )
 
-target_compile_options(wserialization PRIVATE -fvisibility=hidden -fvisibility-inlines-hidden )
+#target_compile_options(wserialization PRIVATE -fvisibility=hidden -fvisibility-inlines-hidden )
 
 # end library build
 ###########################

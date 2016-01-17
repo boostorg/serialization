@@ -7,13 +7,14 @@
 #include <boost/config.hpp>
 #include <boost/archive/detail/auto_link_archive.hpp>
 #ifdef BOOST_NO_STD_WSTREAMBUF
-#error "wide char i/o not supported on this platform"
+    #error "wide char i/o not supported on this platform"
 #else
     #ifdef BOOST_NO_CXX11_HDR_CODECVT
         #define BOOST_UTF8_BEGIN_NAMESPACE \
              namespace boost { namespace archive { namespace detail {
-        #define BOOST_UTF8_DECL
+        #define BOOST_UTF8_DECL BOOST_ARCHIVE_DECL
         #define BOOST_UTF8_END_NAMESPACE }}}
+        #include <boost/archive/detail/utf8_codecvt_facet.hpp>
         #include <boost/detail/utf8_codecvt_facet.ipp>
         #undef BOOST_UTF8_END_NAMESPACE
         #undef BOOST_UTF8_DECL
