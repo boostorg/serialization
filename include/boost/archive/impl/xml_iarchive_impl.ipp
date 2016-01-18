@@ -100,7 +100,7 @@ xml_iarchive_impl<Archive>::load(wchar_t * ws){
             )
         );
         
-    std::mbstate_t mbs;
+    std::mbstate_t mbs = std::mbstate_t();
     const char * start = s.data();
     const char * end = start + s.size();
     while(start < end){

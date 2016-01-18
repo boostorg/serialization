@@ -26,5 +26,4 @@
         typedef std::codecvt_utf8<wchar_t> utf8_codecvt_facet;
     } } }
 #endif // BOOST_NO_CXX11_HDR_CODECVT
-
 #endif // BOOST_ARCHIVE_DETAIL_UTF8_CODECVT_FACET_HPP
