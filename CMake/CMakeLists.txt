@@ -118,9 +118,9 @@ if(Boost_USE_STATIC_LIBS)
 else()
   set(BUILD_SHARED_LIBRARIES ON)
   # set(ENV{DYLD_LIBRARY_PATH} "${Boost_LIBRARY_DIRS}" ")
-  # set(CMAKE_CXX_VISIBILITY_PRESET hidden)
-  # set(VISIBILITY_INLINES_HIDDEN)
 endif()
+set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+set(VISIBILITY_INLINES_HIDDEN)
 
 ###########################
 # library builds
