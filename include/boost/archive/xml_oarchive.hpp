@@ -96,7 +96,8 @@ protected:
     BOOST_ARCHIVE_DECL 
     ~xml_oarchive_impl();
 public:
-    void save_binary(const void *address, std::size_t count);
+    BOOST_ARCHIVE_DECL void
+    save_binary(const void *address, std::size_t count);
 };
 
 // we use the following because we can't use
