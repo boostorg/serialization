@@ -35,6 +35,10 @@ elseif( CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" )
   set(COMPILER_SUPPORTS_CXX11 TRUE)
 endif()
 
+if (POLICY CMP0063)
+  cmake_policy (SET CMP0063 NEW)
+endif (POLICY CMP0063)
+
 #
 # IDE settings
 #
@@ -168,6 +172,7 @@ add_library(wserialization
   ../src/xml_wiarchive.cpp
   ../src/xml_woarchive.cpp
   ../src/xml_wgrammar.cpp
+  ../src/utf8_codecvt_facet.cpp
   ../src/basic_xml_grammar.ipp # doesn't show up in "Source Files" in Xcode"'
 )
 

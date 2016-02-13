@@ -17,7 +17,7 @@
 //  See http://www.boost.org for updates, documentation, and revision history.
 
 #include <boost/config.hpp>
-#include <boost/detail/workaround.hpp>
+//#include <boost/detail/workaround.hpp>
 
 #include <boost/archive/detail/common_iarchive.hpp>
 
@@ -50,13 +50,7 @@ class BOOST_SYMBOL_VISIBLE basic_xml_iarchive :
 public:
 #else
 protected:
-    #if BOOST_WORKAROUND(BOOST_MSVC, < 1500)
-        // for some inexplicable reason insertion of "class" generates compile erro
-        // on msvc 7.1
-        friend detail::interface_iarchive<Archive>;
-    #else
-        friend class detail::interface_iarchive<Archive>;
-    #endif
+    friend class detail::interface_iarchive<Archive>;
 #endif
     unsigned int depth;
     BOOST_ARCHIVE_OR_WARCHIVE_DECL void

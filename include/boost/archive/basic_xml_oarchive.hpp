@@ -18,14 +18,13 @@
 
 #include <boost/config.hpp>
 #include <boost/mpl/assert.hpp>
-#include <boost/detail/workaround.hpp>
+//#include <boost/detail/workaround.hpp>
 
 #include <boost/archive/detail/common_oarchive.hpp>
 
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/tracking.hpp>
 #include <boost/serialization/string.hpp>
-
 
 #include <boost/archive/detail/abi_prefix.hpp> // must be the last header
 
@@ -51,12 +50,6 @@ class BOOST_SYMBOL_VISIBLE basic_xml_oarchive :
 public:
 #else
 protected:
-#endif
-#if BOOST_WORKAROUND(BOOST_MSVC, < 1500)
-    // for some inexplicable reason insertion of "class" generates compile erro
-    // on msvc 7.1
-    friend detail::interface_oarchive<Archive>;
-#else
     friend class detail::interface_oarchive<Archive>;
 #endif
     friend class save_access;

@@ -37,13 +37,15 @@ xml_archive_exception::xml_archive_exception(
         case xml_archive_parsing_error:
             archive_exception::append(0, "unrecognized XML syntax");
             break;
-        case xml_archive_tag_mismatch:
-            archive_exception::append(0, "XML start/end tag mismatch");
+        case xml_archive_tag_mismatch:{
+            unsigned int l;
+            l = archive_exception::append(0, "XML start/end tag mismatch");
             if(NULL != e1){
-                archive_exception::append(0, " - ");
-                archive_exception::append(0, e1);
+                l = archive_exception::append(l, " - ");
+                archive_exception::append(l, e1);
             }    
             break;
+        }
         case xml_archive_tag_name_error:
             archive_exception::append(0, "Invalid XML tag name");
             break;

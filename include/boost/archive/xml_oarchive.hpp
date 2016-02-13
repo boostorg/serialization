@@ -55,17 +55,9 @@ class BOOST_SYMBOL_VISIBLE xml_oarchive_impl :
 public:
 #else
 protected:
-    #if BOOST_WORKAROUND(BOOST_MSVC, < 1500)
-        // for some inexplicable reason insertion of "class" generates compile erro
-        // on msvc 7.1
-        friend detail::interface_oarchive<Archive>;
-        friend basic_xml_oarchive<Archive>;
-        friend save_access;
-    #else
-        friend class detail::interface_oarchive<Archive>;
-        friend class basic_xml_oarchive<Archive>;
-        friend class save_access;
-    #endif
+    friend class detail::interface_oarchive<Archive>;
+    friend class basic_xml_oarchive<Archive>;
+    friend class save_access;
 #endif
     template<class T>
     void save(const T & t){
@@ -95,8 +87,8 @@ protected:
     xml_oarchive_impl(std::ostream & os, unsigned int flags);
     BOOST_ARCHIVE_DECL 
     ~xml_oarchive_impl();
-public:
     BOOST_ARCHIVE_DECL 
+public:
     void save_binary(const void *address, std::size_t count);
 };
 

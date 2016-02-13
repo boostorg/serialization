@@ -22,6 +22,10 @@
 
 #include <boost/serialization/utility.hpp>
 
+#ifdef BOOST_NO_CXX11_STD_UNORDERED
+#error "not supported for versions earlier than c++11
+#endif
+
 namespace boost { 
 namespace serialization {
 namespace stl {
@@ -37,10 +41,10 @@ struct archive_input_unordered_map
     ){
         typedef typename Container::value_type type;
         detail::stack_construct<Archive, type> t(ar, v);
-        // borland fails silently w/o full namespace
         ar >> boost::serialization::make_nvp("item", t.reference());
         std::pair<typename Container::const_iterator, bool> result = 
-            s.insert(t.reference());
+            s.emplace(t.reference());
+
         // note: the following presumes that the map::value_type was NOT tracked
         // in the archive.  This is the usual case, but here there is no way
         // to determine that.  
@@ -64,10 +68,9 @@ struct archive_input_unordered_multimap
     ){
         typedef typename Container::value_type type;
         detail::stack_construct<Archive, type> t(ar, v);
-        // borland fails silently w/o full namespace
         ar >> boost::serialization::make_nvp("item", t.reference());
-        typename Container::const_iterator result 
-            = s.insert(t.reference());
+        typename Container::const_iterator result =
+            s.emplace(t.reference());
         // note: the following presumes that the map::value_type was NOT tracked
         // in the archive.  This is the usual case, but here there is no way
         // to determine that.  

@@ -21,9 +21,6 @@
 #include <boost/config.hpp>
 #include <boost/detail/workaround.hpp>
 
-#include <boost/mpl/integral_c.hpp>
-#include <boost/mpl/integral_c_tag.hpp>
-
 #include <boost/serialization/level.hpp>
 #include <boost/serialization/tracking.hpp>
 #include <boost/serialization/split_member.hpp>
@@ -40,16 +37,13 @@ struct nvp :
     public wrapper_traits<const nvp< T > >
 {
 //private:
-    //friend const nvp< T > make_nvp(const char * name, T & t);
     nvp(const nvp & rhs) :
-        // note: redundant cast works around borland issue
-        std::pair<const char *, T *>(rhs.first, (T*)rhs.second)
+        std::pair<const char *, T *>(rhs.first, rhs.second)
     {}
 public:
     explicit nvp(const char * name_, T & t) :
-        // note: redundant cast works around borland issue
         // note: added _ to suppress useless gcc warning
-        std::pair<const char *, T *>(name_, (T*)(& t))
+        std::pair<const char *, T *>(name_, & t)
     {}
 
     const char * name() const {
@@ -74,7 +68,6 @@ public:
         Archivex & ar, 
         const unsigned int /* file_version */
     ) const {
-        // CodeWarrior 8.x can't seem to resolve the << op for a rhs of "const T *"
         ar.operator<<(const_value());
     }
     template<class Archivex>
@@ -82,7 +75,6 @@ public:
         Archivex & ar, 
         const unsigned int /* file_version */
     ){
-        // CodeWarrior 8.x can't seem to resolve the >> op for a rhs of "const T *"
         ar.operator>>(value());
     }
     BOOST_SERIALIZATION_SPLIT_MEMBER()

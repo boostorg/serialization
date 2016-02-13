@@ -145,6 +145,24 @@ xml_woarchive_impl<Archive>::~xml_woarchive_impl(){
     }
 }
 
+template<class Archive>
+BOOST_WARCHIVE_DECL void
+xml_woarchive_impl<Archive>::save_binary(
+    const void *address,
+    std::size_t count
+){
+    this->end_preamble();
+    #if ! defined(__MWERKS__)
+    this->basic_text_oprimitive<std::wostream>::save_binary(
+    #else
+    this->basic_text_oprimitive::save_binary(
+    #endif
+        address, 
+        count
+    );
+    this->indent_next = true;
+}
+
 } // namespace archive
 } // namespace boost
 
