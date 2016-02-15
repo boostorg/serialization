@@ -87,10 +87,26 @@ protected:
     xml_oarchive_impl(std::ostream & os, unsigned int flags);
     BOOST_ARCHIVE_DECL 
     ~xml_oarchive_impl();
-    BOOST_ARCHIVE_DECL 
 public:
+    BOOST_ARCHIVE_DECL
     void save_binary(const void *address, std::size_t count);
 };
+
+} // namespace archive
+} // namespace boost
+
+#ifdef BOOST_MSVC
+#pragma warning(pop)
+#endif
+
+#include <boost/archive/detail/abi_suffix.hpp> // pops abi_suffix.hpp pragmas
+#ifdef BOOST_MSVC
+#  pragma warning(push)
+#  pragma warning(disable : 4511 4512)
+#endif
+
+namespace boost { 
+namespace archive {
 
 // we use the following because we can't use
 // typedef xml_oarchive_impl<xml_oarchive_impl<...> > xml_oarchive;
@@ -117,7 +133,5 @@ BOOST_SERIALIZATION_REGISTER_ARCHIVE(boost::archive::xml_oarchive)
 #ifdef BOOST_MSVC
 #pragma warning(pop)
 #endif
-
-#include <boost/archive/detail/abi_suffix.hpp> // pops abi_suffix.hpp pragmas
 
 #endif // BOOST_ARCHIVE_XML_OARCHIVE_HPP

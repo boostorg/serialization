@@ -18,12 +18,9 @@
 
 #include <boost/config.hpp>
 #include <boost/mpl/assert.hpp>
-//#include <boost/detail/workaround.hpp>
 
 #include <boost/archive/detail/common_oarchive.hpp>
-
 #include <boost/serialization/nvp.hpp>
-#include <boost/serialization/tracking.hpp>
 #include <boost/serialization/string.hpp>
 
 #include <boost/archive/detail/abi_prefix.hpp> // must be the last header
@@ -46,17 +43,16 @@ template<class Archive>
 class BOOST_SYMBOL_VISIBLE basic_xml_oarchive :
     public detail::common_oarchive<Archive>
 {
+    // special stuff for xml output
+    unsigned int depth;
+    bool pending_preamble;
 #ifdef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
 public:
 #else
 protected:
     friend class detail::interface_oarchive<Archive>;
 #endif
-    friend class save_access;
-    // special stuff for xml output
-    unsigned int depth;
     bool indent_next;
-    bool pending_preamble;
     BOOST_ARCHIVE_OR_WARCHIVE_DECL void
     indent();
     BOOST_ARCHIVE_OR_WARCHIVE_DECL void
@@ -106,17 +102,17 @@ protected:
     // specific overrides for attributes - not name value pairs so we
     // want to trap them before the above "fall through"
     BOOST_ARCHIVE_OR_WARCHIVE_DECL void
-    save_override(const object_id_type & t);
-    BOOST_ARCHIVE_OR_WARCHIVE_DECL void
-    save_override(const object_reference_type & t);
-    BOOST_ARCHIVE_OR_WARCHIVE_DECL void
-    save_override(const version_type & t);
-    BOOST_ARCHIVE_OR_WARCHIVE_DECL void
     save_override(const class_id_type & t);
     BOOST_ARCHIVE_OR_WARCHIVE_DECL void
     save_override(const class_id_optional_type & t);
     BOOST_ARCHIVE_OR_WARCHIVE_DECL void
     save_override(const class_id_reference_type & t);
+    BOOST_ARCHIVE_OR_WARCHIVE_DECL void
+    save_override(const object_id_type & t);
+    BOOST_ARCHIVE_OR_WARCHIVE_DECL void
+    save_override(const object_reference_type & t);
+    BOOST_ARCHIVE_OR_WARCHIVE_DECL void
+    save_override(const version_type & t);
     BOOST_ARCHIVE_OR_WARCHIVE_DECL void
     save_override(const class_name_type & t);
     BOOST_ARCHIVE_OR_WARCHIVE_DECL void

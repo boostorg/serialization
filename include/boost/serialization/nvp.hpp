@@ -57,22 +57,16 @@ public:
         return *(this->second);
     }
 
-    // True64 compiler complains with a warning about the use of
-    // the name "Archive" hiding some higher level usage.  I'm sure this
-    // is an error but I want to accomodated as it generates a long warning
-    // listing and might be related to a lot of test failures.
-    // default treatment for name-value pairs. The name is
-    // just discarded and only the value is serialized. 
-    template<class Archivex>
+    template<class Archive>
     void save(
-        Archivex & ar, 
+        Archive & ar,
         const unsigned int /* file_version */
     ) const {
         ar.operator<<(const_value());
     }
-    template<class Archivex>
+    template<class Archive>
     void load(
-        Archivex & ar, 
+        Archive & ar,
         const unsigned int /* file_version */
     ){
         ar.operator>>(value());
@@ -109,7 +103,6 @@ struct tracking_level<nvp< T > >
     typedef mpl::int_<track_never> type;
     BOOST_STATIC_CONSTANT(int, value = tracking_level::type::value);
 };
-
 
 } // seralization
 } // boost

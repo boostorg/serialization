@@ -1,4 +1,4 @@
-#if true
+#if 1
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // test_optional.cpp
 
@@ -22,6 +22,9 @@ namespace std{
 #endif
 
 #include <boost/archive/archive_exception.hpp>
+
+#define BOOST_ARCHIVE_TEST xml_archive.hpp
+
 #include "test_tools.hpp"
 
 #include <boost/serialization/optional.hpp>
@@ -39,8 +42,8 @@ int test_main( int /* argc */, char* /* argv */[] )
     {
         test_ostream os(testfile, TEST_STREAM_FLAGS);
         test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
-        oa << boost::serialization::make_nvp("aoptional1",aoptional1);
-        oa << boost::serialization::make_nvp("aoptional2",aoptional2);
+        //oa << boost::serialization::make_nvp("aoptional1",aoptional1);
+        //oa << boost::serialization::make_nvp("aoptional2",aoptional2);
     }
     /*
     boost::optional<int> aoptional1a(999);
