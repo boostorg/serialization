@@ -202,7 +202,8 @@ function(archive_test test_name)
   endforeach()
   foreach(
     archive-name
-    IN ITEMS text_archive text_warchive binary_archive xml_archive xml_warchive
+    IN ITEMS portable_archive
+     # text_archive text_warchive binary_archive xml_archive xml_warchive
   )
     set(amended_test_name ${test_name}_${archive-name})
     message(STATUS ${amended_test_name})
@@ -223,7 +224,8 @@ function(polymorphic_archive_test test_name)
   endforeach()
   foreach(
     archive-name
-    IN ITEMS text_archive text_warchive binary_archive xml_archive xml_warchive
+    IN ITEMS portable_archive
+     # text_archive text_warchive binary_archive xml_archive xml_warchive
   )
     set(amended_test_name ${test_name}_polymorphic_${archive-name})
     message(STATUS ${amended_test_name})

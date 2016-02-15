@@ -226,6 +226,7 @@ main(int argc, char * argv[]){
 #include "text_archive.hpp"
 #include "text_warchive.hpp"
 #include "binary_archive.hpp"
+#include "portable_archive.hpp"
 #include "xml_archive.hpp"
 #include "xml_warchive.hpp"
 */
