@@ -8,7 +8,7 @@
 
 project libs/serialization/test
     : id serialization_test
-    : requirements <source>/boost/filesystem
+    : requirements <source>/boost/filesystem <source>/boost/program_options
     ;
 
 # import rules for testing conditional on config file variables
