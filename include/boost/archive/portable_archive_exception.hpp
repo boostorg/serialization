@@ -18,30 +18,26 @@
 #include <boost/archive/basic_archive.hpp>
 #include <boost/archive/archive_exception.hpp>
 
+// hint from Johan Rade: on VMS there is still support for
+// the VAX floating point format and this macro detects it
+#if defined(__vms) && defined(__DECCXX) && !__IEEE_FLOAT
+#error "VAX floating point format is not supported!"
+#endif
+
 namespace boost {
 	namespace archive {
 
 		// this value is written to the top of the stream
-		const signed char magic_byte = 'e' | 'o' | 's';
+		const signed char magic_byte = 127;
 
 		// flag for fp serialization
 		const unsigned no_infnan = 64;
 
 		// integral type for the archive version
-#if BOOST_VERSION < 104400
-		typedef version_type archive_version_type;
-#else
 		typedef library_version_type archive_version_type;
-#endif
 
 		// version of the linked boost archive library
-		const archive_version_type archive_version(
-#if BOOST_VERSION < 103700
-			ARCHIVE_VERSION()
-#else
-			BOOST_ARCHIVE_VERSION()
-#endif
-			);
+		const archive_version_type archive_version(BOOST_ARCHIVE_VERSION());
 
 		/**
 		 * \brief Exception being thrown when serialization cannot proceed.
