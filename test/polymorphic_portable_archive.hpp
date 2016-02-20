@@ -21,13 +21,13 @@
 // include output archive header
 #include <boost/archive/portable_oarchive.hpp>
 // set name of test output archive
-typedef eos::polymorphic_portable_oarchive test_oarchive;
+typedef boost::archive::polymorphic_portable_oarchive test_oarchive;
 // set name of test output stream
 typedef std::ofstream test_ostream;
 
 // repeat the above for input archive
 #include <boost/archive/portable_iarchive.hpp>
-typedef eos::polymorphic_portable_iarchive test_iarchive;
+typedef boost::archive::polymorphic_portable_iarchive test_iarchive;
 typedef std::ifstream test_istream;
 
 // define open mode for streams
