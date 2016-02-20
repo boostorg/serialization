@@ -3,7 +3,7 @@
  * \file portable_iarchive.hpp
  * \brief Provides an archive to read from portable binary files.
  * \author christian.pfligersdorffer@gmx.at
- * \version 5.1
+ * \version 5.0
  *
  * This pair of archives brings the advantages of binary streams to the cross
  * platform boost::serialization user. While being almost as fast as the native
@@ -117,8 +117,11 @@
 #elif BOOST_VERSION < 104800
 #include <boost/spirit/home/support/detail/integer/endian.hpp>
 #include <boost/spirit/home/support/detail/math/fpclassify.hpp>
-#else
+#elif BOOST_VERSION < 105800
 #include <boost/spirit/home/support/detail/endian/endian.hpp>
+#include <boost/spirit/home/support/detail/math/fpclassify.hpp>
+#else
+#include <boost/endian/conversion.hpp>
 #include <boost/spirit/home/support/detail/math/fpclassify.hpp>
 #endif
 
@@ -132,7 +135,7 @@ namespace fp = boost::spirit::math;
 // namespace alias endian
 #if BOOST_VERSION < 104800
 namespace endian = boost::detail;
-#else
+#elif BOOST_VERSION < 105800
 namespace endian = boost::spirit::detail;
 #endif
 
@@ -347,10 +350,14 @@ namespace eos {
 				// reconstruct the value
 				T temp = size < 0 ? -1 : 0;
 				load_binary(&temp, abs(size));
-
+			#if BOOST_VERSION < 105800
 				// load the value from little endian - it is then converted
 				// to the target type T and fits it because size <= sizeof(T)
 				t = endian::load_little_endian<T, sizeof(T)>(&temp);
+			#else
+				// use new endian library from boost 1.58
+				t = boost::endian::little_to_native(temp);
+			#endif
 			}
 
 			else t = 0; // zero optimization

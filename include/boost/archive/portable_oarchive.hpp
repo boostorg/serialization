@@ -120,12 +120,15 @@
 #elif BOOST_VERSION < 104800
 #include <boost/spirit/home/support/detail/integer/endian.hpp>
 #include <boost/spirit/home/support/detail/math/fpclassify.hpp>
-#else
+#elif BOOST_VERSION < 105800
 #include <boost/spirit/home/support/detail/endian/endian.hpp>
+#include <boost/spirit/home/support/detail/math/fpclassify.hpp>
+#else
+#include <boost/endian/conversion.hpp>
 #include <boost/spirit/home/support/detail/math/fpclassify.hpp>
 #endif
 
-// namespace alias fp_classify
+// namespace alias
 #if BOOST_VERSION < 103800
 namespace fp = boost::math;
 #else
@@ -135,7 +138,7 @@ namespace fp = boost::spirit::math;
 // namespace alias endian
 #if BOOST_VERSION < 104800
 namespace endian = boost::detail;
-#else
+#elif BOOST_VERSION < 105800
 namespace endian = boost::spirit::detail;
 #endif
 
@@ -325,10 +328,14 @@ namespace eos {
 				// encode the sign bit into the size
 				save_signed_char(t > 0 ? size : -size);
 				BOOST_ASSERT(t > 0 || boost::is_signed<T>::value);
-
+			#if BOOST_VERSION < 105800
 				// we choose to use little endian because this way we just
 				// save the first size bytes to the stream and skip the rest
 				endian::store_little_endian<T, sizeof(T)>(&temp, t);
+			#else
+				// use new endian library from boost 1.58
+				temp = boost::endian::native_to_little(t);
+			#endif
 
 				save_binary(&temp, size);
 			}
