@@ -368,35 +368,3 @@ namespace boost { namespace archive {
 // required by export
 BOOST_SERIALIZATION_REGISTER_ARCHIVE(boost::archive::portable_oarchive)
 BOOST_SERIALIZATION_REGISTER_ARCHIVE(boost::archive::polymorphic_portable_oarchive)
-
-// if you include this header multiple times and your compiler is picky
-// about multiple template instantiations (eg. gcc is) then you need to
-// define NO_EXPLICIT_TEMPLATE_INSTANTIATION before every include but one
-// or you move the instantiation section into an implementation file
-#ifndef NO_EXPLICIT_TEMPLATE_INSTANTIATION
-
-#include <boost/archive/impl/basic_binary_oarchive.ipp>
-#include <boost/archive/impl/basic_binary_oprimitive.ipp>
-
-#ifndef BOOST_ARCHIVE_SERIALIZER_INCLUDED
-#include <boost/archive/impl/archive_serializer_map.ipp>
-#define BOOST_ARCHIVE_SERIALIZER_INCLUDED
-#endif
-
-namespace boost { namespace archive {
-
-	// explicitly instantiate for this type of binary stream
-	template class basic_binary_oarchive<portable_oarchive>;
-
-	template class basic_binary_oprimitive<
-		portable_oarchive
-		, std::ostream::char_type
-		, std::ostream::traits_type
-	>;
-
-	// need to instantiate this template also for polymorphic version?
-	template class detail::archive_serializer_map<portable_oarchive>;
-
-} } // namespace boost::archive
-
-#endif
