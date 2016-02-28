@@ -9,11 +9,10 @@
 #else
     #ifdef BOOST_NO_CXX11_HDR_CODECVT
         # define BOOST_ARCHIVE_SOURCE
-        # define BOOST_WARCHIVE_SOURCE
         #include <boost/archive/detail/decl.hpp>
         #define BOOST_UTF8_BEGIN_NAMESPACE \
              namespace boost { namespace archive { namespace detail {
-        #define BOOST_UTF8_DECL BOOST_ARCHIVE_OR_WARCHIVE_DECL
+        #define BOOST_UTF8_DECL BOOST_ARCHIVE_DECL
         #define BOOST_UTF8_END_NAMESPACE }}}
         #include <boost/detail/utf8_codecvt_facet.ipp>
         #undef BOOST_UTF8_END_NAMESPACE
