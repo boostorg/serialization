@@ -159,6 +159,7 @@ add_library(serialization
   ../src/xml_iarchive.cpp
   ../src/xml_oarchive.cpp
   ../src/xml_grammar.cpp
+  ../src/utf8_codecvt_facet.cpp
   ../src/basic_xml_grammar.ipp # doesn't show up in "Source Files" in Xcode"'
 )
 
@@ -172,7 +173,6 @@ add_library(wserialization
   ../src/xml_wiarchive.cpp
   ../src/xml_woarchive.cpp
   ../src/xml_wgrammar.cpp
-  ../src/utf8_codecvt_facet.cpp
   ../src/basic_xml_grammar.ipp # doesn't show up in "Source Files" in Xcode"'
 )
 

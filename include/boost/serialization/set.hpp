@@ -55,7 +55,7 @@ inline void load_set_collection(Archive & ar, Container &s)
         // borland fails silently w/o full namespace
         ar >> boost::serialization::make_nvp("item", t.reference());
         typename Container::iterator result =
-            #if __cplusplus < 201103L // check for C++11 or better compiler
+            #ifdef BOOST_NO_CXX11_HDR_UNORDERED_SET
                 s.insert(hint, t.reference());
             #else
                 s.emplace_hint(hint, t.reference());

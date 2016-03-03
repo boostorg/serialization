@@ -28,9 +28,9 @@
 
 #include "polymorphic_base.hpp"
 
-#if defined(POLYMORPHIC_DERIVED_IMPORT)
+#if defined(POLYMORPHIC_DERIVED2_IMPORT)
     #define DLL_DECL BOOST_SYMBOL_IMPORT
-#elif defined(POLYMORPHIC_DERIVED_EXPORT)
+#elif defined(POLYMORPHIC_DERIVED2_EXPORT)
     #define DLL_DECL BOOST_SYMBOL_EXPORT
 #else
     #define DLL_DECL
