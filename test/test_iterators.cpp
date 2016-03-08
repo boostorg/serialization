@@ -73,6 +73,7 @@ void test_roundtrip(const wchar_t * la){
             translator(la + s),
             std::back_inserter(a)
         );
+        a.push_back((char)0);
     }
     BOOST_CHECK(a.size() > 0);
     std::vector<wchar_t> la2;
@@ -83,8 +84,9 @@ void test_roundtrip(const wchar_t * la){
             translator(a.end()),
             std::back_inserter(la2)
         );
+        la2.push_back((wchar_t)0);
     }
-    BOOST_CHECK(la2.size() == s);
+    BOOST_CHECK(la2.size() == s + 1);
     BOOST_CHECK(std::equal(la, la + s, la2.begin()));
 }
 #endif

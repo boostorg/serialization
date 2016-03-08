@@ -9,7 +9,8 @@
 
 #include <boost/config.hpp>
 
-#ifdef BOOST_NO_CXX11_HDR_CODECVT
+//#ifdef BOOST_NO_CXX11_HDR_CODECVT
+#if 1
     #include <boost/archive/detail/decl.hpp>
     #define BOOST_UTF8_BEGIN_NAMESPACE \
          namespace boost { namespace archive { namespace detail {

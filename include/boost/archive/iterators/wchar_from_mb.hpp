@@ -143,15 +143,16 @@ template<class Base>
 void wchar_from_mb<Base>::drain(){
     BOOST_ASSERT(! m_input.m_done);
     for(;;){
-        typename boost::iterators::iterator_reference<Base>::type c = *(this->base_reference()++);
-        * const_cast<typename iterator_value<Base>::type *>(
-            (m_input.m_next_available++)
-        ) = c;
+        typename boost::iterators::iterator_reference<Base>::type c = *(this->base_reference());
         // a null character in a multibyte stream is takes as end of string
         if(0 == c){
             m_input.m_done = true;
             break;
         }
+        ++(this->base_reference());
+        * const_cast<typename iterator_value<Base>::type *>(
+            (m_input.m_next_available++)
+        ) = c;
         // if input buffer is full - we're done for now
         if(m_input.m_buffer.end() == m_input.m_next_available)
             break;
