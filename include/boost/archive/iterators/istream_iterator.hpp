@@ -34,7 +34,7 @@ template<class Elem = char>
 class istream_iterator :  
     public boost::iterator_facade<
         istream_iterator<Elem>,
-        Elem,
+        typename std::basic_istream<Elem>::int_type,
         std::input_iterator_tag,
         Elem
     >
@@ -43,7 +43,7 @@ class istream_iterator :
     typedef istream_iterator this_t ;
     typedef typename boost::iterator_facade<
         istream_iterator<Elem>,
-        Elem,
+        typename std::basic_istream<Elem>::int_type,
         std::input_iterator_tag,
         Elem
     > super_t;
@@ -54,23 +54,8 @@ class istream_iterator :
         return m_istream == rhs.m_istream;
     }
 
-/*
-    //Access the value referred to 
-    Elem dereference() const {
-        return m_current_value;
-    }
-
-    void increment(){
-        if(NULL != m_istream){
-            m_current_value = static_cast<Elem>(m_istream->get());
-            if(! m_istream->good()){
-                const_cast<this_t *>(this)->m_istream = NULL;
-            }
-        }
-    }
-*/
-    //Access the value referred to 
-    Elem dereference() const {
+    //Access the value referred to
+    typename istream_type::int_type dereference() const {
         return m_istream->peek();
     }
 

@@ -68,7 +68,7 @@ class wchar_from_mb
 
     wchar_t dereference() const {
         if(m_output.m_next == m_output.m_next_available)
-            return 0;
+            return static_cast<wchar_t>(0);
         return * m_output.m_next;
     }
 
@@ -130,6 +130,9 @@ public:
         BOOST_ASSERT(std::mbsinit(&m_mbs));
         drain();
     }
+    // default constructor used as an end iterator
+    wchar_from_mb(){}
+
     // copy ctor
     wchar_from_mb(const wchar_from_mb & rhs) :
         super_t(rhs.base_reference()),
