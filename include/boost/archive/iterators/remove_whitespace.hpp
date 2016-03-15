@@ -48,16 +48,8 @@ namespace std{ using ::isspace; }
 
 namespace { // anonymous
 
-template<class T>
+template<class CharType>
 struct remove_whitespace_predicate;
-
-template<>
-struct remove_whitespace_predicate<int>
-{
-    bool operator()(unsigned int t){
-        return ! std::isspace(t);
-    }
-};
 
 template<>
 struct remove_whitespace_predicate<char>
