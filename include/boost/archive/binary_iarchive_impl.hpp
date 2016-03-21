@@ -33,7 +33,7 @@ namespace detail {
 } // namespace detail
 
 template<class Archive, class Elem, class Tr>
-class binary_iarchive_impl : 
+class BOOST_SYMBOL_VISIBLE binary_iarchive_impl : 
     public basic_binary_iprimitive<Archive, Elem, Tr>,
     public basic_binary_iarchive<Archive>
 {

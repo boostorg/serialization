@@ -34,7 +34,7 @@ namespace detail {
 } // namespace detail
 
 template<class Archive, class Elem, class Tr>
-class binary_oarchive_impl : 
+class BOOST_SYMBOL_VISIBLE binary_oarchive_impl : 
     public basic_binary_oprimitive<Archive, Elem, Tr>,
     public basic_binary_oarchive<Archive>
 {
