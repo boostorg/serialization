@@ -41,7 +41,7 @@ template<class Archive, class U, class Allocator>
 inline void save(
     Archive & ar,
     const std::forward_list<U, Allocator> &t,
-    const unsigned int file_version
+    const unsigned int /*file_version*/
 ){
     const collection_size_type count(std::distance(t.cbegin(), t.cend()));
     boost::serialization::stl::save_collection<
@@ -90,7 +90,7 @@ template<class Archive, class U, class Allocator>
 inline void load(
     Archive & ar,
     std::forward_list<U, Allocator> &t,
-    const unsigned int file_version
+    const unsigned int /*file_version*/
 ){
     const boost::archive::library_version_type library_version(
         ar.get_library_version()

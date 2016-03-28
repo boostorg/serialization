@@ -77,6 +77,8 @@ test-suite "serialization" :
      [ test-bsl-run_files test_diamond ]
      [ test-bsl-run_files test_diamond_complex ]
      [ test-bsl-run_files test_exported : polymorphic_base ]
+     [ test-bsl-run_files test_forward_list : A  : :  [ requires cxx11_hdr_forward_list ] ] # BOOST_NO_CXX11_HDR_FORWARD_LIST
+     [ test-bsl-run_files test_forward_list_ptrs : A  : :  [ requires cxx11_hdr_forward_list ] ] # BOOST_NO_CXX11_HDR_FORWARD_LIST
      [ test-bsl-run_files test_helper_support ]
      [ test-bsl-run_files test_interrupts ]
      [ test-bsl-run_files test_list : A ]

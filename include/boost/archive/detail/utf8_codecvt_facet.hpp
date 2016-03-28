@@ -9,7 +9,11 @@
 
 #include <boost/config.hpp>
 
-#ifdef BOOST_NO_CXX11_HDR_CODECVT
+// std::codecvt_utf8 doesn't seem to work for msvc
+// versions prior to MSVC 14.0
+
+#if defined(_MSC_VER) && _MSC_VER < 1900 \
+||  defined( BOOST_NO_CXX11_HDR_CODECVT )
     #include <boost/archive/detail/decl.hpp>
     #define BOOST_UTF8_BEGIN_NAMESPACE \
          namespace boost { namespace archive { namespace detail {
