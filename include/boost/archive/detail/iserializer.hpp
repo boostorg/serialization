@@ -234,7 +234,7 @@ struct heap_allocation {
                 // that the class might have class specific new with NO
                 // class specific delete at all.  Patches (compatible with
                 // C++03) welcome!
-                (operator delete)(t);
+                delete t;
             }
         };
         struct doesnt_have_new_operator {
@@ -243,7 +243,7 @@ struct heap_allocation {
             }
             static void invoke_delete(T * t) {
                 // Note: I'm reliance upon automatic conversion from T * to void * here
-                (operator delete)(t);
+                delete t;
             }
         };
         static T * invoke_new() {
