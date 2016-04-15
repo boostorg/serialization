@@ -2,6 +2,13 @@
 
 cmake_minimum_required(VERSION 3.0)
 
+if (POLICY CMP0054)
+  cmake_policy (SET CMP0054 NEW)
+endif (POLICY CMP0054)
+
+if (POLICY CMP0063)
+  cmake_policy (SET CMP0063 NEW)
+endif (POLICY CMP0063)
 
 if(Boost_USE_STATIC_LIBS)
   project("Serialization-Static")
@@ -34,10 +41,6 @@ elseif( CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" )
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++ -dead_strip")
   set(COMPILER_SUPPORTS_CXX11 TRUE)
 endif()
-
-if (POLICY CMP0063)
-  cmake_policy (SET CMP0063 NEW)
-endif (POLICY CMP0063)
 
 #
 # IDE settings
@@ -118,10 +121,14 @@ elseif()
 endif()
 
 if(Boost_USE_STATIC_LIBS)
-  set(BUILD_SHARED_LIBRARIES OFF)
+  message(STATUS "Building static libraries")
+  set(LINK_TYPE "STATIC")
 else()
-  set(BUILD_SHARED_LIBRARIES ON)
-  # set(ENV{DYLD_LIBRARY_PATH} "${Boost_LIBRARY_DIRS}" ")
+  message(STATUS "Building shared libraries")
+  set(LINK_TYPE "SHARED")
+  add_definitions( "-DBOOST_ALL_DYN_LINK=1")
+  add_definitions( "-DBOOST_ALL_NO_LIB=1")
+  add_definitions( "-DBOOST_LIB_DIAGNOSTICS=1")
 endif()
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 set(VISIBILITY_INLINES_HIDDEN)
@@ -129,7 +136,7 @@ set(VISIBILITY_INLINES_HIDDEN)
 ###########################
 # library builds
 
-add_library(serialization
+add_library(serialization ${LINK_TYPE}
   ../src/archive_exception.cpp
   ../src/basic_archive.cpp
   ../src/basic_iarchive.cpp
@@ -144,7 +151,6 @@ add_library(serialization
   ../src/basic_xml_archive.cpp
   ../src/binary_iarchive.cpp
   ../src/binary_oarchive.cpp
-  ../src/codecvt_null.cpp
   ../src/extended_type_info_no_rtti.cpp
   ../src/extended_type_info_typeid.cpp
   ../src/extended_type_info.cpp
@@ -165,7 +171,8 @@ add_library(serialization
 
 # target_compile_options(serialization PRIVATE -fvisibility=hidden -fvisibility-inlines-hidden )
 
-add_library(wserialization
+add_library(wserialization  ${LINK_TYPE}
+  ../src/codecvt_null.cpp
   ../src/basic_text_wiprimitive.cpp
   ../src/basic_text_woprimitive.cpp
   ../src/text_wiarchive.cpp
