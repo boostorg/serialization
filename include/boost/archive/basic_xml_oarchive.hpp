@@ -58,6 +58,8 @@ protected:
     BOOST_ARCHIVE_OR_WARCHIVE_DECL void
     init();
     BOOST_ARCHIVE_OR_WARCHIVE_DECL void
+    windup();
+    BOOST_ARCHIVE_OR_WARCHIVE_DECL void
     write_attribute(
         const char *attribute_name,
         int t,

@@ -247,6 +247,13 @@ basic_xml_oarchive<Archive>::init(){
 }
 
 template<class Archive>
+BOOST_ARCHIVE_OR_WARCHIVE_DECL void
+basic_xml_oarchive<Archive>::windup(){
+    // xml_trailer
+    this->This()->put("</boost_serialization>\n");
+}
+
+template<class Archive>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL
 basic_xml_oarchive<Archive>::basic_xml_oarchive(unsigned int flags) :
     detail::common_oarchive<Archive>(flags),

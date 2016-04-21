@@ -1,4 +1,4 @@
-#if 1
+#if 0
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // test_optional.cpp
 
@@ -63,7 +63,7 @@ int test_main( int /* argc */, char* /* argv */[] )
 
 // EOF
 
-#else
+#elseif 0
 
 #include <fstream>
 
@@ -105,4 +105,18 @@ int test_main(int, char *argv[])
     //BOOST_CHECK(w2 == new_w2);
 	return 0;
 }
+
+#else
+
+#include <boost/archive/xml_oarchive.hpp>
+#include <boost/serialization/nvp.hpp>
+
+#include <iostream>
+
+int main() {
+        boost::archive::xml_oarchive oa( std::cerr );
+        int bob = 3;
+        oa << boost::serialization::make_nvp( "bob", bob );
+}
+
 #endif
