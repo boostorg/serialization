@@ -16,13 +16,13 @@
 
 //  See http://www.boost.org for updates, documentation, and revision history.
 
-#include <forward_list>
-#include <iterator>  // distance
-
 #include <boost/config.hpp>
 #ifdef BOOST_NO_CXX11_HDR_FORWARD_LIST
 #error "not supported for versions earlier than c++11
 #endif
+
+#include <forward_list>
+#include <iterator>  // distance
 
 #include <boost/serialization/collections_save_imp.hpp>
 #include <boost/serialization/collections_load_imp.hpp>

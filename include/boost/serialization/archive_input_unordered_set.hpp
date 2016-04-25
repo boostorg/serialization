@@ -17,6 +17,10 @@
 
 //  See http://www.boost.org for updates, documentation, and revision history.
 
+#include <utility>
+#include <boost/serialization/nvp.hpp>
+#include <boost/serialization/detail/stack_constructor.hpp>
+
 namespace boost {
 namespace serialization {
 

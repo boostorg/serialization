@@ -187,17 +187,18 @@ bool basic_xml_grammar<CharType>::my_parse(
 
     std::basic_string<CharType> arg;
     
-    CharType val;
-    do{
-        typename basic_xml_grammar<CharType>::IStream::int_type
-            result = is.get();
+    for(;;){
+        CharType result;
+        is.get(result);
         if(is.fail())
             return false;
-        val = static_cast<CharType>(result);
-        arg += val;
+        if(is.eof())
+            return false;
+        arg += result;
+        if(result == delimiter)
+            break;
     }
-    while(val != delimiter);
-    
+
     // read just one more character.  This will be the newline after the tag
     // this is so that the next operation will return fail if the archive
     // is terminated.  This will permit the archive to be used for debug

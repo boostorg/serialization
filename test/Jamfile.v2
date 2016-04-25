@@ -141,11 +141,6 @@ if ! $(BOOST_ARCHIVE_LIST) {
         [ test-bsl-run test_iterators ]
         [ test-bsl-run test_iterators_base64 ]
         [ test-bsl-run test_smart_cast ]
-        [ test-bsl-run test_utf8_codecvt 
-            : 
-            :
-            : <dependency>../../config/test/all//BOOST_NO_STD_WSTREAMBUF
-        ]
         [ test-bsl-run test_codecvt_null 
             : ../src/codecvt_null
             :
