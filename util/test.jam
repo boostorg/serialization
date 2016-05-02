@@ -37,6 +37,8 @@ rule run-template ( test-name : sources * : requirements * ) {
             <toolset>borland:<cxxflags>"-w-8080 -w-8071 -w-8057 -w-8062 -w-8008 -w-0018 -w-8066"
             #<toolset>gcc:<warnings>all # ?
             <toolset>gcc:<cxxflags>"-Wno-unused-variable -Wno-long-long"
+            <toolset>gcc:<define>_STLP_DEBUG
+            <toolset>gcc:<define>_GLIBCXX_DEBUG
             <toolset>darwin:<cxxflags>"-Wno-unused-variable -Wno-long-long"
             <toolset>msvc:<warnings>all # == /W4
             <toolset>msvc:<define>_SCL_SECURE_NO_WARNINGS

@@ -144,7 +144,7 @@ if ! $(BOOST_ARCHIVE_LIST) {
         [ test-bsl-run test_codecvt_null 
             : ../src/codecvt_null
             :
-            : <dependency>../../config/test/all//BOOST_NO_STD_WSTREAMBUF
+            : [ requires std_wstreambuf ]
         ]
         
         #[ test-bsl-run test_z ]
