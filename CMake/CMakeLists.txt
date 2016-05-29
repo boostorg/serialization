@@ -263,6 +263,7 @@ serialization_test(test_inclusion)
 serialization_test(test_smart_cast)
 serialization_test(test_utf8_codecvt )
 serialization_test(test_codecvt_null ../src/codecvt_null)
+serialization_test(test_strong_typedef)
 
 archive_test(test_native_array A)
 archive_test(test_boost_array A)
