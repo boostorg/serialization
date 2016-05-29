@@ -123,6 +123,9 @@ test-suite "serialization" :
      [ test-bsl-run_polymorphic_archive test_polymorphic : test_polymorphic_A A ]
      [ test-bsl-run_polymorphic_archive test_polymorphic2 : test_polymorphic2imp ]
      [ test-bsl-run_polymorphic_archive test_polymorphic_helper ]
+
+     # should compile
+     [ compile test_strong_typedef.cpp ]
     ;
 
 if ! $(BOOST_ARCHIVE_LIST) {
