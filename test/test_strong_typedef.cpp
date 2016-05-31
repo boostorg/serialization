@@ -9,6 +9,7 @@
 // should pass compilation
 #include <stdlib.h>     // EXIT_SUCCESS
 
+#include <boost/config.hpp>
 #include <boost/serialization/strong_typedef.hpp>
 #include <boost/static_assert.hpp>
 
@@ -18,13 +19,16 @@
 
 ///////////////////////////////////////////////////////////////////////
 // Define a strong typedef for int.
-// The new type should be nothrow constructible and assignable.
+// The new type should be nothrow constructible and assignable on
+// compilers that support noexcept
 
 BOOST_STRONG_TYPEDEF(int, strong_int)
 
+#ifndef BOOST_NO_CXX11_NOEXCEPT
 BOOST_STATIC_ASSERT(boost::has_nothrow_default_constructor<strong_int>::value);
 BOOST_STATIC_ASSERT(boost::has_nothrow_copy_constructor<strong_int>::value);
 BOOST_STATIC_ASSERT(boost::has_nothrow_assign<strong_int>::value);
+#endif
 
 ///////////////////////////////////////////////////////////////////////
 // strong_int can now be placed in another type, which can also be
@@ -36,9 +40,11 @@ struct type1
     strong_int  sint;
 };
 
+#ifndef BOOST_NO_CXX11_NOEXCEPT
 BOOST_STATIC_ASSERT(boost::has_nothrow_default_constructor<type1>::value);
 BOOST_STATIC_ASSERT(boost::has_nothrow_copy_constructor<type1>::value);
 BOOST_STATIC_ASSERT(boost::has_nothrow_assign<type1>::value);
+#endif
 
 ///////////////////////////////////////////////////////////////////////
 // Now define a type that throws, and a strong_typedef for it
@@ -54,9 +60,11 @@ struct not_noexcept
 };
 BOOST_STRONG_TYPEDEF(not_noexcept, strong_not_noexcept)
 
+#ifndef BOOST_NO_CXX11_NOEXCEPT
 BOOST_STATIC_ASSERT(! boost::has_nothrow_default_constructor<strong_not_noexcept>::value);
 BOOST_STATIC_ASSERT(! boost::has_nothrow_copy_constructor<strong_not_noexcept>::value);
 BOOST_STATIC_ASSERT(! boost::has_nothrow_assign<strong_not_noexcept>::value);
+#endif
 
 int main()
 {
