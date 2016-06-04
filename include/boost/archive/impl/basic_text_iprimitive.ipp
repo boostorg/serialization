@@ -76,7 +76,7 @@ basic_text_iprimitive<IStream>::load_binary(
                 iterators::remove_whitespace<
                     iterators::istream_iterator<CharType>
                 >
-                ,typename IStream::int_type
+                ,typename IStream::char_type
             >
             ,8
             ,6
@@ -95,7 +95,7 @@ basic_text_iprimitive<IStream>::load_binary(
 
     // skip over any excess input
     for(;;){
-        typename IStream::int_type r;
+        typename IStream::char_type r;
         r = is.get();
         if(is.eof())
             break;
