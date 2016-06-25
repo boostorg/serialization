@@ -21,6 +21,9 @@
 // note: this version incorporates the related code into the the 
 // the same library as BOOST_ARCHIVE.  This could change some day in the
 // future
+#if defined(BOOST_ARCHIVE_SOURCE)
+    #define BOOST_SERIALIZATION_SOURCE
+#endif
 
 // if BOOST_SERIALIZATION_DECL is defined undefine it now:
 #ifdef BOOST_SERIALIZATION_DECL
