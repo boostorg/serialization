@@ -115,10 +115,10 @@ template <class T>
 class singleton : public singleton_module
 {
 private:
-    BOOST_DLLEXPORT static T & instance;
+    BOOST_SERIALIZATION_DECL static T & instance;
     // include this to provoke instantiation at pre-execution time
     static void use(T const *) {}
-    BOOST_DLLEXPORT static T & get_instance() {
+    BOOST_SERIALIZATION_DECL static T & get_instance() {
         static detail::singleton_wrapper< T > t;
         // refer to instance, causing it to be instantiated (and
         // initialized at startup on working compilers)
@@ -127,20 +127,20 @@ private:
         return static_cast<T &>(t);
     }
 public:
-    BOOST_DLLEXPORT static T & get_mutable_instance(){
+    BOOST_SERIALIZATION_DECL static T & get_mutable_instance(){
         BOOST_ASSERT(! is_locked());
         return get_instance();
     }
-    BOOST_DLLEXPORT static const T & get_const_instance(){
+    BOOST_SERIALIZATION_DECL static const T & get_const_instance(){
         return get_instance();
     }
-    BOOST_DLLEXPORT static bool is_destroyed(){
+    BOOST_SERIALIZATION_DECL static bool is_destroyed(){
         return detail::singleton_wrapper< T >::m_is_destroyed;
     }
 };
 
 template<class T>
-BOOST_DLLEXPORT T & singleton< T >::instance = singleton< T >::get_instance();
+BOOST_SERIALIZATION_DECL T & singleton< T >::instance = singleton< T >::get_instance();
 
 } // namespace serialization
 } // namespace boost
