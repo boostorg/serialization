@@ -52,6 +52,9 @@ rule run-template ( test-name : sources * : requirements * ) {
             <toolset>clang:<cxxflags>"-ftemplate-depth-255"
             <toolset>darwin:<cxxflags>"-ftemplate-depth-255"
             <toolset>msvc:<cxxflags>"-Gy"
+            # linking
+            <link>shared:<define>BOOST_SERIALIZATION_DYN_LINK=1 
+            <link>shared:<define>BOOST_WSERIALIZATION_DYN_LINK=1 
             $(requirements)
         : # test name
             $(test-name)
