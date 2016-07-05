@@ -111,14 +111,20 @@ bool detail::singleton_wrapper< T >::m_is_destroyed = false;
 
 } // detail
 
+// note usage of BOOST_DLLEXPORT.  These functions are in danger of
+// being eliminated by the optimizer when building an application in
+// release mode. Usage of the macro is meant to signal the compiler/linker
+// to avoid dropping these functions which seem to be unreferenced.
+// This usage is not related to autolinking.
+
 template <class T>
 class singleton : public singleton_module
 {
 private:
-    BOOST_SERIALIZATION_DECL static T & instance;
+    BOOST_DLLEXPORT static T & instance;
     // include this to provoke instantiation at pre-execution time
     static void use(T const *) {}
-    BOOST_SERIALIZATION_DECL static T & get_instance() {
+    BOOST_DLLEXPORT static T & get_instance() {
         static detail::singleton_wrapper< T > t;
         // refer to instance, causing it to be instantiated (and
         // initialized at startup on working compilers)
@@ -127,20 +133,20 @@ private:
         return static_cast<T &>(t);
     }
 public:
-    BOOST_SERIALIZATION_DECL static T & get_mutable_instance(){
+    BOOST_DLLEXPORT static T & get_mutable_instance(){
         BOOST_ASSERT(! is_locked());
         return get_instance();
     }
-    BOOST_SERIALIZATION_DECL static const T & get_const_instance(){
+    BOOST_DLLEXPORT static const T & get_const_instance(){
         return get_instance();
     }
-    BOOST_SERIALIZATION_DECL static bool is_destroyed(){
+    BOOST_DLLEXPORT static bool is_destroyed(){
         return detail::singleton_wrapper< T >::m_is_destroyed;
     }
 };
 
 template<class T>
-BOOST_SERIALIZATION_DECL T & singleton< T >::instance = singleton< T >::get_instance();
+BOOST_DLLEXPORT T & singleton< T >::instance = singleton< T >::get_instance();
 
 } // namespace serialization
 } // namespace boost
