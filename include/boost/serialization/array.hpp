@@ -44,7 +44,7 @@ public:
     // note: I would like to make the copy constructor private but this breaks
     // make_array.  So I try to make make_array a friend - but that doesn't
     // build.  Need a C++ guru to explain this!
-    template<class S>
+    template<class T, class S>
     friend const boost::serialization::array_wrapper<T> make_array( T* t, S s);
 
     array_wrapper(const array_wrapper & rhs) :
