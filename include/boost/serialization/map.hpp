@@ -58,12 +58,7 @@ inline void load_map_collection(Archive & ar, Container &s)
         typedef typename Container::value_type type;
         detail::stack_construct<Archive, type> t(ar, item_version);
         ar >> boost::serialization::make_nvp("item", t.reference());
-        typename Container::iterator result =
-            #ifdef BOOST_NO_CXX11_HDR_UNORDERED_MAP
-                s.insert(hint, t.reference());
-            #else
-                s.emplace_hint(hint, t.reference());
-            #endif
+        typename Container::iterator result = s.insert(hint, t.reference());
         ar.reset_object_address(& (result->second), & t.reference().second);
         hint = result;
         ++hint;
