@@ -21,6 +21,7 @@ endif()
 #
 
 message(STATUS "compiler is ${CMAKE_CXX_COMPILER_ID}" )
+add_definitions(${Boost_LIB_DIAGNOSTIC_DEFINITIONS})
 
 if( CMAKE_CXX_COMPILER_ID STREQUAL "GNU" )
   add_definitions( -ftemplate-depth=300 )
@@ -106,22 +107,29 @@ endif()
 # end special note for Xcode
 ############################
 
+set(Boost_DEBUG true)
+set(Boost_DETAILED_FAILURE_MSG true)
+
 find_package(Boost REQUIRED COMPONENTS system filesystem)
 
+message(STATUS "Boost_FOUND is ${Boost_FOUND}")
+
 if(Boost_FOUND)
+    message(STATUS "Boost Found!")
     message(STATUS "Boost is ${BOOST_ROOT}")
     message(STATUS "Boost directories found at ${Boost_INCLUDE_DIRS}")
     message(STATUS "Boost libraries found at ${Boost_LIBRARY_DIRS}")
+    message(STATUS "Boost libraries prefix is  ${Boost_LIB_PREFIX}")
     message(STATUS "Boost component libraries to be linked are ${Boost_LIBRARIES}")
     message(STATUS "Boost version found is ${Boost_VERSION}")
     include_directories("../include" "${Boost_INCLUDE_DIRS}")
     link_directories("${Boost_LIBRARY_DIRS}")
-elseif()
-    message("Boost NOT Found!")
+else()
+    message(STATUS "Boost NOT Found!")
 endif()
 
 if(Boost_USE_STATIC_LIBS)
-  message(STATUS "Building static libraries")
+  message(STATUS "Use static libraries")
   set(LINK_TYPE "STATIC")
 else()
   message(STATUS "Building shared libraries")
@@ -327,12 +335,12 @@ archive_test(test_set A)
 archive_test(test_set_boost_unordered A)
 if(COMPILER_SUPPORTS_CXX11)
   archive_test(test_set_unordered A)
-elseif()
+else()
   archive_test(test_set_hashed A)
 endif()
 if(COMPILER_SUPPORTS_CXX11)
   archive_test(test_map_unordered A)
-elseif()
+else()
   archive_test(test_map_hashed A)
 endif()
 

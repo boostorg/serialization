@@ -18,7 +18,7 @@
 
 #include <boost/config.hpp>
 #ifdef BOOST_NO_CXX11_HDR_FORWARD_LIST
-#error "not supported for versions earlier than c++11
+#error "This header depends upon the existence of <forward_list>
 #endif
 
 #include <forward_list>

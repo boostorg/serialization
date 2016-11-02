@@ -71,28 +71,6 @@ void test_slist(){
 }
 #endif
 
-#ifndef BOOST_NO_CXX11_HDR_FORWARD_LIST
-#include <boost/serialization/forward_list.hpp>
-void test_forward_list(){
-    const char * testfile = boost::archive::tmpnam(NULL);
-    std::forward_list<A> aslist;
-    aslist.push_front(A());
-    aslist.push_front(A());
-    {   
-        test_ostream os(testfile, TEST_STREAM_FLAGS);
-        test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
-        oa << boost::serialization::make_nvp("aslist", aslist);
-    }
-    std::forward_list<A> aslist1;{
-        test_istream is(testfile, TEST_STREAM_FLAGS);
-        test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
-        ia >> boost::serialization::make_nvp("aslist", aslist1);
-    }
-    BOOST_CHECK(aslist == aslist1);
-    std::remove(testfile);
-}
-#endif
-
 int test_main( int /* argc */, char* /* argv */[] )
 {
     test_list();
@@ -100,11 +78,7 @@ int test_main( int /* argc */, char* /* argv */[] )
     #ifdef BOOST_HAS_SLIST
     test_slist();
     #endif
-    
-    #ifndef BOOST_NO_CXX11_HDR_FORWARD_LIST
-    test_forward_list();
-    #endif
-    
+
     return EXIT_SUCCESS;
 }
 
