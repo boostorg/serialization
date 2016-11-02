@@ -43,7 +43,11 @@ void save( Archive & ar, const STD::valarray<U> &t, const unsigned int /*file_ve
     const collection_size_type count(t.size());
     ar << BOOST_SERIALIZATION_NVP(count);
     if (t.size())
-        ar << make_array(detail::get_data(t), t.size());
+        // explict template arguments to pass intel C++ compiler
+        ar << serialization::make_array<const U, collection_size_type>(
+            static_cast<const U *>(&t[0]),
+            count
+        );
 }
 
 template<class Archive, class U>
@@ -53,7 +57,11 @@ void load( Archive & ar, STD::valarray<U> &t,  const unsigned int /*file_version
     ar >> BOOST_SERIALIZATION_NVP(count);
     t.resize(count);
     if (t.size())
-        ar >> make_array(detail::get_data(t), t.size());
+        // explict template arguments to pass intel C++ compiler
+        ar >> serialization::make_array<U, collection_size_type>(
+            static_cast<U *>(&t[0]),
+            count
+        );
 }
 
 // split non-intrusive serialization function member into separate

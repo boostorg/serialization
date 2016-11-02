@@ -588,7 +588,14 @@ struct load_array_type {
                     boost::archive::archive_exception::array_size_too_short
                 )
             );
-        ar >> serialization::make_array(static_cast<value_type*>(&t[0]),count);
+        // explict template arguments to pass intel C++ compiler
+        ar >> serialization::make_array<
+            value_type,
+            boost::serialization::collection_size_type
+        >(
+            static_cast<value_type *>(&t[0]),
+            count
+        );
     }
 };
 
