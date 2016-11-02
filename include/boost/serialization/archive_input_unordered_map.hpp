@@ -40,11 +40,7 @@ struct archive_input_unordered_map
         detail::stack_construct<Archive, type> t(ar, v);
         ar >> boost::serialization::make_nvp("item", t.reference());
         std::pair<typename Container::const_iterator, bool> result = 
-            #ifdef BOOST_NO_CXX11_HDR_UNORDERED_MAP
-                s.insert(t.reference());
-            #else
-                s.emplace(t.reference());
-            #endif
+            s.insert(t.reference());
         // note: the following presumes that the map::value_type was NOT tracked
         // in the archive.  This is the usual case, but here there is no way
         // to determine that.  
@@ -70,11 +66,7 @@ struct archive_input_unordered_multimap
         detail::stack_construct<Archive, type> t(ar, v);
         ar >> boost::serialization::make_nvp("item", t.reference());
         typename Container::const_iterator result =
-            #ifdef BOOST_NO_CXX11_HDR_UNORDERED_MAP
-                s.insert(t.reference());
-            #else
-                s.emplace(t.reference());
-            #endif
+            s.insert(t.reference());
         // note: the following presumes that the map::value_type was NOT tracked
         // in the archive.  This is the usual case, but here there is no way
         // to determine that.  

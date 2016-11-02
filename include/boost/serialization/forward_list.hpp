@@ -72,14 +72,14 @@ collection_load_impl(
     t.clear();
     boost::serialization::detail::stack_construct<Archive, T> u(ar, item_version);
     ar >> boost::serialization::make_nvp("item", u.reference());
-    t.emplace_front(u.reference());
+    t.push_front(u.reference());
     typename std::forward_list<T, Allocator>::iterator last;
     last = t.begin();
     ar.reset_object_address(&(*t.begin()) , & u.reference());
     while(--count > 0){
         detail::stack_construct<Archive, T> u(ar, item_version);
         ar >> boost::serialization::make_nvp("item", u.reference());
-        last = t.emplace_after(last, u.reference());
+        last = t.insert(last, u.reference());
         ar.reset_object_address(&(*last) , & u.reference());
     }
 }
