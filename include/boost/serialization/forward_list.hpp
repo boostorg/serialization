@@ -79,7 +79,7 @@ collection_load_impl(
     while(--count > 0){
         detail::stack_construct<Archive, T> u(ar, item_version);
         ar >> boost::serialization::make_nvp("item", u.reference());
-        last = t.insert(last, u.reference());
+        last = t.insert.after(last, u.reference());
         ar.reset_object_address(&(*last) , & u.reference());
     }
 }
