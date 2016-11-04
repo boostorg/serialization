@@ -19,6 +19,8 @@
 #include <boost/archive/detail/basic_iarchive.hpp>
 
 #include <boost/optional.hpp>
+#include <boost/move/utility_core.hpp>
+
 #include <boost/serialization/item_version_type.hpp>
 #include <boost/serialization/split_free.hpp>
 #include <boost/serialization/level.hpp>
@@ -63,6 +65,7 @@ void load(
 ){
     bool tflag;
     ar >> boost::serialization::make_nvp("initialized", tflag);
+    t.reset();
     if (tflag){
         boost::serialization::item_version_type item_version(0);
         boost::archive::library_version_type library_version(
@@ -70,14 +73,11 @@ void load(
         );
         if(boost::archive::library_version_type(3) < library_version){
             // item_version is handled as an attribute so it doesnt need an NVP
-           ar >> BOOST_SERIALIZATION_NVP(item_version);
+            ar >> BOOST_SERIALIZATION_NVP(item_version);
         }
-        detail::stack_construct<Archive, T> aux(ar, item_version);
-        ar >> boost::serialization::make_nvp("value", aux.reference());
-        t.reset(aux.reference());
-    }
-    else {
-        t.reset();
+        detail::stack_allocate<T> t_new;
+        ar >> boost::serialization::make_nvp("value", t_new.reference());
+        t = boost::move(t_new.reference());
     }
 }
 

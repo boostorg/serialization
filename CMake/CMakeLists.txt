@@ -109,6 +109,7 @@ endif()
 
 set(Boost_DEBUG true)
 set(Boost_DETAILED_FAILURE_MSG true)
+set(Boost_FOUND true)
 
 find_package(Boost REQUIRED COMPONENTS system filesystem)
 
@@ -122,8 +123,8 @@ if(Boost_FOUND)
     message(STATUS "Boost libraries prefix is  ${Boost_LIB_PREFIX}")
     message(STATUS "Boost component libraries to be linked are ${Boost_LIBRARIES}")
     message(STATUS "Boost version found is ${Boost_VERSION}")
-    include_directories("../include" "${Boost_INCLUDE_DIRS}")
-    link_directories("${Boost_LIBRARY_DIRS}")
+    #include_directories("../include" "${Boost_INCLUDE_DIRS}")
+    #link_directories("${Boost_LIBRARY_DIRS}")
 else()
     message(STATUS "Boost NOT Found!")
 endif()
