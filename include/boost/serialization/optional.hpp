@@ -26,7 +26,9 @@
 #include <boost/serialization/level.hpp>
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/version.hpp>
+#include <boost/type_traits/is_pointer.hpp>
 #include <boost/serialization/detail/stack_constructor.hpp>
+#include <boost/detail/has_default_constructor.hpp>
 
 // function specializations must be defined in the appropriate
 // namespace - boost::serialization
@@ -39,6 +41,15 @@ void save(
     const boost::optional< T > & t, 
     const unsigned int /*version*/
 ){
+    // It is an inherent limitation to the serialization of optional.hpp
+    // that the underlying type must be either a pointer or must have a
+    // default constructor.  It's possible that this could change sometime
+    // in the future, but for now, one will have to work around it.  This can
+    // be done by serialization the optional<T> as optional<T *>
+    BOOST_STATIC_ASSERT(
+        boost::detail::has_default_constructor<T>::value
+        || boost::is_pointer<T>::value
+    );
     const bool tflag = t.is_initialized();
     ar << boost::serialization::make_nvp("initialized", tflag);
     if (tflag){
@@ -65,20 +76,25 @@ void load(
 ){
     bool tflag;
     ar >> boost::serialization::make_nvp("initialized", tflag);
-    t.reset();
-    if (tflag){
-        boost::serialization::item_version_type item_version(0);
-        boost::archive::library_version_type library_version(
-            ar.get_library_version()
-        );
-        if(boost::archive::library_version_type(3) < library_version){
-            // item_version is handled as an attribute so it doesnt need an NVP
-            ar >> BOOST_SERIALIZATION_NVP(item_version);
-        }
-        detail::stack_allocate<T> t_new;
-        ar >> boost::serialization::make_nvp("value", t_new.reference());
-        t = boost::move(t_new.reference());
+    if(! tflag){
+        t.reset();
+        return;
     }
+
+    boost::serialization::item_version_type item_version(0);
+    boost::archive::library_version_type library_version(
+        ar.get_library_version()
+    );
+    if(boost::archive::library_version_type(3) < library_version){
+        ar >> BOOST_SERIALIZATION_NVP(item_version);
+    }
+    detail::stack_allocate<T> tp;
+    ar >> boost::serialization::make_nvp("value", tp.reference());
+    t.reset(boost::move(tp.reference()));
+    ar.reset_object_address(
+        t.get_ptr(),
+        & tp.reference()
+    );
 }
 
 template<class Archive, class T>

@@ -22,10 +22,12 @@ struct Foo
     {
         return mBar;
     }
+    bool operator==(const Foo & rhs) const {
+        return mBar == rhs.mBar;
+    }
 private:
     int mBar;
 };
-
 
 namespace boost {
 namespace serialization {
@@ -40,16 +42,15 @@ template<class Archive>
 inline void save_construct_data(Archive & ar, const Foo* foo, const unsigned int /*version*/)
 {
     std::cout << __FUNCTION__ << " called" << std::endl;
-    ar << foo->bar();
+    ar & foo->bar();
 }
-
 
 template<class Archive>
 inline void load_construct_data(Archive & ar, Foo* foo, const unsigned int /*version*/)
 {
     std::cout << __FUNCTION__ << " called" << std::endl;
     int bar;
-    ar >> bar;
+    ar & bar;
     ::new(foo) Foo(bar);
 }
 
@@ -68,6 +69,8 @@ int main()
     std::istringstream inStream(outStream.str());
     boost::archive::text_iarchive inArchive(inStream);
     inArchive & newFoo;
+
+    return !(newFoo == oldFoo);
 }
 
 #elif 0

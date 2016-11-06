@@ -138,9 +138,9 @@ else()
   add_definitions( "-DBOOST_ALL_DYN_LINK=1")
   add_definitions( "-DBOOST_ALL_NO_LIB=1")
   add_definitions( "-DBOOST_LIB_DIAGNOSTICS=1")
+  set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+  set(VISIBILITY_INLINES_HIDDEN)
 endif()
-set(CMAKE_CXX_VISIBILITY_PRESET hidden)
-set(VISIBILITY_INLINES_HIDDEN)
 
 ###########################
 # library builds
@@ -178,8 +178,6 @@ add_library(serialization ${LINK_TYPE}
   ../src/basic_xml_grammar.ipp # doesn't show up in "Source Files" in Xcode"'
 )
 
-# target_compile_options(serialization PRIVATE -fvisibility=hidden -fvisibility-inlines-hidden )
-
 add_library(wserialization  ${LINK_TYPE}
   ../src/codecvt_null.cpp
   ../src/basic_text_wiprimitive.cpp
@@ -191,8 +189,6 @@ add_library(wserialization  ${LINK_TYPE}
   ../src/xml_wgrammar.cpp
   ../src/basic_xml_grammar.ipp # doesn't show up in "Source Files" in Xcode"'
 )
-
-#target_compile_options(wserialization PRIVATE -fvisibility=hidden -fvisibility-inlines-hidden )
 
 # end library build
 ###########################
