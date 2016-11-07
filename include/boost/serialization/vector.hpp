@@ -33,7 +33,6 @@
 #include <boost/serialization/split_free.hpp>
 #include <boost/serialization/array.hpp>
 #include <boost/serialization/detail/get_data.hpp>
-#include <boost/serialization/detail/stack_constructor.hpp>
 #include <boost/mpl/bool_fwd.hpp>
 #include <boost/mpl/if.hpp>
 

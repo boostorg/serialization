@@ -33,6 +33,7 @@
 #include <boost/serialization/split_free.hpp>
 #include <boost/serialization/detail/stack_constructor.hpp>
 #include <boost/serialization/detail/is_default_constructible.hpp>
+#include <boost/move/utility_core.hpp>
 
 namespace boost { 
 namespace serialization {
@@ -79,7 +80,7 @@ collection_load_impl(
     while(--count > 0){
         detail::stack_construct<Archive, T> u(ar, item_version);
         ar >> boost::serialization::make_nvp("item", u.reference());
-        last = t.insert.after(last, u.reference());
+        last = t.insert.after(last, boost::move(u.reference()));
         ar.reset_object_address(&(*last) , & u.reference());
     }
 }

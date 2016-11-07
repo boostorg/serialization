@@ -28,7 +28,7 @@
 #include <boost/serialization/version.hpp>
 #include <boost/type_traits/is_pointer.hpp>
 #include <boost/serialization/detail/stack_constructor.hpp>
-#include <boost/detail/has_default_constructor.hpp>
+#include <boost/serialization/detail/is_default_constructible.hpp>
 
 // function specializations must be defined in the appropriate
 // namespace - boost::serialization
@@ -47,7 +47,7 @@ void save(
     // in the future, but for now, one will have to work around it.  This can
     // be done by serialization the optional<T> as optional<T *>
     BOOST_STATIC_ASSERT(
-        boost::detail::has_default_constructor<T>::value
+        boost::serialization::detail::is_default_constructible<T>::value
         || boost::is_pointer<T>::value
     );
     const bool tflag = t.is_initialized();

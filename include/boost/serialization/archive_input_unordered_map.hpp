@@ -22,6 +22,7 @@
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/detail/stack_constructor.hpp>
 #include <boost/serialization/utility.hpp>
+#include <boost/move/utility_core.hpp>
 
 namespace boost { 
 namespace serialization {
@@ -40,7 +41,7 @@ struct archive_input_unordered_map
         detail::stack_construct<Archive, type> t(ar, v);
         ar >> boost::serialization::make_nvp("item", t.reference());
         std::pair<typename Container::const_iterator, bool> result = 
-            s.insert(t.reference());
+            s.insert(boost::move(t.reference()));
         // note: the following presumes that the map::value_type was NOT tracked
         // in the archive.  This is the usual case, but here there is no way
         // to determine that.  
