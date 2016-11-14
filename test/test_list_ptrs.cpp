@@ -89,51 +89,9 @@ void test_list(){
     std::remove(testfile);
 }
 
-#ifdef BOOST_HAS_SLIST
-#include <boost/serialization/slist.hpp>
-void test_slist(){
-    const char * testfile = boost::archive::tmpnam(NULL);
-    BOOST_REQUIRE(NULL != testfile);
-
-    std::list<A *> aslist;
-    {   
-        test_ostream os(testfile, TEST_STREAM_FLAGS);
-        test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
-        aslist.push_back(new A);
-        aslist.push_back(new A);
-        oa << boost::serialization::make_nvp("aslist", aslist);
-    }
-    std::list<A *> aslist1;
-    {
-        test_istream is(testfile, TEST_STREAM_FLAGS);
-        test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
-        ia >> boost::serialization::make_nvp("aslist", aslist1);
-        BOOST_CHECK(aslist.size() == aslist1.size() &&
-            std::equal(aslist.begin(),aslist.end(),aslist1.begin(),ptr_equal_to<A *>())
-        );
-    }
-    std::for_each(
-        aslist.begin(), 
-        aslist.end(), 
-        boost::checked_deleter<A>()
-    );
-    std::for_each(
-        aslist1.begin(), 
-        aslist1.end(), 
-        boost::checked_deleter<A>()
-    );  
-    std::remove(testfile);
-}
-#endif
-
 int test_main( int /* argc */, char* /* argv */[] )
 {
     test_list();
-    
-    #ifdef BOOST_HAS_SLIST
-    test_slist();
-    #endif
-        
     return EXIT_SUCCESS;
 }
 

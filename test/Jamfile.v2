@@ -107,6 +107,8 @@ test-suite "serialization" :
      [ test-bsl-run_files test_set_boost_unordered : A ]
      [ test-bsl-run_files test_simple_class : A ]
      [ test-bsl-run_files test_simple_class_ptr : A ]
+     [ test-bsl-run_files test_slist : A : : [ requires slist ] ] # BOOST_HAS_SLIST ]
+     [ test-bsl-run_files test_slist_ptrs : A : : [ requires slist ] ] # BOOST_HAS_SLIST ] ]
      [ test-bsl-run_files test_split ]
      [ test-bsl-run_files test_stack : A ]
      [ test-bsl-run_files test_tracking ]

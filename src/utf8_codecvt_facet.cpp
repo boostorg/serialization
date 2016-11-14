@@ -7,8 +7,7 @@
 #ifdef BOOST_NO_STD_WSTREAMBUF
 #error "wide char i/o not supported on this platform"
 #else
-//    #ifdef BOOST_NO_CXX11_HDR_CODECVT
-    #if 1
+    #ifdef BOOST_NO_CXX11_HDR_CODECVT
         # define BOOST_ARCHIVE_SOURCE
         #include <boost/archive/detail/decl.hpp>
         #define BOOST_UTF8_BEGIN_NAMESPACE \

@@ -18,9 +18,6 @@ namespace std{
 #endif
 
 #include <boost/config.hpp>
-#ifdef BOOST_NO_CXX11_HDR_FORWARD_LIST
-#error This test presumes support for <forward_list>
-#endif
 #include <boost/serialization/forward_list.hpp>
 
 #include <boost/archive/archive_exception.hpp>

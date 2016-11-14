@@ -123,14 +123,6 @@ const array_wrapper< T > make_array(T* t, S s){
 
 } } // end namespace boost::serialization
 
-// I can't figure out why BOOST_NO_CXX11_HDR_ARRAY
-// has been set for clang-11.  So just make sure
-// it's reset now.  Needs further research!!!
-
-#if defined(_LIBCPP_VERSION)
-#undef BOOST_NO_CXX11_HDR_ARRAY
-#endif
-
 #ifndef BOOST_NO_CXX11_HDR_ARRAY
 #include <array>
 namespace boost { namespace serialization {
