@@ -31,7 +31,7 @@
 #include <boost/serialization/collections_save_imp.hpp>
 #include <boost/serialization/collections_load_imp.hpp>
 #include <boost/serialization/split_free.hpp>
-#include <boost/serialization/array.hpp>
+#include <boost/serialization/array_wrapper.hpp>
 #include <boost/serialization/detail/get_data.hpp>
 #include <boost/mpl/bool_fwd.hpp>
 #include <boost/mpl/if.hpp>

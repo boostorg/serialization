@@ -84,6 +84,7 @@ test-suite "serialization" :
      [ test-bsl-run_files test_list : A ]
      [ test-bsl-run_files test_list_ptrs : A ]
      [ test-bsl-run_files test_map : A ]
+     [ test-bsl-run_files test_map_hashed : A : : [ requires hash ] ] # BOOST_HAS_HASH
      [ test-bsl-run_files test_map_unordered : A : :  [ requires cxx11_hdr_unordered_map ] ] # BOOST_NO_CXX11_HDR_UNORDERED_MAP
      [ test-bsl-run_files test_map_boost_unordered : A ]
      [ test-bsl-run_files test_mi ]

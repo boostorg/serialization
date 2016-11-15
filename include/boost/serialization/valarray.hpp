@@ -19,8 +19,8 @@
 #include <valarray>
 #include <boost/config.hpp>
 #include <boost/serialization/split_free.hpp>
-#include <boost/serialization/array.hpp>
 #include <boost/serialization/collection_size_type.hpp>
+#include <boost/serialization/array_wrapper.hpp>
 #include <boost/serialization/detail/get_data.hpp>
 
 // function specializations must be defined in the appropriate
