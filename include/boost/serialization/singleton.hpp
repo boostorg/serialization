@@ -87,9 +87,17 @@ class BOOST_SYMBOL_VISIBLE singleton_module :
 private:
     static bool & get_lock();
 public:
-    BOOST_SERIALIZATION_DECL static void lock();
-    BOOST_SERIALIZATION_DECL static void unlock();
-    BOOST_SERIALIZATION_DECL static bool is_locked();
+    BOOST_SERIALIZATION_DECL static void lock(){
+        get_lock() = true;
+    }
+
+    BOOST_SERIALIZATION_DECL static void unlock(){
+        get_lock() = false;
+    }
+
+    BOOST_SERIALIZATION_DECL static bool is_locked(){
+        return get_lock();
+    }
 };
 
 #include <boost/archive/detail/abi_suffix.hpp> // pops abi_suffix.hpp pragmas
