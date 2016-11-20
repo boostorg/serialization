@@ -24,7 +24,6 @@
 #include <boost/serialization/split_free.hpp>
 #include <boost/serialization/collection_size_type.hpp>
 #include <boost/serialization/array_wrapper.hpp>
-#include <boost/serialization/detail/get_data.hpp>
 
 // function specializations must be defined in the appropriate
 // namespace - boost::serialization
@@ -47,8 +46,10 @@ void save( Archive & ar, const STD::valarray<U> &t, const unsigned int /*file_ve
     ar << BOOST_SERIALIZATION_NVP(count);
     if (t.size()){
         // explict template arguments to pass intel C++ compiler
-        const U *u = & (t[0]);
-        ar << serialization::make_array<const U, collection_size_type>(u, count);
+        ar << serialization::make_array<const U, collection_size_type>(
+            static_cast<const U *>(&t[0]),
+            count
+        );
     }
 }
 
@@ -60,8 +61,10 @@ void load( Archive & ar, STD::valarray<U> &t,  const unsigned int /*file_version
     t.resize(count);
     if (t.size()){
         // explict template arguments to pass intel C++ compiler
-        U *u = & (t[0]);
-        ar >> serialization::make_array<U, collection_size_type>(u, count);
+        ar >> serialization::make_array<U, collection_size_type>(
+            static_cast<U *>(&t[0]),
+            count
+        );
     }
 }
 

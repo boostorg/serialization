@@ -32,7 +32,7 @@
     #define DLL_DECL
 #endif
 
-class BOOST_SYMBOL_VISIBLE polymorphic_base
+class DLL_DECL polymorphic_base
 {
     friend class boost::serialization::access;
     template<class Archive>

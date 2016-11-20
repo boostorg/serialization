@@ -85,17 +85,17 @@ class BOOST_SYMBOL_VISIBLE singleton_module :
     public boost::noncopyable
 {
 private:
-    static bool & get_lock();
+    BOOST_SERIALIZATION_DECL static bool & get_lock();
 public:
-    BOOST_SERIALIZATION_DECL static void lock(){
+    static void lock(){
         get_lock() = true;
     }
 
-    BOOST_SERIALIZATION_DECL static void unlock(){
+    static void unlock(){
         get_lock() = false;
     }
 
-    BOOST_SERIALIZATION_DECL static bool is_locked(){
+    static bool is_locked(){
         return get_lock();
     }
 };
