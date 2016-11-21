@@ -46,6 +46,7 @@ public:
     // implement this function
     virtual const char * get_key() const = 0;
     virtual ~polymorphic_base(){};
+    polymorphic_base(){};
 };
 
 #undef DLL_DECL
