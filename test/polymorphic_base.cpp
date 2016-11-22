@@ -16,6 +16,7 @@
 BOOST_CLASS_EXPORT_IMPLEMENT(polymorphic_base)
 
 #if 0
+POLYMORPHIC_BASE__DLL_DECL
 const char * polymorphic_base::get_key() const{
     return
         boost::serialization::type_info_implementation<
