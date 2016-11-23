@@ -56,8 +56,8 @@ install:
   - git submodule init tools/build
   - git submodule update
   - xcopy /s /e /q %APPVEYOR_BUILD_FOLDER% libs\serialization
-  - ./bootstrap
-  - ./b2 headers
+  - bootstrap
+  - b2 headers
 
 build: off
 
