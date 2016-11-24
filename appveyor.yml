@@ -9,8 +9,8 @@ shallow_clone: true
 
 branches:
   only:
-    - master
     - develop
+#    - master
 
 install:
   - cd ..
@@ -62,4 +62,4 @@ install:
 build: off
 
 test_script:
-  - b2 libs/serialization/test toolset=msvc-9.0,msvc-10.0,msvc-11.0,msvc-14.0
+  - b2 libs/serialization/test toolset=msvc-12.0 link=static,shared

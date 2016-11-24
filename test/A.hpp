@@ -45,14 +45,14 @@ namespace std{
 #include <boost/preprocessor/facilities/empty.hpp>
 
 #if defined(A_IMPORT)
-    #define DLL_DECL BOOST_SYMBOL_IMPORT
+    #define A_DLL_DECL BOOST_SYMBOL_IMPORT
 #elif defined(A_EXPORT)
-    #define DLL_DECL BOOST_SYMBOL_EXPORT
+    #define A_DLL_DECL BOOST_SYMBOL_EXPORT
 #else
-    #define DLL_DECL
+    #define A_DLL_DECL
 #endif
 
-class DLL_DECL A
+class A_DLL_DECL A
 {
 private:
     friend class boost::serialization::access;
@@ -151,7 +151,5 @@ public:
     operator std::size_t () const;
     friend std::ostream & operator<<(std::ostream & os, A const & a);
 };
-
-#undef DLL_DECL
 
 #endif // BOOST_SERIALIZATION_TEST_A_HPP
