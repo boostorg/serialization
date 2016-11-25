@@ -22,6 +22,7 @@
 #include <boost/serialization/type_info_implementation.hpp>
 #include <boost/serialization/extended_type_info_no_rtti.hpp>
 
+#define POLYMORPHIC_BASE_IMPORT
 #include "polymorphic_base.hpp"
 
 class polymorphic_derived1 : public polymorphic_base

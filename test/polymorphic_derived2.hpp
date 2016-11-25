@@ -26,6 +26,7 @@
 
 #include <boost/preprocessor/empty.hpp>
 
+#define POLYMORPHIC_BASE_IMPORT
 #include "polymorphic_base.hpp"
 
 #if defined(POLYMORPHIC_DERIVED2_IMPORT)
