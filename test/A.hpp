@@ -35,13 +35,12 @@ namespace std{
 
 #if defined(A_IMPORT)
     #define A_DLL_DECL BOOST_SYMBOL_IMPORT
-    #pragma message "A imported"
+    #pragma message("A imported")
 #elif defined(A_EXPORT)
     #define A_DLL_DECL BOOST_SYMBOL_EXPORT
-    #pragma message "A exported"
+    #pragma message ("A exported")
 #else
     #define A_DLL_DECL
-    #pragma message "A neither imported nor exported"
 #endif
 
 class A_DLL_DECL A {

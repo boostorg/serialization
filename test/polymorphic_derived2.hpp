@@ -31,13 +31,12 @@
 
 #if defined(POLYMORPHIC_DERIVED2_IMPORT)
     #define POLYMORPHIC_DERIVED2_DLL_DECL BOOST_SYMBOL_IMPORT
-    #pragma message "polymorphic_derived2 imported"
+    #pragma message ("polymorphic_derived2 imported")
 #elif defined(POLYMORPHIC_DERIVED2_EXPORT)
     #define POLYMORPHIC_DERIVED2_DLL_DECL BOOST_SYMBOL_EXPORT
-    #pragma message "polymorphic_derived2 exported"
+    #pragma message ("polymorphic_derived2 exported")
 #else
     #define POLYMORPHIC_DERIVED2_DLL_DECL
-    #pragma message "polymorphic_derived2 neither imported nor imported"
 #endif
 
 class POLYMORPHIC_DERIVED2_DLL_DECL polymorphic_derived2 :
