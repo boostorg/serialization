@@ -41,7 +41,6 @@ void randomize(S &x)
 }
 
 template<class T>
-A_DLL_DECL
 void accumulate(std::size_t & s, const T & t){
     const char * tptr = (const char *)(& t);
     unsigned int count = sizeof(t);
@@ -50,7 +49,6 @@ void accumulate(std::size_t & s, const T & t){
     }
 }
 
-A_DLL_DECL
 A::operator std::size_t () const {
     std::size_t retval = 0;
     accumulate(retval, b);
@@ -80,7 +78,6 @@ A::operator std::size_t () const {
 #pragma warning(disable : 4244) // Disable possible loss of data warning
 #endif
 
-A_DLL_DECL
 A::A() :
     b(true),
     #ifndef BOOST_NO_INT64_T
@@ -114,7 +111,6 @@ A::A() :
 #pragma warning(pop) // Restore warnings to previous state.
 #endif 
 
-A_DLL_DECL
 bool A::operator==(const A &rhs) const
 {
     if(b != rhs.b)
@@ -164,13 +160,11 @@ bool A::operator==(const A &rhs) const
     return true;
 }
 
-A_DLL_DECL
 bool A::operator!=(const A &rhs) const
 {
     return ! (*this == rhs);
 }
 
-A_DLL_DECL
 bool A::operator<(const A &rhs) const
 {
     if(b != rhs.b)

@@ -29,13 +29,11 @@ void polymorphic_derived2::serialize(
 #include <boost/archive/text_iarchive.hpp>
 
 template
-POLYMORPHIC_DERIVED2_DLL_DECL
 void polymorphic_derived2::serialize(
     boost::archive::text_oarchive & ar,
     const unsigned int version
 );
 template
-POLYMORPHIC_DERIVED2_DLL_DECL
 void polymorphic_derived2::serialize(
     boost::archive::text_iarchive & ar,
     const unsigned int version
@@ -46,13 +44,11 @@ void polymorphic_derived2::serialize(
 #include <boost/archive/polymorphic_oarchive.hpp>
 
 template
-POLYMORPHIC_DERIVED2_DLL_DECL
 void polymorphic_derived2::serialize(
     boost::archive::polymorphic_oarchive & ar,
     const unsigned int version
 );
 template
-POLYMORPHIC_DERIVED2_DLL_DECL
 void polymorphic_derived2::serialize(
     boost::archive::polymorphic_iarchive & ar,
     const unsigned int version
