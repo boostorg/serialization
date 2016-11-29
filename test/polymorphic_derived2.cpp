@@ -16,7 +16,6 @@
 #include "polymorphic_derived2.hpp"
 
 template<class Archive>
-POLYMORPHIC_DERIVED2_DLL_DECL
 void polymorphic_derived2::serialize(
     Archive &ar, 
     const unsigned int /* file_version */
