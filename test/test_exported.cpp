@@ -29,7 +29,6 @@ namespace std{
 #include <boost/archive/archive_exception.hpp>
 #include "test_tools.hpp"
 
-#define POLYMORPHIC_BASE_IMPORT
 #include "polymorphic_base.hpp"
 
 class polymorphic_derived1 : 

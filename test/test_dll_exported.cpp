@@ -45,7 +45,6 @@ namespace std{
 #include <boost/serialization/export.hpp>
 #include <boost/serialization/access.hpp>
 
-#define POLYMORPHIC_BASE_IMPORT
 #include "polymorphic_base.hpp"
 
 class polymorphic_derived1 : public polymorphic_base

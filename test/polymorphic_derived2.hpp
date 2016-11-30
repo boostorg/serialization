@@ -24,9 +24,6 @@
 #include <boost/serialization/type_info_implementation.hpp>
 #include <boost/serialization/extended_type_info_typeid.hpp>
 
-#include <boost/preprocessor/empty.hpp>
-
-#define POLYMORPHIC_BASE_IMPORT
 #include "polymorphic_base.hpp"
 
 #if defined(POLYMORPHIC_DERIVED2_IMPORT)
