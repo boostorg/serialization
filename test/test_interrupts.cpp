@@ -29,7 +29,7 @@ namespace std{
 
 struct test_dummy_out {
     template<class Archive>
-    void save(Archive & ar, const unsigned int /*version*/) const {
+    void save(Archive &, const unsigned int /*version*/) const {
         throw boost::archive::archive_exception(
             boost::archive::archive_exception::other_exception
         );
