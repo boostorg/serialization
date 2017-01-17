@@ -8,7 +8,7 @@
 
 struct Data
 {
-    using value_type = char;
+    typedef char value_type;
 
     template<typename Archiver>
     void save(Archiver& ar, unsigned) const
@@ -20,9 +20,9 @@ struct Data
     template<typename Archiver>
     void load(Archiver& ar, unsigned)
     {
-      auto tmp = value_.size();
-      ar & tmp;
-      value_.resize(tmp);
+      std::vector<value_type>::size_type size;
+      ar & size;
+      value_.resize(size);
       ar & boost::serialization::make_binary_object( value_.data(), value_.size()*sizeof(value_type) );
     }
 
@@ -36,15 +36,19 @@ int test_main( int /* argc */, char* /* argv */[] )
 {
     std::stringstream ss;
 
-    const Data in{ {'t','e','s','t'} };
+    Data in;
+    in.value_.push_back('t');
+    in.value_.push_back('e');
+    in.value_.push_back('s');
+    in.value_.push_back('t');
     {
-      boost::archive::binary_oarchive arch{ss};
-      arch << in;
+      boost::archive::binary_oarchive arch(ss);
+      arch << static_cast<Data const&>(in);
     }
 
     Data out;
     {
-      boost::archive::binary_iarchive arch{ss};
+      boost::archive::binary_iarchive arch(ss);
       arch >> out;
     }
     BOOST_CHECK( in.value_ == out.value_ );
