@@ -36,25 +36,17 @@ int test_main( int /* argc */, char* /* argv */[] )
 {
     std::stringstream ss;
 
+    const Data in{ {'t','e','s','t'} };
     {
-      Data d;
-      d.value_.push_back('t');
-      d.value_.push_back('e');
-      d.value_.push_back('s');
-      d.value_.push_back('t');
-
       boost::archive::binary_oarchive arch{ss};
-      arch << d;
+      arch << in;
     }
 
-    Data d;
-
-    boost::archive::binary_iarchive arch{ss};
-    arch >> d;
-
-    BOOST_CHECK( d.value_.at(0) == 't' );
-    BOOST_CHECK( d.value_.at(1) == 'e' );
-    BOOST_CHECK( d.value_.at(2) == 's' );
-    BOOST_CHECK( d.value_.at(3) == 't' );
+    Data out;
+    {
+      boost::archive::binary_iarchive arch{ss};
+      arch >> out;
+    }
+    BOOST_CHECK( in.value_ == out.value_ );
     return EXIT_SUCCESS;
 }
