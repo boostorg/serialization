@@ -7,10 +7,6 @@
 // http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// it marks our code with proper attributes as being exported when
-// we're compiling it while marking it import when just the headers
-// is being included.
-#define BOOST_SERIALIZATION_SOURCE
 #include <boost/serialization/config.hpp>
 #include <boost/serialization/singleton.hpp>
 
