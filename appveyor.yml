@@ -56,10 +56,10 @@ install:
   - git submodule init tools/build
   - git submodule update
   - xcopy /s /e /q %APPVEYOR_BUILD_FOLDER% libs\serialization
-  - bootstrap
+  - bootstrap mingw
   - b2 headers
 
 build: off
 
 test_script:
-  - b2 libs/serialization/test toolset=msvc-12.0 link=static,shared
+  - b2 libs/serialization/test toolset=gcc link=static,shared
