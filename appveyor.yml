@@ -58,9 +58,10 @@ install:
   - xcopy /s /e /q %APPVEYOR_BUILD_FOLDER% libs\serialization
   - set PATH=C:\MinGW\bin;%PATH%
   - bootstrap mingw
-  - b2 headers
+  - tools\build\v2\b2 headers
 
 build: off
 
 test_script:
-  - b2 libs/serialization/test toolset=gcc link=static,shared
+  - cd libs/serialization/test
+  - tools\build\v2\b2 toolset=gcc link=static,shared
