@@ -58,6 +58,7 @@ install:
   - xcopy /s /e /q %APPVEYOR_BUILD_FOLDER% libs\serialization
   - set PATH=C:\MinGW\bin;%PATH%
   - bootstrap mingw
+  - type bootstrap.log
   - tools\build\v2\b2 headers
 
 build: off
