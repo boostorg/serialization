@@ -56,9 +56,8 @@ install:
   - git submodule init tools/build
   - git submodule update
   - xcopy /s /e /q %APPVEYOR_BUILD_FOLDER% libs\serialization
-  - set PATH=C:\MinGW\bin;%PATH%
+  - set PATH=C:\mingw-w64\i686-6.3.0-posix-dwarf-rt_v5-rev1;%PATH%
   - bootstrap mingw
-  - type bootstrap.log
   - tools\build\v2\b2 headers
 
 build: off
