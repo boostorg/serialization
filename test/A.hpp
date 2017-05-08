@@ -18,7 +18,6 @@
 
 #include <ostream> // for friend output operators
 #include <cstddef> // size_t
-#include <string>
 #include <boost/config.hpp>
 
 #if defined(BOOST_NO_STDC_NAMESPACE)
