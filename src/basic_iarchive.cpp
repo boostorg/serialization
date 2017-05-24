@@ -487,7 +487,7 @@ basic_iarchive_impl::load_pointer(
         m_pending.version = co.file_version;
 
         // predict next object id to be created
-        const unsigned int ui = object_id_vector.size();
+        const size_t ui = object_id_vector.size();
 
         serialization::state_saver<object_id_type> w_end(m_moveable_objects.end);
 

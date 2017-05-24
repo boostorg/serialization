@@ -145,8 +145,7 @@ template<class String>
 struct append_char {
     String & contents;
     void operator()(const unsigned int char_value) const {
-        const typename String::value_type z = char_value;
-        contents += z;
+        contents += static_cast<typename String::value_type>(char_value);
     }
     append_char(String & contents_)
         : contents(contents_)

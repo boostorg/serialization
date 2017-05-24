@@ -26,7 +26,7 @@ add_definitions(${Boost_LIB_DIAGNOSTIC_DEFINITIONS})
 if( CMAKE_CXX_COMPILER_ID STREQUAL "GNU" )
   add_definitions( -ftemplate-depth=300 )
   # we use gcc to test for C++03 compatibility
-  add_definitions( std=c++03 )
+  add_definitions( -std=c++03 )
   message(STATUS "compiler is g++ c++03")
   set(COMPILER_SUPPORTS_CXX11 FALSE)
 elseif( CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" )
