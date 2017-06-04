@@ -29,10 +29,18 @@ namespace std{
 struct A {
     int m_x;
     template<class Archive>
-    void serialize(Archive & ar, const unsigned int version){};
+    void serialize(Archive & ar, const unsigned int /* version */){
+        ar & boost::serialization::make_nvp("x", m_x);
+    };
     bool operator==(const A & rhs) const {
         return m_x == rhs.m_x;
     }
+    A() :
+        m_x(0)
+    {}
+    A(int x) :
+        m_x(x)
+    {}
 };
 
 int test_main( int /* argc */, char* /* argv */[] )
@@ -43,7 +51,7 @@ int test_main( int /* argc */, char* /* argv */[] )
     const boost::optional<int> aoptional1;
     const boost::optional<int> aoptional2(123);
     const boost::optional<A> aoptional3;
-    A a;
+    A a(1);
     const boost::optional<A> aoptional4(a);
     const boost::optional<A *> aoptional5;
     const boost::optional<A *> aoptional6(& a);

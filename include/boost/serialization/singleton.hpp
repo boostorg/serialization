@@ -81,28 +81,28 @@ namespace serialization {
 // attempt to retieve a mutable instances while locked will
 // generate a assertion if compiled for debug.
 
+// note usage of BOOST_DLLEXPORT.  These functions are in danger of
+// being eliminated by the optimizer when building an application in
+// release mode. Usage of the macro is meant to signal the compiler/linker
+// to avoid dropping these functions which seem to be unreferenced.
+// This usage is not related to autolinking.
+
 class BOOST_SYMBOL_VISIBLE singleton_module :
     public boost::noncopyable
 {
 private:
     BOOST_SERIALIZATION_DECL static bool & get_lock();
 public:
-    static void lock(){
+    BOOST_DLLEXPORT static void lock(){
         get_lock() = true;
     }
-    static void unlock(){
+    BOOST_DLLEXPORT static void unlock(){
         get_lock() = false;
     }
-    static bool is_locked(){
+    BOOST_DLLEXPORT static bool is_locked(){
         return get_lock();
     }
 };
-
-// note usage of BOOST_DLLEXPORT.  These functions are in danger of
-// being eliminated by the optimizer when building an application in
-// release mode. Usage of the macro is meant to signal the compiler/linker
-// to avoid dropping these functions which seem to be unreferenced.
-// This usage is not related to autolinking.
 
 template <class T>
 class singleton : public singleton_module
