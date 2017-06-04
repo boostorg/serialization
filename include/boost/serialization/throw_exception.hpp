@@ -19,6 +19,8 @@
 
 #ifndef BOOST_NO_EXCEPTIONS
 #include <exception>
+#else
+#include <boost/throw_exception.hpp>
 #endif
 
 namespace boost {
