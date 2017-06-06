@@ -63,6 +63,7 @@ test-suite "serialization" :
      [ test-bsl-run_files test_boost_array : A ]
      [ test-bsl-run_files test_native_array : A ]
      [ test-bsl-run_files test_binary ]
+     [ test-bsl-run_files test_binary_split_member ]
      [ test-bsl-run_files test_class_info_save ]
      [ test-bsl-run_files test_class_info_load ]
      [ test-bsl-run_files test_bitset ]
