@@ -253,7 +253,8 @@ struct save_non_pointer_type {
         template<class T>
         static void invoke(Archive &ar, const T & t){
             ar.save_object(
-                & t, 
+            //    & t,
+                std::addressof(t),
                 boost::serialization::singleton<
                     oserializer<Archive, T>
                 >::get_const_instance()
