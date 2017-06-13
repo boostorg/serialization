@@ -35,6 +35,7 @@ struct A {
     bool operator==(const A & rhs) const {
         return m_x == rhs.m_x;
     }
+    // note that default constructor is not trivial
     A() :
         m_x(0)
     {}
