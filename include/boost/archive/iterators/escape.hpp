@@ -103,7 +103,7 @@ public:
         m_bnext(NULL),
         m_bend(NULL),
         m_full(false),
-        m_current_value(NULL)
+        m_current_value(0)
     {
     }
 };
