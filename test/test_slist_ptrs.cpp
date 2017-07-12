@@ -49,7 +49,7 @@ void test_slist(){
     const char * testfile = boost::archive::tmpnam(NULL);
     BOOST_REQUIRE(NULL != testfile);
 
-    std::list<A *> aslist;
+    BOOST_STD_EXTENSION_NAMESPACE::slist<A *> aslist;
     {   
         test_ostream os(testfile, TEST_STREAM_FLAGS);
         test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
@@ -57,7 +57,7 @@ void test_slist(){
         aslist.push_back(new A);
         oa << boost::serialization::make_nvp("aslist", aslist);
     }
-    std::list<A *> aslist1;
+    BOOST_STD_EXTENSION_NAMESPACE::slist<A *> aslist1;
     {
         test_istream is(testfile, TEST_STREAM_FLAGS);
         test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
