@@ -53,8 +53,8 @@ void test_slist(){
     {   
         test_ostream os(testfile, TEST_STREAM_FLAGS);
         test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
-        aslist.push_back(new A);
-        aslist.push_back(new A);
+        aslist.push_front(new A);
+        aslist.push_front(new A);
         oa << boost::serialization::make_nvp("aslist", aslist);
     }
     BOOST_STD_EXTENSION_NAMESPACE::slist<A *> aslist1;
