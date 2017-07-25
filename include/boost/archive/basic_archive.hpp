@@ -127,11 +127,11 @@ public:
     }
 
     // used for text output
-    operator int () const {
+    operator base_type () const {
         return t;
     }                
     // used for text input
-    operator int_least16_t &() {
+    operator base_type &() {
         return t;
     }                
     bool operator==(const class_id_type & rhs) const {
