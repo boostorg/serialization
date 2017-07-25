@@ -162,11 +162,11 @@ public:
         return *this;
     }
     // used for text output
-    operator uint_least32_t () const {
+    operator base_type () const {
         return t;
     }                
     // used for text input
-    operator uint_least32_t & () {
+    operator base_type & () {
         return t;
     }                
     bool operator==(const object_id_type & rhs) const {
