@@ -240,7 +240,7 @@ int main(int argc, char **argv) {
     return 0;
 }
 
-#else
+#elif 0
 
 #include <cassert>
 #include <string>
@@ -555,5 +555,46 @@ int main()
     assert(base64 == output);
     return 0;
 }
+#else
+#include <memory>
+#include <sstream>
 
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/serialization/shared_ptr.hpp>
+
+struct S
+{
+	int i;
+	char c;
+
+	template <class Archive>
+	void serialize(Archive & ar, const unsigned int version)
+	{
+		ar & i;
+		ar & c;
+	}
+};
+
+int main()
+{
+	const auto s0 = std::make_shared<S>();
+	s0->i = 42;
+	s0->c = 'c';
+
+	std::stringstream ss;
+
+	{
+		boost::archive::text_oarchive oa(ss);
+		oa << s0;
+	}
+
+	std::shared_ptr<S> s1;
+	{
+		boost::archive::text_iarchive ia(ss);
+		ia >> s1;
+	}
+
+	return 0;
+}
 #endif
