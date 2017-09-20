@@ -27,6 +27,7 @@ namespace std{
 #include "test_tools.hpp"
 
 #include <boost/serialization/nvp.hpp>
+#include <boost/serialization/list.hpp>
 
 #include "A.hpp"
 #include "A.ipp"
