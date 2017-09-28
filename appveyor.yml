@@ -56,12 +56,12 @@ install:
   - git submodule init tools/build
   - git submodule update
   - xcopy /s /e /q %APPVEYOR_BUILD_FOLDER% libs\serialization
-  - set PATH=C:\mingw-w64\i686-6.3.0-posix-dwarf-rt_v5-rev1;%PATH%
-  - bootstrap mingw
-  - tools\build\v2\b2 headers
+  - set PATH=C:\mingw-w64\i686-6.3.0-posix-dwarf-rt_v5-rev1\mingw32\bin;%PATH%
+  - bootstrap
+  - b2 headers
 
 build: off
 
 test_script:
   - cd libs/serialization/test
-  - tools\build\v2\b2 toolset=gcc link=static,shared
+  - ..\..\..\b2 target-os=windows toolset=gcc variant=release threading=multi link=static,shared runtime-link=shared address-model=32 architecture=x86 cxxflags="-std=c++11 -O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions --param=ssp-buffer-size=4"
