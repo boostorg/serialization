@@ -133,7 +133,7 @@ test-suite "serialization" :
 
 if ! $(BOOST_ARCHIVE_LIST) {
     test-suite "serialization2" : 
-        [ test-bsl-run-no-lib test_inclusion ]
+        [ test-bsl-run test_inclusion ]
         [ test-bsl-run test_dll_exported : : dll_polymorphic_derived2_lib ]
         [ test-bsl-run test_dll_simple : : dll_a_lib ]
         [ compile test_dll_plugin.cpp ]
