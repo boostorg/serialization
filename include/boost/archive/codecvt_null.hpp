@@ -92,10 +92,10 @@ class BOOST_SYMBOL_VISIBLE codecvt_null<wchar_t> : public std::codecvt<wchar_t, 
         return do_encoding();
     }
 public:
-    BOOST_ARCHIVE_DECL explicit codecvt_null(std::size_t no_locale_manage = 0) :
+    explicit codecvt_null(std::size_t no_locale_manage = 0) :
         std::codecvt<wchar_t, char, std::mbstate_t>(no_locale_manage)
     {}
-    BOOST_ARCHIVE_DECL virtual ~codecvt_null(){};
+    virtual ~codecvt_null(){};
 };
 
 } // namespace archive
