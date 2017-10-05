@@ -65,7 +65,7 @@ public:
 template<>
 class BOOST_SYMBOL_VISIBLE codecvt_null<wchar_t> : public std::codecvt<wchar_t, char, std::mbstate_t>
 {
-    virtual BOOST_WARCHIVE_DECL BOOST_DLLEXPORT std::codecvt_base::result
+    virtual BOOST_ARCHIVE_DECL std::codecvt_base::result
     do_out(
         std::mbstate_t & state,
         const wchar_t * first1,
@@ -75,7 +75,7 @@ class BOOST_SYMBOL_VISIBLE codecvt_null<wchar_t> : public std::codecvt<wchar_t, 
         char * last2,
         char * & next2
     ) const BOOST_USED;
-    virtual BOOST_WARCHIVE_DECL BOOST_DLLEXPORT std::codecvt_base::result
+    virtual BOOST_ARCHIVE_DECL std::codecvt_base::result
     do_in(
         std::mbstate_t & state,
         const char * first1,
@@ -92,10 +92,10 @@ class BOOST_SYMBOL_VISIBLE codecvt_null<wchar_t> : public std::codecvt<wchar_t, 
         return do_encoding();
     }
 public:
-    BOOST_DLLEXPORT explicit codecvt_null(std::size_t no_locale_manage = 0) :
+    BOOST_ARCHIVE_DECL explicit codecvt_null(std::size_t no_locale_manage = 0) :
         std::codecvt<wchar_t, char, std::mbstate_t>(no_locale_manage)
     {}
-    virtual ~codecvt_null(){};
+    BOOST_ARCHIVE_DECL virtual ~codecvt_null(){};
 };
 
 } // namespace archive

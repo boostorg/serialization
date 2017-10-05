@@ -57,18 +57,14 @@ namespace std{
 
 #include <boost/serialization/assume_abstract.hpp>
 
-#ifndef BOOST_MSVC
-    #if defined(__SUNPRO_CC) && (__SUNPRO_CC < 0x590)
+#if BOOST_WORKAROUND(__IBMCPP__, < 1210)          \
+|| (                                              \
+    defined(__SUNPRO_CC) && (__SUNPRO_CC < 0x590) \
+)                                                 
         #define DONT_USE_HAS_NEW_OPERATOR 1
-    #elif BOOST_WORKAROUND(__IBMCPP__, < 1210)
-        #define DONT_USE_HAS_NEW_OPERATOR 1
-    #else
-        #define DONT_USE_HAS_NEW_OPERATOR 1
-    #endif
 #else
     #define DONT_USE_HAS_NEW_OPERATOR 0
 #endif
-
 
 #if ! DONT_USE_HAS_NEW_OPERATOR
 #include <boost/type_traits/has_new_operator.hpp>
