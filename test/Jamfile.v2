@@ -122,7 +122,7 @@ test-suite "serialization" :
      [ test-bsl-run_files test_optional ]
      [ test-bsl-run_files test_shared_ptr ]
      [ test-bsl-run_files test_shared_ptr_multi_base ]
-     [ test-bsl-run_files test_shared_ptr_132 ]
+     [ test-bsl-run_files test_shared_ptr_132 : : : [ requires auto_ptr  ] ] # BOOST_NO_AUTO_PTR
      [ test-bsl-run_polymorphic_archive test_polymorphic : test_polymorphic_A A ]
      [ test-bsl-run_polymorphic_archive test_polymorphic2 : test_polymorphic2imp ]
      [ test-bsl-run_polymorphic_archive test_polymorphic_helper ]
