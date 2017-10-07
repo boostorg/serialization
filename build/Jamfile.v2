@@ -120,6 +120,8 @@ lib boost_wserialization
     <toolset>gcc:<cxxflags>"-ftemplate-depth-255"
     <toolset>clang:<cxxflags>"-ftemplate-depth-255"
     <toolset>darwin:<cxxflags>"-ftemplate-depth-255"
+    # note: both serialization and wserialization are conditioned on the this
+    # switch - don't change it to BOOST_WSERIALIZATION_DYN_LINK
     <link>shared:<define>BOOST_SERIALIZATION_DYN_LINK=1
     ;
 

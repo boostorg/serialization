@@ -23,7 +23,7 @@ namespace std{
 #include "test_tools.hpp"
 #include <boost/core/no_exceptions_support.hpp>
 #include <boost/archive/archive_exception.hpp>
-#include <boost/array.hpp>
+#include <boost/serialization/boost_array.hpp>
 
 #include "A.hpp"
 #include "A.ipp"

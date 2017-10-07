@@ -16,13 +16,10 @@
 
 //  See http://www.boost.org for updates, documentation, and revision history.
 
+#include <boost/config.hpp>
+
 #include <forward_list>
 #include <iterator>  // distance
-
-#include <boost/config.hpp>
-#ifdef BOOST_NO_CXX11_HDR_FORWARD_LIST
-#error "not supported for versions earlier than c++11
-#endif
 
 #include <boost/serialization/collections_save_imp.hpp>
 #include <boost/serialization/collections_load_imp.hpp>
@@ -33,6 +30,7 @@
 #include <boost/serialization/split_free.hpp>
 #include <boost/serialization/detail/stack_constructor.hpp>
 #include <boost/serialization/detail/is_default_constructible.hpp>
+#include <boost/move/utility_core.hpp>
 
 namespace boost { 
 namespace serialization {
@@ -41,7 +39,7 @@ template<class Archive, class U, class Allocator>
 inline void save(
     Archive & ar,
     const std::forward_list<U, Allocator> &t,
-    const unsigned int file_version
+    const unsigned int /*file_version*/
 ){
     const collection_size_type count(std::distance(t.cbegin(), t.cend()));
     boost::serialization::stl::save_collection<
@@ -72,14 +70,14 @@ collection_load_impl(
     t.clear();
     boost::serialization::detail::stack_construct<Archive, T> u(ar, item_version);
     ar >> boost::serialization::make_nvp("item", u.reference());
-    t.emplace_front(u.reference());
+    t.push_front(boost::move(u.reference()));
     typename std::forward_list<T, Allocator>::iterator last;
     last = t.begin();
     ar.reset_object_address(&(*t.begin()) , & u.reference());
     while(--count > 0){
         detail::stack_construct<Archive, T> u(ar, item_version);
         ar >> boost::serialization::make_nvp("item", u.reference());
-        last = t.emplace_after(last, u.reference());
+        last = t.insert_after(last, boost::move(u.reference()));
         ar.reset_object_address(&(*last) , & u.reference());
     }
 }
@@ -90,7 +88,7 @@ template<class Archive, class U, class Allocator>
 inline void load(
     Archive & ar,
     std::forward_list<U, Allocator> &t,
-    const unsigned int file_version
+    const unsigned int /*file_version*/
 ){
     const boost::archive::library_version_type library_version(
         ar.get_library_version()

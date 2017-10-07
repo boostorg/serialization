@@ -24,19 +24,19 @@
 #include <boost/serialization/type_info_implementation.hpp>
 #include <boost/serialization/extended_type_info_typeid.hpp>
 
-#include <boost/preprocessor/empty.hpp>
-
 #include "polymorphic_base.hpp"
 
-#if defined(POLYMORPHIC_DERIVED_IMPORT)
-    #define DLL_DECL BOOST_SYMBOL_IMPORT
-#elif defined(POLYMORPHIC_DERIVED_EXPORT)
-    #define DLL_DECL BOOST_SYMBOL_EXPORT
+#if defined(POLYMORPHIC_DERIVED2_IMPORT)
+    #define POLYMORPHIC_DERIVED2_DLL_DECL BOOST_SYMBOL_IMPORT
+    #pragma message ("polymorphic_derived2 imported")
+#elif defined(POLYMORPHIC_DERIVED2_EXPORT)
+    #define POLYMORPHIC_DERIVED2_DLL_DECL BOOST_SYMBOL_EXPORT
+    #pragma message ("polymorphic_derived2 exported")
 #else
-    #define DLL_DECL
+    #define POLYMORPHIC_DERIVED2_DLL_DECL
 #endif
 
-class DLL_DECL polymorphic_derived2 : 
+class POLYMORPHIC_DERIVED2_DLL_DECL polymorphic_derived2 :
     public polymorphic_base
 {
     friend class boost::serialization::access;
@@ -62,8 +62,6 @@ BOOST_CLASS_TYPE_INFO(
     polymorphic_derived2,
     boost::serialization::extended_type_info_typeid<polymorphic_derived2>
 )
-
-#undef DLL_DECL
 
 #endif // POLYMORPHIC_DERIVED2_HPP
 

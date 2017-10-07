@@ -276,6 +276,7 @@ void_caster::recursive_register(bool includes_virtual_base) const {
 
 BOOST_SERIALIZATION_DECL void
 void_caster::recursive_unregister() const {
+    BOOST_ASSERT(! void_caster_registry::is_destroyed());
     if(void_caster_registry::is_destroyed())
         return;
 

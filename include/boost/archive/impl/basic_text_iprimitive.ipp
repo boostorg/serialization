@@ -76,7 +76,7 @@ basic_text_iprimitive<IStream>::load_binary(
                 iterators::remove_whitespace<
                     iterators::istream_iterator<CharType>
                 >
-                ,CharType
+                ,typename IStream::int_type
             >
             ,8
             ,6

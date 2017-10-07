@@ -19,7 +19,9 @@
 #include <boost/assert.hpp>
 #include <cctype>
 #include <cstddef> // size_t
+#ifndef BOOST_NO_CWCHAR
 #include <cwchar>  // mbstate_t
+#endif
 #include <algorithm> // copy
 
 #include <boost/config.hpp>
@@ -68,7 +70,7 @@ class wchar_from_mb
 
     wchar_t dereference() const {
         if(m_output.m_next == m_output.m_next_available)
-            return 0;
+            return static_cast<wchar_t>(0);
         return * m_output.m_next;
     }
 
@@ -130,6 +132,9 @@ public:
         BOOST_ASSERT(std::mbsinit(&m_mbs));
         drain();
     }
+    // default constructor used as an end iterator
+    wchar_from_mb(){}
+
     // copy ctor
     wchar_from_mb(const wchar_from_mb & rhs) :
         super_t(rhs.base_reference()),
@@ -143,15 +148,16 @@ template<class Base>
 void wchar_from_mb<Base>::drain(){
     BOOST_ASSERT(! m_input.m_done);
     for(;;){
-        typename boost::iterators::iterator_reference<Base>::type c = *(this->base_reference()++);
-        * const_cast<typename iterator_value<Base>::type *>(
-            (m_input.m_next_available++)
-        ) = c;
+        typename boost::iterators::iterator_reference<Base>::type c = *(this->base_reference());
         // a null character in a multibyte stream is takes as end of string
         if(0 == c){
             m_input.m_done = true;
             break;
         }
+        ++(this->base_reference());
+        * const_cast<typename iterator_value<Base>::type *>(
+            (m_input.m_next_available++)
+        ) = c;
         // if input buffer is full - we're done for now
         if(m_input.m_buffer.end() == m_input.m_next_available)
             break;

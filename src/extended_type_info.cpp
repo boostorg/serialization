@@ -125,6 +125,7 @@ BOOST_SERIALIZATION_DECL void
 extended_type_info::key_unregister() const{
     if(NULL == get_key())
         return;
+    BOOST_ASSERT(! singleton<detail::ktmap>::is_destroyed());
     if(! singleton<detail::ktmap>::is_destroyed()){
         detail::ktmap & x = singleton<detail::ktmap>::get_mutable_instance();
         detail::ktmap::iterator start = x.lower_bound(this);

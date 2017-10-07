@@ -76,8 +76,8 @@ A::operator std::size_t () const {
 #if defined(_MSC_VER)
 #pragma warning(push) // Save warning settings.
 #pragma warning(disable : 4244) // Disable possible loss of data warning
+#endif
 
-#endif 
 A::A() :
     b(true),
     #ifndef BOOST_NO_INT64_T

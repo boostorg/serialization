@@ -45,7 +45,6 @@ namespace std{
 #include <boost/serialization/export.hpp>
 #include <boost/serialization/access.hpp>
 
-#define POLYMORPHIC_BASE_IMPORT
 #include "polymorphic_base.hpp"
 
 class polymorphic_derived1 : public polymorphic_base
@@ -67,7 +66,7 @@ BOOST_CLASS_EXPORT(polymorphic_derived1)
 // MWerks users can do this to make their code work
 BOOST_SERIALIZATION_MWERKS_BASE_AND_DERIVED(polymorphic_base, polymorphic_derived1)
 
-#define POLYMORPHIC_DERIVED_IMPORT
+#define POLYMORPHIC_DERIVED2_IMPORT
 #include "polymorphic_derived2.hpp"
 
 // save exported polymorphic class
