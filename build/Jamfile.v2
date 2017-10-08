@@ -71,6 +71,8 @@ SOURCES =
     extended_type_info_no_rtti
     polymorphic_iarchive
     polymorphic_oarchive
+	portable_iarchive
+	portable_oarchive
     stl_port
     text_iarchive
     text_oarchive

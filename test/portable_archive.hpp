@@ -12,13 +12,13 @@
 // #include output archive header
 #include <boost/archive/portable_oarchive.hpp>
 // define output archive class to be used 
-typedef eos::portable_oarchive test_oarchive;
+typedef boost::archive::portable_oarchive test_oarchive;
 // and corresponding stream
 typedef std::ofstream test_ostream;
 
 // repeat the above for correspondng input archive
 #include <boost/archive/portable_iarchive.hpp>
-typedef eos::portable_iarchive test_iarchive;
+typedef boost::archive::portable_iarchive test_iarchive;
 typedef std::ifstream test_istream;
 
 // and stream open flags
