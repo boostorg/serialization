@@ -96,7 +96,7 @@ public:
     explicit codecvt_null(std::size_t no_locale_manage = 0) :
         std::codecvt<wchar_t, char, std::mbstate_t>(no_locale_manage)
     {}
-    virtual ~codecvt_null(){};
+    //virtual ~codecvt_null(){};
 };
 
 } // namespace archive
