@@ -26,6 +26,7 @@ namespace std{
 #include <boost/archive/dinkumware.hpp>
 #endif
 
+#define A_EXPORT
 #include "A.hpp"
 
 template<class S>

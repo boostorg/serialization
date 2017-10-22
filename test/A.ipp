@@ -57,4 +57,4 @@ void A::serialize(
     #ifndef BOOST_NO_STD_WSTRING
     ar & BOOST_SERIALIZATION_NVP(z);
     #endif
-}
+};

@@ -31,6 +31,7 @@ namespace std{
 
 #define A_IMPORT
 #include "A.hpp"
+#include "A.ipp"
 
 // simple class with text archive compiled in dll
 void
