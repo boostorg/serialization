@@ -40,6 +40,7 @@ class BOOST_SYMBOL_VISIBLE common_iarchive :
     public interface_iarchive<Archive>
 {
     friend class interface_iarchive<Archive>;
+    friend class basic_iarchive;
 private:
     virtual void vload(version_type & t){
         * this->This() >> t; 
