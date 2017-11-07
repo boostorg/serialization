@@ -87,6 +87,7 @@ void save_exported(const char *testfile)
 
     delete rb1;
     delete rb2;
+    delete rd21;
 }
 
 // save exported polymorphic class
