@@ -134,6 +134,7 @@ test-suite "serialization" :
 if ! $(BOOST_ARCHIVE_LIST) {
     test-suite "serialization2" : 
         [ test-bsl-run-no-lib test_inclusion ]
+        [ test-bsl-run-no-lib test_inclusion2 ]
         [ test-bsl-run test_dll_exported : : dll_polymorphic_derived2_lib ]
         [ test-bsl-run test_dll_simple : : dll_a_lib ]
         [ compile test_dll_plugin.cpp ]
@@ -149,7 +150,7 @@ if ! $(BOOST_ARCHIVE_LIST) {
         [ test-bsl-run test_smart_cast ]
         [ test-bsl-run test_codecvt_null ]
         
-        #[ test-bsl-run test_z ]
+        # [ test-bsl-run test_z ]
 
         # should fail compilation
         [ compile-fail test_not_serializable.cpp ]

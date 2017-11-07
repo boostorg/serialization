@@ -555,7 +555,8 @@ int main()
     assert(base64 == output);
     return 0;
 }
-#else
+#elif 0
+
 #include <memory>
 #include <sstream>
 
@@ -596,5 +597,24 @@ int main()
 	}
 
 	return 0;
+}
+
+#else
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/serialization/vector.hpp>
+#include <sstream>
+#include <vector>
+
+void f()
+{
+  std::stringstream iss;
+  boost::archive::binary_iarchive ar(iss);
+  std::vector<int> out;
+  ar >> out;
+}
+
+int main(int argc, char* argv[])
+{
+  return 0;
 }
 #endif
