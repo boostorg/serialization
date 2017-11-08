@@ -107,7 +107,9 @@ class basic_oarchive_impl {
             m_initialized(false)
         {}
         cobject_type(const basic_oserializer & bos)
-            : m_bos_ptr(& bos)
+          :
+            m_bos_ptr(& bos),
+            m_initialized(false)
         {}
         cobject_type(
             const cobject_type & rhs
