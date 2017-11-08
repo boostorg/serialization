@@ -33,7 +33,7 @@ namespace detail {
 // note: referred to as Curiously Recurring Template Patter (CRTP)
 template<class Archive>
 
-class BOOST_SYMBOL_VISIBLE common_oarchive :
+class BOOST_ARCHIVE_OR_WARCHIVE_DECL common_oarchive :
     public basic_oarchive,
     public interface_oarchive<Archive>
 {

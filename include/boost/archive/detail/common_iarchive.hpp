@@ -35,7 +35,7 @@ class extended_type_info;
 
 // note: referred to as Curiously Recurring Template Patter (CRTP)
 template<class Archive>
-class BOOST_SYMBOL_VISIBLE common_iarchive : 
+class BOOST_ARCHIVE_OR_WARCHIVE_DECL common_iarchive : 
     public basic_iarchive,
     public interface_iarchive<Archive>
 {
