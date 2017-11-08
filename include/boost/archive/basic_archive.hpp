@@ -151,7 +151,10 @@ private:
 public:
     object_id_type(): t(0) {};
     // note: presumes that size_t >= unsigned int.
-    explicit object_id_type(const std::size_t & t_) : t(t_){
+    // use explicit cast to silence useless warning
+    explicit object_id_type(const std::size_t & t_) : t(static_cast<base_type>(t_)){
+        // make quadriple sure that we haven't lost any real integer
+        // precision
         BOOST_ASSERT(t_ <= boost::integer_traits<base_type>::const_max);
     }
     object_id_type(const object_id_type & t_) : 

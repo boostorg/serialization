@@ -24,7 +24,17 @@
 #include <boost/serialization/type_info_implementation.hpp>
 #include <boost/serialization/extended_type_info_no_rtti.hpp>
 
-class BOOST_SYMBOL_VISIBLE polymorphic_base
+#if defined(POLYMORPHIC_BASE_IMPORT)
+    #define POLYMORPHIC_BASE_DLL_DECL BOOST_SYMBOL_IMPORT
+    #pragma message ("polymorphic_base imported")
+#elif defined(POLYMORPHIC_BASE_EXPORT)
+    #define POLYMORPHIC_BASE_DLL_DECL BOOST_SYMBOL_EXPORT
+    #pragma message ("polymorphic_base exported")
+#else
+    #define POLYMORPHIC_BASE_DLL_DECL
+#endif
+
+class POLYMORPHIC_BASE_DLL_DECL polymorphic_base
 {
     friend class boost::serialization::access;
     template<class Archive>
