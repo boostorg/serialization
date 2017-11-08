@@ -26,6 +26,7 @@
 #include <cstddef> // NULL
 
 #include <boost/config.hpp>
+
 #include <boost/static_assert.hpp>
 #include <boost/detail/workaround.hpp>
 
@@ -67,6 +68,12 @@
 #include <boost/archive/detail/basic_pointer_oserializer.hpp>
 #include <boost/archive/detail/archive_serializer_map.hpp>
 #include <boost/archive/detail/check.hpp>
+
+#ifdef BOOST_NO_CXX11_ADDRESSOF
+#include <boost/core/addressof.hpp>
+#else
+#include <memory> // std::addressof
+#endif
 
 namespace boost {
 
@@ -253,13 +260,19 @@ struct save_non_pointer_type {
         template<class T>
         static void invoke(Archive &ar, const T & t){
             ar.save_object(
-                & t, 
+                #ifdef BOOST_NO_CXX11_ADDRESSOF
+                boost::addressof(t),
+                #else
+                std::addressof(t),
+                #endif
                 boost::serialization::singleton<
                     oserializer<Archive, T>
                 >::get_const_instance()
             );
         }
     };
+
+
 
     // adds class information to the archive. This includes
     // serialization level and class version
