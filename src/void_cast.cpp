@@ -26,7 +26,6 @@
 #include <boost/config.hpp>
 #include <boost/assert.hpp>
 
-#define BOOST_SERIALIZATION_SOURCE
 #include <boost/serialization/config.hpp>
 // it marks our code with proper attributes as being exported when
 // we're compiling it while marking it import when just the headers

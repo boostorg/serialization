@@ -17,10 +17,6 @@
 
 #include <boost/core/no_exceptions_support.hpp>
 
-// it marks our code with proper attributes as being exported when
-// we're compiling it while marking it import when just the headers
-// is being included.
-#define BOOST_SERIALIZATION_SOURCE
 #include <boost/serialization/config.hpp>
 #include <boost/serialization/singleton.hpp>
 #include <boost/serialization/extended_type_info_typeid.hpp>

@@ -19,9 +19,6 @@
 // including this here to work around an ICC in intel 7.0
 // normally this would be part of basic_oarchive.hpp below.
 #define BOOST_ARCHIVE_SOURCE
-// include this to prevent linker errors when the
-// same modules are marked export and import.
-#define BOOST_SERIALIZATION_SOURCE
 #include <boost/serialization/config.hpp>
 #include <boost/serialization/state_saver.hpp>
 #include <boost/serialization/throw_exception.hpp>
