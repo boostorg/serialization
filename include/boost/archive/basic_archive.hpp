@@ -151,7 +151,9 @@ private:
 public:
     object_id_type(): t(0) {};
     // note: presumes that size_t >= unsigned int.
-    explicit object_id_type(const std::size_t & t_) : t(t_){
+	// Use static_cast to silence Xcode 8.2.1:
+	// error: implicit conversion loses integer precision: 'const std::size_t' (aka 'const unsigned long') to 'base_type' (aka 'unsigned int')
+    explicit object_id_type(const std::size_t & t_) : t(static_cast<base_type>(t_)){
         BOOST_ASSERT(t_ <= boost::integer_traits<base_type>::const_max);
     }
     object_id_type(const object_id_type & t_) : 
