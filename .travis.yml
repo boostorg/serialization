@@ -24,11 +24,11 @@ matrix:
   include:
     - os: linux
       compiler: g++
-      env: TOOLSET=gcc COMPILER=g++ CXXSTD=03,11
+      env: TOOLSET=gcc
 
     - os: linux
       compiler: g++-5
-      env: TOOLSET=gcc COMPILER=g++-5 CXXSTD=03,11,14,1z
+      env: TOOLSET=gcc-5
       addons:
         apt:
           packages:
@@ -38,7 +38,7 @@ matrix:
 
     - os: linux
       compiler: g++-6
-      env: TOOLSET=gcc COMPILER=g++-6 CXXSTD=03,11,14,1z
+      env: TOOLSET=gcc-6
       addons:
         apt:
           packages:
@@ -48,7 +48,7 @@ matrix:
 
     - os: linux
       compiler: g++-7
-      env: TOOLSET=gcc COMPILER=g++-7 CXXSTD=03,11,14,17
+      env: TOOLSET=gcc-7
       addons:
         apt:
           packages:
@@ -58,33 +58,11 @@ matrix:
 
     - os: linux
       compiler: clang++
-      env: TOOLSET=clang COMPILER=clang++ CXXSTD=03,11
-
-    - os: linux
-      compiler: clang++-4.0
-      env: TOOLSET=clang COMPILER=clang++-4.0 CXXSTD=03,11,14,1z
-      addons:
-        apt:
-          packages:
-            - clang-4.0
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-trusty-4.0
-
-    - os: linux
-      compiler: clang++-5.0
-      env: TOOLSET=clang COMPILER=clang++-5.0 CXXSTD=03,11,14,1z
-      addons:
-        apt:
-          packages:
-            - clang-5.0
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-trusty-5.0
+      env: TOOLSET=clang
 
     - os: osx
       compiler: clang++
-      env: TOOLSET=clang COMPILER=clang++ CXXSTD=03,11,14,1z
+      env: TOOLSET=clang
 
 install:
   - BOOST_BRANCH=develop && [ "$TRAVIS_BRANCH" == "master" ] && BOOST_BRANCH=master || true
@@ -100,9 +78,7 @@ install:
   - ./b2 headers
 
 script:
-  - |-
-    echo "using $TOOLSET : : $COMPILER ;" > ~/user-config.jam
-  - ./b2 -j 3 libs/serialization/test toolset=$TOOLSET cxxstd=$CXXSTD
+  - ./b2 -j 3 libs/serialization/test toolset=$TOOLSET
 
 notifications:
   email:
