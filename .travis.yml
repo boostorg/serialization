@@ -1,4 +1,4 @@
-# Copyright 2016 Peter Dimov
+# Copyright 2016, 2017 Peter Dimov
 # Distributed under the Boost Software License, Version 1.0.
 # (See accompanying file LICENSE_1_0.txt or copy at http://boost.org/LICENSE_1_0.txt)
 
@@ -6,66 +6,79 @@ language: cpp
 
 sudo: false
 
-os:
-  - linux
-  - osx
-
 branches:
   only:
     - master
     - develop
+    - /feature\/.*/
+
+env:
+  matrix:
+    - BOGUS_JOB=true
+
+matrix:
+
+  exclude:
+    - env: BOGUS_JOB=true
+
+  include:
+    - os: linux
+      compiler: g++
+      env: TOOLSET=gcc
+
+    - os: linux
+      compiler: g++-5
+      env: TOOLSET=gcc-5
+      addons:
+        apt:
+          packages:
+            - g++-5
+          sources:
+            - ubuntu-toolchain-r-test
+
+    - os: linux
+      compiler: g++-6
+      env: TOOLSET=gcc-6
+      addons:
+        apt:
+          packages:
+            - g++-6
+          sources:
+            - ubuntu-toolchain-r-test
+
+    - os: linux
+      compiler: g++-7
+      env: TOOLSET=gcc-7
+      addons:
+        apt:
+          packages:
+            - g++-7
+          sources:
+            - ubuntu-toolchain-r-test
+
+    - os: linux
+      compiler: clang++
+      env: TOOLSET=clang
+
+    - os: osx
+      compiler: clang++
+      env: TOOLSET=clang
 
 install:
+  - BOOST_BRANCH=develop && [ "$TRAVIS_BRANCH" == "master" ] && BOOST_BRANCH=master || true
   - cd ..
-  - git clone -b $TRAVIS_BRANCH --depth 1 https://github.com/boostorg/boost.git boost-root
+  - git clone -b $BOOST_BRANCH https://github.com/boostorg/boost.git boost-root
   - cd boost-root
-  - git submodule init libs/align
-  - git submodule init libs/array
-  - git submodule init libs/assert
-  - git submodule init libs/bind
-  - git submodule init libs/compatibility
-  - git submodule init libs/concept_check
-  - git submodule init libs/config
-  - git submodule init libs/container
-  - git submodule init libs/core
-  - git submodule init libs/detail
-  - git submodule init libs/filesystem
-  - git submodule init libs/function
-  - git submodule init libs/functional
-  - git submodule init libs/integer
-  - git submodule init libs/intrusive
-  - git submodule init libs/io
-  - git submodule init libs/iterator
-  - git submodule init libs/lexical_cast
-  - git submodule init libs/math
-  - git submodule init libs/move
-  - git submodule init libs/mpl
-  - git submodule init libs/numeric/conversion
-  - git submodule init libs/optional
-  - git submodule init libs/predef
-  - git submodule init libs/preprocessor
-  - git submodule init libs/range
-  - git submodule init libs/smart_ptr
-  - git submodule init libs/spirit
-  - git submodule init libs/static_assert
-  - git submodule init libs/system
-  - git submodule init libs/throw_exception
-  - git submodule init libs/tuple
-  - git submodule init libs/type_index
-  - git submodule init libs/type_traits
-  - git submodule init libs/unordered
-  - git submodule init libs/utility
-  - git submodule init libs/variant
-  - git submodule init tools/build
-  - git submodule update --depth 1
+  - git submodule update --init tools/build
+  - git submodule update --init libs/config
+  - git submodule update --init tools/boostdep
   - cp -r $TRAVIS_BUILD_DIR/* libs/serialization
+  - python tools/boostdep/depinst/depinst.py serialization
   - ./bootstrap.sh
   - ./b2 headers
 
 script:
-  - TOOLSET=gcc,clang
-  - if [ $TRAVIS_OS_NAME == osx ]; then TOOLSET=clang; fi
-  - ./b2 libs/serialization/test toolset=$TOOLSET
+  - ./b2 -j 3 libs/serialization/test toolset=$TOOLSET
 
 notifications:
   email:
