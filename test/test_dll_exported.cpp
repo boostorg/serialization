@@ -85,9 +85,9 @@ void save_exported(const char *testfile)
     oa << BOOST_SERIALIZATION_NVP(rb2);
     oa << BOOST_SERIALIZATION_NVP(rd21);
 
-    delete rb1;
-    delete rb2;
     delete rd21;
+    delete rb2;
+    delete rb1;
 }
 
 // save exported polymorphic class
@@ -129,9 +129,9 @@ void load_exported(const char *testfile)
             ::type::get_const_instance().get_derived_extended_type_info(*rd21),
         "restored pointer d2 not of correct type"
     );
-    delete rb1;
-    delete rb2;
     delete rd21;
+    delete rb2;
+    delete rb1;
 }
 
 int

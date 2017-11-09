@@ -87,25 +87,25 @@ namespace serialization {
 // to avoid dropping these functions which seem to be unreferenced.
 // This usage is not related to autolinking.
 
-class BOOST_SYMBOL_VISIBLE singleton_module :
+class BOOST_SERIALIZATION_DECL singleton_module :
     public boost::noncopyable
 {
 private:
-    BOOST_DLLEXPORT static bool & get_lock() BOOST_USED;
+static bool & get_lock() BOOST_USED;
 public:
-    BOOST_DLLEXPORT static void lock(){
+    static void lock(){
         get_lock() = true;
     }
-    BOOST_DLLEXPORT static void unlock(){
+    static void unlock(){
         get_lock() = false;
     }
-    BOOST_DLLEXPORT static bool is_locked(){
+    static bool is_locked(){
         return get_lock();
     }
 };
 
 template <class T>
-class singleton : public singleton_module
+class BOOST_SERIALIZATION_DECL singleton : public singleton_module
 {
 private:
     static T & m_instance;
@@ -133,20 +133,20 @@ private:
     }
 
 public:
-    BOOST_DLLEXPORT static T & get_mutable_instance(){
+    static T & get_mutable_instance(){
         BOOST_ASSERT(! is_locked());
         return get_instance();
     }
-    BOOST_DLLEXPORT static const T & get_const_instance(){
+    static const T & get_const_instance(){
         return get_instance();
     }
-    BOOST_DLLEXPORT static bool is_destroyed(){
+    static bool is_destroyed(){
         return get_is_destroyed();
     }
-    BOOST_DLLEXPORT singleton(){
+    singleton(){
         get_is_destroyed() = false;
     }
-    BOOST_DLLEXPORT ~singleton() {
+    ~singleton() {
         get_is_destroyed() = true;
     }
 };
