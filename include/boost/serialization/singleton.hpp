@@ -104,6 +104,23 @@ public:
     }
 };
 
+namespace detail {
+
+template<class T>
+class singleton_wrapper : public T
+{
+public:
+    static bool m_is_destroyed;
+    ~singleton_wrapper(){
+        m_is_destroyed = true;
+    }
+};
+
+template<class T>
+bool detail::singleton_wrapper< T >::m_is_destroyed = false;
+
+} // detail
+
 template <class T>
 class singleton : public singleton_module
 {
@@ -114,11 +131,10 @@ private:
     static T & get_instance() {
         // use a wrapper so that types T with protected constructors
         // can be used
-        class singleton_wrapper : public T {};
-        static singleton_wrapper t;
+        static detail::singleton_wrapper<T> t;
         // refer to instance, causing it to be instantiated (and
         // initialized at startup on working compilers)
-        BOOST_ASSERT(! is_destroyed());
+        BOOST_ASSERT(! detail::singleton_wrapper<T>::m_is_destroyed);
         // note that the following is absolutely essential.
         // commenting out this statement will cause compilers to fail to
         // construct the instance at pre-execution time.  This would prevent
@@ -126,10 +142,6 @@ private:
         // the sequence of object initializaition.
         use(& m_instance);
         return static_cast<T &>(t);
-    }
-    static bool & get_is_destroyed(){
-        static bool is_destroyed;
-        return is_destroyed;
     }
 
 public:
@@ -141,13 +153,7 @@ public:
         return get_instance();
     }
     BOOST_DLLEXPORT static bool is_destroyed(){
-        return get_is_destroyed();
-    }
-    BOOST_DLLEXPORT singleton(){
-        get_is_destroyed() = false;
-    }
-    BOOST_DLLEXPORT ~singleton() {
-        get_is_destroyed() = true;
+        return detail::singleton_wrapper<T>::m_is_destroyed;
     }
 };
 
