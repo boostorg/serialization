@@ -61,7 +61,8 @@ public:
     virtual ~polymorphic_derived1(){}
 };
 
-BOOST_CLASS_EXPORT(polymorphic_derived1)
+BOOST_CLASS_EXPORT_KEY(polymorphic_derived1)
+BOOST_CLASS_EXPORT_IMPLEMENT(polymorphic_derived1)
 
 // MWerks users can do this to make their code work
 BOOST_SERIALIZATION_MWERKS_BASE_AND_DERIVED(polymorphic_base, polymorphic_derived1)

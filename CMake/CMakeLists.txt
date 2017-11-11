@@ -252,7 +252,8 @@ endfunction(polymorphic_archive_test)
 
 enable_testing()
 
-# serialization(test_dll_exported dll_polymorphic_derived2_lib)
+serialization_test(test_dll_exported polymorphic_derived2 polymorphic_base)
+
 # serialization(test_dll_simple dll_a_lib)
 # compile test_dll_plugin.cpp
 # Running the following test requires that the test know the directory 

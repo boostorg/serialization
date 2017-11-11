@@ -81,12 +81,6 @@ namespace serialization {
 // attempt to retieve a mutable instances while locked will
 // generate a assertion if compiled for debug.
 
-// note usage of BOOST_DLLEXPORT.  These functions are in danger of
-// being eliminated by the optimizer when building an application in
-// release mode. Usage of the macro is meant to signal the compiler/linker
-// to avoid dropping these functions which seem to be unreferenced.
-// This usage is not related to autolinking.
-
 class BOOST_SERIALIZATION_DECL singleton_module :
     public boost::noncopyable
 {
@@ -120,6 +114,8 @@ private:
         // initialized at startup on working compilers)
         BOOST_ASSERT(! is_destroyed());
         // note that the following is absolutely essential.
+        // Without this, compilers/linkers will strip out "dead code"
+        // as it looks like it is never referred to.  But it is.
         // commenting out this statement will cause compilers to fail to
         // construct the instance at pre-execution time.  This would prevent
         // our usage/implementation of "locking" and introduce uncertainty into
@@ -145,6 +141,7 @@ public:
     }
     singleton(){
         get_is_destroyed() = false;
+        unlock();
     }
     ~singleton() {
         get_is_destroyed() = true;

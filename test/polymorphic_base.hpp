@@ -55,9 +55,10 @@ BOOST_SERIALIZATION_ASSUME_ABSTRACT(polymorphic_base)
 // the no_rtti system requires this !!!
 BOOST_CLASS_EXPORT_KEY(polymorphic_base)
 
+
 BOOST_CLASS_TYPE_INFO(
     polymorphic_base,
-    boost::serialization::extended_type_info_no_rtti<polymorphic_base>
+    extended_type_info_no_rtti<polymorphic_base>
 )
 
 #endif // POLYMORPHIC_BASE_HPP
