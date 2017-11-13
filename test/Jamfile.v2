@@ -52,10 +52,9 @@ lib dll_derived2_lib
     : 
     ;
 
-lib dll_polymorphic_derived2_lib
+lib polymorphic_derived2
     :
         polymorphic_derived2.cpp 
-        ../build//boost_serialization
     : 
     ;
 
@@ -136,12 +135,14 @@ if ! $(BOOST_ARCHIVE_LIST) {
     test-suite "serialization2" : 
         [ test-bsl-run test_inclusion ]
         [ test-bsl-run test_inclusion2 ]
-        [ test-bsl-run test_dll_exported : polymorphic_base : dll_polymorphic_derived2_lib ]
-        [ test-bsl-run test_dll_simple : : dll_a_lib ]
-        [ compile test_dll_plugin.cpp ]
-        # Running the following test requires that the test know the directory 
-        # in which the dll is stored. I don't know how to extract this from bjam
-        # [ test-bsl-run test_dll_plugin : : dll_polymorphic_derived2_lib ]
+        # boost build has the feature that the building if libraries vs dll is automatic
+        # in that dependent libraries are built the same way - shared/static - that
+        # the application is.  On some platforms (e.g windows) this is required to avoid
+        # problems of linking incompatible versions of the runtime library.  So
+        # we suppress tests of our dlls when using static libraries
+        [ test-bsl-run test_dll_exported : polymorphic_base : polymorphic_derived2 : <link>static:<build>no ]
+        # [ test-bsl-run test_dll_plugin : : polymorphic_derived2 : <link>static:<build>no <target-os>linux:<linkflags>-ldl ]
+        [ test-bsl-run test_dll_simple : : dll_a_lib  : <link>static:<build>no ]
         [ test-bsl-run test_private_ctor ]
         [ test-bsl-run test_reset_object_address : A ]
         [ test-bsl-run test_void_cast ]

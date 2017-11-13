@@ -99,7 +99,7 @@ public:
 };
 
 template <class T>
-class BOOST_SERIALIZATION_DECL singleton : public singleton_module
+class singleton : public singleton_module
 {
 private:
     static T & m_instance;

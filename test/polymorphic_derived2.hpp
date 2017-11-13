@@ -48,6 +48,9 @@ class POLYMORPHIC_DERIVED2_DLL_DECL polymorphic_derived2 :
     virtual const char * get_key() const {
         return "polymorphic_derived2";
     }
+public:
+    polymorphic_derived2(){}
+    ~polymorphic_derived2(){}
 };
 
 // we use this because we want to assign a key to this type
