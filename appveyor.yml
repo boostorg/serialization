@@ -53,6 +53,7 @@ install:
   - git submodule init libs/unordered
   - git submodule init libs/utility
   - git submodule init libs/variant
+  - git submodule init libs/winapi
   - git submodule init tools/build
   - git submodule update
   - xcopy /s /e /q %APPVEYOR_BUILD_FOLDER% libs\serialization
