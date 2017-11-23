@@ -91,7 +91,11 @@ class BOOST_SYMBOL_VISIBLE singleton_module :
     public boost::noncopyable
 {
 private:
-    BOOST_DLLEXPORT static bool & get_lock() BOOST_USED;
+    BOOST_DLLEXPORT static bool & get_lock() BOOST_USED {
+        static bool lock = false;
+        return lock;
+    }
+
 public:
     BOOST_DLLEXPORT static void lock(){
         get_lock() = true;
