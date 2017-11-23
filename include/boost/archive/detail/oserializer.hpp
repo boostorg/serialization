@@ -69,11 +69,7 @@
 #include <boost/archive/detail/archive_serializer_map.hpp>
 #include <boost/archive/detail/check.hpp>
 
-#ifdef BOOST_NO_CXX11_ADDRESSOF
 #include <boost/core/addressof.hpp>
-#else
-#include <memory> // std::addressof
-#endif
 
 namespace boost {
 
@@ -260,11 +256,7 @@ struct save_non_pointer_type {
         template<class T>
         static void invoke(Archive &ar, const T & t){
             ar.save_object(
-                #ifdef BOOST_NO_CXX11_ADDRESSOF
                 boost::addressof(t),
-                #else
-                std::addressof(t),
-                #endif
                 boost::serialization::singleton<
                     oserializer<Archive, T>
                 >::get_const_instance()
