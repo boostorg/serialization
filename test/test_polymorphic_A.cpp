@@ -9,7 +9,6 @@
 #include "test_polymorphic_A.hpp"
 #include <boost/serialization/nvp.hpp>
 
-#define A_EXPORT
 #include "A.hpp"
 #include "A.ipp"
 

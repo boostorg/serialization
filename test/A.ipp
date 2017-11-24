@@ -16,6 +16,7 @@
 #include "A.hpp"
 
 template<class Archive>
+A_DLL_DECL
 void A::serialize(
     Archive &ar,
     const unsigned int /* file_version */

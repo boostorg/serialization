@@ -29,35 +29,21 @@ import ../util/test :
 ;
 
 BOOST_ARCHIVE_LIST = [ modules.peek : BOOST_ARCHIVE_LIST ] ;
-
-lib dll_a
+    
+lib a
     : 
         dll_a.cpp
         ../build//boost_serialization
     : 
+        <link>shared:<define>BOOST_SERIALIZATION_DYN_LINK=1 
     ;
-
-lib dll_base
-    : 
-        dll_base.cpp
-        ../build//boost_serialization
-    : 
-    ;
-    
-lib dll_derived2
-    :
-        dll_derived2.cpp 
-        dll_base
-        ../build//boost_serialization
-    : 
-    ;
-
 lib polymorphic_derived2
     :
         polymorphic_derived2.cpp
 	polymorphic_base.cpp 
         ../build//boost_serialization
     : 
+        <link>shared:<define>BOOST_SERIALIZATION_DYN_LINK=1 
     ;
 
 test-suite "serialization" :
@@ -144,7 +130,7 @@ if ! $(BOOST_ARCHIVE_LIST) {
         # we suppress tests of our dlls when using static libraries
         [ test-bsl-run test_dll_exported : : polymorphic_derived2 : <link>static:<build>no ]
         # [ test-bsl-run test_dll_plugin : : polymorphic_derived2 : <link>static:<build>no <target-os>linux:<linkflags>-ldl ]
-        [ test-bsl-run test_dll_simple : : dll_a  : <link>static:<build>no ]
+        [ test-bsl-run test_dll_simple   : : a : ]
         [ test-bsl-run test_private_ctor ]
         [ test-bsl-run test_reset_object_address : A ]
         [ test-bsl-run test_void_cast ]

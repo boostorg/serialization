@@ -26,7 +26,6 @@ namespace std{
 #include <boost/archive/dinkumware.hpp>
 #endif
 
-#define A_EXPORT
 #include "A.hpp"
 
 template<class S>
@@ -49,7 +48,7 @@ void accumulate(std::size_t & s, const T & t){
         s += *tptr++;
     }
 }
-
+A_DLL_DECL
 A::operator std::size_t () const {
     std::size_t retval = 0;
     accumulate(retval, b);
@@ -79,6 +78,7 @@ A::operator std::size_t () const {
 #pragma warning(disable : 4244) // Disable possible loss of data warning
 #endif
 
+A_DLL_DECL
 A::A() :
     b(true),
     #ifndef BOOST_NO_INT64_T
@@ -112,8 +112,8 @@ A::A() :
 #pragma warning(pop) // Restore warnings to previous state.
 #endif 
 
-bool A::operator==(const A &rhs) const
-{
+A_DLL_DECL bool
+A::operator==(const A &rhs) const {
     if(b != rhs.b)
         return false;
     if(l != rhs.l)
@@ -161,13 +161,13 @@ bool A::operator==(const A &rhs) const
     return true;
 }
 
-bool A::operator!=(const A &rhs) const
-{
+A_DLL_DECL bool
+A::operator!=(const A &rhs) const {
     return ! (*this == rhs);
 }
 
-bool A::operator<(const A &rhs) const
-{
+A_DLL_DECL bool
+A::operator<(const A &rhs) const {
     if(b != rhs.b)
         return b < rhs.b;
     #ifndef BOOST_NO_INT64_T
