@@ -21,12 +21,12 @@
 #include <boost/archive/text_iarchive.hpp>
 
 template
-void A::serialize(
+A_DLL_DECL void A::serialize(
     boost::archive::text_oarchive &ar,
     const unsigned int /* file_version */
 );
 template
-void A::serialize(
+A_DLL_DECL void A::serialize(
     boost::archive::text_iarchive &ar,
     const unsigned int /* file_version */
 );
@@ -37,12 +37,12 @@ void A::serialize(
 #include <boost/archive/polymorphic_iarchive.hpp>
 
 template
-void A::serialize(
+A_DLL_DECL void A::serialize(
     boost::archive::polymorphic_oarchive &ar,
     const unsigned int /* file_version */
 );
 template
-void A::serialize(
+A_DLL_DECL void A::serialize(
     boost::archive::polymorphic_iarchive &ar,
     const unsigned int /* file_version */
 );
