@@ -125,7 +125,7 @@ private:
         // instance may be destructed before the singleton<> instance.
         // Using a 'dumb' static variable lets us precisely choose the
         // time destructor is invoked.
-        static singleton_wrapper *t = 0;
+        static singleton_wrapper* t = new singleton_wrapper;
 
         // refer to instance, causing it to be instantiated (and
         // initialized at startup on working compilers)
@@ -137,9 +137,6 @@ private:
         // our usage/implementation of "locking" and introduce uncertainty into
         // the sequence of object initializaition.
         use(& m_instance);
-
-        if (!t)
-            t = new singleton_wrapper;
         return static_cast<T &>(*t);
     }
     static bool & get_is_destroyed(){
