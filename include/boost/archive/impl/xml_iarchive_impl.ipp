@@ -8,6 +8,12 @@
 
 //  See http://www.boost.org for updates, documentation, and revision history.
 
+#if __cplusplus > 201402 || (defined(_MSVC_LANG) && _MSVC_LANG > 201402)
+# define BOOST_ARCHIVE_UNCAUGHT_EXCEPTION() std::uncaught_exceptions()
+#else
+# define BOOST_ARCHIVE_UNCAUGHT_EXCEPTION() std::uncaught_exception()
+#endif
+
 #include <boost/config.hpp>
 #include <cstring> // memcpy
 #include <cstddef> // NULL
@@ -189,7 +195,7 @@ xml_iarchive_impl<Archive>::xml_iarchive_impl(
 template<class Archive>
 BOOST_ARCHIVE_DECL
 xml_iarchive_impl<Archive>::~xml_iarchive_impl(){
-    if(std::uncaught_exception())
+    if(BOOST_ARCHIVE_UNCAUGHT_EXCEPTION())
         return;
     if(0 == (this->get_flags() & no_header)){
         gimpl->windup(is);

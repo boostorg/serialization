@@ -6,6 +6,12 @@
 // accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
+#if __cplusplus > 201402 || (defined(_MSVC_LANG) && _MSVC_LANG > 201402)
+# define BOOST_ARCHIVE_UNCAUGHT_EXCEPTION() std::uncaught_exceptions()
+#else
+# define BOOST_ARCHIVE_UNCAUGHT_EXCEPTION() std::uncaught_exception()
+#endif
+
 #include <ostream>
 #include <iomanip>
 #include <algorithm> // std::copy
@@ -132,7 +138,7 @@ xml_oarchive_impl<Archive>::save_binary(const void *address, std::size_t count){
 template<class Archive>
 BOOST_ARCHIVE_DECL
 xml_oarchive_impl<Archive>::~xml_oarchive_impl(){
-    if(std::uncaught_exception())
+    if(BOOST_ARCHIVE_UNCAUGHT_EXCEPTION())
         return;
     if(0 == (this->get_flags() & no_header))
         this->windup();

@@ -6,6 +6,12 @@
 // accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
+#if __cplusplus > 201402 || (defined(_MSVC_LANG) && _MSVC_LANG > 201402)
+# define BOOST_ARCHIVE_UNCAUGHT_EXCEPTION() std::uncaught_exceptions()
+#else
+# define BOOST_ARCHIVE_UNCAUGHT_EXCEPTION() std::uncaught_exception()
+#endif
+
 #include <boost/config.hpp>
 #ifndef BOOST_NO_STD_WSTREAMBUF
 
@@ -139,7 +145,7 @@ xml_woarchive_impl<Archive>::xml_woarchive_impl(
 template<class Archive>
 BOOST_WARCHIVE_DECL
 xml_woarchive_impl<Archive>::~xml_woarchive_impl(){
-    if(std::uncaught_exception())
+    if(BOOST_ARCHIVE_UNCAUGHT_EXCEPTION())
         return;
     if(0 == (this->get_flags() & no_header)){
         os << L"</boost_serialization>";
