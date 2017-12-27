@@ -118,8 +118,8 @@ class BOOST_SYMBOL_VISIBLE xml_oarchive :
     public xml_oarchive_impl<xml_oarchive>
 {
 public:
-    xml_oarchive(std::ostream & os, unsigned int flags = 0) :
-        xml_oarchive_impl<xml_oarchive>(os, flags)
+    xml_oarchive(std::ostream & _os, unsigned int flags = 0) :
+        xml_oarchive_impl<xml_oarchive>(_os, flags)
     {}
     ~xml_oarchive(){}
 };

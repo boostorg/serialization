@@ -123,8 +123,8 @@ namespace archive {
 class BOOST_SYMBOL_VISIBLE xml_iarchive : 
     public xml_iarchive_impl<xml_iarchive>{
 public:
-    xml_iarchive(std::istream & is, unsigned int flags = 0) :
-        xml_iarchive_impl<xml_iarchive>(is, flags)
+    xml_iarchive(std::istream & _is, unsigned int flags = 0) :
+        xml_iarchive_impl<xml_iarchive>(_is, flags)
     {}
     ~xml_iarchive(){};
 };
