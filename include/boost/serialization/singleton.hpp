@@ -81,19 +81,29 @@ namespace serialization {
 // attempt to retieve a mutable instances while locked will
 // generate a assertion if compiled for debug.
 
-class BOOST_SERIALIZATION_DECL singleton_module :
+// note usage of BOOST_DLLEXPORT.  These functions are in danger of
+// being eliminated by the optimizer when building an application in
+// release mode. Usage of the macro is meant to signal the compiler/linker
+// to avoid dropping these functions which seem to be unreferenced.
+// This usage is not related to autolinking.
+
+class BOOST_SYMBOL_VISIBLE singleton_module :
     public boost::noncopyable
 {
 private:
-static bool & get_lock() BOOST_USED;
+    BOOST_DLLEXPORT static bool & get_lock() BOOST_USED {
+        static bool lock = false;
+        return lock;
+    }
+
 public:
-    static void lock(){
+    BOOST_DLLEXPORT static void lock(){
         get_lock() = true;
     }
-    static void unlock(){
+    BOOST_DLLEXPORT static void unlock(){
         get_lock() = false;
     }
-    static bool is_locked(){
+    BOOST_DLLEXPORT static bool is_locked(){
         return get_lock();
     }
 };
@@ -109,19 +119,28 @@ private:
         // use a wrapper so that types T with protected constructors
         // can be used
         class singleton_wrapper : public T {};
-        static singleton_wrapper t;
+
+        // Use a heap-allocated instance to work around static variable
+        // destruction order issues: this inner singleton_wrapper<>
+        // instance may be destructed before the singleton<> instance.
+        // Using a 'dumb' static variable lets us precisely choose the
+        // time destructor is invoked.
+        static singleton_wrapper *t = 0;
+
         // refer to instance, causing it to be instantiated (and
         // initialized at startup on working compilers)
         BOOST_ASSERT(! is_destroyed());
+
         // note that the following is absolutely essential.
-        // Without this, compilers/linkers will strip out "dead code"
-        // as it looks like it is never referred to.  But it is.
         // commenting out this statement will cause compilers to fail to
         // construct the instance at pre-execution time.  This would prevent
         // our usage/implementation of "locking" and introduce uncertainty into
         // the sequence of object initializaition.
         use(& m_instance);
-        return static_cast<T &>(t);
+
+        if (!t)
+            t = new singleton_wrapper;
+        return static_cast<T &>(*t);
     }
     static bool & get_is_destroyed(){
         static bool is_destroyed;
@@ -129,21 +148,23 @@ private:
     }
 
 public:
-    static T & get_mutable_instance(){
+    BOOST_DLLEXPORT static T & get_mutable_instance(){
         BOOST_ASSERT(! is_locked());
         return get_instance();
     }
-    static const T & get_const_instance(){
+    BOOST_DLLEXPORT static const T & get_const_instance(){
         return get_instance();
     }
-    static bool is_destroyed(){
+    BOOST_DLLEXPORT static bool is_destroyed(){
         return get_is_destroyed();
     }
-    singleton(){
+    BOOST_DLLEXPORT singleton(){
         get_is_destroyed() = false;
-        unlock();
     }
-    ~singleton() {
+    BOOST_DLLEXPORT ~singleton() {
+        if (!get_is_destroyed()) {
+            delete &(get_instance());
+        }
         get_is_destroyed() = true;
     }
 };

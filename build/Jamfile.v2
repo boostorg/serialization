@@ -82,8 +82,7 @@ SOURCES =
     xml_archive_exception
     codecvt_null
     utf8_codecvt_facet
-    singleton
-;
+ ;
     
 WSOURCES = 
     basic_text_wiprimitive

@@ -1,5 +1,5 @@
-#ifndef POLYMORPHIC_DERIVED2_HPP
-#define POLYMORPHIC_DERIVED2_HPP
+#ifndef BOOST_SERIALIZATION_TEST_POLYMORPHIC_DERIVED2_HPP
+#define BOOST_SERIALIZATION_TEST_POLYMORPHIC_DERIVED2_HPP
 
 // MS compatible compilers support #pragma once
 #if defined(_MSC_VER)
@@ -24,17 +24,21 @@
 #include <boost/serialization/type_info_implementation.hpp>
 #include <boost/serialization/extended_type_info_typeid.hpp>
 
-#include "polymorphic_base.hpp"
+#if defined(BOOST_ALL_DYN_LINK) || defined(BOOST_SERIALIZATION_DYN_LINK)
+    #if defined(POLYMORPHIC_DERIVED2_IMPORT)
+        #define POLYMORPHIC_DERIVED2_DLL_DECL BOOST_SYMBOL_IMPORT
+        #pragma message ("polymorphic_derived2 imported")
+    #elif defined(POLYMORPHIC_DERIVED2_EXPORT)
+        #define POLYMORPHIC_DERIVED2_DLL_DECL BOOST_SYMBOL_EXPORT
+        #pragma message ("polymorphic_derived2 exported")
+    #endif
+#endif
 
-#if defined(POLYMORPHIC_DERIVED2_IMPORT)
-    #define POLYMORPHIC_DERIVED2_DLL_DECL BOOST_SYMBOL_IMPORT
-    #pragma message ("polymorphic_derived2 imported")
-#elif defined(POLYMORPHIC_DERIVED2_EXPORT)
-    #define POLYMORPHIC_DERIVED2_DLL_DECL BOOST_SYMBOL_EXPORT
-    #pragma message ("polymorphic_derived2 exported")
-#else
+#ifndef POLYMORPHIC_DERIVED2_DLL_DECL
     #define POLYMORPHIC_DERIVED2_DLL_DECL
 #endif
+
+#include "polymorphic_base.hpp"
 
 class POLYMORPHIC_DERIVED2_DLL_DECL polymorphic_derived2 :
     public polymorphic_base
@@ -44,7 +48,9 @@ class POLYMORPHIC_DERIVED2_DLL_DECL polymorphic_derived2 :
     void serialize(
         Archive &ar, 
         const unsigned int /* file_version */
-    );
+    ){
+        ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(polymorphic_base);
+    }
     virtual const char * get_key() const {
         return "polymorphic_derived2";
     }
@@ -66,5 +72,5 @@ BOOST_CLASS_TYPE_INFO(
     boost::serialization::extended_type_info_typeid<polymorphic_derived2>
 )
 
-#endif // POLYMORPHIC_DERIVED2_HPP
+#endif // BOOST_SERIALIZATION_TEST_POLYMORPHIC_DERIVED2_HPP
 

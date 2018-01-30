@@ -28,11 +28,7 @@
 #include <boost/serialization/traits.hpp>
 #include <boost/serialization/wrapper.hpp>
 
-#ifdef BOOST_NO_CXX11_ADDRESSOF
 #include <boost/core/addressof.hpp>
-#else
-#include <memory> // std::addressof
-#endif
 
 namespace boost {
 namespace serialization {
@@ -49,11 +45,7 @@ struct nvp :
 public:
     explicit nvp(const char * name_, T & t) :
         // note: added _ to suppress useless gcc warning
-        #ifdef BOOST_NO_CXX11_ADDRESSOF
         std::pair<const char *, T *>(name_, boost::addressof(t))
-        #else
-        std::pair<const char *, T *>(name_, std::addressof(t))
-        #endif
     {}
 
     const char * name() const {
