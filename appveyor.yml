@@ -24,6 +24,7 @@ install:
   - git submodule init libs/concept_check
   - git submodule init libs/config
   - git submodule init libs/container
+  - git submodule init libs/container_hash
   - git submodule init libs/core
   - git submodule init libs/detail
   - git submodule init libs/filesystem
