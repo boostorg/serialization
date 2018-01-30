@@ -185,9 +185,9 @@ void_caster_primitive<Derived, Base>::void_caster_primitive() :
         // treated 0 by not shifting it at all.
         reinterpret_cast<std::ptrdiff_t>(
             static_cast<Derived *>(
-                reinterpret_cast<Base *>(8)
+                reinterpret_cast<Base *>(1 << 20)
             )
-        ) - 8
+        ) - (1 << 20)
     )
 {
     recursive_register();
