@@ -112,14 +112,14 @@ template <class T>
 class singleton : public singleton_module
 {
 private:
+    // use a wrapper so that types T with protected constructors
+    // can be used
+    class singleton_wrapper : public T {};
+
     static T & m_instance;
     // include this to provoke instantiation at pre-execution time
     static void use(T const *) {}
     static T & get_instance() {
-        // use a wrapper so that types T with protected constructors
-        // can be used
-        class singleton_wrapper : public T {};
-
         // Use a heap-allocated instance to work around static variable
         // destruction order issues: this inner singleton_wrapper<>
         // instance may be destructed before the singleton<> instance.
