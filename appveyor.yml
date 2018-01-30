@@ -12,6 +12,11 @@ branches:
     - develop
 #    - master
 
+environment:
+  matrix:
+    - BUILD_TOOLSET: gcc
+    - BUILD_TOOLSET: msvc-14.0
+
 install:
   - cd ..
   - git clone -b %APPVEYOR_REPO_BRANCH%  https://github.com/boostorg/boost.git boost-root
@@ -66,4 +71,4 @@ build: off
 
 test_script:
   - cd libs/serialization/test
-  - b2 toolset=gcc link=static,shared
+  - b2 toolset=%BUILD_TOOLSET% link=static,shared
