@@ -71,4 +71,4 @@ build: off
 
 test_script:
   - cd libs/serialization/test
-  - b2 toolset=%BUILD_TOOLSET% link=static,shared
+  - b2 -j2 toolset=%BUILD_TOOLSET% link=static,shared
