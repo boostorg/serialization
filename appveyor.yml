@@ -15,7 +15,13 @@ branches:
 environment:
   matrix:
     - BUILD_TOOLSET: gcc
+      BUILD_LINK: static
+    - BUILD_TOOLSET: gcc
+      BUILD_LINK: shared
     - BUILD_TOOLSET: msvc-14.0
+      BUILD_LINK: static
+    - BUILD_TOOLSET: msvc-14.0
+      BUILD_LINK: shared
 
 install:
   - cd ..
@@ -71,4 +77,4 @@ build: off
 
 test_script:
   - cd libs/serialization/test
-  - b2 -j2 toolset=%BUILD_TOOLSET% link=static,shared
+  - b2 -j2 toolset=%BUILD_TOOLSET% link=%BUILD_LINK%
