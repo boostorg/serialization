@@ -116,6 +116,19 @@ private:
     // can be used
     class singleton_wrapper : public T {};
 
+    /* This wrapper ensures the instance is cleaned up when the
+     * module is wound down. (The cleanup of the static variable
+     * in get_instance() may happen at the wrong time.) */
+    struct instance_cleanup
+    {
+        T* p;
+
+        instance_cleanup() : p(0) { }
+        ~instance_cleanup() {
+            if (p) delete static_cast<singleton_wrapper*> (p);
+        }
+    };
+    static instance_cleanup m_instance_cleanup;
     static T & m_instance;
     // include this to provoke instantiation at pre-execution time
     static void use(T const *) {}
@@ -124,8 +137,10 @@ private:
         // destruction order issues: this inner singleton_wrapper<>
         // instance may be destructed before the singleton<> instance.
         // Using a 'dumb' static variable lets us precisely choose the
-        // time destructor is invoked.
+        // time destructor is invoked. The destruction itself is handled
+        // by m_instance_cleanup.
         static singleton_wrapper* t = new singleton_wrapper;
+        m_instance_cleanup.p = t;
 
         // refer to instance, causing it to be instantiated (and
         // initialized at startup on working compilers)
@@ -159,13 +174,12 @@ public:
         get_is_destroyed() = false;
     }
     BOOST_DLLEXPORT ~singleton() {
-        if (!get_is_destroyed()) {
-            delete &(get_instance());
-        }
         get_is_destroyed() = true;
     }
 };
 
+template<class T>
+typename singleton< T >::instance_cleanup singleton< T >::m_instance_cleanup;
 template<class T>
 T & singleton< T >::m_instance = singleton< T >::get_instance();
 
