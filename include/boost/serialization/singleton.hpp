@@ -37,7 +37,6 @@
 #include <boost/assert.hpp>
 #include <boost/config.hpp>
 #include <boost/noncopyable.hpp>
-#include <boost/scoped_ptr.hpp>
 #include <boost/serialization/force_include.hpp>
 
 #include <boost/archive/detail/auto_link_archive.hpp>
@@ -126,7 +125,7 @@ private:
         // instance may be destructed before the singleton<> instance.
         // Using a 'dumb' static variable lets us precisely choose the
         // time destructor is invoked.
-        static boost::scoped_ptr<singleton_wrapper> t (new singleton_wrapper);
+        static singleton_wrapper* t = new singleton_wrapper;
 
         // refer to instance, causing it to be instantiated (and
         // initialized at startup on working compilers)
@@ -160,6 +159,9 @@ public:
         get_is_destroyed() = false;
     }
     BOOST_DLLEXPORT ~singleton() {
+        if (!get_is_destroyed()) {
+            delete &(get_instance());
+        }
         get_is_destroyed() = true;
     }
 };
