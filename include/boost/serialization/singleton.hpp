@@ -119,17 +119,16 @@ private:
     /* This wrapper ensures the instance is cleaned up when the
      * module is wound down. (The cleanup of the static variable
      * in get_instance() may happen at the wrong time.) */
-    struct instance_cleanup
+    struct instance_and_cleanup
     {
-        T* p;
+        T& x;
 
-        instance_cleanup() : p(0) { }
-        ~instance_cleanup() {
-            if (p) delete static_cast<singleton_wrapper*> (p);
+        instance_and_cleanup(T& x) : x(x) { }
+        ~instance_and_cleanup() {
+            delete static_cast<singleton_wrapper*> (&x);
         }
     };
-    static instance_cleanup m_instance_cleanup;
-    static T & m_instance;
+    static instance_and_cleanup m_instance_and_cleanup;
     // include this to provoke instantiation at pre-execution time
     static void use(T const *) {}
     static T & get_instance() {
@@ -140,7 +139,6 @@ private:
         // time destructor is invoked. The destruction itself is handled
         // by m_instance_cleanup.
         static singleton_wrapper* t = new singleton_wrapper;
-        m_instance_cleanup.p = t;
 
         // refer to instance, causing it to be instantiated (and
         // initialized at startup on working compilers)
@@ -151,7 +149,7 @@ private:
         // construct the instance at pre-execution time.  This would prevent
         // our usage/implementation of "locking" and introduce uncertainty into
         // the sequence of object initializaition.
-        use(& m_instance);
+        use(& m_instance_and_cleanup.x);
         return static_cast<T &>(*t);
     }
     static bool & get_is_destroyed(){
@@ -179,9 +177,8 @@ public:
 };
 
 template<class T>
-typename singleton< T >::instance_cleanup singleton< T >::m_instance_cleanup;
-template<class T>
-T & singleton< T >::m_instance = singleton< T >::get_instance();
+typename singleton< T >::instance_and_cleanup singleton< T >::m_instance_and_cleanup (
+    singleton< T >::get_instance());
 
 } // namespace serialization
 } // namespace boost
