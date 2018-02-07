@@ -112,9 +112,23 @@ template <class T>
 class singleton : public singleton_module
 {
 private:
+    static void cleanup_func() {
+        delete static_cast<singleton_wrapper*> (&get_instance());
+    }
+
     // use a wrapper so that types T with protected constructors
     // can be used
-    class singleton_wrapper : public T {};
+    class singleton_wrapper : public T {
+    public:
+        singleton_wrapper () {
+        #if !defined(BOOST_ALL_DYN_LINK) && !defined(BOOST_SERIALIZATION_DYN_LINK)
+            /* Static builds: We're in a single module, use atexit() to
+             * ensure destruction in reverse of construction.
+             * (In static builds the compiler-generated order may be wrong...) */
+            atexit(&cleanup_func);
+        #endif
+        }
+    };
 
     /* This wrapper ensures the instance is cleaned up when the
      * module is wound down. (The cleanup of the static variable
@@ -123,9 +137,16 @@ private:
     {
         T& x;
 
-        instance_and_cleanup(T& x) : x(x) { }
+        instance_and_cleanup(T& x) : x(x) {
+        }
         ~instance_and_cleanup() {
-            delete static_cast<singleton_wrapper*> (&x);
+        #if defined(BOOST_ALL_DYN_LINK) || defined(BOOST_SERIALIZATION_DYN_LINK)
+            /* Shared builds: The ordering through global variables is
+             * sufficient.
+             * However, avoid atexit() as it may cause destruction order
+             * issues here. */
+            singleton<T>::cleanup_func();
+        #endif
         }
     };
     static instance_and_cleanup m_instance_and_cleanup;
@@ -136,8 +157,9 @@ private:
         // destruction order issues: this inner singleton_wrapper<>
         // instance may be destructed before the singleton<> instance.
         // Using a 'dumb' static variable lets us precisely choose the
-        // time destructor is invoked. The destruction itself is handled
-        // by m_instance_cleanup.
+        // time destructor is invoked.
+        // The destruction itself is handled by m_instance_cleanup (for
+        // shared builds) or in an atexit() function (static builds).
         static singleton_wrapper* t = new singleton_wrapper;
 
         // refer to instance, causing it to be instantiated (and
