@@ -57,12 +57,30 @@ matrix:
             - ubuntu-toolchain-r-test
 
     - os: linux
+      compiler: g++-7
+      env: TOOLSET=gcc-7 LINK=static
+      addons:
+        apt:
+          packages:
+            - g++-7
+          sources:
+            - ubuntu-toolchain-r-test
+
+    - os: linux
+      compiler: clang++
+      env: TOOLSET=clang
+
+    - os: linux
+      compiler: clang++
+      env: TOOLSET=clang LINK=static
+
+    - os: osx
       compiler: clang++
       env: TOOLSET=clang
 
     - os: osx
       compiler: clang++
-      env: TOOLSET=clang
+      env: TOOLSET=clang LINK=static
 
 install:
   - BOOST_BRANCH=develop && [ "$TRAVIS_BRANCH" == "master" ] && BOOST_BRANCH=master || true
@@ -78,7 +96,7 @@ install:
   - ./b2 headers
 
 script:
-  - ./b2 -j 3 libs/serialization/test toolset=$TOOLSET
+  - ./b2 -j 3 libs/serialization/test toolset=$TOOLSET link=${LINK:-shared}
 
 notifications:
   email:
