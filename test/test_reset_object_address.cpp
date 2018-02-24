@@ -31,8 +31,6 @@ namespace std{
 #include <boost/serialization/list.hpp>
 #include <boost/serialization/map.hpp>
 #include <boost/serialization/set.hpp>
-#include <boost/serialization/unordered_map.hpp>
-#include <boost/serialization/unordered_set.hpp>
 #include <boost/serialization/access.hpp>
 #include <boost/serialization/variant.hpp>
 
@@ -455,65 +453,10 @@ void test9()
     BOOST_CHECK_EQUAL(*h1_ptr, h);
 }
 
-// test a pointer to an object contained into a variant that is an
-// element of a unordered_map
-void test10()
-{
-    std::stringstream ss;
-    H const h{5};
-    typedef boost::variant<H, int> variant_t;
-    typedef std::unordered_map<int, variant_t> umap_t;
-    H const * h_ptr;
-    {
-        umap_t map;
-        variant_t v{h};
-        map[0] = v;
-        h_ptr = boost::strict_get<H const>(&map[0]);
-        boost::archive::text_oarchive oa(ss);
-        oa << map;
-        oa << h_ptr;
-    }
-    H * h1_ptr;
-    {
-        umap_t map;
-        boost::archive::text_iarchive ia(ss);
-        ia >> map;
-        ia >> h1_ptr;
-    }
-    BOOST_CHECK_EQUAL(*h1_ptr, h);
-}
-
-// test a pointer to an object contained into a variant that is an
-// element of a unoredered_set
-void test11()
-{
-    std::stringstream ss;
-    H const h{5};
-    typedef boost::variant<H, int> variant_t;
-    typedef std::unordered_set<variant_t, boost::hash<variant_t>> uset_t;
-    H const * h_ptr;
-    {
-        uset_t set;
-        variant_t v{h};
-        set.insert(v);
-        h_ptr = boost::strict_get<H const>(&(*set.begin()));
-        boost::archive::text_oarchive oa(ss);
-        oa << set;
-        oa << h_ptr;
-    }
-    H * h1_ptr;
-    {
-        uset_t set;
-        boost::archive::text_iarchive ia(ss);
-        ia >> set;
-        ia >> h1_ptr;
-    }
-    BOOST_CHECK_EQUAL(*h1_ptr, h);
-}
 
 // test a pointer to an object contained into a variant that is an
 // element of a set
-void test12()
+void test10()
 {
     std::stringstream ss;
     H const h{5};
@@ -551,7 +494,5 @@ int test_main(int /* argc */, char * /* argv */[])
     test8();
     test9();
     test10();
-    test11();
-    test12();
     return EXIT_SUCCESS;
 }
