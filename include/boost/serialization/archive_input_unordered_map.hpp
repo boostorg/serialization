@@ -46,7 +46,8 @@ struct archive_input_unordered_map
         // in the archive.  This is the usual case, but here there is no way
         // to determine that.  
         if(result.second){
-            ar.reset_object_address(
+            reset_object_address(
+                ar,
                 & (result.first->second),
                 & t.reference().second
             );
@@ -71,7 +72,8 @@ struct archive_input_unordered_multimap
         // note: the following presumes that the map::value_type was NOT tracked
         // in the archive.  This is the usual case, but here there is no way
         // to determine that.  
-        ar.reset_object_address(
+        reset_object_address(
+            ar,
             & result->second,
             & t.reference()
         );

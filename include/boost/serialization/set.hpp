@@ -57,7 +57,7 @@ inline void load_set_collection(Archive & ar, Container &s)
         ar >> boost::serialization::make_nvp("item", t.reference());
         typename Container::iterator result =
             s.insert(hint, boost::move(t.reference()));
-        ar.reset_object_address(& (* result), & t.reference());
+        reset_object_address(ar, & (* result), & t.reference());
         hint = result;
     }
 }
