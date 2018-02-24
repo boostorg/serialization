@@ -22,6 +22,8 @@
 // thanks to Robert Ramey, Peter Dimov, and Richard Crossley.
 //
 
+#include <boost/assert.hpp>
+
 #include <boost/mpl/front.hpp>
 #include <boost/mpl/pop_front.hpp>
 #include <boost/mpl/eval_if.hpp>
@@ -73,62 +75,112 @@ void save(
 template<class S>
 struct variant_impl {
 
-    struct load_null {
-        template<class Archive, class V>
+    struct action_null {
+        template<class Archive, class V, class F>
         static void invoke(
             Archive & /*ar*/,
             int /*which*/,
             V & /*v*/,
-            const unsigned int /*version*/
+            F /*f*/
         ){}
     };
 
-    struct load_impl {
-        template<class Archive, class V>
+    struct action_impl {
+        template<class Archive, class V, class F>
         static void invoke(
             Archive & ar,
             int which,
             V & v,
-            const unsigned int version
+            F f
         ){
             if(which == 0){
-                // note: A non-intrusive implementation (such as this one)
-                // necessary has to copy the value.  This wouldn't be necessary
-                // with an implementation that de-serialized to the address of the
-                // aligned storage included in the variant.
                 typedef typename mpl::front<S>::type head_type;
-                head_type value;
-                ar >> BOOST_SERIALIZATION_NVP(value);
-                v = value;
-                ar.reset_object_address(& boost::get<head_type>(v), & value);
+                f.template invoke<head_type>(ar, v);
                 return;
             }
             typedef typename mpl::pop_front<S>::type type;
-            variant_impl<type>::load(ar, which - 1, v, version);
+            variant_impl<type>::action(ar, which - 1, v, f);
         }
     };
 
-    template<class Archive, class V>
-    static void load(
+    template<class Archive, class V, class F>
+    static void action(
         Archive & ar,
         int which,
         V & v,
-        const unsigned int version
+        F f
     ){
         typedef typename mpl::eval_if<mpl::empty<S>,
-            mpl::identity<load_null>,
-            mpl::identity<load_impl>
+            mpl::identity<action_null>,
+            mpl::identity<action_impl>
         >::type typex;
-        typex::invoke(ar, which, v, version);
+        typex::invoke(ar, which, v, f);
     }
 
+};
+
+} // namespace serialization
+    
+namespace archive {
+namespace detail {
+        
+    template<typename VFrom>
+    class reset_variant_content_address
+    {        
+        const VFrom* m_vfrom;
+    public:
+        reset_variant_content_address(const VFrom* vfrom)
+            : m_vfrom(vfrom) {}
+        template<typename T, typename Archive, typename V>
+        void invoke(Archive & ar, V & v) const {
+            ar.reset_object_address(& boost::get<T>(v), boost::get<T>(m_vfrom));
+        }
+    };
+        
+    template<typename Archive,
+             BOOST_VARIANT_ENUM_PARAMS(/* typename */ class T)>
+    inline void reset_object_address(
+        Archive & ar,
+        const boost::variant<BOOST_VARIANT_ENUM_PARAMS(T)> * new_address,
+        const boost::variant<BOOST_VARIANT_ENUM_PARAMS(T)> * old_address
+    ){
+        ar.reset_object_address(new_address, old_address);
+        typedef typename boost::variant<BOOST_VARIANT_ENUM_PARAMS(T)>::types
+            types;
+        BOOST_ASSERT(new_address->which() == old_address->which());
+        serialization::variant_impl<types>::action
+            (ar, new_address->which(), *new_address,
+             reset_variant_content_address
+             <boost::variant<BOOST_VARIANT_ENUM_PARAMS(T)> >
+             (old_address));
+    }
+    
+} // namespace detail
+} // namespace archive
+
+namespace serialization {    
+
+struct assign_to_variant
+{
+    template<typename T, typename Archive, typename V>
+    void invoke(Archive & ar, V & v) const
+    {
+        // note: A non-intrusive implementation (such as this one)
+        // necessary has to copy the value.  This wouldn't be necessary
+        // with an implementation that de-serialized to the address of the
+        // aligned storage included in the variant.
+        T value;
+        ar >> BOOST_SERIALIZATION_NVP(value);
+        v = value;
+        ar.reset_object_address(& boost::get<T>(v), & value);
+    }
 };
 
 template<class Archive, BOOST_VARIANT_ENUM_PARAMS(/* typename */ class T)>
 void load(
     Archive & ar, 
     boost::variant<BOOST_VARIANT_ENUM_PARAMS(T)>& v,
-    const unsigned int version
+    const unsigned int /*version*/
 ){
     int which;
     typedef typename boost::variant<BOOST_VARIANT_ENUM_PARAMS(T)>::types types;
@@ -140,7 +192,7 @@ void load(
                 boost::archive::archive_exception::unsupported_version
             )
         );
-    variant_impl<types>::load(ar, which, v, version);
+    variant_impl<types>::action(ar, which, v, assign_to_variant());
 }
 
 template<class Archive,BOOST_VARIANT_ENUM_PARAMS(/* typename */ class T)>

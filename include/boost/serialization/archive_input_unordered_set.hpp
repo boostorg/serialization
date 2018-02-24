@@ -43,7 +43,7 @@ struct archive_input_unordered_set
         std::pair<typename Container::const_iterator, bool> result = 
             s.insert(boost::move(t.reference()));
         if(result.second)
-            ar.reset_object_address(& (* result.first), & t.reference());
+            reset_object_address(ar, & (* result.first), & t.reference());
     }
 };
 
@@ -61,7 +61,7 @@ struct archive_input_unordered_multiset
         ar >> boost::serialization::make_nvp("item", t.reference());
         typename Container::const_iterator result =
             s.insert(boost::move(t.reference()));
-        ar.reset_object_address(& (* result), & t.reference());
+        reset_object_address(ar, & (* result), & t.reference());
     }
 };
 
