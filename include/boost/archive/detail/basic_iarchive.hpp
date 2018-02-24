@@ -96,6 +96,15 @@ public:
     delete_created_pointers();
 };
 
+template<typename Archive>
+inline void reset_object_address(
+    Archive& ar,
+    const void * new_address,
+    const void * old_address
+){
+    ar.reset_object_address(new_address, old_address);
+}
+    
 } // namespace detail
 } // namespace archive
 } // namespace boost

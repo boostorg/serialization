@@ -61,7 +61,7 @@ inline void load_map_collection(Archive & ar, Container &s)
         ar >> boost::serialization::make_nvp("item", t.reference());
         typename Container::iterator result =
             s.insert(hint, boost::move(t.reference()));
-        ar.reset_object_address(& (result->second), & t.reference().second);
+        reset_object_address(ar, & (result->second), & t.reference().second);
         hint = result;
         ++hint;
     }
