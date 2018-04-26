@@ -11,6 +11,7 @@ branches:
   only:
     - develop
 #    - master
+    - /feature\/.*/
 
 environment:
   matrix:
@@ -25,7 +26,9 @@ environment:
 
 install:
   - cd ..
-  - git clone -b %APPVEYOR_REPO_BRANCH%  https://github.com/boostorg/boost.git boost-root
+  - set BOOST_BRANCH=develop
+  - if "%APPVEYOR_REPO_BRANCH%"=="master" set BOOST_BRANCH=master
+  - git clone -b %BOOST_BRANCH%  https://github.com/boostorg/boost.git boost-root
   - cd boost-root
   - git submodule init libs/align
   - git submodule init libs/array
