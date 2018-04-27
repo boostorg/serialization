@@ -28,7 +28,7 @@ install:
   - cd ..
   - set BOOST_BRANCH=develop
   - if "%APPVEYOR_REPO_BRANCH%"=="master" set BOOST_BRANCH=master
-  - git clone -b %BOOST_BRANCH%  https://github.com/boostorg/boost.git boost-root
+  - git clone -b %BOOST_BRANCH% --depth=1 https://github.com/boostorg/boost.git boost-root
   - cd boost-root
   - git submodule init libs/align
   - git submodule init libs/array
@@ -80,4 +80,4 @@ build: off
 
 test_script:
   - cd libs/serialization/test
-  - b2 -j2 toolset=%BUILD_TOOLSET% link=%BUILD_LINK%
+  - b2 -j2 toolset=%BUILD_TOOLSET% link=%BUILD_LINK% variant=debug,release
