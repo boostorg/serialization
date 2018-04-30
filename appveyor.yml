@@ -12,6 +12,17 @@ branches:
     - develop
 #    - master
 
+environment:
+  matrix:
+    - BUILD_TOOLSET: gcc
+      BUILD_LINK: static
+    - BUILD_TOOLSET: gcc
+      BUILD_LINK: shared
+    - BUILD_TOOLSET: msvc-14.0
+      BUILD_LINK: static
+    - BUILD_TOOLSET: msvc-14.0
+      BUILD_LINK: shared
+
 install:
   - cd ..
   - git clone -b %APPVEYOR_REPO_BRANCH%  https://github.com/boostorg/boost.git boost-root
@@ -24,6 +35,7 @@ install:
   - git submodule init libs/concept_check
   - git submodule init libs/config
   - git submodule init libs/container
+  - git submodule init libs/container_hash
   - git submodule init libs/core
   - git submodule init libs/detail
   - git submodule init libs/filesystem
@@ -65,4 +77,4 @@ build: off
 
 test_script:
   - cd libs/serialization/test
-  - b2 toolset=gcc link=static,shared
+  - b2 -j2 toolset=%BUILD_TOOLSET% link=%BUILD_LINK%
