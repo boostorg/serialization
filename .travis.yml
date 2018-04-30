@@ -6,6 +6,9 @@ language: cpp
 
 sudo: false
 
+cache:
+  ccache: true
+
 branches:
   only:
     - master
