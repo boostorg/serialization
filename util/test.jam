@@ -156,18 +156,20 @@ rule test-bsl-run_archive ( test-name : archive-name : sources * : libs * : requ
     case "*_warchive" :
         tests +=  [
             run-winvoke $(test-name)_$(archive-name)
-            : 
+            : # sources
                 $(sources).cpp $(libs)
-            :
+            : # input files
+            : # requirements
                 <define>BOOST_ARCHIVE_TEST=$(archive-name).hpp
                 $(requirements)
         ] ;
     case "*" :
         tests +=  [
             run-invoke $(test-name)_$(archive-name)
-            : 
+            : # sources
                 $(sources).cpp $(libs)
-            : 
+            : # input files
+            : # requirements
                 <define>BOOST_ARCHIVE_TEST=$(archive-name).hpp
                 $(requirements)
         ] ;

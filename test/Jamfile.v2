@@ -130,7 +130,6 @@ if ! $(BOOST_ARCHIVE_LIST) {
         [ test-bsl-run test_dll_exported : : polymorphic_derived2 : <link>static:<build>no ]
 
         # [ test-bsl-run test_dll_plugin : : polymorphic_derived2 : <link>static:<build>no <target-os>linux:<linkflags>-ldl ]
-        [ test-bsl-run test_dll_plugin : : polymorphic_derived2 : <link>static:<build>no <target-os>linux:<linkflags>-ldl ]
 
         [ test-bsl-run test_dll_simple   : : a : ]
         [ test-bsl-run test_private_ctor ]
