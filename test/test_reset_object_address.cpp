@@ -26,8 +26,16 @@ namespace std{
 #include <boost/archive/polymorphic_text_oarchive.hpp>
 #include <boost/archive/polymorphic_text_iarchive.hpp>
 
+#include "boost/functional/hash/hash.hpp"
+
 #include <boost/serialization/list.hpp>
+#include <boost/serialization/map.hpp>
+#include <boost/serialization/set.hpp>
 #include <boost/serialization/access.hpp>
+#include <boost/serialization/variant.hpp>
+
+#include <boost/variant.hpp>
+#include <boost/variant/get.hpp>
 
 // Someday, maybe all tests will be converted to the unit test framework.
 // but for now use the text execution monitor to be consistent with all
@@ -398,6 +406,94 @@ void test8(){
     }
 }
 
+struct H {
+    int i;
+};
+
+namespace boost {
+namespace serialization {
+        
+template<class Archive>
+void serialize(Archive &ar, H & h, const unsigned int /*file_version*/){
+    ar & h.i;
+}
+
+} // namespace serialization
+} // namespace boost
+
+inline bool operator==(H const & lhs, H const & rhs) {
+    return lhs.i == rhs.i;
+}
+
+inline bool operator!=(H const & lhs, H const & rhs) {
+    return !(lhs == rhs);
+}
+
+inline bool operator<(H const & lhs, H const & rhs) {
+    return lhs.i < rhs.i;
+}
+
+inline std::size_t hash_value(H const & val) {
+    return val.i;
+}
+
+// test a pointer to an object contained into a variant that is an
+// element of a map
+void test9()
+{
+    std::stringstream ss;
+    H const h = {5};
+    typedef boost::variant<H, int> variant_t;
+    typedef std::map<int, variant_t> map_t;
+    map_t imap;
+    variant_t iv(h);
+    H const * ih_ptr;
+    {
+        imap[0] = iv;
+        ih_ptr = boost::strict_get<H const>(&imap[0]);
+        boost::archive::text_oarchive oa(ss);
+        oa << imap;
+        oa << ih_ptr;
+    }
+    H * oh_ptr;
+    {
+        map_t omap;
+        boost::archive::text_iarchive ia(ss);
+        ia >> omap;
+        ia >> oh_ptr;
+        BOOST_CHECK_EQUAL(oh_ptr, boost::strict_get<H>(&omap[0]));
+    }
+}
+
+
+// test a pointer to an object contained into a variant that is an
+// element of a set
+void test10()
+{
+    std::stringstream ss;
+    H const h = {5};
+    typedef boost::variant<H, int> variant_t;
+    typedef std::set<variant_t> uset_t;
+    uset_t iset;
+    variant_t iv(h);
+    H const * ih_ptr;
+    {
+        iset.insert(iv);
+        ih_ptr = boost::strict_get<H const>(&(*iset.begin()));
+        boost::archive::text_oarchive oa(ss);
+        oa << iset;
+        oa << ih_ptr;
+    }
+    H * oh_ptr;
+    {
+        uset_t oset;
+        boost::archive::text_iarchive ia(ss);
+        ia >> oset;
+        ia >> oh_ptr;
+        BOOST_CHECK_EQUAL(oh_ptr, boost::strict_get<H>(&(*oset.begin())));
+    }
+}
+
 int test_main(int /* argc */, char * /* argv */[])
 {
     test1();
@@ -408,5 +504,7 @@ int test_main(int /* argc */, char * /* argv */[])
     test6();
     test7();
     test8();
+    test9();
+    test10();
     return EXIT_SUCCESS;
 }
