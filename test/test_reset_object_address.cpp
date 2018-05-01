@@ -445,23 +445,23 @@ void test9()
     H const h = {5};
     typedef boost::variant<H, int> variant_t;
     typedef std::map<int, variant_t> map_t;
-    H const * h_ptr;
+    map_t imap;
+    variant_t iv(h);
+    H const * ih_ptr;
     {
-        map_t map;
-        variant_t v(h);
-        map[0] = v;
-        h_ptr = boost::strict_get<H const>(&map[0]);
+        imap[0] = iv;
+        ih_ptr = boost::strict_get<H const>(&imap[0]);
         boost::archive::text_oarchive oa(ss);
-        oa << map;
-        oa << h_ptr;
+        oa << imap;
+        oa << ih_ptr;
     }
-    H * h1_ptr;
+    H * oh_ptr;
     {
-        map_t map;
+        map_t omap;
         boost::archive::text_iarchive ia(ss);
-        ia >> map;
-        ia >> h1_ptr;
-        BOOST_CHECK_EQUAL(*h1_ptr, h);
+        ia >> omap;
+        ia >> oh_ptr;
+        BOOST_CHECK_EQUAL(oh_ptr, boost::strict_get<H>(&omap[0]));
     }
 }
 
@@ -474,23 +474,23 @@ void test10()
     H const h = {5};
     typedef boost::variant<H, int> variant_t;
     typedef std::set<variant_t> uset_t;
-    H const * h_ptr;
+    uset_t iset;
+    variant_t iv(h);
+    H const * ih_ptr;
     {
-        uset_t set;
-        variant_t v(h);
-        set.insert(v);
-        h_ptr = boost::strict_get<H const>(&(*set.begin()));
+        iset.insert(iv);
+        ih_ptr = boost::strict_get<H const>(&(*iset.begin()));
         boost::archive::text_oarchive oa(ss);
-        oa << set;
-        oa << h_ptr;
+        oa << iset;
+        oa << ih_ptr;
     }
-    H * h1_ptr;
+    H * oh_ptr;
     {
-        uset_t set;
+        uset_t oset;
         boost::archive::text_iarchive ia(ss);
-        ia >> set;
-        ia >> h1_ptr;
-        BOOST_CHECK_EQUAL(*h1_ptr, h);
+        ia >> oset;
+        ia >> oh_ptr;
+        BOOST_CHECK_EQUAL(oh_ptr, boost::strict_get<H>(&(*oset.begin())));
     }
 }
 
