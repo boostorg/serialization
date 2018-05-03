@@ -42,12 +42,7 @@ class xml_unescape
         return unescape<xml_unescape<Base>, Base>::dereference();
     }
 public:
-    // workaround msvc 7.1 ICU crash
-    #if defined(BOOST_MSVC)
-        typedef int value_type;
-    #else
-        typedef typename this_t::value_type value_type;
-    #endif
+    typedef typename this_t::value_type value_type;
 
     void drain_residue(const char *literal);
     value_type drain();
