@@ -164,7 +164,7 @@ namespace boost {
     namespace serialization {
         
 template<BOOST_VARIANT_ENUM_PARAMS(/* typename */ class T)>
-struct boost::serialization::tracking_level<
+struct tracking_level<
     variant<BOOST_VARIANT_ENUM_PARAMS(T)>
 >{
     typedef mpl::integral_c_tag tag;
