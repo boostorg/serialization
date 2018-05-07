@@ -36,10 +36,17 @@ lib a
     : 
         <link>shared:<define>BOOST_SERIALIZATION_DYN_LINK=1 
     ;
+lib polymorphic_base
+    :
+        polymorphic_base.cpp 
+        ../build//boost_serialization
+    : 
+        <link>shared:<define>BOOST_SERIALIZATION_DYN_LINK=1 
+    ;
+
 lib polymorphic_derived2
     :
         polymorphic_derived2.cpp
-	polymorphic_base.cpp 
         ../build//boost_serialization
     : 
         <link>shared:<define>BOOST_SERIALIZATION_DYN_LINK=1 
