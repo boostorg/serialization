@@ -54,7 +54,7 @@ public:
 private:
     value_type dereference_impl() {
         if(! m_full){
-            m_current_value = static_cast<Derived *>(this)->drain();
+            m_current_value = static_cast<value_type>(static_cast<Derived *>(this)->drain());
             m_full = true;
         }
         return m_current_value;
