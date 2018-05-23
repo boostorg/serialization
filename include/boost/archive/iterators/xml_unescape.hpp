@@ -45,10 +45,10 @@ class xml_unescape
     }
 public:
     // msvc versions prior to 14.0 crash with and ICE 
-    #if BOOST_WORKAROUND(BOOST_MSVC, < 1500)
+    #if BOOST_WORKAROUND(BOOST_MSVC, < 1900)
         typedef int value_type;
     #else
-        typedef typename this_t::value_type value_type;
+        typedef typename super_t::value_type value_type;
     #endif
 
     void drain_residue(const char *literal);
