@@ -16,23 +16,20 @@
 #include "test_singleton.hpp"
 #include <boost/serialization/singleton.hpp>
 
-class x {
-};
-
+template<class T>
 void
-test1(const x & x1, const x & x2){
+test1(const T & x1, const T & x2){
     BOOST_CHECK(& x1 == & x2);
 }
 
 void test_same_instance(){
-    const x & x1 = boost::serialization::singleton<x>::get_const_instance();
-    const x & x2 = boost::serialization::singleton<x>::get_const_instance();
-
-    BOOST_CHECK(& x1 == & x2);
-
     test1(
-        boost::serialization::singleton<x>::get_const_instance(),
-        boost::serialization::singleton<x>::get_const_instance()
+        boost::serialization::singleton<plainSingleton>::get_const_instance(),
+        boost::serialization::singleton<plainSingleton>::get_const_instance()
+    );
+    test1(
+        inheritedSingleton::get_const_instance(),
+        inheritedSingleton::get_const_instance()
     );
 };
 
