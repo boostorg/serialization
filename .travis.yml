@@ -96,7 +96,7 @@ install:
 script:
   - |-
     echo "using $TOOLSET : : $TRAVIS_COMPILER ;" > ~/user-config.jam
-  - ./b2 -j 3 libs/serialization/test toolset=$TOOLSET link=${LINK:-shared}
+  - ./b2 -j 3 libs/serialization/test toolset=$TOOLSET link=${LINK:-shared} cxxflags=-fPIC cflags=-fPIC
 
 notifications:
   email:
