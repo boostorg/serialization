@@ -67,6 +67,13 @@ lib multi_shared_2
     :
         <link>shared
     ;
+lib test_singleton_lib
+    :
+        test_singleton_lib.cpp
+        ../build//boost_serialization
+    :
+        <link>shared:<define>BOOST_SERIALIZATION_DYN_LINK=1
+    ;
 
 test-suite "serialization" :
      [ test-bsl-run_files test_array : A : :  [ requires cxx11_hdr_array ] ] # BOOST_NO_CXX11_HDR_ARRAY
@@ -145,7 +152,7 @@ if ! $(BOOST_ARCHIVE_LIST) {
     test-suite "serialization2" :
         [ test-bsl-run test_inclusion ]
         [ test-bsl-run test_inclusion2 ]
-        # boost build has the feature that the building if libraries vs dll is automatic
+        # boost build has the feature that the building of libraries vs dll is automatic
         # in that dependent libraries are built the same way - shared/static - that
         # the application is.  On some platforms (e.g windows) this is required to avoid
         # problems of linking incompatible versions of the runtime library.  So
@@ -153,6 +160,7 @@ if ! $(BOOST_ARCHIVE_LIST) {
         [ test-bsl-run test_dll_exported : : polymorphic_derived2 : <link>static:<build>no ]
 
         # [ test-bsl-run test_dll_plugin : : polymorphic_derived2 : <link>static:<build>no <target-os>linux:<linkflags>-ldl ]
+        [ test-bsl-run test_singleton_shared : : test_singleton_lib ]
 
         # Tests using shared libraries which are linked against static boost. Hence ignore for shared boost build
         [ test-bsl-run test_multi_shared_lib : : multi_shared_1 multi_shared_2 : <link>shared:<build>no ]
