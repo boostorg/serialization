@@ -85,7 +85,7 @@ void save_unregistered1(const char *testfile)
     BOOST_TRY {
         oa << BOOST_SERIALIZATION_NVP(rb1);
     }
-    BOOST_CATCH(boost::archive::archive_exception aex){
+    BOOST_CATCH(boost::archive::archive_exception const& aex){
         except = true;
     }
     BOOST_CATCH_END
@@ -112,7 +112,7 @@ void load_unregistered1(const char *testfile)
     BOOST_TRY {
         ia >> BOOST_SERIALIZATION_NVP(rb1);
     }
-    BOOST_CATCH(boost::archive::archive_exception aex){
+    BOOST_CATCH(boost::archive::archive_exception const& aex){
         except = true;
         BOOST_CHECK_MESSAGE(
             NULL == rb1,
@@ -140,7 +140,7 @@ void save_unregistered2(const char *testfile)
     BOOST_TRY {
         oa << BOOST_SERIALIZATION_NVP(rd1);
     }
-    BOOST_CATCH(boost::archive::archive_exception aex){
+    BOOST_CATCH(boost::archive::archive_exception const& aex){
         except = true;
     }
     BOOST_CATCH_END
@@ -166,7 +166,7 @@ void load_unregistered2(const char *testfile)
     BOOST_TRY {
         ia >> BOOST_SERIALIZATION_NVP(rd1);
     }
-    BOOST_CATCH(boost::archive::archive_exception aex){
+    BOOST_CATCH(boost::archive::archive_exception const& aex){
         except = true;
         BOOST_CHECK_MESSAGE(
             NULL == rd1, 
@@ -279,7 +279,7 @@ void load_unregistered_pointer(const char *testfile)
     BOOST_TRY {
         ia & BOOST_SERIALIZATION_NVP(instance1) & BOOST_SERIALIZATION_NVP(pointer2);
     }
-    BOOST_CATCH(boost::archive::archive_exception aex){
+    BOOST_CATCH(boost::archive::archive_exception const& aex){
         except = true;
         BOOST_CHECK_MESSAGE(
             std::strcmp(aex.what(), "unregistered class") == 0,
