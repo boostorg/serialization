@@ -29,6 +29,7 @@ http://www.boost.org/LICENSE_1_0.txt)
 </table>
 <hr>
 <dl class="index">
+    <dt><a href="#differences_1_66">Differences from version 1.66</a></dt>
     <dt><a href="#differences_1_59">Differences from version 1.58</a></dt>
     <dt><a href="#differences_1_58">Differences from version 1.48</a></dt>
     <dt><a href="#differences_1_45">Differences from version 1.45</a></dt> 
@@ -47,6 +48,10 @@ http://www.boost.org/LICENSE_1_0.txt)
 As of this writing, there are no known bugs. However, due to compiler/library 
 quirks and or bugs, some tests fail with some combinations of compilers and 
 libraries.
+<h2><a name="differences_1_66"></a>Differences from Boost 1.66</h2>
+Fixed bug when serializing classes with pointer members. If the pointer is null,
+serializing the object can lead to null pointer dereference. This is
+more likely to happen with optimization turned on. See <a href="https://github.com/boostorg/serialization/issues/119">Github issue #119</a> for more details.
 <h2><a name="differences_1_59"></a>Differences from Boost 1.58</h2>
 <ul>
 <li>Eliminated support for Borland compilers and Microsoft compilers prior to version
