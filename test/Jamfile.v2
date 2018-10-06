@@ -89,6 +89,7 @@ test-suite "serialization" :
      [ test-bsl-run_files test_non_default_ctor ]
      [ test-bsl-run_files test_non_default_ctor2 ]
      [ test-bsl-run_files test_null_ptr ]
+     [ test-bsl-run_files test_member_pointer_issue119 ]
      [ test-bsl-run_files test_nvp : A ]
      [ test-bsl-run_files test_object ]
      [ test-bsl-run_files test_primitive ]
