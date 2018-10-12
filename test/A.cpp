@@ -82,8 +82,8 @@ A_DLL_DECL
 A::A() :
     b(true),
     #ifndef BOOST_NO_INT64_T
-    f(std::rand() * std::rand()),
-    g(std::rand() * std::rand()),
+    f(static_cast<boost::int64_t>(std::rand()) * static_cast<boost::int64_t>(std::rand())),
+    g(static_cast<boost::uint64_t>(std::rand()) * static_cast<boost::uint64_t>(std::rand())),
     #endif
     l(static_cast<enum h>(std::rand() % 3)),
     m(std::rand()),

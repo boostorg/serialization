@@ -91,35 +91,37 @@ class BOOST_SYMBOL_VISIBLE singleton_module :
     public boost::noncopyable
 {
 private:
-    BOOST_DLLEXPORT static bool & get_lock() BOOST_USED {
+    BOOST_DLLEXPORT bool & get_lock() BOOST_USED {
         static bool lock = false;
         return lock;
     }
 
 public:
-    BOOST_DLLEXPORT static void lock(){
+    BOOST_DLLEXPORT void lock(){
         get_lock() = true;
     }
-    BOOST_DLLEXPORT static void unlock(){
+    BOOST_DLLEXPORT void unlock(){
         get_lock() = false;
     }
-    BOOST_DLLEXPORT static bool is_locked(){
+    BOOST_DLLEXPORT bool is_locked(){
         return get_lock();
     }
 };
 
+static inline singleton_module & get_singleton_module(){
+    static singleton_module m;
+    return m;
+}
+
 template <class T>
-class singleton : public singleton_module
-{
+class singleton {
 private:
+    // note presumption that T has a default constructor
     static T & m_instance;
     // include this to provoke instantiation at pre-execution time
-    static void use(T const *) {}
+    static void use(T const &) {}
     static T & get_instance() {
-        // use a wrapper so that types T with protected constructors
-        // can be used
-        class singleton_wrapper : public T {};
-        static singleton_wrapper t;
+        static T t;
 
         // refer to instance, causing it to be instantiated (and
         // initialized at startup on working compilers)
@@ -130,18 +132,18 @@ private:
         // construct the instance at pre-execution time.  This would prevent
         // our usage/implementation of "locking" and introduce uncertainty into
         // the sequence of object initializaition.
-        use(& m_instance);
+        use(m_instance);
 
         return static_cast<T &>(t);
     }
+
     static bool & get_is_destroyed(){
         static bool is_destroyed;
         return is_destroyed;
     }
-
 public:
     BOOST_DLLEXPORT static T & get_mutable_instance(){
-        BOOST_ASSERT(! is_locked());
+        BOOST_ASSERT(! get_singleton_module().is_locked());
         return get_instance();
     }
     BOOST_DLLEXPORT static const T & get_const_instance(){
