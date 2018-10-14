@@ -193,7 +193,7 @@ int test_main(int argc, char * argv[]);
 
 int
 main(int argc, char * argv[]){
-    boost::serialization::get_singleton_module().lock();
+    boost::serialization::singleton_module::lock();
 
     int retval = 1;
     BOOST_TRY{
@@ -209,7 +209,7 @@ main(int argc, char * argv[]){
     }
     BOOST_CATCH_END
 
-    boost::serialization::get_singleton_module().unlock();
+    boost::serialization::singleton_module::unlock();
 
     int error_count = boost::report_errors();
     if(error_count > 0)
