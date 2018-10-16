@@ -126,7 +126,7 @@ install:
   - ./b2 headers
 
 script:
-  - ./b2 -j 3 libs/serialization/test toolset=$TOOLSET link=${LINK:-shared} variant=${VARIANT}
+  - ./b2 -j 3 libs/serialization/test toolset=$TOOLSET link=${LINK:-shared} variant=${VARIANT} cxxflags=-fPIC cflags=-fPIC
 
 notifications:
   email:
