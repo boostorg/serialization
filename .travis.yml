@@ -27,20 +27,16 @@ matrix:
   include:
     - os: linux
       compiler: g++
-      env: TOOLSET=gcc VARIANT=debug
+      env: TOOLSET=gcc
 
     - os: linux
       compiler: g++
-      env: TOOLSET=gcc VARIANT=release
-
-    - os: linux
-      compiler: g++
-      env: TOOLSET=gcc LINK=static VARIANT=debug,release
+      env: TOOLSET=gcc LINK=static
 
     - &linux_gcc5
       os: linux
       compiler: g++-5
-      env: TOOLSET=gcc-5 VARIANT=debug
+      env: TOOLSET=gcc-5
       addons:
         apt:
           packages:
@@ -49,15 +45,12 @@ matrix:
             - ubuntu-toolchain-r-test
 
     - <<: *linux_gcc5
-      env: TOOLSET=gcc-5 VARIANT=release
-
-    - <<: *linux_gcc5
-      env: TOOLSET=gcc-5 LINK=static VARIANT=debug,release
+      env: TOOLSET=gcc-5 LINK=static
 
     - &linux_gcc6
       os: linux
       compiler: g++-6
-      env: TOOLSET=gcc-6 VARIANT=debug
+      env: TOOLSET=gcc-6
       addons:
         apt:
           packages:
@@ -66,15 +59,12 @@ matrix:
             - ubuntu-toolchain-r-test
 
     - <<: *linux_gcc6
-      env: TOOLSET=gcc-6 VARIANT=release
-
-    - <<: *linux_gcc6
-      env: TOOLSET=gcc-6 LINK=static VARIANT=debug,release
+      env: TOOLSET=gcc-6 LINK=static
 
     - &linux_gcc7
       os: linux
       compiler: g++-7
-      env: TOOLSET=gcc-7 VARIANT=debug
+      env: TOOLSET=gcc-7
       addons:
         apt:
           packages:
@@ -83,34 +73,23 @@ matrix:
             - ubuntu-toolchain-r-test
 
     - <<: *linux_gcc7
-      env: TOOLSET=gcc-7 VARIANT=release
-
-    - <<: *linux_gcc7
-      env: TOOLSET=gcc-7 LINK=static VARIANT=debug,release
+      env: TOOLSET=gcc-7 LINK=static
 
     - os: linux
       compiler: clang++
-      env: TOOLSET=clang VARIANT=debug
+      env: TOOLSET=clang
 
     - os: linux
       compiler: clang++
-      env: TOOLSET=clang VARIANT=release
-
-    - os: linux
-      compiler: clang++
-      env: TOOLSET=clang LINK=static VARIANT=debug,release
+      env: TOOLSET=clang LINK=static
 
     - os: osx
       compiler: clang++
-      env: TOOLSET=clang VARIANT=debug
+      env: TOOLSET=clang
 
     - os: osx
       compiler: clang++
-      env: TOOLSET=clang VARIANT=release
-
-    - os: osx
-      compiler: clang++
-      env: TOOLSET=clang LINK=static VARIANT=debug,release
+      env: TOOLSET=clang LINK=static
 
 install:
   - BOOST_BRANCH=develop && [ "$TRAVIS_BRANCH" == "master" ] && BOOST_BRANCH=master || true
@@ -126,7 +105,7 @@ install:
   - ./b2 headers
 
 script:
-  - ./b2 -j 3 libs/serialization/test toolset=$TOOLSET link=${LINK:-shared} variant=${VARIANT}
+  - ./b2 -j 3 libs/serialization/test toolset=$TOOLSET link=${LINK:-shared} variant=debug,release
 
 notifications:
   email:
