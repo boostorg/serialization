@@ -27,11 +27,11 @@ matrix:
   include:
     - os: linux
       compiler: g++
-      env: TOOLSET=gcc
+      env: TOOLSET=gcc LINK=static,shared
 
     - os: linux
       compiler: g++-5
-      env: TOOLSET=gcc-5
+      env: TOOLSET=gcc LINK=static,shared
       addons:
         apt:
           packages:
@@ -41,7 +41,7 @@ matrix:
 
     - os: linux
       compiler: g++-6
-      env: TOOLSET=gcc-6
+      env: TOOLSET=gcc LINK=static,shared
       addons:
         apt:
           packages:
@@ -51,17 +51,7 @@ matrix:
 
     - os: linux
       compiler: g++-7
-      env: TOOLSET=gcc-7
-      addons:
-        apt:
-          packages:
-            - g++-7
-          sources:
-            - ubuntu-toolchain-r-test
-
-    - os: linux
-      compiler: g++-7
-      env: TOOLSET=gcc-7 LINK=static
+      env: TOOLSET=gcc LINK=static,shared
       addons:
         apt:
           packages:
@@ -71,19 +61,24 @@ matrix:
 
     - os: linux
       compiler: clang++
-      env: TOOLSET=clang
+      env: TOOLSET=clang LINK=static,shared
 
     - os: linux
-      compiler: clang++
-      env: TOOLSET=clang LINK=static
+      compiler: clang++-libc++
+      env: TOOLSET=clang LINK=static,shared
+      addons:
+        apt:
+          packages:
+            - libc++-dev
 
     - os: osx
       compiler: clang++
-      env: TOOLSET=clang
+      env: TOOLSET=clang LINK=static,shared
 
     - os: osx
+      osx_image: xcode10
       compiler: clang++
-      env: TOOLSET=clang LINK=static
+      env: TOOLSET=clang LINK=static,shared
 
 install:
   - BOOST_BRANCH=develop && [ "$TRAVIS_BRANCH" == "master" ] && BOOST_BRANCH=master || true
@@ -99,6 +94,8 @@ install:
   - ./b2 headers
 
 script:
+  - |-
+    echo "using $TOOLSET : : $TRAVIS_COMPILER ;" > ~/user-config.jam
   - ./b2 -j 3 libs/serialization/test toolset=$TOOLSET link=${LINK:-shared}
 
 notifications:
