@@ -52,6 +52,21 @@ lib polymorphic_derived2
         <link>shared:<define>BOOST_SERIALIZATION_DYN_LINK=1 
     ;
 
+lib multi_shared_1
+    :
+        multi_shared1.cpp
+        ../build//boost_serialization/<link>static
+    :
+        <link>shared
+    ;
+
+lib multi_shared_2
+    :
+        multi_shared2.cpp
+        ../build//boost_serialization/<link>static
+    :
+        <link>shared
+    ;
 test-suite "serialization" :
      [ test-bsl-run_files test_array : A : :  [ requires cxx11_hdr_array ] ] # BOOST_NO_CXX11_HDR_ARRAY
      [ test-bsl-run_files test_boost_array : A ]
@@ -137,6 +152,9 @@ if ! $(BOOST_ARCHIVE_LIST) {
         [ test-bsl-run test_dll_exported : : polymorphic_derived2 : <link>static:<build>no ]
 
         # [ test-bsl-run test_dll_plugin : : polymorphic_derived2 : <link>static:<build>no <target-os>linux:<linkflags>-ldl ]
+
+        # Tests using shared libraries which are linked against static boost. Hence ignore for shared boost build
+        [ test-bsl-run test_multi_shared_lib : : multi_shared_1 multi_shared_2 : <link>shared:<build>no ]
 
         [ test-bsl-run test_dll_simple   : : a : ]
         [ test-bsl-run test_private_ctor ]
