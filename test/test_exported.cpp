@@ -52,20 +52,25 @@ BOOST_CLASS_EXPORT(polymorphic_derived1)
 BOOST_SERIALIZATION_MWERKS_BASE_AND_DERIVED(polymorphic_base, polymorphic_derived1)
 
 #include "polymorphic_derived2.hpp"
+//#include "polymorphic_derived2.cpp"
 
 // MWerks users can do this to make their code work
 BOOST_SERIALIZATION_MWERKS_BASE_AND_DERIVED(polymorphic_base, polymorphic_derived2)
 
 BOOST_CLASS_EXPORT_IMPLEMENT(polymorphic_derived2)
 
-template void polymorphic_derived2::serialize(
+/*
+template
+void polymorphic_derived2::serialize(
     test_oarchive & ar,
     const unsigned int version
 );
-template void polymorphic_derived2::serialize(
+template
+void polymorphic_derived2::serialize(
     test_iarchive & ar,
     const unsigned int version
 );
+*/
 
 // save exported polymorphic class
 void save_exported(const char *testfile)

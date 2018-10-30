@@ -251,11 +251,24 @@ endfunction(polymorphic_archive_test)
 
 enable_testing()
 
-add_library(polymorphic_derived2 ${LINK_TYPE} ../test/polymorphic_derived2.cpp)
+message(STATUS dll_polymorphic_derived2)
+add_library(dll_polymorphic_derived2 SHARED ../test/polymorphic_derived2.cpp)
+target_link_libraries(dll_polymorphic_derived2 serialization)
+serialization_test(test_dll_exported)
+target_link_libraries(test_dll_exported dll_polymorphic_derived2)
 
-serialization_test(test_dll_exported polymorphic_derived2 polymorphic_base)
+if(0)
+message(STATUS test_dll_exported)
+add_executable(test_dll_exported ../test/test_dll_exported.cpp  ../test/polymorphic_base.cpp)
+target_link_libraries(test_dll_exported dll_polymorphic_derived2 serialization wserialization filesystem)
+add_test(test_dll_exported test_dll_exported)
+endif()
 
-# serialization(test_dll_simple dll_a_lib)
+message(STATUS dll_a)
+add_library(dll_a SHARED ../test/dll_a.cpp)
+target_link_libraries(dll_a serialization)
+serialization_test(test_dll_simple dll_a)
+
 # compile test_dll_plugin.cpp
 # Running the following test requires that the test know the directory 
 # in which the dll is stored. I don't know how to extract this from bjam
@@ -291,7 +304,7 @@ archive_test(test_derived)
 archive_test(test_derived_class A)
 archive_test(test_diamond)
 archive_test(test_diamond_complex)
-archive_test(test_exported polymorphic_base)
+archive_test(test_exported polymorphic_base polymorphic_derived2)
 archive_test(test_forward_list A)
 archive_test(test_forward_list_ptrs A)
 archive_test(test_helper_support)
