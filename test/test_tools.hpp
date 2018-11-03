@@ -225,6 +225,12 @@ main(int argc, char * argv[]){
 #include "binary_archive.hpp"
 #include "xml_archive.hpp"
 #include "xml_warchive.hpp"
+
+#include "polymorphic_text_archive.hpp"
+#include "polymorphic_text_warchive.hpp"
+#include "polymorphic_binary_archive.hpp"
+#include "polymorphic_xml_archive.hpp"
+#include "polymorphic_xml_warchive.hpp"
 */
 
 /////////////////////////////////////////////

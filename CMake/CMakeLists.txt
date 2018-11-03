@@ -157,6 +157,8 @@ add_library(serialization ${LINK_TYPE}
   ../src/extended_type_info.cpp
   ../src/polymorphic_iarchive.cpp
   ../src/polymorphic_oarchive.cpp
+  ../src/polymorphic_text_iarchive.cpp
+  ../src/polymorphic_text_oarchive.cpp
   ../src/stl_port.cpp
   ../src/text_iarchive.cpp
   ../src/text_oarchive.cpp
@@ -240,10 +242,7 @@ function(polymorphic_archive_test test_name)
     set(amended_test_name ${test_name}_polymorphic_${archive-name})
     message(STATUS ${amended_test_name})
     add_executable(${amended_test_name} ../test/${test_name}.cpp ${arglist})
-    set_property(
-      TARGET ${amended_test_name}
-      PROPERTY COMPILE_DEFINITIONS BOOST_ARCHIVE_TEST=polymorphic_${archive-name}.hpp
-    )
+    target_compile_definitions(${amended_test_name} PUBLIC BOOST_ARCHIVE_TEST=polymorphic_${archive-name}.hpp)
     target_link_libraries(${amended_test_name} serialization wserialization filesystem)
     add_test(${amended_test_name} ${amended_test_name})
   endforeach()
@@ -256,13 +255,6 @@ add_library(dll_polymorphic_derived2 SHARED ../test/polymorphic_derived2.cpp)
 target_link_libraries(dll_polymorphic_derived2 serialization)
 serialization_test(test_dll_exported)
 target_link_libraries(test_dll_exported dll_polymorphic_derived2)
-
-if(0)
-message(STATUS test_dll_exported)
-add_executable(test_dll_exported ../test/test_dll_exported.cpp  ../test/polymorphic_base.cpp)
-target_link_libraries(test_dll_exported dll_polymorphic_derived2 serialization wserialization filesystem)
-add_test(test_dll_exported test_dll_exported)
-endif()
 
 message(STATUS dll_a)
 add_library(dll_a SHARED ../test/dll_a.cpp)
@@ -304,7 +296,6 @@ archive_test(test_derived)
 archive_test(test_derived_class A)
 archive_test(test_diamond)
 archive_test(test_diamond_complex)
-archive_test(test_exported polymorphic_base polymorphic_derived2)
 archive_test(test_forward_list A)
 archive_test(test_forward_list_ptrs A)
 archive_test(test_helper_support)
@@ -372,6 +363,7 @@ else()
   endif()
 endif()
 
+polymorphic_archive_test(test_exported polymorphic_base polymorphic_derived2)
 polymorphic_archive_test(test_polymorphic test_polymorphic_A A)
 polymorphic_archive_test(test_polymorphic2 test_polymorphic2imp)
 polymorphic_archive_test(test_polymorphic_helper)

@@ -70,7 +70,6 @@ test-suite "serialization" :
      [ test-bsl-run_files test_derived_class_ptr : A ]
      [ test-bsl-run_files test_diamond ]
      [ test-bsl-run_files test_diamond_complex ]
-     [ test-bsl-run_files test_exported : polymorphic_base polymorphic_derived2 ]
      [ test-bsl-run_files test_forward_list : A  : :  [ requires cxx11_hdr_forward_list ] ] # BOOST_NO_CXX11_HDR_FORWARD_LIST
      [ test-bsl-run_files test_forward_list_ptrs : A  : :  [ requires cxx11_hdr_forward_list ] ] # BOOST_NO_CXX11_HDR_FORWARD_LIST
      [ test-bsl-run_files test_helper_support ]
@@ -118,6 +117,7 @@ test-suite "serialization" :
      [ test-bsl-run_files test_shared_ptr_multi_base ]
      [ test-bsl-run_files test_shared_ptr_132 : : : [ requires auto_ptr  ] ] # BOOST_NO_AUTO_PTR
 
+     [ test-bsl-run_polymorphic_archive test_exported : polymorphic_base polymorphic_derived2 ]
      [ test-bsl-run_polymorphic_archive test_polymorphic : test_polymorphic_A A ]
      [ test-bsl-run_polymorphic_archive test_polymorphic2 : test_polymorphic2imp ]
      [ test-bsl-run_polymorphic_archive test_polymorphic_helper ]

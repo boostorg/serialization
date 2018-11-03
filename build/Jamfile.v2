@@ -74,6 +74,12 @@ SOURCES =
     stl_port
     text_iarchive
     text_oarchive
+    polymorphic_text_iarchive
+    polymorphic_text_oarchive
+    polymorphic_binary_iarchive
+    polymorphic_binary_oarchive
+    polymorphic_xml_iarchive
+    polymorphic_xml_oarchive
     void_cast
     archive_exception
     xml_grammar
@@ -89,9 +95,13 @@ WSOURCES =
     basic_text_woprimitive
     text_wiarchive
     text_woarchive
+    polymorphic_text_wiarchive
+    polymorphic_text_woarchive
     xml_wgrammar
     xml_wiarchive
     xml_woarchive
+    polymorphic_xml_wiarchive
+    polymorphic_xml_woarchive
 ;
 
 lib boost_serialization 

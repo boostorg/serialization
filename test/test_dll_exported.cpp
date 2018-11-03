@@ -36,7 +36,6 @@ namespace std{
 #endif
 
 // for now, only test with simple text archive
-#define BOOST_ARCHIVE_TEST text_archive.hpp
 #include "test_tools.hpp"
 
 #include <boost/archive/archive_exception.hpp>
