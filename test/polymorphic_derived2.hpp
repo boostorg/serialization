@@ -40,9 +40,6 @@
 
 #include "polymorphic_base.hpp"
 
-#include <boost/archive/polymorphic_oarchive.hpp>
-#include <boost/archive/polymorphic_iarchive.hpp>
-
 class POLYMORPHIC_DERIVED2_DLL_DECL polymorphic_derived2 :
     public polymorphic_base
 {

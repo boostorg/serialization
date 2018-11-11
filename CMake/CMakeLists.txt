@@ -110,11 +110,11 @@ endif()
 
 if(Boost_USE_STATIC_LIBS)
   message(STATUS "Link to Boost static libraries")
-  set(LINK_TYPE "STATIC")
+  set(BUILD_SHARED_LIBS NO)
   string(CONCAT boost_stage ${BOOST_ROOT} "/stage/Debug/static")
 else()
   message(STATUS "Link to Boost shared libraries")
-  set(LINK_TYPE "SHARED")
+  set(BUILD_SHARED_LIBS YES)
   add_definitions( "-DBOOST_ALL_DYN_LINK=1")
   add_definitions( "-DBOOST_ALL_NO_LIB=1")
   add_definitions( "-DBOOST_LIB_DIAGNOSTICS=1")
@@ -137,7 +137,7 @@ include_directories(BEFORE ${BOOST_ROOT})
 ###########################
 # library builds
 
-add_library(serialization ${LINK_TYPE}
+add_library(serialization
   ../src/archive_exception.cpp
   ../src/basic_archive.cpp
   ../src/basic_iarchive.cpp
@@ -171,7 +171,7 @@ add_library(serialization ${LINK_TYPE}
   ../src/basic_xml_grammar.ipp # doesn't show up in "Source Files" in Xcode"'
 )
 
-add_library(wserialization  ${LINK_TYPE}
+add_library(wserialization
   ../src/codecvt_null.cpp
   ../src/basic_text_wiprimitive.cpp
   ../src/basic_text_woprimitive.cpp
@@ -250,16 +250,17 @@ endfunction(polymorphic_archive_test)
 
 enable_testing()
 
+message(STATUS dll_a)
+add_library(dll_a SHARED ../test/dll_a.cpp)
+target_link_libraries(dll_a serialization)
+serialization_test(test_dll_simple)
+target_link_libraries(test_dll_simple dll_a serialization)
+
 message(STATUS dll_polymorphic_derived2)
 add_library(dll_polymorphic_derived2 SHARED ../test/polymorphic_derived2.cpp)
 target_link_libraries(dll_polymorphic_derived2 serialization)
 serialization_test(test_dll_exported)
 target_link_libraries(test_dll_exported dll_polymorphic_derived2)
-
-message(STATUS dll_a)
-add_library(dll_a SHARED ../test/dll_a.cpp)
-target_link_libraries(dll_a serialization)
-serialization_test(test_dll_simple dll_a)
 
 # compile test_dll_plugin.cpp
 # Running the following test requires that the test know the directory 

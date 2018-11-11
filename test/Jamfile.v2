@@ -36,7 +36,7 @@ lib dll_a
     : 
         <link>shared:<define>BOOST_SERIALIZATION_DYN_LINK=1 
     ;
-lib polymorphic_base
+lib dll_polymorphic_base
     :
         polymorphic_base.cpp 
         ../build//boost_serialization
@@ -117,7 +117,7 @@ test-suite "serialization" :
      [ test-bsl-run_files test_shared_ptr_multi_base ]
      [ test-bsl-run_files test_shared_ptr_132 : : : [ requires auto_ptr  ] ] # BOOST_NO_AUTO_PTR
 
-     [ test-bsl-run_polymorphic_archive test_exported : polymorphic_base polymorphic_derived2 ]
+     [ test-bsl-run_polymorphic_archive test_exported : dll_polymorphic_base dll_polymorphic_derived2 ]
      [ test-bsl-run_polymorphic_archive test_polymorphic : test_polymorphic_A A ]
      [ test-bsl-run_polymorphic_archive test_polymorphic2 : test_polymorphic2imp ]
      [ test-bsl-run_polymorphic_archive test_polymorphic_helper ]
@@ -136,7 +136,7 @@ if ! $(BOOST_ARCHIVE_LIST) {
         # problems of linking incompatible versions of the runtime library.  So
         # we suppress tests of our dlls when using static libraries
 
-        [ test-bsl-run test_dll_exported : : polymorphic_base dll_polymorphic_derived2 : ]
+        [ test-bsl-run test_dll_exported : : dll_polymorphic_base dll_polymorphic_derived2 : ]
         [ test-bsl-run test_dll_simple   : : dll_a : ]
         # [ test-bsl-run test_dll_plugin : : polymorphic_derived2 : <link>static:<build>no <target-os>linux:<linkflags>-ldl ]
 

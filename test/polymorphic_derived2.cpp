@@ -27,9 +27,18 @@ polymorphic_derived2::polymorphic_derived2(){}
 POLYMORPHIC_DERIVED2_DLL_DECL
 polymorphic_derived2::~polymorphic_derived2(){}
 
-// instantiate code for polymorphic archives
-#include <boost/archive/polymorphic_iarchive.hpp>
 #include <boost/archive/polymorphic_oarchive.hpp>
+#include <boost/archive/polymorphic_iarchive.hpp>
+
+template
+POLYMORPHIC_DERIVED2_DLL_DECL void polymorphic_derived2::serialize(
+    boost::archive::polymorphic_oarchive &,
+    const unsigned int /* file_version */
+);
+template POLYMORPHIC_DERIVED2_DLL_DECL void polymorphic_derived2::serialize(
+    boost::archive::polymorphic_iarchive &,
+    const unsigned int
+);
 
 // MWerks users can do this to make their code work
 BOOST_SERIALIZATION_MWERKS_BASE_AND_DERIVED(polymorphic_base, polymorphic_derived2)
