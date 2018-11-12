@@ -40,21 +40,21 @@
 
 #include "polymorphic_base.hpp"
 
-class POLYMORPHIC_DERIVED2_DLL_DECL polymorphic_derived2 :
+class BOOST_SYMBOL_VISIBLE polymorphic_derived2 :
     public polymorphic_base
 {
     friend class boost::serialization::access;
     template<class Archive>
-    void serialize(
+    POLYMORPHIC_DERIVED2_DLL_DECL void serialize(
         Archive &ar,
         const unsigned int /* file_version */
     ){
         ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(polymorphic_base);
     }
-    virtual const char * get_key() const;
+    POLYMORPHIC_DERIVED2_DLL_DECL const char * get_key() const;
 public:
-    polymorphic_derived2();
-    ~polymorphic_derived2();
+    POLYMORPHIC_DERIVED2_DLL_DECL polymorphic_derived2();
+    POLYMORPHIC_DERIVED2_DLL_DECL ~polymorphic_derived2();
 };
 
 // we use this because we want to assign a key to this type
