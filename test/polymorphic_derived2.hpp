@@ -24,7 +24,7 @@
 #include <boost/serialization/type_info_implementation.hpp>
 #include <boost/serialization/extended_type_info_typeid.hpp>
 
-#if defined(BOOST_ALL_DYN_LINK) || defined(BOOST_SERIALIZATION_DYN_LINK)
+#if (defined(BOOST_ALL_DYN_LINK) || defined(BOOST_SERIALIZATION_DYN_LINK)) && defined(POLYMORPHIC_DERIVED2_DYN_LINK)
     #if defined(POLYMORPHIC_DERIVED2_IMPORT)
         #define POLYMORPHIC_DERIVED2_DLL_DECL BOOST_SYMBOL_IMPORT
         #pragma message ("polymorphic_derived2 imported")
@@ -48,14 +48,22 @@ class BOOST_SYMBOL_VISIBLE polymorphic_derived2 :
     POLYMORPHIC_DERIVED2_DLL_DECL void serialize(
         Archive &ar,
         const unsigned int /* file_version */
-    ){
-        ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(polymorphic_base);
-    }
+    );
     POLYMORPHIC_DERIVED2_DLL_DECL const char * get_key() const;
 public:
     POLYMORPHIC_DERIVED2_DLL_DECL polymorphic_derived2();
     POLYMORPHIC_DERIVED2_DLL_DECL ~polymorphic_derived2();
 };
+
+#if !defined(POLYMORPHIC_DERIVED2_DYN_LINK) || !defined(POLYMORPHIC_DERIVED2_IMPORT)
+template<class Archive>
+inline void polymorphic_derived2::serialize(
+    Archive &ar,
+    const unsigned int /* file_version */
+){
+    ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(polymorphic_base);
+}
+#endif
 
 // we use this because we want to assign a key to this type
 // but we don't want to explicitly instantiate code every time

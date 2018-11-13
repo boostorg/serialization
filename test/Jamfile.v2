@@ -46,10 +46,16 @@ lib dll_polymorphic_base
 
 lib dll_polymorphic_derived2
     :
+        dll_polymorphic_base
+
         polymorphic_derived2.cpp
         ../build//boost_serialization
     : 
         <link>shared:<define>BOOST_SERIALIZATION_DYN_LINK=1 
+        <link>shared:<define>POLYMORPHIC_DERIVED2_DYN_LINK=1
+    :
+    :
+        <link>shared:<define>POLYMORPHIC_DERIVED2_DYN_LINK=1
     ;
 
 test-suite "serialization" :
