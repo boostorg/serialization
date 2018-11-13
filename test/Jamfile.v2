@@ -24,19 +24,19 @@ import ../util/test :
     test-bsl-run
     test-bsl-run_archive
     test-bsl-run_files
-    test-bsl-run_polymorphic_archive
+    test-bsl-run_polymorphic_files
 ;
 
 BOOST_ARCHIVE_LIST = [ modules.peek : BOOST_ARCHIVE_LIST ] ;
     
-lib a
+lib dll_a
     : 
         dll_a.cpp
         ../build//boost_serialization
     : 
         <link>shared:<define>BOOST_SERIALIZATION_DYN_LINK=1 
     ;
-lib polymorphic_base
+lib dll_polymorphic_base
     :
         polymorphic_base.cpp 
         ../build//boost_serialization
@@ -44,7 +44,7 @@ lib polymorphic_base
         <link>shared:<define>BOOST_SERIALIZATION_DYN_LINK=1 
     ;
 
-lib polymorphic_derived2
+lib dll_polymorphic_derived2
     :
         polymorphic_derived2.cpp
         ../build//boost_serialization
@@ -70,7 +70,6 @@ test-suite "serialization" :
      [ test-bsl-run_files test_derived_class_ptr : A ]
      [ test-bsl-run_files test_diamond ]
      [ test-bsl-run_files test_diamond_complex ]
-     [ test-bsl-run_files test_exported : polymorphic_base ]
      [ test-bsl-run_files test_forward_list : A  : :  [ requires cxx11_hdr_forward_list ] ] # BOOST_NO_CXX11_HDR_FORWARD_LIST
      [ test-bsl-run_files test_forward_list_ptrs : A  : :  [ requires cxx11_hdr_forward_list ] ] # BOOST_NO_CXX11_HDR_FORWARD_LIST
      [ test-bsl-run_files test_helper_support ]
@@ -84,12 +83,12 @@ test-suite "serialization" :
      [ test-bsl-run_files test_mi ]
      [ test-bsl-run_files test_multiple_ptrs : A ]
      [ test-bsl-run_files test_multiple_inheritance ]
-     [ test-bsl-run_files test_no_rtti : polymorphic_base polymorphic_derived1 ]
      [ test-bsl-run_files test_non_intrusive ]
      [ test-bsl-run_files test_non_default_ctor ]
      [ test-bsl-run_files test_non_default_ctor2 ]
      [ test-bsl-run_files test_null_ptr ]
      [ test-bsl-run_files test_nvp : A ]
+     [ test-bsl-run_files test_no_rtti : polymorphic_base polymorphic_derived1 ]
      [ test-bsl-run_files test_object ]
      [ test-bsl-run_files test_primitive ]
      [ test-bsl-run_files test_priority_queue : A ]
@@ -117,9 +116,13 @@ test-suite "serialization" :
      [ test-bsl-run_files test_shared_ptr ]
      [ test-bsl-run_files test_shared_ptr_multi_base ]
      [ test-bsl-run_files test_shared_ptr_132 : : : [ requires auto_ptr  ] ] # BOOST_NO_AUTO_PTR
-     [ test-bsl-run_polymorphic_archive test_polymorphic : test_polymorphic_A A ]
-     [ test-bsl-run_polymorphic_archive test_polymorphic2 : test_polymorphic2imp ]
-     [ test-bsl-run_polymorphic_archive test_polymorphic_helper ]
+
+     [ test-bsl-run_polymorphic_files test_dll_exported : : dll_polymorphic_base dll_polymorphic_derived2 ]
+
+     [ test-bsl-run_polymorphic_files test_exported : polymorphic_base polymorphic_derived2 ]
+     [ test-bsl-run_polymorphic_files test_polymorphic : test_polymorphic_A A ]
+     [ test-bsl-run_polymorphic_files test_polymorphic2 : test_polymorphic2imp ]
+     [ test-bsl-run_polymorphic_files test_polymorphic_helper ]
 
      # should compile
      [ compile test_strong_typedef.cpp ]
@@ -134,11 +137,10 @@ if ! $(BOOST_ARCHIVE_LIST) {
         # the application is.  On some platforms (e.g windows) this is required to avoid
         # problems of linking incompatible versions of the runtime library.  So
         # we suppress tests of our dlls when using static libraries
-        [ test-bsl-run test_dll_exported : : polymorphic_derived2 : <link>static:<build>no ]
 
-        # [ test-bsl-run test_dll_plugin : : polymorphic_derived2 : <link>static:<build>no <target-os>linux:<linkflags>-ldl ]
+        [ test-bsl-run test_dll_simple   : : dll_a : ]
+        # [ test-bsl-run test_dll_plugin : : dll_derived2 : <link>static:<build>no <target-os>linux:<linkflags>-ldl ]
 
-        [ test-bsl-run test_dll_simple   : : a : ]
         [ test-bsl-run test_private_ctor ]
         [ test-bsl-run test_reset_object_address : A ]
         [ test-bsl-run test_void_cast ]
@@ -178,3 +180,4 @@ if ! $(BOOST_ARCHIVE_LIST) {
         [ compile test_const_pass.cpp ]
     ;
 }
+

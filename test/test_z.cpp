@@ -613,9 +613,92 @@ void f()
   ar >> out;
 }
 
+int main(int argc, char* argv[])
+{
+    return 0;
+}
+
+#include <boost/archive/xml_oarchive.hpp>
+#include <boost/archive/xml_iarchive.hpp>
+#include <boost/archive/detail/archive_serializer_map.hpp>
+#include <boost/archive/impl/archive_serializer_map.ipp>
+#include <boost/archive/impl/basic_xml_iarchive.ipp>
+#include <boost/archive/impl/xml_iarchive_impl.ipp>
+#include <boost/serialization/nvp.hpp>
+#include <limits>
+#include <fstream>
+
+class xml_iarchive_nan :
+public boost::archive::xml_iarchive_impl<xml_iarchive_nan>
+{
+protected:
+    friend class boost::archive::detail::interface_iarchive<xml_iarchive_nan>;
+    friend class boost::archive::detail::common_iarchive<xml_iarchive_nan>;
+    friend class boost::archive::basic_xml_iarchive<xml_iarchive_nan>;
+    friend class boost::archive::load_access;
+    
+    using boost::archive::xml_iarchive_impl<xml_iarchive_nan>::load;
+    void load(double & t)
+    {
+        char c='0';
+        if(!is.fail())
+        {
+            c=is.peek();
+            if(c!='n')
+            {
+                boost::archive::xml_iarchive_impl<xml_iarchive_nan>::load(t);
+            }
+            else
+            {
+                char c1='0',c2='0';
+                is.get(c).get(c1).get(c2);
+                if(is.fail()||(!((c=='n')&&(c1=='a')&&(c2=='n'))))
+                    boost::serialization::throw_exception(
+                                                          boost::archive::archive_exception(
+                                                                                            boost::archive::archive_exception::input_stream_error));
+                else
+                    t=std::numeric_limits<double>::quiet_NaN();
+            }
+        }
+        else
+            boost::serialization::throw_exception(
+                                                  boost::archive::archive_exception(boost::archive::archive_exception::input_stream_error));
+    }
+    
+public:
+    xml_iarchive_nan(std::istream & is, unsigned int flags = 0) :
+    boost::archive::xml_iarchive_impl<xml_iarchive_nan>(is, flags)
+    {}
+    ~xml_iarchive_nan(){};
+};
+
+BOOST_SERIALIZATION_REGISTER_ARCHIVE(xml_iarchive_nan)
+
+namespace boost
+{
+    namespace archive
+    {
+        template class detail::archive_serializer_map<xml_iarchive_nan>;
+        template class detail::interface_iarchive<xml_iarchive_nan>;
+        template class detail::common_iarchive<xml_iarchive_nan>;
+        template class basic_xml_iarchive<xml_iarchive_nan>;
+        template class xml_iarchive_impl<xml_iarchive_nan>;
+        
+    }
+}
+
+int main(int argc, char** argv)
+{
+    double value=0.0;
+    std::ifstream ifile("./somefile.xml");
+    xml_iarchive_nan ia(ifile);
+    ia>>BOOST_SERIALIZATION_NVP(value);
+}
+
 #endif
 
 int main(int argc, char* argv[])
 {
-  return 0;
+    return 0;
 }
+

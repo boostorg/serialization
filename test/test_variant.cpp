@@ -135,7 +135,7 @@ void do_bad_read()
             bool exception_invoked = false;
             BOOST_TRY {
                 ia >> BOOST_SERIALIZATION_NVP(little_variant);
-            } BOOST_CATCH (boost::archive::archive_exception e) {
+            } BOOST_CATCH (boost::archive::archive_exception const& e) {
                 BOOST_CHECK(boost::archive::archive_exception::unsupported_version == e.code);
                 exception_invoked = true;
             }

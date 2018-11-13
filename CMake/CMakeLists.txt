@@ -35,29 +35,12 @@ elseif( CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" )
   set(COMPILER_SUPPORTS_CXX11 TRUE)
 elseif( CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" )
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ftemplate-depth=300")
-  #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++98")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++03")
+  #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
   set(CMAKE_CXX_FLAGS_DEBUG "-g -O0" )
   set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-g -O3" )
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++ -dead_strip")
-  set(COMPILER_SUPPORTS_CXX11 TRUE)
-endif()
-
-#
-# IDE settings
-#
-
-if( CMAKE_HOST_APPLE )
-  # note: it seems that bjam builds both address models in any case
-  # so we can defer this decision to the IDE just as we do for debug/release
-  # so we'll not use this now
-  # set(Boost_ADDRESS_MODEL 64 CACHE INTEGER "32/64 bits")
-  set(Boost_USE_STATIC_LIBS ON CACHE BOOL "Link to Boost static libraries")
-  set(Boost_USE_MULTITHREADED ON)
-else()
-  set(Boost_ADDRESS_MODEL 64 CACHE INTEGER "32/64 bits")
-  set(Boost_USE_STATIC_LIBS ON CACHE BOOL "Link to Boost static libraries")
-  set(Boost_USE_MULTITHREADED ON)
+  set(COMPILER_SUPPORTS_CXX11 FALSE)
 endif()
 
 #
@@ -107,46 +90,54 @@ endif()
 # end special note for Xcode
 ############################
 
+#
+# IDE settings
+#
+
 set(Boost_DEBUG true)
+set(Boost_ADDRESS_MODEL 64 CACHE INTEGER "32/64 bits")
+set(Boost_USE_STATIC_LIBS TRUE CACHE BOOL "Use static libraries")
+set(Boost_USE_MULTITHREADED ON)
 set(Boost_DETAILED_FAILURE_MSG true)
-set(Boost_FOUND true)
 
-find_package(Boost REQUIRED COMPONENTS system filesystem)
-include(CheckIncludeFileCXX)
-
-message(STATUS "Boost_FOUND is ${Boost_FOUND}")
-
-if(Boost_FOUND)
-    message(STATUS "Boost Found!")
-    message(STATUS "Boost is ${BOOST_ROOT}")
-    message(STATUS "Boost directories found at ${Boost_INCLUDE_DIRS}")
-    message(STATUS "Boost libraries found at ${Boost_LIBRARY_DIRS}")
-    message(STATUS "Boost libraries prefix is  ${Boost_LIB_PREFIX}")
-    message(STATUS "Boost component libraries to be linked are ${Boost_LIBRARIES}")
-    message(STATUS "Boost version found is ${Boost_VERSION}")
-    #include_directories("../include" "${Boost_INCLUDE_DIRS}")
-    #link_directories("${Boost_LIBRARY_DIRS}")
+get_filename_component(BOOST_ROOT "../../.." ABSOLUTE)
+string(CONCAT boost_headers ${BOOST_ROOT} "/boost")
+if(NOT IS_DIRECTORY ${boost_headers})
+    message(FATAL_ERROR "BOOST_ROOT not found")
 else()
-    message(STATUS "Boost NOT Found!")
+    message(STATUS "BOOST_ROOT is ${BOOST_ROOT}")
 endif()
 
 if(Boost_USE_STATIC_LIBS)
-  message(STATUS "Use static libraries")
-  set(LINK_TYPE "STATIC")
+  message(STATUS "Link to Boost static libraries")
+  set(BUILD_SHARED_LIBS NO)
+  string(CONCAT boost_stage ${BOOST_ROOT} "/stage/Debug/static")
 else()
-  message(STATUS "Building shared libraries")
-  set(LINK_TYPE "SHARED")
+  message(STATUS "Link to Boost shared libraries")
+  set(BUILD_SHARED_LIBS YES)
   add_definitions( "-DBOOST_ALL_DYN_LINK=1")
   add_definitions( "-DBOOST_ALL_NO_LIB=1")
   add_definitions( "-DBOOST_LIB_DIAGNOSTICS=1")
   set(CMAKE_CXX_VISIBILITY_PRESET hidden)
-  set(VISIBILITY_INLINES_HIDDEN)
+  set(VISIBILITY_INLINES_HIDDEN YES)
+  string(CONCAT boost_stage ${BOOST_ROOT} "/stage/Debug/shared")
 endif()
+
+include(CheckIncludeFileCXX)
+
+message(STATUS "Boost directories found at ${boost_headers}")
+message(STATUS "Boost libraries found at ${boost_stage}")
+set(CMAKE_LIBRARY_PATH ${boost_stage})
+
+#set(archive_list text_archive text_warchive binary_archive xml_archive xml_warchive)
+set(archive_list text_archive)
+
+include_directories(BEFORE ${BOOST_ROOT})
 
 ###########################
 # library builds
 
-add_library(serialization ${LINK_TYPE}
+add_library(serialization
   ../src/archive_exception.cpp
   ../src/basic_archive.cpp
   ../src/basic_iarchive.cpp
@@ -166,6 +157,8 @@ add_library(serialization ${LINK_TYPE}
   ../src/extended_type_info.cpp
   ../src/polymorphic_iarchive.cpp
   ../src/polymorphic_oarchive.cpp
+  ../src/polymorphic_text_iarchive.cpp
+  ../src/polymorphic_text_oarchive.cpp
   ../src/stl_port.cpp
   ../src/text_iarchive.cpp
   ../src/text_oarchive.cpp
@@ -178,7 +171,7 @@ add_library(serialization ${LINK_TYPE}
   ../src/basic_xml_grammar.ipp # doesn't show up in "Source Files" in Xcode"'
 )
 
-add_library(wserialization  ${LINK_TYPE}
+add_library(wserialization
   ../src/codecvt_null.cpp
   ../src/basic_text_wiprimitive.cpp
   ../src/basic_text_woprimitive.cpp
@@ -190,8 +183,17 @@ add_library(wserialization  ${LINK_TYPE}
   ../src/basic_xml_grammar.ipp # doesn't show up in "Source Files" in Xcode"'
 )
 
+set_property(TARGET wserialization PROPERTY LINK_LIBRARIES serialization)
+
 # end library build
 ###########################
+
+add_library(filesystem SHARED IMPORTED GLOBAL ) # or STATIC instead of SHARED
+set_target_properties(filesystem PROPERTIES
+  IMPORTED_LOCATION "${CMAKE_LIBRARY_PATH}/libboost_filesystem-clang-darwin-mt-d-x64-1_69.dylib"
+)
+get_property(loc TARGET filesystem  PROPERTY LOCATION)
+message(STATUS "filesystem library located at:${loc}")
 
 ###########################
 # test targets
@@ -203,7 +205,7 @@ function( serialization_test test_name)
   endforeach()
   message(STATUS ${test_name})
   add_executable( ${test_name} ../test/${test_name}.cpp ${arglist} )
-  target_link_libraries(${test_name} serialization wserialization ${Boost_LIBRARIES})
+  target_link_libraries(${test_name} serialization wserialization filesystem)
   add_test( ${test_name} ${test_name} )
 endfunction(serialization_test)
 
@@ -214,7 +216,7 @@ function(archive_test test_name)
   endforeach()
   foreach(
     archive-name
-    IN ITEMS text_archive text_warchive binary_archive xml_archive xml_warchive
+    IN ITEMS ${archive_list}
   )
     set(amended_test_name ${test_name}_${archive-name})
     message(STATUS ${amended_test_name})
@@ -223,7 +225,7 @@ function(archive_test test_name)
       TARGET ${amended_test_name}
       PROPERTY COMPILE_DEFINITIONS BOOST_ARCHIVE_TEST=${archive-name}.hpp
     )
-    target_link_libraries(${amended_test_name} serialization wserialization ${Boost_LIBRARIES})
+    target_link_libraries(${amended_test_name} serialization wserialization filesystem)
     add_test(${amended_test_name} ${amended_test_name})
   endforeach()
 endfunction(archive_test)
@@ -235,25 +237,31 @@ function(polymorphic_archive_test test_name)
   endforeach()
   foreach(
     archive-name
-    IN ITEMS text_archive text_warchive binary_archive xml_archive xml_warchive
+    IN ITEMS ${archive_list}
   )
     set(amended_test_name ${test_name}_polymorphic_${archive-name})
     message(STATUS ${amended_test_name})
     add_executable(${amended_test_name} ../test/${test_name}.cpp ${arglist})
-    set_property(
-      TARGET ${amended_test_name}
-      PROPERTY COMPILE_DEFINITIONS BOOST_ARCHIVE_TEST=polymorphic_${archive-name}.hpp
-    )
-    target_link_libraries(${amended_test_name} serialization wserialization ${Boost_LIBRARIES})
+    target_compile_definitions(${amended_test_name} PUBLIC BOOST_ARCHIVE_TEST=polymorphic_${archive-name}.hpp)
+    target_link_libraries(${amended_test_name} serialization wserialization filesystem)
     add_test(${amended_test_name} ${amended_test_name})
   endforeach()
 endfunction(polymorphic_archive_test)
 
 enable_testing()
 
-serialization_test(test_dll_exported polymorphic_derived2 polymorphic_base)
+message(STATUS dll_a)
+add_library(dll_a SHARED ../test/dll_a.cpp)
+target_link_libraries(dll_a serialization)
+serialization_test(test_dll_simple)
+target_link_libraries(test_dll_simple dll_a serialization)
 
-# serialization(test_dll_simple dll_a_lib)
+message(STATUS dll_polymorphic_derived2)
+add_library(dll_polymorphic_derived2 SHARED ../test/polymorphic_derived2.cpp)
+target_link_libraries(dll_polymorphic_derived2 serialization)
+serialization_test(test_dll_exported)
+target_link_libraries(test_dll_exported dll_polymorphic_derived2)
+
 # compile test_dll_plugin.cpp
 # Running the following test requires that the test know the directory 
 # in which the dll is stored. I don't know how to extract this from bjam
@@ -289,7 +297,6 @@ archive_test(test_derived)
 archive_test(test_derived_class A)
 archive_test(test_diamond)
 archive_test(test_diamond_complex)
-archive_test(test_exported polymorphic_base)
 archive_test(test_forward_list A)
 archive_test(test_forward_list_ptrs A)
 archive_test(test_helper_support)
@@ -357,6 +364,7 @@ else()
   endif()
 endif()
 
+polymorphic_archive_test(test_exported polymorphic_base polymorphic_derived2)
 polymorphic_archive_test(test_polymorphic test_polymorphic_A A)
 polymorphic_archive_test(test_polymorphic2 test_polymorphic2imp)
 polymorphic_archive_test(test_polymorphic_helper)

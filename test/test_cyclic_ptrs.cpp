@@ -163,7 +163,7 @@ int test3(){
         BOOST_TRY {
             oa << BOOST_SERIALIZATION_NVP(k);
         }
-        BOOST_CATCH (boost::archive::archive_exception ae){
+        BOOST_CATCH (boost::archive::archive_exception const& ae){
             exception = ae;
         }
         BOOST_CATCH_END
@@ -182,7 +182,7 @@ int test3(){
         BOOST_TRY {
             ia >> BOOST_SERIALIZATION_NVP(k);
         }
-        BOOST_CATCH (boost::archive::archive_exception ae){
+        BOOST_CATCH (boost::archive::archive_exception const& ae){
             exception = ae;
         }
         BOOST_CATCH_END

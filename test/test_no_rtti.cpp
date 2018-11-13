@@ -40,7 +40,9 @@ namespace std{
 #include "polymorphic_base.hpp"
 #include "polymorphic_derived1.hpp"
 #include "polymorphic_derived2.hpp"
+#include "polymorphic_derived2.cpp"
 
+#if 0
 template void polymorphic_derived2::serialize(
     test_oarchive & ar,
     const unsigned int version
@@ -49,6 +51,7 @@ template void polymorphic_derived2::serialize(
     test_iarchive & ar,
     const unsigned int version
 );
+#endif
 
 // save derived polymorphic class
 void save_derived(const char *testfile)

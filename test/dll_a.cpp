@@ -38,12 +38,12 @@ A_DLL_DECL void A::serialize(
 
 template
 A_DLL_DECL void A::serialize(
-    boost::archive::polymorphic_oarchive &ar,
+    boost::archive::polymorphic_oarchive &,
     const unsigned int /* file_version */
 );
 template
 A_DLL_DECL void A::serialize(
-    boost::archive::polymorphic_iarchive &ar,
+    boost::archive::polymorphic_iarchive &,
     const unsigned int /* file_version */
 );
 
