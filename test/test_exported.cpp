@@ -19,38 +19,20 @@ namespace std{
 }
 #endif
 
+#include <boost/serialization/type_info_implementation.hpp>
 #include <boost/serialization/export.hpp>
 #include <boost/serialization/base_object.hpp>
-#include <boost/serialization/type_info_implementation.hpp>
-#include <boost/serialization/extended_type_info_typeid.hpp>
+
+#include "test_tools.hpp"
 
 #include <boost/archive/polymorphic_oarchive.hpp>
 #include <boost/archive/polymorphic_iarchive.hpp>
 
-#include "test_tools.hpp"
-
+#define POLYMORPHIC_BASE_IMPORT
 #include "polymorphic_base.hpp"
 
-class polymorphic_derived1 :
-    public polymorphic_base
-{
-    friend class boost::serialization::access;
-    template<class Archive>
-    void serialize(Archive & ar, const unsigned int /* file_version */){
-        ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(polymorphic_base);
-    }
-    virtual const char * get_key() const {
-        return "polymorphic_derived1";
-    }
-public:
-    ~polymorphic_derived1(){}
-};
-
-BOOST_CLASS_EXPORT_KEY(polymorphic_derived1)
-BOOST_CLASS_EXPORT_IMPLEMENT(polymorphic_derived1)
-
-// MWerks users can do this to make their code work
-BOOST_SERIALIZATION_MWERKS_BASE_AND_DERIVED(polymorphic_base, polymorphic_derived1)
+#define POLYMORPHIC_DERIVED1_IMPORT
+#include "polymorphic_derived1.hpp"
 
 #define POLYMORPHIC_DERIVED2_IMPORT
 #include "polymorphic_derived2.hpp"
@@ -62,12 +44,15 @@ void save_exported(const char *testfile)
     test_oarchive oa_implementation(os, TEST_ARCHIVE_FLAGS);
     boost::archive::polymorphic_oarchive & oa_interface = oa_implementation;
 
-    polymorphic_base *rb1 = new polymorphic_derived1;
-    polymorphic_base *rb2 = new polymorphic_derived2;
+    const polymorphic_base *rb1 = new polymorphic_derived1;
+    const polymorphic_base *rb2 = new polymorphic_derived2;
 
     // export will permit correct serialization
     // through a pointer to a base class
+    std::cout << "saving polymorphic_derived1 (no_rtti)\n";
     oa_interface << BOOST_SERIALIZATION_NVP(rb1);
+
+    std::cout << "saving polymorphic_derived2\n";
     oa_interface << BOOST_SERIALIZATION_NVP(rb2);
 
     delete rb1;

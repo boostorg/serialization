@@ -38,27 +38,27 @@
     #define POLYMORPHIC_BASE_DLL_DECL
 #endif
 
-class POLYMORPHIC_BASE_DLL_DECL polymorphic_base
+class BOOST_SYMBOL_VISIBLE polymorphic_base
 {
     friend class boost::serialization::access;
     template<class Archive>
-    void serialize(
+    POLYMORPHIC_BASE_DLL_DECL void serialize(
         Archive & /* ar */, 
         const unsigned int /* file_version */
-    ){}
+    );
 public:
     // note that since this class uses the "no_rtti"
     // extended_type_info implementation, it MUST
     // implement this function
     virtual const char * get_key() const = 0;
-    virtual ~polymorphic_base(){};
+    POLYMORPHIC_BASE_DLL_DECL polymorphic_base();
+    POLYMORPHIC_BASE_DLL_DECL virtual ~polymorphic_base();
 };
 
 BOOST_SERIALIZATION_ASSUME_ABSTRACT(polymorphic_base)
 
 // the no_rtti system requires this !!!
 BOOST_CLASS_EXPORT_KEY(polymorphic_base)
-
 
 BOOST_CLASS_TYPE_INFO(
     polymorphic_base,

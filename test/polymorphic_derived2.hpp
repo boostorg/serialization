@@ -38,6 +38,7 @@
     #define POLYMORPHIC_DERIVED2_DLL_DECL
 #endif
 
+#define POLYMORPHIC_BASE_IMPORT
 #include "polymorphic_base.hpp"
 
 class BOOST_SYMBOL_VISIBLE polymorphic_derived2 :
@@ -48,9 +49,7 @@ class BOOST_SYMBOL_VISIBLE polymorphic_derived2 :
     POLYMORPHIC_DERIVED2_DLL_DECL void serialize(
         Archive &ar,
         const unsigned int /* file_version */
-    ){
-        ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(polymorphic_base);
-    }
+    );
     POLYMORPHIC_DERIVED2_DLL_DECL const char * get_key() const;
 public:
     POLYMORPHIC_DERIVED2_DLL_DECL polymorphic_derived2();

@@ -47,6 +47,7 @@ lib dll_polymorphic_base
 lib dll_polymorphic_derived2
     :
         polymorphic_derived2.cpp
+        dll_polymorphic_base
         ../build//boost_serialization
     : 
         <link>shared:<define>BOOST_SERIALIZATION_DYN_LINK=1 
@@ -88,7 +89,6 @@ test-suite "serialization" :
      [ test-bsl-run_files test_non_default_ctor2 ]
      [ test-bsl-run_files test_null_ptr ]
      [ test-bsl-run_files test_nvp : A ]
-     [ test-bsl-run_files test_no_rtti : polymorphic_base polymorphic_derived1 ]
      [ test-bsl-run_files test_object ]
      [ test-bsl-run_files test_primitive ]
      [ test-bsl-run_files test_priority_queue : A ]
@@ -117,9 +117,9 @@ test-suite "serialization" :
      [ test-bsl-run_files test_shared_ptr_multi_base ]
      [ test-bsl-run_files test_shared_ptr_132 : : : [ requires auto_ptr  ] ] # BOOST_NO_AUTO_PTR
 
-     [ test-bsl-run_polymorphic_files test_dll_exported : : dll_polymorphic_base dll_polymorphic_derived2 ]
-
-     [ test-bsl-run_polymorphic_files test_exported : polymorphic_base polymorphic_derived2 ]
+     [ test-bsl-run_polymorphic_files test_dll_exported : polymorphic_derived1 : dll_polymorphic_base dll_polymorphic_derived2 ]
+     [ test-bsl-run_polymorphic_files test_no_rtti : polymorphic_base polymorphic_derived1 polymorphic_derived2 ]
+     [ test-bsl-run_polymorphic_files test_exported : polymorphic_base polymorphic_derived1 polymorphic_derived2 ]
      [ test-bsl-run_polymorphic_files test_polymorphic : test_polymorphic_A A ]
      [ test-bsl-run_polymorphic_files test_polymorphic2 : test_polymorphic2imp ]
      [ test-bsl-run_polymorphic_files test_polymorphic_helper ]

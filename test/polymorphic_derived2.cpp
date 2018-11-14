@@ -18,7 +18,14 @@
 #define POLYMORPHIC_DERIVED2_EXPORT
 #include "polymorphic_derived2.hpp"
 
-POLYMORPHIC_DERIVED2_DLL_DECL
+template<class Archive>
+POLYMORPHIC_DERIVED2_DLL_DECL void polymorphic_derived2::serialize(
+    Archive &ar,
+    const unsigned int /* file_version */
+){
+    ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(polymorphic_base);
+}
+
 const char * polymorphic_derived2::get_key() const {
     return "polymorphic_derived2";
 }
@@ -35,7 +42,8 @@ POLYMORPHIC_DERIVED2_DLL_DECL void polymorphic_derived2::serialize(
     boost::archive::polymorphic_oarchive &,
     const unsigned int /* file_version */
 );
-template POLYMORPHIC_DERIVED2_DLL_DECL void polymorphic_derived2::serialize(
+template
+POLYMORPHIC_DERIVED2_DLL_DECL void polymorphic_derived2::serialize(
     boost::archive::polymorphic_iarchive &,
     const unsigned int
 );
