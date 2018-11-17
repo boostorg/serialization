@@ -258,7 +258,7 @@ function(polymorphic_archive_test test_name)
     add_test(${amended_test_name} ${amended_test_name})
     set(test_list ${test_list} ${amended_test_name} PARENT_SCOPE)
   endforeach()
-endfunction(archive_test)
+endfunction(polymorphic_archive_test)
 
 enable_testing()
 
@@ -292,6 +292,9 @@ serialization_test(test_inclusion2)
 serialization_test(test_smart_cast)
 serialization_test(test_codecvt_null ../src/codecvt_null)
 serialization_test(test_strong_typedef)
+serialization_test(test_singleton)
+serialization_test(test_singleton_inherited)
+serialization_test(test_singleton_plain)
 
 archive_test(test_native_array A)
 archive_test(test_boost_array A)
