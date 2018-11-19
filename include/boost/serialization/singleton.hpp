@@ -40,9 +40,9 @@
 #include <boost/config.hpp>
 #include <boost/noncopyable.hpp>
 #include <boost/serialization/force_include.hpp>
+#include <boost/serialization/config.hpp>
 
 #include <boost/archive/detail/auto_link_archive.hpp>
-#include <boost/serialization/config.hpp>
 #include <boost/archive/detail/abi_prefix.hpp> // must be the last header
 
 #ifdef BOOST_MSVC
@@ -175,6 +175,9 @@ private:
         // construct the instance at pre-execution time.  This would prevent
         // our usage/implementation of "locking" and introduce uncertainty into
         // the sequence of object initialization.
+        // Unfortunately, this triggers detectors of undefine behavior
+        // and reports an error.  But I've been unable to find a different
+        // of guarenteeing that the the singleton is created at pre-main time.
         use(* m_instance);
 
         return static_cast<T &>(t);
@@ -198,7 +201,8 @@ public:
 };
 
 // Assigning the instance reference to a static member forces initialization
-// at startup time as described in http://tinyurl.com/ljdp8
+// at startup time as described in
+// https://groups.google.com/forum/#!topic/microsoft.public.vc.language/kDVNLnIsfZk
 template<class T>
 T * singleton< T >::m_instance = & singleton< T >::get_instance();
 
