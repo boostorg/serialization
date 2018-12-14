@@ -28,12 +28,11 @@ namespace std{
 #include <boost/archive/polymorphic_oarchive.hpp>
 #include <boost/archive/polymorphic_iarchive.hpp>
 
-#define POLYMORPHIC_BASE_IMPORT
-#include "polymorphic_base.hpp"
+//#include "polymorphic_base.hpp"
 
 #include "polymorphic_derived1.hpp"
 
-#define POLYMORPHIC_DERIVED2_IMPORT
+//#define POLYMORPHIC_DERIVED2_IMPORT
 #include "polymorphic_derived2.hpp"
 
 // save exported polymorphic class
