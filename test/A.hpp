@@ -32,14 +32,12 @@ namespace std{
 #include <boost/serialization/access.hpp>
 #include <boost/serialization/string.hpp>
 
-#if defined(BOOST_ALL_DYN_LINK) || defined(BOOST_SERIALIZATION_DYN_LINK)
-    #if defined(A_IMPORT)
-        #define A_DLL_DECL BOOST_SYMBOL_IMPORT
-        #pragma message("A imported")
-    #elif defined(A_EXPORT)
-        #define A_DLL_DECL BOOST_SYMBOL_EXPORT
-        #pragma message ("A exported")
-    #endif
+#if defined(A_IMPORT)
+    #define A_DLL_DECL BOOST_SYMBOL_IMPORT
+    #pragma message("A imported")
+#elif defined(A_EXPORT)
+    #define A_DLL_DECL BOOST_SYMBOL_EXPORT
+    #pragma message ("A exported")
 #endif
 
 #ifndef A_DLL_DECL

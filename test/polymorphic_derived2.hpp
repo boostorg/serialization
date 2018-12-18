@@ -24,14 +24,12 @@
 #include <boost/serialization/type_info_implementation.hpp>
 #include <boost/serialization/extended_type_info_typeid.hpp>
 
-#if defined(BOOST_ALL_DYN_LINK) || defined(BOOST_SERIALIZATION_DYN_LINK)
-    #if defined(POLYMORPHIC_DERIVED2_IMPORT)
-        #define POLYMORPHIC_DERIVED2_DLL_DECL BOOST_SYMBOL_IMPORT
-        #pragma message ("polymorphic_derived2 imported")
-    #elif defined(POLYMORPHIC_DERIVED2_EXPORT)
-        #define POLYMORPHIC_DERIVED2_DLL_DECL BOOST_SYMBOL_EXPORT
-        #pragma message ("polymorphic_derived2 exported")
-    #endif
+#if defined(POLYMORPHIC_DERIVED2_IMPORT)
+    #define POLYMORPHIC_DERIVED2_DLL_DECL BOOST_SYMBOL_IMPORT
+    #pragma message ("polymorphic_derived2 imported")
+#elif defined(POLYMORPHIC_DERIVED2_EXPORT)
+    #define POLYMORPHIC_DERIVED2_DLL_DECL BOOST_SYMBOL_EXPORT
+    #pragma message ("polymorphic_derived2 exported")
 #endif
 
 #ifndef POLYMORPHIC_DERIVED2_DLL_DECL
