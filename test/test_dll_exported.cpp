@@ -50,7 +50,6 @@ namespace std{
 #define POLYMORPHIC_BASE_IMPORT
 #include "polymorphic_base.hpp"
 
-#define POLYMORPHIC_DERIVED1_IMPORT
 #include "polymorphic_derived1.hpp"
 
 #define POLYMORPHIC_DERIVED2_IMPORT

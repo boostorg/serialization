@@ -24,14 +24,12 @@
 #include <boost/serialization/type_info_implementation.hpp>
 #include <boost/serialization/extended_type_info_no_rtti.hpp>
 
-#if defined(BOOST_ALL_DYN_LINK) || defined(BOOST_SERIALIZATION_DYN_LINK)
-    #if defined(POLYMORPHIC_BASE_IMPORT)
-        #define POLYMORPHIC_BASE_DLL_DECL BOOST_SYMBOL_IMPORT
-        #pragma message ("polymorphic_base imported")
-    #elif defined(POLYMORPHIC_BASE_EXPORT)
-        #define POLYMORPHIC_BASE_DLL_DECL BOOST_SYMBOL_EXPORT
-        #pragma message ("polymorphic_base exported")
-    #endif
+#if defined(POLYMORPHIC_BASE_IMPORT)
+    #define POLYMORPHIC_BASE_DLL_DECL BOOST_SYMBOL_IMPORT
+    #pragma message ("polymorphic_base imported")
+#elif defined(POLYMORPHIC_BASE_EXPORT)
+    #define POLYMORPHIC_BASE_DLL_DECL BOOST_SYMBOL_EXPORT
+    #pragma message ("polymorphic_base exported")
 #endif
 
 #ifndef POLYMORPHIC_BASE_DLL_DECL
