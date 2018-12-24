@@ -21,7 +21,7 @@
 #endif
 
 #include <boost/archive/basic_archive.hpp>
-#include <boost/detail/endian.hpp>
+#include <boost/predef/other/endian.h>
 
 enum portable_binary_archive_flags {
     endian_big        = 0x4000,
