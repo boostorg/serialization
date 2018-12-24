@@ -269,11 +269,11 @@ serialization_test(test_dll_simple)
 target_link_libraries(test_dll_simple dll_a serialization)
 
 message(STATUS dll_polymorphic_base)
-add_library(dll_polymorphic_base SHARED ../test/polymorphic_base.cpp)
+add_library(dll_polymorphic_base SHARED ../test/dll_polymorphic_base.cpp)
 target_link_libraries(dll_polymorphic_base serialization)
 
 message(STATUS dll_polymorphic_derived2)
-add_library(dll_polymorphic_derived2 SHARED ../test/polymorphic_derived2.cpp)
+add_library(dll_polymorphic_derived2 SHARED ../test/dll_polymorphic_derived2.cpp)
 target_link_libraries(dll_polymorphic_derived2 dll_polymorphic_base serialization)
 
 # compile test_dll_plugin.cpp

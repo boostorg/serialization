@@ -36,13 +36,13 @@ lib dll_a
     ;
 lib dll_polymorphic_base
     :
-        polymorphic_base.cpp 
+        dll_polymorphic_base.cpp 
         ../build//boost_serialization
     ;
 
 lib dll_polymorphic_derived2
     :
-        polymorphic_derived2.cpp
+        dll_polymorphic_derived2.cpp
         dll_polymorphic_base
         ../build//boost_serialization
     ;
