@@ -8,8 +8,7 @@
 
 project libs/serialization/test
     : id serialization_test
-    : requirements <source>/boost/filesystem
-    : requirements <source>/boost/system
+    : requirements <library>/boost/filesystem
     ;
 
 # import rules for testing conditional on config file variables
@@ -33,11 +32,16 @@ lib dll_a
     : 
         dll_a.cpp
         ../build//boost_serialization
+    :
+        <link>shared
     ;
+
 lib dll_polymorphic_base
     :
         dll_polymorphic_base.cpp 
         ../build//boost_serialization
+    :
+        <link>shared
     ;
 
 lib dll_polymorphic_derived2
@@ -45,6 +49,8 @@ lib dll_polymorphic_derived2
         dll_polymorphic_derived2.cpp
         dll_polymorphic_base
         ../build//boost_serialization
+    :
+        <link>shared
     ;
 
 test-suite "serialization" :
@@ -115,7 +121,10 @@ test-suite "serialization" :
      [ test-bsl-run_polymorphic_files test_polymorphic2 : test_polymorphic2imp ]
      [ test-bsl-run_polymorphic_files test_polymorphic_helper ]
 
-     [ test-bsl-run_polymorphic_files test_dll_exported : polymorphic_derived1 : dll_polymorphic_base dll_polymorphic_derived2 ]
+     # this test should pass with both shared and static linking.  But B2 get's mixed up with static linking
+     # so we'll just run the shared version of the test, which is the one that we're most interested
+     # in anyway.
+     [ test-bsl-run_polymorphic_files test_dll_exported : polymorphic_derived1 :  dll_polymorphic_base dll_polymorphic_derived2  : <link>static:<build>no ]
 
      [ test-bsl-run_polymorphic_files test_no_rtti : polymorphic_base polymorphic_derived1 polymorphic_derived2 ]
      [ test-bsl-run_polymorphic_files test_exported : polymorphic_base polymorphic_derived1 polymorphic_derived2 ]
