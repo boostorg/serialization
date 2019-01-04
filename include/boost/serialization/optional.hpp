@@ -96,12 +96,9 @@ void serialize(
     boost::serialization::split_free(ar, t, version);
 }
 
-template<class T>
-struct version<boost::optional<T> > {
-    BOOST_STATIC_CONSTANT(int, value = 1);
-};
-
 } // serialization
 } // boost
+
+BOOST_CLASS_VERSION(boost::optional< T >, 1)
 
 #endif // BOOST_SERIALIZATION_OPTIONAL_HPP_
