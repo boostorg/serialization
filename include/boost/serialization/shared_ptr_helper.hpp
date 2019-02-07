@@ -39,10 +39,10 @@ namespace boost {
 namespace serialization {
 
 #ifndef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
-template<class Archive, template<class U> class SPT >
+template<class Archive, template<class> class SPT, class U >
 void load(
     Archive & ar,
-    SPT< class U > &t,
+    SPT< U > &t,
     const unsigned int file_version
 );
 #endif
