@@ -109,6 +109,7 @@ lib boost_serialization
     : 
     <toolset>msvc:<cxxflags>/Gy
     <toolset>msvc:<define>_SCL_SECURE_NO_WARNINGS
+    <toolset>msvc:<define>_CRT_SECURE_NO_WARNINGS
     <toolset>clang:<cxxflags>"-fvisibility=hidden -fvisibility-inlines-hidden"
     <toolset>gcc:<cxxflags>"-fvisibility=hidden -fvisibility-inlines-hidden"
     <toolset>darwin:<cxxflags>"-fvisibility=hidden -fvisibility-inlines-hidden"
@@ -123,6 +124,7 @@ lib boost_wserialization
     :     
     <toolset>msvc:<cxxflags>/Gy 
     <toolset>msvc:<define>_SCL_SECURE_NO_WARNINGS
+    <toolset>msvc:<define>_CRT_SECURE_NO_WARNINGS
     <toolset>clang:<cxxflags>"-fvisibility=hidden -fvisibility-inlines-hidden"
     <toolset>gcc:<cxxflags>"-fvisibility=hidden -fvisibility-inlines-hidden"
     <toolset>darwin:<cxxflags>"-fvisibility=hidden -fvisibility-inlines-hidden"
