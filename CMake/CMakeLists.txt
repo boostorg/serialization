@@ -95,12 +95,12 @@ endif()
 #
 
 set(Boost_DEBUG true)
-set(Boost_ADDRESS_MODEL 64 CACHE INTEGER "32/64 bits")
+set(Boost_ADDRESS_MODEL 64 CACHE STRING "32/64 bits")
 set(Boost_USE_STATIC_LIBS TRUE CACHE BOOL "Use static libraries")
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_DETAILED_FAILURE_MSG true)
 
-get_filename_component(BOOST_ROOT "../../.." ABSOLUTE)
+get_filename_component(BOOST_ROOT "../../../.." ABSOLUTE)
 string(CONCAT boost_headers ${BOOST_ROOT} "/boost")
 if(NOT IS_DIRECTORY ${boost_headers})
     message(FATAL_ERROR "BOOST_ROOT not found")
