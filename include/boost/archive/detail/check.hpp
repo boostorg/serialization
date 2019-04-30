@@ -4,8 +4,6 @@
 // MS compatible compilers support #pragma once
 #if defined(_MSC_VER)
 # pragma once
-#pragma inline_depth(511)
-#pragma inline_recursion(on)
 #endif
 
 #if defined(__MWERKS__)
