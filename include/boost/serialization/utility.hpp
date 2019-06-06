@@ -20,9 +20,12 @@
 #include <utility>
 #include <boost/config.hpp>
 
+#include <boost/core/addressof.hpp>
 #include <boost/type_traits/remove_const.hpp>
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/is_bitwise_serializable.hpp>
+#include <boost/serialization/detail/stack_constructor.hpp>
+#include <boost/move/move.hpp>
 #include <boost/mpl/and.hpp>
 
 namespace boost {
@@ -31,16 +34,46 @@ namespace serialization {
 // pair
 template<class Archive, class F, class S>
 inline void serialize(
-    Archive & ar,
-    std::pair<F, S> & p,
+    Archive &,
+    std::pair<F, S> & ,
     const unsigned int /* file_version */
-){
-    // note: we remove any const-ness on the first argument.  The reason is that
-    // for stl maps, the type saved is pair<const key, T).  We remove
-    // the const-ness in order to be able to load it.
-    typedef typename boost::remove_const<F>::type typef;
-    ar & boost::serialization::make_nvp("first", const_cast<typef &>(p.first));
-    ar & boost::serialization::make_nvp("second", p.second);
+) {}
+
+template <class Archive, class F, class S>
+void save_construct_data(Archive & ar, const std::pair<F, S> * p,
+                         const unsigned int file_version) {
+  save_construct_data_adl(
+      ar, ::boost::addressof(p->first), file_version);
+  ar << boost::serialization::make_nvp("first", p->first);
+
+  save_construct_data_adl(
+      ar, ::boost::addressof(p->second), file_version);
+  ar << boost::serialization::make_nvp("second", p->second);
+}
+
+template <class Archive, class F, class S>
+void load_construct_data(Archive & ar, ::std::pair<F, S> * p,
+                         unsigned int const file_version) {
+
+  // note: we remove any const-ness on the first argument. The reason is that
+  // for STL maps, the type saved is pair<const key, T). We remove
+  // the const-ness in order to be able to load it.
+  typedef typename boost::remove_const<F>::type typef;
+  boost::serialization::detail::stack_construct<Archive, typef> first(
+      ar, file_version);
+  ar >> boost::serialization::make_nvp("first", first.reference());
+
+  boost::serialization::detail::stack_construct<Archive, S> second(
+      ar, file_version);
+  ar >> boost::serialization::make_nvp("second", second.reference());
+
+  // now we can create a new pair
+  ::new (p)::std::pair<F, S>(boost::move(first.reference()),
+                             boost::move(second.reference()));
+
+  // make sure that addresses are reset
+  ar.reset_object_address(&p->first, first.address());
+  ar.reset_object_address(&p->second, second.address());
 }
 
 /// specialization of is_bitwise_serializable for pairs

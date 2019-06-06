@@ -115,6 +115,65 @@ test_map_2(){
     std::remove(testfile);
 }
 
+
+
+struct NonDefaultConstructible {
+    int i;
+
+    explicit NonDefaultConstructible(int i) : i(i) {}
+
+    template<class Archive>
+    inline void serialize(Archive & /*ar*/,
+                          const unsigned int /*file_version*/){}
+};
+
+template<class Archive>
+void save_construct_data(Archive & ar, const NonDefaultConstructible * p,
+                         const unsigned int /*file_version*/){
+    ar << boost::serialization::make_nvp("i", p->i);
+}
+
+template<class Archive>
+inline void load_construct_data(
+    Archive & ar, NonDefaultConstructible * p,
+    const unsigned int /*file_version*/){
+    int i;
+     ar >> boost::serialization::make_nvp("i", i);
+    ::new(p) NonDefaultConstructible(i);
+}
+
+void
+test_map_non_default_constructible(){
+    const char * testfile = boost::archive::tmpnam(NULL);
+    BOOST_REQUIRE(NULL != testfile);
+
+    BOOST_MESSAGE("map_2");
+    std::pair<NonDefaultConstructible, int> a(NonDefaultConstructible(11), 22);
+    std::map<int, NonDefaultConstructible> b;
+    b.insert(std::make_pair(0, NonDefaultConstructible(0)));
+    b.insert(std::make_pair(-1, NonDefaultConstructible(-1)));
+    b.insert(std::make_pair(1, NonDefaultConstructible(1)));
+    {
+        test_ostream os(testfile, TEST_STREAM_FLAGS);
+        std::pair<NonDefaultConstructible, int> * const pa = &a;
+        std::map<int, NonDefaultConstructible> * const pb = &b;
+        test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
+        oa << BOOST_SERIALIZATION_NVP(pb);
+        oa << BOOST_SERIALIZATION_NVP(pa);
+    }
+    {
+        test_istream is(testfile, TEST_STREAM_FLAGS);
+        std::pair<NonDefaultConstructible, int> *pa = 0;
+        std::map<int, NonDefaultConstructible> *pb = 0;
+        test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
+        ia >> BOOST_SERIALIZATION_NVP(pb);
+        ia >> BOOST_SERIALIZATION_NVP(pa);
+        delete pa;
+        delete pb;
+    }
+    std::remove(testfile);
+}
+
 void
 test_multimap(){
     const char * testfile = boost::archive::tmpnam(NULL);
