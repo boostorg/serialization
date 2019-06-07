@@ -15,28 +15,14 @@
 // accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
-#include <boost/config.hpp>
-
-#ifndef BOOST_NO_EXCEPTIONS
-#include <exception>
-#endif
+#include <boost/throw_exception.hpp>
 
 namespace boost {
 namespace serialization {
 
-#ifdef BOOST_NO_EXCEPTIONS
-
-BOOST_NORETURN inline void throw_exception(std::exception const & e) {
+template<class E> BOOST_NORETURN inline void throw_exception(E const & e){
     ::boost::throw_exception(e);
 }
-
-#else
-
-template<class E> BOOST_NORETURN inline void throw_exception(E const & e){
-    throw e;
-}
-
-#endif
 
 } // namespace serialization
 } // namespace boost
