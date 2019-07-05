@@ -34,9 +34,9 @@ namespace boost {
 namespace serialization {
 
 template<class Archive>
-struct variant_save_visitor
+struct std_variant_save_visitor
 {
-    variant_save_visitor(Archive& ar) :
+    std_variant_save_visitor(Archive& ar) :
         m_ar(ar)
     {}
     template<class T>
@@ -50,9 +50,9 @@ private:
 
 
 template<class Archive>
-struct variant_load_visitor
+struct std_variant_load_visitor
 {
-    variant_load_visitor(Archive& ar) :
+    std_variant_load_visitor(Archive& ar) :
         m_ar(ar)
     {}
     template<class T>
@@ -72,7 +72,7 @@ void save(
 ){
     const std::size_t which = v.index();
     ar << BOOST_SERIALIZATION_NVP(which);
-    variant_save_visitor<Archive> visitor(ar);
+    std_variant_save_visitor<Archive> visitor(ar);
     std::visit(visitor, v);
 }
 
@@ -124,7 +124,7 @@ struct variant_impl
             using type = mp::front<Seq>;
             type value;
             ar >> BOOST_SERIALIZATION_NVP(value);
-            v = value;
+            v = std::move(value);
             type * new_address = & std::get<type>(v);
             ar.reset_object_address(new_address, & value);
             return;
