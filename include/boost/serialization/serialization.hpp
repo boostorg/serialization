@@ -11,11 +11,8 @@
 #endif
 
 #include <boost/config.hpp>
+#include <boost/core/enable_if.hpp>
 #include <boost/serialization/strong_typedef.hpp>
-
-#if !defined(BOOST_NO_CXX11_HDR_TYPE_TRAITS)
-#include <type_traits> // For std::is_same, std::enable_if
-#endif
 
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // serialization.hpp: interface for serialization system.
@@ -64,53 +61,40 @@ namespace serialization {
 
 BOOST_STRONG_TYPEDEF(unsigned int, version_type)
 
-#if __cplusplus==201103L
-
-namespace detail {
-
-struct has_serialize
+// Check whether Type has a serialize() member function that accepts Archive
+template <class Archive, class Type>
+class has_serialize
 {
+    // This type won't compile if the second template parameter isn't of type T.
+    template <typename T, T> struct type_check;
 
-private:
-    template<class T>
-    static constexpr auto check(T*)
-        -> typename
-        std::is_same<
-            decltype(std::declval<T>().serialize(std::declval<Archive&>(), std::declval<unsigned int>())),
-            void
-        >::type;
+    typedef char yes;
+    typedef long no;
 
-    template<class>
-    static constexpr std::false_type check(...);
+    template <typename T> struct serialize
+    {
+        typedef void (T::* fptr)(Archive&, const unsigned int);
+    };
 
-    typedef decltype(check<C>(0)) type;
+    template <typename T>
+    static yes check_has_serialize(
+        type_check< typename serialize<T>::fptr,
+        &T::serialize/*<Archive>*/ >*);
+    template <typename T>
+    static no  check_has_serialize(...);
 
 public:
-    static constexpr bool value = type::value;
+    static bool const value = (sizeof(check_has_serialize<Type>(0)) == sizeof(yes));
 };
-
-} //namespace detail
 
 // default implementation - call the member function "serialize" if it exists,
 // else removed from overload resolution.
 template<class Archive, class T>
-inline typename std::enable_if<detail::has_serialize<Archive, T>::value>::type serialize(
+inline typename boost::enable_if<has_serialize<Archive, T>::value>::type serialize(
     Archive & ar, T & t, const unsigned int file_version
 ){
     access::serialize(ar, t, static_cast<unsigned int>(file_version));
 }
-
-#else //__cplusplus==201103L
-
-// default implementation - call the member function "serialize"
-template<class Archive, class T>
-inline void serialize(
-    Archive & ar, T & t, const unsigned int file_version
-){
-    access::serialize(ar, t, static_cast<unsigned int>(file_version));
-}
-
-#endif //__cplusplus==201103L
 
 // save data required for construction
 template<class Archive, class T>
