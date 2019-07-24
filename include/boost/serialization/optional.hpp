@@ -47,11 +47,15 @@ void save(
     // default constructor.  It's possible that this could change sometime
     // in the future, but for now, one will have to work around it.  This can
     // be done by serialization the optional<T> as optional<T *>
-    #if ! defined(BOOST_NO_CXX11_HDR_TYPE_TRAITS)
-        BOOST_STATIC_ASSERT(
-            boost::serialization::detail::is_default_constructible<T>::value
-            || boost::is_pointer<T>::value
-        );
+    #ifdef BOOST_OPTIONAL_CONSTRUCTOR_ACCESS
+        // TODO: I don't know how to check if there exists a private default constructor.
+    #else
+        #if ! defined(BOOST_NO_CXX11_HDR_TYPE_TRAITS)
+            BOOST_STATIC_ASSERT(
+                boost::serialization::detail::is_default_constructible<T>::value
+                || boost::is_pointer<T>::value
+            );
+        #endif
     #endif
     const bool tflag = t.is_initialized();
     ar << boost::serialization::make_nvp("initialized", tflag);
@@ -82,8 +86,23 @@ void load(
             ar >> BOOST_SERIALIZATION_NVP(item_version);
         }
     }
-    if(! t.is_initialized())
-        t = T();
+    if(! t.is_initialized()) {
+        #ifdef BOOST_OPTIONAL_CONSTRUCTOR_ACCESS
+            size_t sz = sizeof(T);
+            void* ptr = ::std::malloc(sz);
+            if(ptr) {
+                access::construct(reinterpret_cast<T*>(ptr));
+                t = *(reinterpret_cast<T*>(ptr));
+                ::std::free(ptr);
+            } else {
+                throw ::std::bad_alloc{};
+            }
+        #else
+        // this doesn't work when default constructor is private.
+        // friend class boost::serialization::access; is not used.
+            t =  T();
+        #endif
+    }
     ar >> boost::serialization::make_nvp("value", *t);
 }
 
