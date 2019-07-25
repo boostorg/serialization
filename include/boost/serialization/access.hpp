@@ -17,6 +17,11 @@
 //  See http://www.boost.org for updates, documentation, and revision history.
 
 #include <boost/config.hpp>
+#if ! defined(BOOST_NO_CXX11_HDR_TYPE_TRAITS)
+    #include <type_traits>
+#else
+    #include <boost/type_traits/has_trivial_constructor.hpp>
+#endif
 
 namespace boost {
 
@@ -137,6 +142,26 @@ public:
     static T * cast_pointer(U * u){
         return static_cast<T *>(u);
     }
+
+    template <class X, class = decltype(X())>
+    static std::true_type test_any_constructor(X*);
+
+    template <class X>
+    static std::false_type test_any_constructor(...);
+
+    template<class T>
+    struct is_default_constructible_not_publicly {
+        static constexpr bool value
+            = decltype(access::test_any_constructor<T>(0))::value
+              and (not
+            #if ! defined(BOOST_NO_CXX11_HDR_TYPE_TRAITS)
+                    std::is_default_constructible<T>::value
+            #else
+                    boost::has_trivial_constructor<T>::value
+            #endif
+              );
+    };
+
 };
 
 } // namespace serialization

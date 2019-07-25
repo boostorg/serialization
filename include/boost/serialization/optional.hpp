@@ -47,15 +47,12 @@ void save(
     // default constructor.  It's possible that this could change sometime
     // in the future, but for now, one will have to work around it.  This can
     // be done by serialization the optional<T> as optional<T *>
-    #ifdef BOOST_OPTIONAL_CONSTRUCTOR_ACCESS
-        // TODO: I don't know how to check if there exists a private default constructor.
-    #else
-        #if ! defined(BOOST_NO_CXX11_HDR_TYPE_TRAITS)
-            BOOST_STATIC_ASSERT(
-                boost::serialization::detail::is_default_constructible<T>::value
-                || boost::is_pointer<T>::value
-            );
-        #endif
+    #if ! defined(BOOST_NO_CXX11_HDR_TYPE_TRAITS)
+        BOOST_STATIC_ASSERT(
+            boost::serialization::detail::is_default_constructible<T>::value
+            || access::is_default_constructible_not_publicly<T>::value
+            || boost::is_pointer<T>::value
+        );
     #endif
     const bool tflag = t.is_initialized();
     ar << boost::serialization::make_nvp("initialized", tflag);
@@ -87,7 +84,8 @@ void load(
         }
     }
     if(! t.is_initialized()) {
-        #ifdef BOOST_OPTIONAL_CONSTRUCTOR_ACCESS
+        if constexpr(access::is_default_constructible_not_publicly<T>::value) {
+            // non public default constructor requires using access::construct
             size_t sz = sizeof(T);
             void* ptr = ::std::malloc(sz);
             if(ptr) {
@@ -97,11 +95,11 @@ void load(
             } else {
                 throw ::std::bad_alloc{};
             }
-        #else
-        // this doesn't work when default constructor is private.
-        // friend class boost::serialization::access; is not used.
+        } else {
+            // this branch is not compiled if above constexpr==true, hence no compilation error
+            // TODO: make it work on older compilers.
             t =  T();
-        #endif
+        }
     }
     ar >> boost::serialization::make_nvp("value", *t);
 }
