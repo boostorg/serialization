@@ -16,27 +16,20 @@
 
 //  See http://www.boost.org for updates, documentation, and revision history.
 
-#include <utility>
+//////////////////// boost/core/nvp.hpp Starts here
+#include <utility> // pair
 
 #include <boost/config.hpp>
 #include <boost/detail/workaround.hpp>
 
-#include <boost/serialization/level.hpp>
-#include <boost/serialization/tracking.hpp>
-#include <boost/serialization/split_member.hpp>
-#include <boost/serialization/base_object.hpp>
-#include <boost/serialization/traits.hpp>
-#include <boost/serialization/wrapper.hpp>
-
 #include <boost/core/addressof.hpp>
 
 namespace boost {
-namespace serialization {
 
 template<class T>
 struct nvp : 
-    public std::pair<const char *, T *>,
-    public wrapper_traits<const nvp< T > >
+    public std::pair<const char *, T *>
+    // ,public wrapper_traits<const nvp< T > >
 {
 //private:
     nvp(const nvp & rhs) :
@@ -58,22 +51,6 @@ public:
     const T & const_value() const {
         return *(this->second);
     }
-
-    template<class Archive>
-    void save(
-        Archive & ar,
-        const unsigned int /* file_version */
-    ) const {
-        ar.operator<<(const_value());
-    }
-    template<class Archive>
-    void load(
-        Archive & ar,
-        const unsigned int /* file_version */
-    ){
-        ar.operator>>(value());
-    }
-    BOOST_SERIALIZATION_SPLIT_MEMBER()
 };
 
 template<class T>
@@ -82,15 +59,75 @@ const nvp< T > make_nvp(const char * name, T & t){
     return nvp< T >(name, t);
 }
 
-// to maintain efficiency and portability, we want to assign
-// specific serialization traits to all instances of this wrappers.
-// we can't strait forward method below as it depends upon
-// Partial Template Specialization and doing so would mean that wrappers
-// wouldn't be treated the same on different platforms.  This would
-// break archive portability. Leave this here as reminder not to use it !!!
+} // boost
+
+#include <boost/preprocessor/stringize.hpp>
+
+#define BOOST_SERIALIZATION_NVP(name)                       \
+    boost::make_nvp(BOOST_PP_STRINGIZE(name), name)
+/**/
+
+#define BOOST_SERIALIZATION_BASE_OBJECT_NVP(name)           \
+    boost::make_nvp(                                        \
+        BOOST_PP_STRINGIZE(name),                           \
+        boost::serialization::base_object<name >(*this)     \
+    )
+/**/
+
+//////////////////// boost/core/nvp.hpp Ends here
+
+#include <boost/serialization/level.hpp>
+#include <boost/serialization/tracking.hpp>
+#include <boost/serialization/version.hpp>
+#include <boost/serialization/extended_type_info.hpp>
+#include <boost/serialization/split_free.hpp>
+
+namespace boost {
+namespace serialization {
+
+template<class T>
+using nvp = boost::nvp<T>;
+
+template<class T>
+const nvp< T > make_nvp(const char * name, T & t){
+    return nvp< T >(name, t);
+}
+
+template<class Archive, class T>
+void save(
+    Archive & ar,
+    const nvp<T> & t,
+    const unsigned int /* file_version */
+){
+    ar << t.const_value();
+}
+template<class Archive, class T>
+void load(
+    Archive & ar,
+    nvp<T> & t ,
+    const unsigned int /* file_version */
+){
+    ar >> t.value();
+}
+
+template<class Archive, class T>
+inline void serialize(
+    Archive & ar,
+    nvp<T> & t,
+    const unsigned int file_version
+){
+    split_free(ar, t, file_version);
+}
 
 template <class T>
 struct implementation_level<nvp< T > >
+{
+    typedef mpl::integral_c_tag tag;
+    typedef mpl::int_<object_serializable> type;
+    BOOST_STATIC_CONSTANT(int, value = implementation_level::type::value);
+};
+template <class T>
+struct implementation_level<const nvp< T > >
 {
     typedef mpl::integral_c_tag tag;
     typedef mpl::int_<object_serializable> type;
@@ -105,21 +142,48 @@ struct tracking_level<nvp< T > >
     typedef mpl::int_<track_never> type;
     BOOST_STATIC_CONSTANT(int, value = tracking_level::type::value);
 };
+template<class T>
+struct tracking_level<const nvp< T > >
+{
+    typedef mpl::integral_c_tag tag;
+    typedef mpl::int_<track_never> type;
+    BOOST_STATIC_CONSTANT(int, value = tracking_level::type::value);
+};
+
+#if 0
+template<class T>
+struct version<const nvp< T > > {
+    typedef mpl::integral_c_tag tag;
+    typedef mpl::int_<0> type;
+    BOOST_STATIC_CONSTANT(int, value = 0);
+};
+struct version<const nvp< T > > {
+    typedef mpl::integral_c_tag tag;
+    typedef mpl::int_<0> type;
+    BOOST_STATIC_CONSTANT(int, value = 0);
+};
+
+template<class T>
+struct extended_type_info_impl<const nvp< T > > {
+    typedef extended_type_info_impl< T > type;
+};
+#endif
+
+template<class T>
+struct is_nvp {
+    typedef boost::mpl::false_ type;
+};
+template<class T>
+struct is_nvp<const nvp<T> > {
+    typedef boost::mpl::true_ type;
+};
+template<class T>
+struct is_nvp<nvp<T> > {
+    typedef boost::mpl::true_ type;
+};
 
 } // seralization
 } // boost
 
-#include <boost/preprocessor/stringize.hpp>
-
-#define BOOST_SERIALIZATION_NVP(name)                              \
-    boost::serialization::make_nvp(BOOST_PP_STRINGIZE(name), name)
-/**/
-
-#define BOOST_SERIALIZATION_BASE_OBJECT_NVP(name)                  \
-    boost::serialization::make_nvp(                                \
-        BOOST_PP_STRINGIZE(name),                                  \
-        boost::serialization::base_object<name >(*this)            \
-    )
-/**/
 
 #endif // BOOST_SERIALIZATION_NVP_HPP
