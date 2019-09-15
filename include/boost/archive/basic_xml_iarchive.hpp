@@ -63,7 +63,7 @@ protected:
         // If your program fails to compile here, its most likely due to
         // not specifying an nvp wrapper around the variable to
         // be serialized.
-        BOOST_MPL_ASSERT((serialization::is_wrapper< T >));
+        BOOST_MPL_ASSERT((serialization::is_nvp< T >));
         this->detail_common_iarchive::load_override(t);
     }
 

@@ -24,7 +24,6 @@
 #include <boost/serialization/collections_load_imp.hpp>
 #include <boost/serialization/split_free.hpp>
 #include <boost/serialization/collection_size_type.hpp>
-#include <boost/serialization/array_wrapper.hpp>
 
 // function specializations must be defined in the appropriate
 // namespace - boost::serialization
