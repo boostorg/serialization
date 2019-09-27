@@ -23,8 +23,6 @@ namespace std{
 } // namespace std
 #endif
 
-#include <boost/serialization/array_wrapper.hpp>
-
 #ifndef BOOST_NO_CXX11_HDR_ARRAY
 
 #include <array>
