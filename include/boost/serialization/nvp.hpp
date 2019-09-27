@@ -78,15 +78,14 @@ const nvp< T > make_nvp(const char * name, T & t){
 
 #include <boost/serialization/level.hpp>
 #include <boost/serialization/tracking.hpp>
-#include <boost/serialization/version.hpp>
-#include <boost/serialization/extended_type_info.hpp>
 #include <boost/serialization/split_free.hpp>
+#include <boost/serialization/wrapper.hpp>
+#include <boost/serialization/base_object.hpp>
 
 namespace boost {
 namespace serialization {
 
-template<class T>
-using nvp = boost::nvp<T>;
+using boost::nvp;
 
 template<class T>
 const nvp< T > make_nvp(const char * name, T & t){
@@ -150,6 +149,7 @@ struct tracking_level<const nvp< T > >
     BOOST_STATIC_CONSTANT(int, value = tracking_level::type::value);
 };
 
+// these traits aren't used by nvp so they don't need to be defined
 #if 0
 template<class T>
 struct version<const nvp< T > > {
@@ -170,17 +170,14 @@ struct extended_type_info_impl<const nvp< T > > {
 #endif
 
 template<class T>
-struct is_nvp {
-    typedef boost::mpl::false_ type;
-};
-template<class T>
-struct is_nvp<const nvp<T> > {
+struct is_wrapper<const nvp<T> > {
     typedef boost::mpl::true_ type;
 };
 template<class T>
-struct is_nvp<nvp<T> > {
+struct is_wrapper<nvp<T> > {
     typedef boost::mpl::true_ type;
 };
+
 
 } // seralization
 } // boost
