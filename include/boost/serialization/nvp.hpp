@@ -16,51 +16,7 @@
 
 //  See http://www.boost.org for updates, documentation, and revision history.
 
-//////////////////// boost/core/nvp.hpp Starts here
-#include <utility> // pair
-
-#include <boost/config.hpp>
-#include <boost/detail/workaround.hpp>
-
-#include <boost/core/addressof.hpp>
-
-namespace boost {
-
-template<class T>
-struct nvp : 
-    public std::pair<const char *, T *>
-    // ,public wrapper_traits<const nvp< T > >
-{
-//private:
-    nvp(const nvp & rhs) :
-        std::pair<const char *, T *>(rhs.first, rhs.second)
-    {}
-public:
-    explicit nvp(const char * name_, T & t) :
-        // note: added _ to suppress useless gcc warning
-        std::pair<const char *, T *>(name_, boost::addressof(t))
-    {}
-
-    const char * name() const {
-        return this->first;
-    }
-    T & value() const {
-        return *(this->second);
-    }
-
-    const T & const_value() const {
-        return *(this->second);
-    }
-};
-
-template<class T>
-inline
-const nvp< T > make_nvp(const char * name, T & t){
-    return nvp< T >(name, t);
-}
-
-} // boost
-
+#include <boost/core/nvp.hpp>
 #include <boost/preprocessor/stringize.hpp>
 
 #define BOOST_SERIALIZATION_NVP(name)                       \
@@ -73,8 +29,6 @@ const nvp< T > make_nvp(const char * name, T & t){
         boost::serialization::base_object<name >(*this)     \
     )
 /**/
-
-//////////////////// boost/core/nvp.hpp Ends here
 
 #include <boost/serialization/level.hpp>
 #include <boost/serialization/tracking.hpp>
