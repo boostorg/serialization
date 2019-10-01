@@ -40,11 +40,7 @@ namespace boost {
 namespace serialization {
 
 using boost::nvp;
-
-template<class T>
-const nvp< T > make_nvp(const char * name, T & t){
-    return nvp< T >(name, t);
-}
+using boost::make_nvp;
 
 template<class Archive, class T>
 void save(
