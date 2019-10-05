@@ -95,7 +95,7 @@ endif()
 #
 
 set(Boost_DEBUG true)
-set(Boost_ADDRESS_MODEL 64 CACHE INTEGER "32/64 bits")
+set(Boost_ADDRESS_MODEL 64 CACHE STRING "32/64 bits")
 set(Boost_USE_STATIC_LIBS TRUE CACHE BOOL "Use static libraries")
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_DETAILED_FAILURE_MSG true)

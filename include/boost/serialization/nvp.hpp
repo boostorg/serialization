@@ -20,11 +20,11 @@
 #include <boost/preprocessor/stringize.hpp>
 
 #define BOOST_SERIALIZATION_NVP(name)                       \
-    boost::make_nvp(BOOST_PP_STRINGIZE(name), name)
+    boost::serialization::make_nvp(BOOST_PP_STRINGIZE(name), name)
 /**/
 
 #define BOOST_SERIALIZATION_BASE_OBJECT_NVP(name)           \
-    boost::make_nvp(                                        \
+    boost::serialization::make_nvp(                         \
         BOOST_PP_STRINGIZE(name),                           \
         boost::serialization::base_object<name >(*this)     \
     )
@@ -38,13 +38,6 @@
 
 namespace boost {
 namespace serialization {
-
-using boost::nvp;
-
-template<class T>
-const nvp< T > make_nvp(const char * name, T & t){
-    return nvp< T >(name, t);
-}
 
 template<class Archive, class T>
 void save(
