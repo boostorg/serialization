@@ -72,7 +72,7 @@ public:
     // the & operator 
     template<class T>
     Archive & operator&(T & t){
-        return *(this->This()) >> t;
+        return this->This()->operator>>(t);
     }
 };
 

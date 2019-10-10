@@ -74,7 +74,7 @@ public:
     // the & operator 
     template<class T>
     Archive & operator&(const T & t){
-        return * this ->This() << t;
+        return this->This()->operator<<(t);
     }
 };
 
