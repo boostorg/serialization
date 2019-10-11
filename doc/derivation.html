@@ -83,12 +83,6 @@ the base classes.
 
     <li><i></i>Reread <a target="detail" href="headers.html#archiveinternals">Archive Internals</a>.
 This describes the class hierarchy so that you know what to override.
-    <li><i>Note the usage of PFTO.</i>  Some compilers fail to provide support for
-partial function template ordering.  The serialization library works around this by
-using <a target="detail" href="implementation.html#functiontemplateordering">
-<b>P</b>artial <b>F</b>unction <b>T</b>emplate <b>O</b>rdering</a> in several places.
-This is done
-in several places, including the archive classes themselves.
     <li><i>Base class functions will usually need to be explicitly invoked.</i>
 We commonly specialize the function name <code style="white-space: normal">save_override</code> 
 for saving primitives. Usage of a function name in a derived class

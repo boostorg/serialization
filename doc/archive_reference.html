@@ -182,11 +182,6 @@ to the archive in some special way.  For example, XML archives implement special
 name-value pairs by overriding this function template for name-value pairs.  
 This replaces the default name-value pair handling, which is just to throw away the name,
 with one appropriate for XML which writes out the start of an XML tag with the correct object name.
-<p>
-The second argument must be part of the function signature even though it is not used.
-Its purpose is to be sure that code is portable to compilers which fail to correctly
-implement partial function template ordering.  For more information see
-<a href="implementation.html#functiontemplateordering">this</a>.
 </dd>
 
 </dl>
@@ -231,11 +226,6 @@ explicitly provided for these types. For an example see
 In real practice, we probably won't be quite done. 
 One or more of the following issues may need to be addressed:
 <ul>
-    <li>Many compilers fail to implement correct partial ordering of
-    function templates.  The archives included with this library work around
-    this using argument overloading.  This technique is described in
-    <a target="detail" href="implementation.html#functiontemplateordering">
-    another section of this manual</a>
     <li>Even if we are using a conforming compiler, we might want our new archive class
     to be portable to non-conforming compilers.
     <li>Our archive format might require extra information inserted into it.  For

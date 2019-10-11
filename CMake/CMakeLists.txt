@@ -390,7 +390,7 @@ polymorphic_archive_test(test_no_rtti polymorphic_base polymorphic_derived1 poly
 polymorphic_archive_test(test_exported polymorphic_base polymorphic_derived1 polymorphic_derived2)
 polymorphic_archive_test(test_polymorphic test_polymorphic_A A)
 polymorphic_archive_test(test_polymorphic2 test_polymorphic2imp)
-polymorphic_archive_test(test_polymorphic_helper)
+polymorphic_archive_test(test_p_helper)
 
 # end test targets
 ####################

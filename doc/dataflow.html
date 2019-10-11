@@ -112,20 +112,6 @@ constructor <code style="white-space: normal">base64_text(const char *)</code>  
 Iterator Adaptors include a <code style="white-space: normal">make_xxx_iterator</code> to fulfill this function.
 However, I believe these are unwieldy to use compared to the above solution using
 Templated constructors.
-<p>
-Unfortunately, some systems which fail to properly support partial function template
-ordering cannot support the concept of a templated constructor as implemented above.  
-A special "wrapper"  macro has been created to work around this problem. With this "wrapper" 
-the above example is modified to:
-<pre><code>
-std::copy(
-    base64_text(BOOST_MAKE_PFTO_WRAPPER(address)),
-    base64_text(BOOST_MAKE_PFTO_WRAPPER(address + count)),
-    ostream_iterator&lt;char&gt;(os)
-);
-</code></pre>
-This macro is defined in <a target="pfto" href="../../../boost/serialization/pfto.hpp">&lt;boost/serialization/pfto.hpp&gt;</a>.
-For more information about this topic, check the source.
 
 <h4>Dereferencing</h4>
 Dereferencing some iterators can cause problems.  For example, a natural

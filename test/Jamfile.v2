@@ -119,7 +119,7 @@ test-suite "serialization" :
 
      [ test-bsl-run_polymorphic_files test_polymorphic : test_polymorphic_A A ]
      [ test-bsl-run_polymorphic_files test_polymorphic2 : test_polymorphic2imp ]
-     [ test-bsl-run_polymorphic_files test_polymorphic_helper ]
+     [ test-bsl-run_polymorphic_files test_p_helper ]
 
      # this test should pass with both shared and static linking.  But B2 get's mixed up with static linking
      # so we'll just run the shared version of the test, which is the one that we're most interested
