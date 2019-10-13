@@ -131,6 +131,7 @@ test-suite "serialization" :
 
      # should compile
      [ compile test_strong_typedef.cpp ]
+     [ compile test_overloaded_operators.cpp ]
     ;
 
 if ! $(BOOST_ARCHIVE_LIST) {
