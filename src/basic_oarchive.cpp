@@ -309,7 +309,7 @@ basic_oarchive_impl::save_object(
     return;
 }
 
-// save a pointer to an object instance
+// colle
 inline void
 basic_oarchive_impl::save_pointer(
     basic_oarchive & ar,

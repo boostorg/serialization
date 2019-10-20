@@ -257,7 +257,10 @@ basic_iarchive_impl::reset_object_address(
             break;
     }
     for(; i < m_moveable_objects.end; ++i){
-        void const * const this_address = object_id_vector[i].address;
+        const aobject & ao = object_id_vector[i];
+        if(ao.loaded_as_pointer)
+            continue;
+        void const * const this_address = ao.address;
         // calculate displacement from this level
         // warning - pointer arithmetic on void * is in herently non-portable
         // but expected to work on all platforms in current usage
@@ -497,7 +500,6 @@ basic_iarchive_impl::load_pointer(
 
         serialization::state_saver<object_id_type> w_end(m_moveable_objects.end);
 
-        
         // add to list of serialized objects so that we can properly handle
         // cyclic strucures
         object_id_vector.push_back(aobject(t, cid));

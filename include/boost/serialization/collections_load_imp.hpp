@@ -95,7 +95,7 @@ collection_load_impl(
         detail::stack_construct<Archive, typename T::value_type> u(ar, item_version);
         ar >> boost::serialization::make_nvp("item", u.reference());
         t.push_back(boost::move(u.reference()));
-        ar.reset_object_address(& t.back() , & u.reference());
+        ar.reset_object_address(& t.back() , u.address());
      }
 }
 

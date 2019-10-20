@@ -114,14 +114,6 @@ inline void serialize_adl(
     T & t, 
     const unsigned int file_version
 ){
-    // note usage of function overloading to delay final resolution
-    // until the point of instantiation.  This works around the two-phase
-    // lookup "feature" which inhibits redefintion of a default function
-    // template implementation. Due to Robert Ramey
-    //
-    // Note that this trick generates problems for compiles which don't support
-    // PFTO, suppress it here.  As far as we know, there are no compilers
-    // which fail to support PFTO while supporting two-phase lookup.
     const version_type v(file_version);
     serialize(ar, t, v);
 }
@@ -132,7 +124,7 @@ inline void save_construct_data_adl(
     const T * t, 
     const unsigned int file_version
 ){
-    // see above
+
     const version_type v(file_version);
     save_construct_data(ar, t, v);
 }
