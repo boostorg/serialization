@@ -1,7 +1,7 @@
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // demo_fast_binary_archive.cpp
 
-// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com . 
+// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
 // Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -27,19 +27,19 @@
 using namespace boost::archive;
 
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
-// "Fast" output binary archive.  This is a variation of the native binary 
+// "Fast" output binary archive.  This is a variation of the native binary
 class fast_binary_oarchive :
     // don't derive from binary_oarchive !!!
     public binary_oarchive_impl<
-        fast_binary_oarchive, 
-        std::ostream::char_type, 
+        fast_binary_oarchive,
+        std::ostream::char_type,
         std::ostream::traits_type
     >
 {
     typedef fast_binary_oarchive derived_t;
     typedef binary_oarchive_impl<
-        fast_binary_oarchive, 
-        std::ostream::char_type, 
+        fast_binary_oarchive,
+        std::ostream::char_type,
         std::ostream::traits_type
     > base_t;
 #ifndef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
@@ -48,15 +48,15 @@ public:
     friend class boost::archive::detail::interface_oarchive<derived_t>;
     friend class basic_binary_oarchive<derived_t>;
     friend class basic_binary_oprimitive<
-        derived_t, 
-        std::ostream::char_type, 
+        derived_t,
+        std::ostream::char_type,
         std::ostream::traits_type
     >;
     friend class boost::archive::save_access;
 #endif
     // add base class to the places considered when matching
     // save function to a specific set of arguments.  Note, this didn't
-    // work on my MSVC 7.0 system using 
+    // work on my MSVC 7.0 system using
     // binary_oarchive_impl<derived_t>::load_override;
     // so we use the sure-fire method below.  This failed to work as well
     template<class T>
@@ -95,19 +95,19 @@ public:
 BOOST_SERIALIZATION_REGISTER_ARCHIVE(fast_binary_oarchive)
 
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
-// "Fast" input binary archive.  This is a variation of the native binary 
+// "Fast" input binary archive.  This is a variation of the native binary
 class fast_binary_iarchive :
     // don't derive from binary_oarchive !!!
     public binary_iarchive_impl<
-        fast_binary_iarchive, 
-        std::istream::char_type, 
+        fast_binary_iarchive,
+        std::istream::char_type,
         std::istream::traits_type
     >
 {
     typedef fast_binary_iarchive derived_t;
     typedef binary_iarchive_impl<
-        fast_binary_iarchive, 
-        std::istream::char_type, 
+        fast_binary_iarchive,
+        std::istream::char_type,
         std::istream::traits_type
     > base_t;
 #ifndef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
@@ -116,15 +116,15 @@ public:
     friend class boost::archive::detail::interface_iarchive<derived_t>;
     friend class basic_binary_iarchive<derived_t>;
     friend class basic_binary_iprimitive<
-        derived_t, 
-        std::ostream::char_type, 
+        derived_t,
+        std::ostream::char_type,
         std::ostream::traits_type
     >;
     friend class boost::archive::load_access;
 #endif
     // add base class to the places considered when matching
     // save function to a specific set of arguments.  Note, this didn't
-    // work on my MSVC 7.0 system using 
+    // work on my MSVC 7.0 system using
     // binary_oarchive_impl<derived_t>::load_override;
     // so we use the sure-fire method below.  This failed to work as well
     template<class T>
@@ -166,7 +166,7 @@ int main( int argc, char* argv[] )
     int a1[3] = {4, 5, 6};
 
     std::stringstream ss;
-    {   
+    {
         fast_binary_oarchive pboa(ss);
         pboa << a;
     }

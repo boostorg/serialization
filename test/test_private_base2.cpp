@@ -1,7 +1,7 @@
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // test_private_base.cpp
 
-// (C) Copyright 2009 Eric Moyer - http://www.rrsd.com . 
+// (C) Copyright 2009 Eric Moyer - http://www.rrsd.com .
 // Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -13,7 +13,7 @@
 #include <fstream>
 #include <boost/config.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)
-namespace std{ 
+namespace std{
     using ::remove;
 }
 #endif
@@ -58,14 +58,14 @@ public:
 
 //BOOST_CLASS_EXPORT(Derived)
 
-int 
+int
 test_main( int /* argc */, char* /* argv */[] )
 {
     const char * testfile = boost::archive::tmpnam(NULL);
     BOOST_REQUIRE(NULL != testfile);
 
     Derived a(1), a1(2);
-    {   
+    {
         test_ostream os(testfile, TEST_STREAM_FLAGS);
         test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
         oa << boost::serialization::make_nvp("a", a);
@@ -84,7 +84,7 @@ test_main( int /* argc */, char* /* argv */[] )
     Derived *ta = &a;
     Derived *ta1 = NULL;
 
-    {   
+    {
         test_ostream os(testfile, TEST_STREAM_FLAGS);
         test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
         oa << boost::serialization::make_nvp("ta", ta);
@@ -97,7 +97,7 @@ test_main( int /* argc */, char* /* argv */[] )
     BOOST_CHECK(ta != ta1);
     BOOST_CHECK(*ta == *ta1);
     //BOOST_CHECK(*static_cast<Derived *>(ta) == *static_cast<Derived *>(ta1));
-    
+
     std::remove(testfile);
 
     return 0;

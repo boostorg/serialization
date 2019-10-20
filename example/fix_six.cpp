@@ -17,7 +17,7 @@ int main(int argc, char *argv[]){
     }
     std::filebuf fb;
     fb.open(
-        argv[1], 
+        argv[1],
         std::ios_base::binary | std::ios_base::in | std::ios_base::out
     );
     if(!fb.is_open()){

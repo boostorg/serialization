@@ -1,7 +1,7 @@
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // test_vector.cpp
 
-// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com . 
+// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
 // Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -14,7 +14,7 @@
 #include <cstdio> // remove
 #include <boost/config.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)
-namespace std{ 
+namespace std{
     using ::remove;
 }
 #endif
@@ -82,7 +82,7 @@ public:
 
 template<class Archive>
 inline void save_construct_data(
-    Archive & ar, 
+    Archive & ar,
     const X * x,
     const unsigned int /* file_version */
 ){
@@ -92,7 +92,7 @@ inline void save_construct_data(
 
 template<class Archive>
 inline void load_construct_data(
-    Archive & ar, 
+    Archive & ar,
     X * x,
     const unsigned int /* file_version */
 ){

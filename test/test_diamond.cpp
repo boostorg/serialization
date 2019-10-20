@@ -1,7 +1,7 @@
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // test_diamond.cpp
 
-// (C) Copyright 2002-2009 Vladimir Prus and Robert Ramey. 
+// (C) Copyright 2002-2009 Vladimir Prus and Robert Ramey.
 // Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -15,7 +15,7 @@
 #include <boost/config.hpp>
 #include <cstdio> // remove
 #if defined(BOOST_NO_STDC_NAMESPACE)
-namespace std{ 
+namespace std{
     using ::remove;
 }
 #endif
@@ -61,7 +61,7 @@ public:
 
     BOOST_SERIALIZATION_SPLIT_MEMBER()
 
-    bool operator==(const base& another) const 
+    bool operator==(const base& another) const
     {
         return i == another.i && m == another.m;
     }
@@ -69,12 +69,12 @@ public:
     virtual ~base() {};
 private:
     int i;
-    std::map<int, std::string> m;    
+    std::map<int, std::string> m;
 };
 
 // note: the default is for object tracking to be performed if and only
 // if and object of the corresponding class is anywhere serialized
-// through a pointer.  In this example, that doesn't occur so 
+// through a pointer.  In this example, that doesn't occur so
 // by default, the shared base object wouldn't normally be tracked.
 // This would leave to multiple save/load operation of the data in
 // this shared base class.  This wouldn't cause an error, but it would
@@ -106,7 +106,7 @@ public:
 };
 
 class derived2 : virtual public base {
-public:    
+public:
     template<class Archive>
     void save(Archive &ar, const unsigned int /* file_version */) const
     {
@@ -133,7 +133,7 @@ public:
     void save(Archive &ar, const unsigned int /* file_version */) const
     {
         std::cout << "Saving final\n";
-        ar << BOOST_SERIALIZATION_BASE_OBJECT_NVP(derived1);    
+        ar << BOOST_SERIALIZATION_BASE_OBJECT_NVP(derived1);
         ar << BOOST_SERIALIZATION_BASE_OBJECT_NVP(derived2);
     }
 
@@ -141,7 +141,7 @@ public:
     void load(Archive & ar, const unsigned int /* file_version */)
     {
         std::cout << "Restoring final\n";
-        ar >> BOOST_SERIALIZATION_BASE_OBJECT_NVP(derived1);  
+        ar >> BOOST_SERIALIZATION_BASE_OBJECT_NVP(derived1);
         ar >> BOOST_SERIALIZATION_BASE_OBJECT_NVP(derived2);
     }
 
@@ -155,8 +155,8 @@ test_main( int /* argc */, char* /* argv */[] )
 {
     const char * testfile = boost::archive::tmpnam(NULL);
     BOOST_REQUIRE(NULL != testfile);
-    
-    const final b(3);   
+
+    const final b(3);
     {
         test_ostream ofs(testfile, TEST_STREAM_FLAGS);
         test_oarchive oa(ofs);
@@ -183,7 +183,7 @@ test_main( int /* argc */, char* /* argv */[] )
 
     const base* bp = new final( 3 );
     {
-        test_ostream ofs(testfile);    
+        test_ostream ofs(testfile);
         test_oarchive oa(ofs);
         oa << BOOST_SERIALIZATION_NVP(bp);
     }

@@ -14,7 +14,7 @@
 #include "simple_log_archive.hpp"
 
 int main(int argc, char *argv[])
-{   
+{
     // make the schedule
     bus_schedule schedule;
 

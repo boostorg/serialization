@@ -1,7 +1,7 @@
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // test_unique_ptr.cpp
 
-// (C) Copyright 2002-14 Robert Ramey - http://www.rrsd.com . 
+// (C) Copyright 2002-14 Robert Ramey - http://www.rrsd.com .
 // Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -10,7 +10,7 @@
 #include <cstdio> // remove, std::auto_ptr interface wrong in dinkumware
 #include <boost/config.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)
-namespace std{ 
+namespace std{
     using ::remove;
 }
 #endif

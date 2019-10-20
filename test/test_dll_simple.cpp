@@ -1,7 +1,7 @@
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // test_dll_simple.cpp
 
-// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com . 
+// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
 // Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -17,7 +17,7 @@
 #include <boost/config.hpp>
 
 #if defined(BOOST_NO_STDC_NAMESPACE)
-namespace std{ 
+namespace std{
     using ::remove;
 }
 #endif
@@ -40,7 +40,7 @@ test1(){
 
     const A a;
     A a1;
-    {   
+    {
         test_ostream os(testfile, TEST_STREAM_FLAGS);
         boost::archive::text_oarchive oa(os, TEST_ARCHIVE_FLAGS);
         oa << boost::serialization::make_nvp("a", a);
@@ -63,7 +63,7 @@ test2(){
 
     const A a;
     A a1;
-    {   
+    {
         test_ostream os(testfile, TEST_STREAM_FLAGS);
         boost::archive::polymorphic_text_oarchive oa(os, TEST_ARCHIVE_FLAGS);
         boost::archive::polymorphic_oarchive & poa(oa);
@@ -88,7 +88,7 @@ test3(){
 
     const A *a = new A;
     A *a1;
-    {   
+    {
         test_ostream os(testfile, TEST_STREAM_FLAGS);
         boost::archive::text_oarchive oa(os, TEST_ARCHIVE_FLAGS);
         oa << boost::serialization::make_nvp("a", a);
@@ -112,7 +112,7 @@ test4(){
 
     const A *a = new A;
     A *a1;
-    {   
+    {
         test_ostream os(testfile, TEST_STREAM_FLAGS);
         boost::archive::polymorphic_text_oarchive oa(os, TEST_ARCHIVE_FLAGS);
         boost::archive::polymorphic_oarchive & poa(oa);
@@ -140,7 +140,7 @@ test5(){
 
     const B b;
     B b1;
-    {   
+    {
         test_ostream os(testfile, TEST_STREAM_FLAGS);
         boost::archive::text_oarchive oa(os, TEST_ARCHIVE_FLAGS);
         oa << boost::serialization::make_nvp("b", b);
@@ -163,7 +163,7 @@ test6(){
 
     const B b;
     B b1;
-    {   
+    {
         test_ostream os(testfile, TEST_STREAM_FLAGS);
         boost::archive::polymorphic_text_oarchive oa(os, TEST_ARCHIVE_FLAGS);
         boost::archive::polymorphic_oarchive & poa(oa);
@@ -188,7 +188,7 @@ test7(){
 
     const B *b = new B;
     B *b1;
-    {   
+    {
         test_ostream os(testfile, TEST_STREAM_FLAGS);
         boost::archive::text_oarchive oa(os, TEST_ARCHIVE_FLAGS);
         oa << boost::serialization::make_nvp("b", b);
@@ -212,7 +212,7 @@ test8(){
 
     const B *b = new B;
     B *b1;
-    {   
+    {
         test_ostream os(testfile, TEST_STREAM_FLAGS);
         boost::archive::polymorphic_text_oarchive oa(os, TEST_ARCHIVE_FLAGS);
         boost::archive::polymorphic_oarchive & poa(oa);
@@ -231,7 +231,7 @@ test8(){
 }
 
 
-int 
+int
 test_main( int /* argc */, char* /* argv */[] )
 {
     test1();

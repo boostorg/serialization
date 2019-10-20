@@ -1,7 +1,7 @@
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // test_cyclic_ptrs.cpp
 
-// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com . 
+// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
 // Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -14,7 +14,7 @@
 #include <cstdio> // remove
 #include <boost/config.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)
-namespace std{ 
+namespace std{
     using ::remove;
 }
 #endif
@@ -62,10 +62,10 @@ bool J::operator==(const J &rhs) const
 // of those objects which it points to either directly or indirectly.
 // When those objects are subsequently serialized, it is discovered
 // that have already been serialized through pointers.  This is
-// detected by the system and an exception - pointer_conflict - 
+// detected by the system and an exception - pointer_conflict -
 // is thrown.  Permiting this to go undetected would result in the
 // creation of multiple equal objects rather than the original
-// structure.  
+// structure.
 class K
 {
     J j1;
@@ -157,7 +157,7 @@ int test3(){
     boost::archive::archive_exception exception(
         boost::archive::archive_exception::no_exception
     );
-    {   
+    {
         test_ostream os(testfile, TEST_STREAM_FLAGS);
         test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
         BOOST_TRY {

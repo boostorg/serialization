@@ -9,7 +9,7 @@
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // simple_log_archive.hpp
 
-// (C) Copyright 2010 Robert Ramey - http://www.rrsd.com . 
+// (C) Copyright 2010 Robert Ramey - http://www.rrsd.com .
 // Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -21,8 +21,8 @@
 
 #include <boost/config.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)
-namespace std{ 
-    using ::size_t; 
+namespace std{
+    using ::size_t;
 } // namespace std
 #endif
 
@@ -65,15 +65,15 @@ class simple_log_archive {
             // make sure call is routed through the highest interface that might
             // be specialized by the user.
             boost::serialization::serialize_adl(
-                ar, 
-                const_cast<T &>(t), 
+                ar,
+                const_cast<T &>(t),
                 ::boost::serialization::version< T >::value
             );
         }
     };
     template<class T>
     void save(const T &t){
-        typedef 
+        typedef
             BOOST_DEDUCED_TYPENAME boost::mpl::eval_if<boost::is_enum< T >,
                 boost::mpl::identity<save_enum_type<simple_log_archive> >,
             //else
@@ -88,7 +88,7 @@ class simple_log_archive {
                 boost::mpl::identity<save_only<simple_log_archive> >
             > >::type typex;
         typex::invoke(*this, t);
-    }    
+    }
     #ifndef BOOST_NO_STD_WSTRING
     void save(const std::wstring &ws){
         m_os << "wide string types not suported in log archive";
@@ -110,12 +110,12 @@ public:
         return 0;
     }
 
-    void 
+    void
     save_binary(const void *address, std::size_t count){
         m_os << "save_binary not implemented";
     }
 
-    // the << operators 
+    // the << operators
     template<class T>
     simple_log_archive & operator<<(T const & t){
         m_os << ' ';
@@ -151,7 +151,7 @@ public:
         return * this;
     }
 
-    // the & operator 
+    // the & operator
     template<class T>
     simple_log_archive & operator&(const T & t){
             return * this << t;

@@ -9,7 +9,7 @@
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // D.hpp
 
-// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com . 
+// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
 // Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -79,7 +79,7 @@ D::~D()
 bool D::operator==(const D &rhs) const
 {
     if(! (*b1 == *(rhs.b1)) )
-        return false;   
+        return false;
     if(! (*b2 == *(rhs.b2)) )
         return false;
     return true;

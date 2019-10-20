@@ -51,7 +51,7 @@ class gps_position
 public:
     // every serializable class needs a constructor
     gps_position(){};
-    gps_position(int _d, int _m, float _s) : 
+    gps_position(int _d, int _m, float _s) :
         degrees(_d), minutes(_m), seconds(_s)
     {}
 };
@@ -209,7 +209,7 @@ std::ostream & operator<<(std::ostream &os, const bus_route &br)
 //
 // Illustrates serialization of STL objects(pair) in a non-intrusive way.
 // See definition of operator<< <pair<F, S> >(ar, pair)
-// 
+//
 // illustrates nesting of serializable classes
 //
 // illustrates use of version number to automatically grandfather older

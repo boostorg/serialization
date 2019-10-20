@@ -1,7 +1,7 @@
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // test_non_default_ctor2.cpp
 
-// (C) Copyright 2002 Martin Ecker. 
+// (C) Copyright 2002 Martin Ecker.
 // Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -92,13 +92,13 @@ private:
     }
 };
 
-namespace boost { 
+namespace boost {
 namespace serialization {
 
 template <class ArchiveT>
 void save_construct_data(
-    ArchiveT& archive, 
-    const A* p, 
+    ArchiveT& archive,
+    const A* p,
     const unsigned int /*version*/
 ){
     archive & boost::serialization::make_nvp("initialValue", p->value);
@@ -106,8 +106,8 @@ void save_construct_data(
 
 template <class ArchiveT>
 void load_construct_data(
-    ArchiveT& archive, 
-    A* p, 
+    ArchiveT& archive,
+    A* p,
     const unsigned int /*version*/
 ){
     IntValueHolder initialValue;
@@ -125,7 +125,7 @@ int test_main( int /* argc */, char* /* argv */[] )
     BOOST_REQUIRE(NULL != testfile);
     A* a = new A(5);
 
-    {   
+    {
         test_ostream os(testfile, TEST_STREAM_FLAGS);
         test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
         oa << BOOST_SERIALIZATION_NVP(a);
