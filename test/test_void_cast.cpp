@@ -1,7 +1,7 @@
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // test_void_cast.cpp: test implementation of run-time casting of void pointers
 
-// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com . 
+// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
 // Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -64,9 +64,9 @@ test_main( int /* argc */, char* /* argv */[] )
     BOOST_CHECK(vpb1 == boost::serialization::void_upcast(
         eti<Derived>(),
         eti<Base1>(),
-        vpd  
+        vpd
     ));
-    BOOST_CHECK(vpd == boost::serialization::void_downcast(  
+    BOOST_CHECK(vpd == boost::serialization::void_downcast(
         eti<Derived>(),
         eti<Base2>(),
         vpb2
@@ -76,7 +76,7 @@ test_main( int /* argc */, char* /* argv */[] )
         eti<Base2>(),
         vpd
     ));
-    BOOST_CHECK(vpmd == boost::serialization::void_downcast(  
+    BOOST_CHECK(vpmd == boost::serialization::void_downcast(
         eti<MostDerived>(),
         eti<Derived>(),
         vpd
@@ -87,7 +87,7 @@ test_main( int /* argc */, char* /* argv */[] )
         vpmd
     ));
     // note relationship between MostDerived and Base1 is automatically derived
-    BOOST_CHECK(vpmd == boost::serialization::void_downcast(  
+    BOOST_CHECK(vpmd == boost::serialization::void_downcast(
         eti<MostDerived>(),
         eti<Base1>(),
         vpb1
@@ -99,7 +99,7 @@ test_main( int /* argc */, char* /* argv */[] )
     ));
 
     // note relationship between MostDerived and Base2 is automatically derived
-    BOOST_CHECK(vpmd == boost::serialization::void_downcast(  
+    BOOST_CHECK(vpmd == boost::serialization::void_downcast(
         eti<MostDerived>(),
         eti<Base2>(),
         vpb2
@@ -114,7 +114,7 @@ test_main( int /* argc */, char* /* argv */[] )
     // for and explanation.  These should still work though.
 
     // need to double check to validate speed up optimization of derivations
-    BOOST_CHECK(vpmd == boost::serialization::void_downcast(  
+    BOOST_CHECK(vpmd == boost::serialization::void_downcast(
         eti<MostDerived>(),
         eti<Base1>(),
         vpb1

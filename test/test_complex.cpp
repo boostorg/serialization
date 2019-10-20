@@ -1,7 +1,7 @@
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // test_complex.cpp
 
-// (C) Copyright 2005 Matthias Troyer . 
+// (C) Copyright 2005 Matthias Troyer .
 // Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -20,7 +20,7 @@
 #if defined(BOOST_NO_STDC_NAMESPACE)
 #include <boost/limits.hpp>
 namespace std{
-    using ::rand; 
+    using ::rand;
     using ::remove;
     #if BOOST_WORKAROUND(BOOST_MSVC, >= 1400) && !defined(UNDER_CE)
         using ::numeric_limits;
@@ -45,13 +45,13 @@ int test_main( int /* argc */, char* /* argv */[] )
     // test array of objects
     std::complex<float> a(
         static_cast<float>(std::rand()) / static_cast<float>(std::rand()),
-        static_cast<float>(std::rand()) / static_cast<float>(std::rand()) 
+        static_cast<float>(std::rand()) / static_cast<float>(std::rand())
     );
     std::complex<double> b(
         static_cast<double>(std::rand()) / static_cast<double>(std::rand()),
         static_cast<double>(std::rand()) / static_cast<double>(std::rand())
     );
-    {   
+    {
         test_ostream os(testfile, TEST_STREAM_FLAGS);
         test_oarchive oa(os);
         oa << boost::serialization::make_nvp("afloatcomplex", a);

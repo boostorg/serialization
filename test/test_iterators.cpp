@@ -1,7 +1,7 @@
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // test_iterators.cpp
 
-// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com . 
+// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
 // Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -18,7 +18,7 @@
 #include <boost/config.hpp>
 #ifdef BOOST_NO_STDC_NAMESPACE
 namespace std{
-    using ::rand; 
+    using ::rand;
 }
 #endif
 
@@ -93,8 +93,8 @@ void test_roundtrip(const wchar_t * la){
 
 template<class CharType>
 void test_xml_escape(
-    const CharType * xml_escaped, 
-    const CharType * xml, 
+    const CharType * xml_escaped,
+    const CharType * xml,
     unsigned int size
 ){
     typedef boost::archive::iterators::xml_escape<const CharType *> translator;
@@ -110,8 +110,8 @@ void test_xml_escape(
 
 template<class CharType>
 void test_xml_unescape(
-    const CharType * xml, 
-    const CharType * xml_escaped, 
+    const CharType * xml,
+    const CharType * xml_escaped,
     unsigned int size
 ){
 
@@ -138,7 +138,7 @@ void test_transform_width(unsigned int size){
 
     // convert 8 to 6 bit characters
     typedef boost::archive::iterators::transform_width<
-        char *, BitsOut, BitsIn 
+        char *, BitsOut, BitsIn
     > translator1;
 
     std::vector<char> vout;
@@ -180,7 +180,7 @@ void test_transform_width(unsigned int size){
 
 template<class CharType>
 void test_stream_iterators(
-    const CharType * test_data, 
+    const CharType * test_data,
     unsigned int size
 ){
     std::basic_stringstream<CharType> ss;
@@ -201,13 +201,13 @@ test_main(int /* argc */, char* /* argv */ [] )
     const char xml[] = "<+>+&+\"+'";
     const char xml_escaped[] = "&lt;+&gt;+&amp;+&quot;+&apos;";
     test_xml_escape<const char>(
-        xml_escaped, 
-        xml, 
+        xml_escaped,
+        xml,
         sizeof(xml) / sizeof(char) - 1
     );
     test_xml_unescape<const char>(
-        xml, 
-        xml_escaped, 
+        xml,
+        xml_escaped,
         sizeof(xml_escaped) / sizeof(char) - 1
     );
 
@@ -216,13 +216,13 @@ test_main(int /* argc */, char* /* argv */ [] )
     const wchar_t wxml[] = L"<+>+&+\"+'";
     const wchar_t wxml_escaped[] = L"&lt;+&gt;+&amp;+&quot;+&apos;";
     test_xml_escape<const wchar_t>(
-        wxml_escaped, 
-        wxml, 
+        wxml_escaped,
+        wxml,
         sizeof(wxml) / sizeof(wchar_t) - 1
     );
     test_xml_unescape<const wchar_t>(
-        wxml, 
-        wxml_escaped, 
+        wxml,
+        wxml_escaped,
         sizeof(wxml_escaped) / sizeof(wchar_t) - 1
     );
 

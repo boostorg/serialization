@@ -1,7 +1,7 @@
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // dll_base.cpp
 
-// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com . 
+// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
 // Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -20,7 +20,7 @@ void base::serialize(
 }
 
 // for some reason this is required at least by MSVC
-// given that its declared virtual .. = 0;  This 
+// given that its declared virtual .. = 0;  This
 // seems wrong to me but here it is.
 //polymorphic_base::~polymorphic_base(){}
 

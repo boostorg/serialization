@@ -1,20 +1,20 @@
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // demo_exception.cpp
 
-// (C) Copyright 2002-4 Robert Ramey - http://www.rrsd.com . 
+// (C) Copyright 2002-4 Robert Ramey - http://www.rrsd.com .
 // Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
 // Example of safe exception handling for pointer de-serialization
-// 
-// This example was prepared by Robert Ramey to demonstrate and test 
+//
+// This example was prepared by Robert Ramey to demonstrate and test
 // safe exception handling during the de-serialization of pointers in
 // a non-trivial example.
 //
 // Hopefully, this addresses exception issues raised by
 // Vahan Margaryan who spent considerable time and effort
-// in the analysis and testing of issues of exception safety 
+// in the analysis and testing of issues of exception safety
 // of the serialization library.
 
 #include <algorithm>
@@ -26,7 +26,7 @@
 #include <cstdio> // remove
 #include <boost/config.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)
-namespace std{ 
+namespace std{
     using ::remove;
 }
 #endif

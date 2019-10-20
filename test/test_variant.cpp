@@ -2,7 +2,7 @@
 // test_variant.cpp
 // test of non-intrusive serialization of variant types
 //
-// copyright (c) 2005   
+// copyright (c) 2005
 // troy d. straszheim <troy@resophonic.com>
 // http://www.resophonic.com
 //
@@ -21,7 +21,7 @@
 #include <boost/config.hpp>
 #include <boost/math/special_functions/next.hpp> // float_distance
 #if defined(BOOST_NO_STDC_NAMESPACE)
-namespace std{ 
+namespace std{
     using ::remove;
 }
 #endif
@@ -66,7 +66,7 @@ public:
     };
 
     template <class T, class U>
-    bool operator()( const T & t, const U & u) const 
+    bool operator()( const T & t, const U & u) const
     {
         typedef typename boost::mpl::eval_if<boost::is_same<T, U>,
             boost::mpl::identity<same>,
@@ -151,7 +151,7 @@ struct H {
 
 namespace boost {
 namespace serialization {
-        
+
 template<class Archive>
 void serialize(Archive &ar, H & h, const unsigned int /*file_version*/){
     ar & boost::serialization::make_nvp("h", h.i);

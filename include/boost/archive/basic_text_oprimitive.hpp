@@ -9,7 +9,7 @@
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // basic_text_oprimitive.hpp
 
-// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com . 
+// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
 // Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -38,7 +38,7 @@
 #endif
 
 #if defined(BOOST_NO_STDC_NAMESPACE)
-namespace std{ 
+namespace std{
     using ::size_t;
     #if ! defined(BOOST_DINKUMWARE_STDLIB) && ! defined(__SGI_STL_PORT)
         using ::locale;
@@ -142,12 +142,12 @@ protected:
 
     template<class T>
     struct is_float {
-        typedef typename mpl::bool_< 
-            boost::is_floating_point<T>::value 
+        typedef typename mpl::bool_<
+            boost::is_floating_point<T>::value
             || (std::numeric_limits<T>::is_specialized
             && !std::numeric_limits<T>::is_integer
             && !std::numeric_limits<T>::is_exact
-            && std::numeric_limits<T>::max_exponent) 
+            && std::numeric_limits<T>::max_exponent)
         >::type type;
     };
 
@@ -181,7 +181,7 @@ protected:
 
     BOOST_ARCHIVE_OR_WARCHIVE_DECL
     basic_text_oprimitive(OStream & os, bool no_codecvt);
-    BOOST_ARCHIVE_OR_WARCHIVE_DECL 
+    BOOST_ARCHIVE_OR_WARCHIVE_DECL
     ~basic_text_oprimitive();
 public:
     // unformatted append of one character
@@ -197,12 +197,12 @@ public:
         while('\0' != *s)
             os.put(*s++);
     }
-    BOOST_ARCHIVE_OR_WARCHIVE_DECL void 
+    BOOST_ARCHIVE_OR_WARCHIVE_DECL void
     save_binary(const void *address, std::size_t count);
 };
 
-} //namespace boost 
-} //namespace archive 
+} //namespace boost
+} //namespace archive
 
 #include <boost/archive/detail/abi_suffix.hpp> // pops abi_suffix.hpp pragmas
 

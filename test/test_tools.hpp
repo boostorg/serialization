@@ -12,7 +12,7 @@
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // test_tools.hpp
 //
-// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com . 
+// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
 // Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -27,7 +27,7 @@
 
 #if defined(UNDER_CE)
 
-// Windows CE does not supply the tmpnam function in its CRT. 
+// Windows CE does not supply the tmpnam function in its CRT.
 // Substitute a primitive implementation here.
 namespace boost {
 namespace archive {
@@ -45,13 +45,13 @@ namespace archive {
 
 #elif defined(_WIN32) || defined(__WIN32__) || defined(WIN32)
 // win32 has a brain-dead tmpnam implementation.
-// which leaves temp files in root directory 
+// which leaves temp files in root directory
 // regardless of environmental settings
 
 #include <cstdlib>
 #include <cstring>
 #if defined(BOOST_NO_STDC_NAMESPACE)
-namespace std{ 
+namespace std{
     using ::remove;
     using ::strcpy;
     using ::strcat;
@@ -116,9 +116,9 @@ namespace archive {
 // citing the tmpnam(3S) manpage, "the operation is not performed and a
 // NULL pointer is returned". tempnam does not have this restriction, so,
 // let's use tempnam instead.
- 
+
 #define tmpnam(X) tempnam(NULL,X)
- 
+
 namespace boost {
 namespace archive {
     using ::tmpnam;
@@ -182,7 +182,7 @@ inline void msg_impl(char const * msg, char const * file, int line, char const *
 #define BOOST_CHECKPOINT( M ) \
     BOOST_WARN_MESSAGE( true , (M) )
 
-//#define BOOST_TEST_DONT_PRINT_LOG_VALUE( T ) 
+//#define BOOST_TEST_DONT_PRINT_LOG_VALUE( T )
 
 #define BOOST_FAIL( M ) BOOST_REQUIRE_MESSAGE( false, (M) )
 #define EXIT_SUCCESS 0

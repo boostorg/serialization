@@ -1,7 +1,7 @@
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // test_shared_ptr.cpp
 
-// (C) Copyright 2002 Robert Ramey- http://www.rrsd.com - David Tonge  . 
+// (C) Copyright 2002 Robert Ramey- http://www.rrsd.com - David Tonge  .
 // Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -14,7 +14,7 @@
 
 #include <boost/config.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)
-namespace std{ 
+namespace std{
     using ::remove;
 }
 #endif
@@ -129,7 +129,7 @@ void save_and_load(SP & spa)
 
 template<class SP>
 void save2(
-    const char * testfile, 
+    const char * testfile,
     const SP & first,
     const SP & second
 ){
@@ -141,7 +141,7 @@ void save2(
 
 template<class SP>
 void load2(
-    const char * testfile, 
+    const char * testfile,
     SP & first,
     SP & second)
 {
@@ -174,7 +174,7 @@ void save_and_load2(SP & first, SP & second)
 
 template<class SP, class WP>
 void save3(
-    const char * testfile, 
+    const char * testfile,
     SP & first,
     SP & second,
     WP & third
@@ -188,7 +188,7 @@ void save3(
 
 template<class SP, class WP>
 void load3(
-    const char * testfile, 
+    const char * testfile,
     SP & first,
     SP & second,
     WP & third
@@ -275,7 +275,7 @@ bool test(){
 
         // trivial test 1
         save_and_load(spa);
-    
+
         //trivival test 2
         spa = SPT<A>(new A);
         save_and_load(spa);
@@ -295,7 +295,7 @@ bool test(){
         spa1 = spa;
         WPT<A> wp = spa;
         save_and_load3(spa, spa1, wp);
-        
+
         // obj of type B gets destroyed
         // as smart_ptr goes out of scope
     }

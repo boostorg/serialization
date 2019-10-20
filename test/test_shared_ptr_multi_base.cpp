@@ -14,7 +14,7 @@
 
 #include <boost/config.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)
-namespace std{ 
+namespace std{
     using ::remove;
 }
 #endif
@@ -82,7 +82,7 @@ struct Sub:public Base1, public Base2, public Base3 {
         Base1(x),
         Base2(x),
         m_x(x)
-    {   
+    {
         ++count;
     }
     Sub(const Sub & rhs) :
@@ -115,8 +115,8 @@ int Sub::count = 0;
 
 template <class FIRST, class SECOND>
 void save2(
-    const char * testfile, 
-    const FIRST& first, 
+    const char * testfile,
+    const FIRST& first,
     const SECOND& second
 ){
     test_ostream os(testfile, TEST_STREAM_FLAGS);
@@ -127,8 +127,8 @@ void save2(
 
 template <class FIRST, class SECOND>
 void load2(
-    const char * testfile, 
-    FIRST& first, 
+    const char * testfile,
+    FIRST& first,
     SECOND& second)
 {
     test_istream is(testfile, TEST_STREAM_FLAGS);
@@ -168,7 +168,7 @@ void shared_weak(
     const char * testfile = boost::archive::tmpnam(NULL);
     BOOST_REQUIRE(NULL != testfile);
     int firstm = first->m_x;
-    
+
     BOOST_REQUIRE(! second.expired());
     int secondm = second.lock()->m_x;
     save2(testfile, first, second);

@@ -18,7 +18,7 @@
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
 
-// track_selectivly with class information in the archive 
+// track_selectivly with class information in the archive
 // is unsafe when used with a pointer and should trigger a warning
 struct check1 {
     template<class Archive>

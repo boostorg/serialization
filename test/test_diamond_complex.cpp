@@ -15,7 +15,7 @@
 #include <boost/config.hpp>
 #include <cstdio> // remove
 #if defined(BOOST_NO_STDC_NAMESPACE)
-namespace std{ 
+namespace std{
     using ::remove;
 }
 #endif
@@ -75,7 +75,7 @@ public:
 
     BOOST_SERIALIZATION_SPLIT_MEMBER()
 
-    bool operator==(const EX1Level1& another) const 
+    bool operator==(const EX1Level1& another) const
     {
         return i == another.i && m == another.m;
     }
@@ -83,12 +83,12 @@ public:
     virtual ~EX1Level1() {};
 private:
     int i;
-    std::map<int, std::string> m;    
+    std::map<int, std::string> m;
 };
 
 // note: the default is for object tracking to be performed if and only
 // if and object of the corresponding class is anywhere serialized
-// through a pointer.  In this example, that doesn't occur so 
+// through a pointer.  In this example, that doesn't occur so
 // by default, the shared EX1Level1 object wouldn't normally be tracked.
 // This would leave to multiple save/load operation of the data in
 // this shared EX1Level1 class.  This wouldn't cause an error, but it would
@@ -120,7 +120,7 @@ public:
 };
 
 class EX1Level2_B : virtual public EX1Level1 {
-public:    
+public:
     template<class Archive>
     void save(Archive &ar, const unsigned int /* file_version */) const
     {
@@ -147,7 +147,7 @@ public:
     void save(Archive &ar, const unsigned int /* file_version */) const
     {
         std::cout << "Saving EX1Level3_A\n";
-        ar << BOOST_SERIALIZATION_BASE_OBJECT_NVP(EX1Level2_A);    
+        ar << BOOST_SERIALIZATION_BASE_OBJECT_NVP(EX1Level2_A);
         ar << BOOST_SERIALIZATION_BASE_OBJECT_NVP(EX1Level2_B);
     }
 
@@ -155,7 +155,7 @@ public:
     void load(Archive & ar, const unsigned int /* file_version */)
     {
         std::cout << "Restoring EX1Level3_A\n";
-        ar >> BOOST_SERIALIZATION_BASE_OBJECT_NVP(EX1Level2_A);  
+        ar >> BOOST_SERIALIZATION_BASE_OBJECT_NVP(EX1Level2_A);
         ar >> BOOST_SERIALIZATION_BASE_OBJECT_NVP(EX1Level2_B);
     }
 
@@ -172,7 +172,7 @@ public:
     void save(Archive &ar, const unsigned int /* file_version */) const
     {
         std::cout << "Saving EX1Level3_B\n";
-        ar << BOOST_SERIALIZATION_BASE_OBJECT_NVP(EX1Level2_A);    
+        ar << BOOST_SERIALIZATION_BASE_OBJECT_NVP(EX1Level2_A);
         ar << BOOST_SERIALIZATION_BASE_OBJECT_NVP(EX1Level2_B);
     }
 
@@ -180,7 +180,7 @@ public:
     void load(Archive & ar, const unsigned int /* file_version */)
     {
         std::cout << "Restoring EX1Level3_B\n";
-        ar >> BOOST_SERIALIZATION_BASE_OBJECT_NVP(EX1Level2_A);  
+        ar >> BOOST_SERIALIZATION_BASE_OBJECT_NVP(EX1Level2_A);
         ar >> BOOST_SERIALIZATION_BASE_OBJECT_NVP(EX1Level2_B);
     }
 
@@ -196,14 +196,14 @@ public:
     void save(Archive &ar, const unsigned int /* file_version */) const
     {
         std::cout << "Saving EX1Level4\n";
-        ar << BOOST_SERIALIZATION_BASE_OBJECT_NVP(EX1Level3_B);    
+        ar << BOOST_SERIALIZATION_BASE_OBJECT_NVP(EX1Level3_B);
     }
 
     template<class Archive>
     void load(Archive & ar, const unsigned int /* file_version */)
     {
         std::cout << "Restoring EX1Level4\n";
-        ar >> BOOST_SERIALIZATION_BASE_OBJECT_NVP(EX1Level3_B);  
+        ar >> BOOST_SERIALIZATION_BASE_OBJECT_NVP(EX1Level3_B);
     }
 
     BOOST_SERIALIZATION_SPLIT_MEMBER()
@@ -238,7 +238,7 @@ public:
 
     BOOST_SERIALIZATION_SPLIT_MEMBER()
 
-    bool operator==(const EX2Level1& another) const 
+    bool operator==(const EX2Level1& another) const
     {
         return i == another.i && m == another.m;
     }
@@ -246,12 +246,12 @@ public:
     virtual ~EX2Level1() {};
 private:
     int i;
-    std::map<int, std::string> m;    
+    std::map<int, std::string> m;
 };
 
 // note: the default is for object tracking to be performed if and only
 // if and object of the corresponding class is anywhere serialized
-// through a pointer.  In this example, that doesn't occur so 
+// through a pointer.  In this example, that doesn't occur so
 // by default, the shared EX2Level1 object wouldn't normally be tracked.
 // This would leave to multiple save/load operation of the data in
 // this shared EX2Level1 class.  This wouldn't cause an error, but it would
@@ -283,7 +283,7 @@ public:
 };
 
 class EX2Level2_B : virtual public EX2Level1 {
-public:    
+public:
     template<class Archive>
     void save(Archive &ar, const unsigned int /* file_version */) const
     {
@@ -310,7 +310,7 @@ public:
     void save(Archive &ar, const unsigned int /* file_version */) const
     {
         std::cout << "Saving EX2Level3_A\n";
-        ar << BOOST_SERIALIZATION_BASE_OBJECT_NVP(EX2Level2_A);    
+        ar << BOOST_SERIALIZATION_BASE_OBJECT_NVP(EX2Level2_A);
         ar << BOOST_SERIALIZATION_BASE_OBJECT_NVP(EX2Level2_B);
     }
 
@@ -318,7 +318,7 @@ public:
     void load(Archive & ar, const unsigned int /* file_version */)
     {
         std::cout << "Restoring EX2Level3_A\n";
-        ar >> BOOST_SERIALIZATION_BASE_OBJECT_NVP(EX2Level2_A);  
+        ar >> BOOST_SERIALIZATION_BASE_OBJECT_NVP(EX2Level2_A);
         ar >> BOOST_SERIALIZATION_BASE_OBJECT_NVP(EX2Level2_B);
     }
 
@@ -335,7 +335,7 @@ public:
     void save(Archive &ar, const unsigned int /* file_version */) const
     {
         std::cout << "Saving EX2Level3_B\n";
-        ar << BOOST_SERIALIZATION_BASE_OBJECT_NVP(EX2Level2_A);    
+        ar << BOOST_SERIALIZATION_BASE_OBJECT_NVP(EX2Level2_A);
         ar << BOOST_SERIALIZATION_BASE_OBJECT_NVP(EX2Level2_B);
     }
 
@@ -343,7 +343,7 @@ public:
     void load(Archive & ar, const unsigned int /* file_version */)
     {
         std::cout << "Restoring EX2Level3_B\n";
-        ar >> BOOST_SERIALIZATION_BASE_OBJECT_NVP(EX2Level2_A);  
+        ar >> BOOST_SERIALIZATION_BASE_OBJECT_NVP(EX2Level2_A);
         ar >> BOOST_SERIALIZATION_BASE_OBJECT_NVP(EX2Level2_B);
     }
 
@@ -359,14 +359,14 @@ public:
     void save(Archive &ar, const unsigned int /* file_version */) const
     {
         std::cout << "Saving EX2Level4\n";
-        ar << BOOST_SERIALIZATION_BASE_OBJECT_NVP(EX2Level3_B);    
+        ar << BOOST_SERIALIZATION_BASE_OBJECT_NVP(EX2Level3_B);
     }
 
     template<class Archive>
     void load(Archive & ar, const unsigned int /* file_version */)
     {
         std::cout << "Restoring EX2Level4\n";
-        ar >> BOOST_SERIALIZATION_BASE_OBJECT_NVP(EX2Level3_B);  
+        ar >> BOOST_SERIALIZATION_BASE_OBJECT_NVP(EX2Level3_B);
     }
 
     BOOST_SERIALIZATION_SPLIT_MEMBER()
@@ -383,7 +383,7 @@ test_main( int /* argc */, char* /* argv */[] )
 {
     const char * testfile = boost::archive::tmpnam(NULL);
     BOOST_REQUIRE(NULL != testfile);
-    
+
 	{
 		save_count = 0;
 		load_count = 0;
@@ -411,7 +411,7 @@ test_main( int /* argc */, char* /* argv */[] )
 		save_count = 0;
 		load_count = 0;
 
-		const EX1Level4 ex1L4_save(3);   
+		const EX1Level4 ex1L4_save(3);
 		const EX1Level1 *ex1L1_save = &ex1L4_save;
 		{
 			test_ostream ofs(testfile, TEST_STREAM_FLAGS);
@@ -457,7 +457,7 @@ test_main( int /* argc */, char* /* argv */[] )
 		save_count = 0;
 		load_count = 0;
 
-		const EX2Level4 ex2L4_save(3);   
+		const EX2Level4 ex2L4_save(3);
 		const EX2Level1 *ex2L1_save = &ex2L4_save;
 		{
 			test_ostream ofs(testfile, TEST_STREAM_FLAGS);

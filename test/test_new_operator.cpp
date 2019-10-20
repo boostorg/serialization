@@ -1,7 +1,7 @@
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // test_new_operator.cpp
 
-// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com . 
+// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
 // Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -15,7 +15,7 @@
 
 #include <boost/config.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)
-namespace std{ 
+namespace std{
     using ::remove;
 }
 #endif
@@ -37,7 +37,7 @@ public:
     static unsigned int m_new_calls;
     static unsigned int m_delete_calls;
     // implement class specific new/delete in terms standard
-    // implementation - we're testing serialization 
+    // implementation - we're testing serialization
     // not "new" here.
     static void * operator new(size_t s){
         ++m_new_calls;
@@ -61,7 +61,7 @@ public:
     static unsigned int m_new_calls;
     static unsigned int m_delete_calls;
     // implement class specific new/delete in terms standard
-    // implementation - we're testing serialization 
+    // implementation - we're testing serialization
     // not "new" here.
     static void * operator new(size_t s){
         ++m_new_calls;
@@ -86,7 +86,7 @@ public:
     static unsigned int m_new_calls;
     static unsigned int m_delete_calls;
     // implement class specific new/delete in terms standard
-    // implementation - we're testing serialization 
+    // implementation - we're testing serialization
     // not "new" here.
     static void * operator new(size_t s){
         ++m_new_calls;
@@ -99,7 +99,7 @@ unsigned int ANew2::m_delete_calls = 0;
 template<typename T>
 int test(){
     const char * testfile = boost::archive::tmpnam(NULL);
-    
+
     BOOST_REQUIRE(NULL != testfile);
 
 
@@ -110,7 +110,7 @@ int test(){
 
     T *ta1 = NULL;
 
-    {   
+    {
         test_ostream os(testfile, TEST_STREAM_FLAGS);
         test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
         oa << boost::serialization::make_nvp("ta", ta);

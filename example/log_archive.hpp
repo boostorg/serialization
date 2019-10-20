@@ -9,7 +9,7 @@
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // log_archive.hpp
 
-// (C) Copyright 2010 Robert Ramey - http://www.rrsd.com . 
+// (C) Copyright 2010 Robert Ramey - http://www.rrsd.com .
 // Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -31,7 +31,7 @@ namespace boost {
 // of text output which is useful for getting a formatted display of
 // any serializable class.  Intended to be useful as a debugging aid.
 class log_archive :
-    /* protected ? */ 
+    /* protected ? */
     public boost::archive::xml_oarchive_impl<log_archive>
 {
     typedef boost::archive::xml_oarchive_impl<log_archive> base;
@@ -72,7 +72,7 @@ class log_archive :
 public:
     log_archive(std::ostream & os, unsigned int flags = 0) :
         boost::archive::xml_oarchive_impl<log_archive>(
-            os, 
+            os,
             flags | boost::archive::no_header
         )
     {}

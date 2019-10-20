@@ -1,7 +1,7 @@
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // test_derived.cpp
 
-// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com . 
+// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
 // Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -14,7 +14,7 @@
 #include <cstdio> // remove
 #include <boost/config.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)
-namespace std{ 
+namespace std{
     using ::remove;
 }
 #endif
@@ -68,7 +68,7 @@ void save_derived(const char *testfile)
     // result. In the current type id system
     base *b1 = d1;
     base *b2 = d2;
-    
+
     // Warning, the current type id system does not yield true
     // type id for non-polymorphic types
     const boost::serialization::extended_type_info & this_type
@@ -80,7 +80,7 @@ void save_derived(const char *testfile)
             ::get_const_instance().get_derived_extended_type_info(*b1);
 
     BOOST_WARN_MESSAGE(
-        !(this_type == true_type), 
+        !(this_type == true_type),
         "current type id system does not support non-polymorphic types"
     );
 
@@ -106,7 +106,7 @@ void load_derived(const char *testfile)
     // result. In the current type id system
     base *b1 = NULL;
     base *b2 = NULL;
-    
+
     // note: this will produce incorrect results for non-polymorphic classes
     ia >> BOOST_SERIALIZATION_NVP(b1);
     ia >> BOOST_SERIALIZATION_NVP(b2);
@@ -120,9 +120,9 @@ void load_derived(const char *testfile)
     const boost::serialization::extended_type_info & true_type
         = * boost::serialization::type_info_implementation<base>::type
             ::get_const_instance().get_derived_extended_type_info(*b1);
-            
+
     BOOST_WARN_MESSAGE(
-        ! (this_type == true_type), 
+        ! (this_type == true_type),
         "current type id system does fails for non-polymorphic types"
     );
 
