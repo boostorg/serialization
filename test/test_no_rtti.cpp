@@ -1,7 +1,7 @@
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // test_no_rtti.cpp
 
-// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com . 
+// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
 // Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -10,7 +10,7 @@
 // extended typeinfo systems.  In this example, one class is
 // identified using the default RTTI while the other uses a custom
 // system based on the export key.
-// 
+//
 // As this program uses RTTI for one of the types, the test will fail
 // on a system for which RTTI is not enabled or not existent.
 
@@ -21,7 +21,7 @@
 #include <boost/config.hpp>
 #include <cstdio> // remove
 #if defined(BOOST_NO_STDC_NAMESPACE)
-namespace std{ 
+namespace std{
     using ::remove;
 }
 #endif
@@ -83,7 +83,7 @@ void load_derived(const char *testfile)
         boost::serialization::type_info_implementation<
             polymorphic_derived1
         >::type::get_const_instance()
-        == 
+        ==
         * boost::serialization::type_info_implementation<
             polymorphic_derived1
         >::type::get_const_instance().get_derived_extended_type_info(*rd1)
@@ -97,7 +97,7 @@ void load_derived(const char *testfile)
         boost::serialization::type_info_implementation<
             polymorphic_derived2
         >::type::get_const_instance()
-        == 
+        ==
         * boost::serialization::type_info_implementation<
             polymorphic_derived2
         >::type::get_const_instance().get_derived_extended_type_info(*rd2)
@@ -122,7 +122,7 @@ void load_derived(const char *testfile)
         boost::serialization::type_info_implementation<
             polymorphic_derived1
         >::type::get_const_instance()
-        == 
+        ==
         * boost::serialization::type_info_implementation<
             polymorphic_base
         >::type::get_const_instance().get_derived_extended_type_info(*rb1)
@@ -140,7 +140,7 @@ void load_derived(const char *testfile)
         boost::serialization::type_info_implementation<
             polymorphic_derived2
         >::type::get_const_instance()
-        == 
+        ==
         * boost::serialization::type_info_implementation<
             polymorphic_base
         >::type::get_const_instance().get_derived_extended_type_info(*rb2)

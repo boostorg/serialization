@@ -1,7 +1,7 @@
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // test_non_intrursive.cpp
 
-// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com . 
+// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
 // Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -22,7 +22,7 @@
 
 #if defined(BOOST_NO_STDC_NAMESPACE)
 namespace std{
-    using ::rand; 
+    using ::rand;
     using ::remove;
     #if BOOST_WORKAROUND(BOOST_MSVC, >= 1400) && !defined(UNDER_CE)
         using ::numeric_limits;
@@ -50,7 +50,7 @@ public:
     bool operator<(const A & rhs) const;
 };
 
-A::A() : 
+A::A() :
     s(static_cast<signed char>(0xff & std::rand())),
     t(static_cast<signed char>(0xff & std::rand())),
     u(std::rand()),
@@ -63,10 +63,10 @@ A::A() :
 bool A::operator==(const A &rhs) const
 {
     return
-        s == rhs.s 
-        && t == rhs.t 
-        && u == rhs.u 
-        && v == rhs.v 
+        s == rhs.s
+        && t == rhs.t
+        && u == rhs.u
+        && v == rhs.v
         && std::abs( boost::math::float_distance(w, rhs.w)) < 2
         && std::abs( boost::math::float_distance(x, rhs.x)) < 2
     ;
@@ -79,7 +79,7 @@ bool A::operator<(const A &rhs) const
     if(! (t == rhs.t) )
         return t < rhs.t;
     if(! (u == rhs.u) )
-        return t < rhs.u; 
+        return t < rhs.u;
     if(! (v == rhs.v) )
         return t < rhs.v;
     if(std::abs( boost::math::float_distance(w, rhs.w)) > 1)
@@ -93,14 +93,14 @@ bool A::operator<(const A &rhs) const
 
 // function specializations must be defined in the appropriate
 // namespace - boost::serialization
-namespace boost { 
+namespace boost {
 namespace serialization {
 
 // This first set of overrides should work with all compilers.
 
 // The last argument is int while the default versions
 // defined in serialization.hpp have long as the last argument.
-// This is part of the work around for compilers that don't 
+// This is part of the work around for compilers that don't
 // support correct function template ordering.  These functions
 // are always called with 0 (i.e. an int) as the last argument.
 // Our specialized versions also have int as the last argument
@@ -109,8 +109,8 @@ namespace serialization {
 // default ones as no argument conversion is required to make a match
 template<class Archive>
 void serialize(
-    Archive & ar, 
-    A & a, 
+    Archive & ar,
+    A & a,
     const unsigned int /* file_version */
 ){
     ar & boost::serialization::make_nvp("s", a.s);
@@ -130,7 +130,7 @@ void save(const char * testfile){
     A a;
 
     oa << BOOST_SERIALIZATION_NVP(a);
-    
+
     // save a copy pointer to this item
     A *pa1 = &a;
     oa << BOOST_SERIALIZATION_NVP(pa1);

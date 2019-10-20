@@ -1,7 +1,7 @@
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // test_iterators.cpp
 
-// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com . 
+// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
 // Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -18,8 +18,8 @@
 
 #include <boost/config.hpp>
 #ifdef BOOST_NO_STDC_NAMESPACE
-namespace std{ 
-    using ::rand; 
+namespace std{
+    using ::rand;
     using ::size_t;
 }
 #endif
@@ -45,7 +45,7 @@ void test_base64(unsigned int size){
     typedef std::list<CharType> text_base64_type;
     text_base64_type text_base64;
 
-    typedef 
+    typedef
         boost::archive::iterators::insert_linebreaks<
             boost::archive::iterators::base64_from_binary<
                 boost::archive::iterators::transform_width<
@@ -53,9 +53,9 @@ void test_base64(unsigned int size){
                     ,6
                     ,sizeof(CharType) * 8
                 >
-            > 
+            >
             ,76
-        > 
+        >
         translate_out;
 
     std::copy(
@@ -64,8 +64,8 @@ void test_base64(unsigned int size){
         std::back_inserter(text_base64)
     );
 
-    // convert from base64 to binary and compare with the original 
-    typedef 
+    // convert from base64 to binary and compare with the original
+    typedef
         boost::archive::iterators::transform_width<
             boost::archive::iterators::binary_from_base64<
                 boost::archive::iterators::remove_whitespace<
@@ -75,7 +75,7 @@ void test_base64(unsigned int size){
             sizeof(CharType) * 8,
             6
         > translate_in;
-    
+
     BOOST_CHECK(
         std::equal(
             rawdata,

@@ -28,7 +28,7 @@ restore_schedule(bus_schedule &s, const char * filename)
 }
 
 int main(int argc, char *argv[])
-{   
+{
     // make  a new schedule
     bus_schedule new_schedule;
 

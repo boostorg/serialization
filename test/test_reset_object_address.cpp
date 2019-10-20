@@ -1,7 +1,7 @@
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // test_reset_object_address.cpp
 
-// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com . 
+// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
 // Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -14,7 +14,7 @@
 #include <boost/config.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)
 namespace std{
-    using ::rand; 
+    using ::rand;
     using ::size_t;
 }
 #endif
@@ -238,8 +238,8 @@ class G {
     BOOST_SERIALIZATION_SPLIT_MEMBER()
 public:
     bool operator==(const G &rhs) const {
-        return 
-            m_a1 == rhs.m_a1 
+        return
+            m_a1 == rhs.m_a1
             && m_a2 == rhs.m_a2
             && *m_pa2 == *rhs.m_pa2;
     }
@@ -276,7 +276,7 @@ void test5(){
 }
 
 // joaquin's test - this tests the case where rest_object_address
-// is applied to an item which in fact is not tracked so that 
+// is applied to an item which in fact is not tracked so that
 // the call is in fact superfluous.
 struct foo
 {

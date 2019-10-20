@@ -15,7 +15,7 @@
 #include <cstdio> // remove
 #include <boost/config.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)
-namespace std{ 
+namespace std{
     using ::remove;
 }
 #endif
@@ -47,7 +47,7 @@ restore_schedule(bus_schedule &s, const char * filename)
 }
 
 int main(int argc, char *argv[])
-{   
+{
     // make the schedule
     bus_schedule original_schedule;
 
@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
     // display the complete schedule
     std::cout << "original schedule";
     std::cout << original_schedule;
-    
+
     std::string filename(boost::archive::tmpdir());
     filename += "/demo.xml";
 

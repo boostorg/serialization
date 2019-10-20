@@ -1,7 +1,7 @@
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // test_simple_class.cpp
 
-// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com . 
+// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
 // Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -15,8 +15,8 @@
 
 #include <cstdio> // remove
 #if defined(BOOST_NO_STDC_NAMESPACE)
-namespace std{ 
-    using ::rand; 
+namespace std{
+    using ::rand;
     using ::remove;
 }
 #endif
@@ -86,30 +86,30 @@ int test_main( int /* argc */, char* /* argv */[] )
         test_ostream os(testfile, TEST_STREAM_FLAGS);
         test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
         oa << boost::serialization::make_nvp(
-            "s1", 
+            "s1",
             boost::serialization::make_binary_object(
-                s1, 
+                s1,
                 sizeof(s1)
             )
         );
         oa << boost::serialization::make_nvp(
-            "s2", 
+            "s2",
             boost::serialization::make_binary_object(
-                s2, 
+                s2,
                 sizeof(s2)
             )
         );
         oa << boost::serialization::make_nvp(
-            "s3", 
+            "s3",
             boost::serialization::make_binary_object(
-                s3, 
+                s3,
                 sizeof(s3)
             )
         );
         oa << boost::serialization::make_nvp(
-            "s4", 
+            "s4",
             boost::serialization::make_binary_object(
-                s4, 
+                s4,
                 sizeof(s4)
             )
         );
@@ -122,30 +122,30 @@ int test_main( int /* argc */, char* /* argv */[] )
         test_istream is(testfile, TEST_STREAM_FLAGS);
         test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
         ia >> boost::serialization::make_nvp(
-            "s1", 
+            "s1",
             boost::serialization::make_binary_object(
-                s1_1, 
+                s1_1,
                 sizeof(s1)
             )
         );
         ia >> boost::serialization::make_nvp(
-            "s2", 
+            "s2",
             boost::serialization::make_binary_object(
-                s1_2, 
+                s1_2,
                 sizeof(s2)
             )
         );
         ia >> boost::serialization::make_nvp(
-            "s3", 
+            "s3",
             boost::serialization::make_binary_object(
-                s1_3, 
+                s1_3,
                 sizeof(s3)
             )
         );
         ia >> boost::serialization::make_nvp(
-            "s4", 
+            "s4",
             boost::serialization::make_binary_object(
-                s1_4, 
+                s1_4,
                 sizeof(s4)
             )
         );

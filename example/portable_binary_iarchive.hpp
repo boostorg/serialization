@@ -14,7 +14,7 @@
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // portable_binary_iarchive.hpp
 
-// (C) Copyright 2002-7 Robert Ramey - http://www.rrsd.com . 
+// (C) Copyright 2002-7 Robert Ramey - http://www.rrsd.com .
 // Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -34,7 +34,7 @@
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // exception to be thrown if integer read from archive doesn't fit
 // variable being loaded
-class portable_binary_iarchive_exception : 
+class portable_binary_iarchive_exception :
     public boost::archive::archive_exception
 {
 public:
@@ -62,13 +62,13 @@ public:
 };
 
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
-// "Portable" input binary archive.  It addresses integer size and endienness so 
+// "Portable" input binary archive.  It addresses integer size and endienness so
 // that binary archives can be passed across systems. Note:floating point types
 // not addressed here
 class portable_binary_iarchive :
     public boost::archive::basic_binary_iprimitive<
         portable_binary_iarchive,
-        std::istream::char_type, 
+        std::istream::char_type,
         std::istream::traits_type
     >,
     public boost::archive::detail::common_iarchive<
@@ -77,7 +77,7 @@ class portable_binary_iarchive :
     {
     typedef boost::archive::basic_binary_iprimitive<
         portable_binary_iarchive,
-        std::istream::char_type, 
+        std::istream::char_type,
         std::istream::traits_type
     > primitive_base_t;
     typedef boost::archive::detail::common_iarchive<
@@ -148,21 +148,21 @@ protected:
     void load(unsigned char & t){
         this->primitive_base_t::load(t);
     }
-    typedef boost::archive::detail::common_iarchive<portable_binary_iarchive> 
+    typedef boost::archive::detail::common_iarchive<portable_binary_iarchive>
         detail_common_iarchive;
     template<class T>
     void load_override(T & t){
         this->detail_common_iarchive::load_override(t);
     }
     void load_override(boost::archive::class_name_type & t);
-    // binary files don't include the optional information 
+    // binary files don't include the optional information
     void load_override(boost::archive::class_id_optional_type &){}
 
     void init(unsigned int flags);
 public:
     portable_binary_iarchive(std::istream & is, unsigned flags = 0) :
         primitive_base_t(
-            * is.rdbuf(), 
+            * is.rdbuf(),
             0 != (flags & boost::archive::no_codecvt)
         ),
         archive_base_t(flags),
@@ -173,13 +173,13 @@ public:
 
     portable_binary_iarchive(
         std::basic_streambuf<
-            std::istream::char_type, 
+            std::istream::char_type,
             std::istream::traits_type
-        > & bsb, 
+        > & bsb,
         unsigned int flags
     ) :
         primitive_base_t(
-            bsb, 
+            bsb,
             0 != (flags & boost::archive::no_codecvt)
         ),
         archive_base_t(flags),

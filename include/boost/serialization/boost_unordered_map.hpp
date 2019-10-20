@@ -10,7 +10,7 @@
 // serialization/unordered_map.hpp:
 // serialization for stl unordered_map templates
 
-// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com . 
+// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
 // (C) Copyright 2014 Jim Bell
 // Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
@@ -28,13 +28,13 @@
 #include <boost/serialization/archive_input_unordered_map.hpp>
 #include <boost/serialization/split_free.hpp>
 
-namespace boost { 
+namespace boost {
 namespace serialization {
 
 template<
-    class Archive, 
-    class Key, 
-    class HashFcn, 
+    class Archive,
+    class Key,
+    class HashFcn,
     class EqualKey,
     class Allocator
 >
@@ -44,15 +44,15 @@ inline void save(
     const unsigned int /*file_version*/
 ){
     boost::serialization::stl::save_unordered_collection<
-        Archive, 
+        Archive,
         boost::unordered_map<Key, HashFcn, EqualKey, Allocator>
     >(ar, t);
 }
 
 template<
-    class Archive, 
-    class Key, 
-    class HashFcn, 
+    class Archive,
+    class Key,
+    class HashFcn,
     class EqualKey,
     class Allocator
 >
@@ -65,7 +65,7 @@ inline void load(
         Archive,
         boost::unordered_map<Key, HashFcn, EqualKey, Allocator>,
         boost::serialization::stl::archive_input_unordered_map<
-            Archive, 
+            Archive,
             boost::unordered_map<Key, HashFcn, EqualKey, Allocator>
         >
     >(ar, t);
@@ -74,9 +74,9 @@ inline void load(
 // split non-intrusive serialization function member into separate
 // non intrusive save/load member functions
 template<
-    class Archive, 
-    class Key, 
-    class HashFcn, 
+    class Archive,
+    class Key,
+    class HashFcn,
     class EqualKey,
     class Allocator
 >
@@ -90,9 +90,9 @@ inline void serialize(
 
 // unordered_multimap
 template<
-    class Archive, 
-    class Key, 
-    class HashFcn, 
+    class Archive,
+    class Key,
+    class HashFcn,
     class EqualKey,
     class Allocator
 >
@@ -102,15 +102,15 @@ inline void save(
     const unsigned int /*file_version*/
 ){
     boost::serialization::stl::save_unordered_collection<
-        Archive, 
+        Archive,
         boost::unordered_multimap<Key, HashFcn, EqualKey, Allocator>
     >(ar, t);
 }
 
 template<
-    class Archive, 
-    class Key, 
-    class HashFcn, 
+    class Archive,
+    class Key,
+    class HashFcn,
     class EqualKey,
     class Allocator
 >
@@ -125,7 +125,7 @@ inline void load(
         Archive,
         boost::unordered_multimap<Key, HashFcn, EqualKey, Allocator>,
         boost::serialization::stl::archive_input_unordered_multimap<
-            Archive, 
+            Archive,
             boost::unordered_multimap<Key, HashFcn, EqualKey, Allocator>
         >
     >(ar, t);
@@ -134,9 +134,9 @@ inline void load(
 // split non-intrusive serialization function member into separate
 // non intrusive save/load member functions
 template<
-    class Archive, 
-    class Key, 
-    class HashFcn, 
+    class Archive,
+    class Key,
+    class HashFcn,
     class EqualKey,
     class Allocator
 >

@@ -1,7 +1,7 @@
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // test_dll_plugin.cpp
 
-// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com . 
+// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
 // Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -12,7 +12,7 @@
 // a class instance while knowing nothing more than its
 // exported class ID (GUID) and a base class from which
 // it is derived.  This is referred to as a "plugin"
-// since the same program could, without recompilation, 
+// since the same program could, without recompilation,
 // manipulate any number of derived types - even those
 // which have not been yet been created.
 
@@ -21,7 +21,7 @@
 #include <cstdio> // remove
 #include <boost/config.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)
-namespace std{ 
+namespace std{
     using ::remove;
 }
 #endif
@@ -88,7 +88,7 @@ void save_exported(const char *testfile)
     assert(NULL != rd2);
 
     // transform the pointer to a pointer to the base class
-    polymorphic_base const * const rb2 
+    polymorphic_base const * const rb2
         = static_cast<polymorphic_base const *>(
             boost::serialization::void_upcast(
                 * d2_eti,
@@ -126,7 +126,7 @@ void load_exported(const char *testfile)
     BOOST_CHECK_MESSAGE(
         boost::serialization::type_info_implementation<polymorphic_derived1>
             ::type::get_const_instance()
-        == 
+        ==
         * boost::serialization::type_info_implementation<polymorphic_base>
             ::type::get_const_instance().get_derived_extended_type_info(*rb1),
         "restored pointer b1 not of correct type"
@@ -142,7 +142,7 @@ void load_exported(const char *testfile)
 
     BOOST_CHECK_MESSAGE(
         * d2_eti
-        == 
+        ==
         * boost::serialization::type_info_implementation<polymorphic_base>
             ::type::get_const_instance().get_derived_extended_type_info(*rb2),
         "restored pointer b2 not of correct type"
@@ -167,7 +167,7 @@ test_main( int /* argc */, char* /* argv */[] )
     HINSTANCE hDLL;               // Handle to DLL
     hDLL = LoadLibrary(_T("polymorphic_derived2.dll"));
     BOOST_CHECK_MESSAGE(
-        (0 != hDLL), 
+        (0 != hDLL),
         "Failed to find/load polymorphic_derived2"
     );
     if(0 == hDLL)

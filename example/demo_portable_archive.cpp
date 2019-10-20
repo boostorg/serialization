@@ -43,8 +43,8 @@ public:
             c == rhs.c
             && i == rhs.i
             && i2 == rhs.i2
-            && ui == rhs.ui 
-            && l == rhs.l 
+            && ui == rhs.ui
+            && l == rhs.l
             && ul == rhs.ul
         ;
     }
@@ -65,7 +65,7 @@ int main( int /* argc */, char* /* argv */[] )
     A a1;
 
     std::stringstream ss;
-    {   
+    {
         portable_binary_oarchive pboa(ss);
         pboa << a;
     }
@@ -77,7 +77,7 @@ int main( int /* argc */, char* /* argv */[] )
         return 1;
 
     ss.clear();
-    {   
+    {
         portable_binary_oarchive pboa(ss, endian_big);
         pboa << a;
     }
@@ -89,7 +89,7 @@ int main( int /* argc */, char* /* argv */[] )
         return 1;
 
     ss.clear();
-    {   
+    {
         portable_binary_oarchive pboa(ss, endian_big);
         pboa << a;
     }

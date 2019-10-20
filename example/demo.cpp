@@ -26,11 +26,11 @@
 /////////////////////////////////////////////////////////////
 // The intent of this program is to serve as a tutorial for
 // users of the serialization package.  An attempt has been made
-// to illustrate most of the facilities of the package.  
+// to illustrate most of the facilities of the package.
 //
 // The intent is to create an example suffciently complete to
 // illustrate the usage and utility of the package while
-// including a minimum of other code. 
+// including a minimum of other code.
 //
 // This illustration models the bus system of a small city.
 // This includes, multiple bus stops,  bus routes and schedules.
@@ -57,7 +57,7 @@ class gps_position
 public:
     // every serializable class needs a constructor
     gps_position(){};
-    gps_position(int _d, int _m, float _s) : 
+    gps_position(int _d, int _m, float _s) :
         degrees(_d), minutes(_m), seconds(_s)
     {}
 };
@@ -147,7 +147,7 @@ class bus_stop_destination : public bus_stop
         ar & boost::serialization::base_object<bus_stop>(*this) & name;
     }
 public:
-    
+
     bus_stop_destination(){}
     bus_stop_destination(
         const gps_position & _lat, const gps_position & _long, const std::string & _name
@@ -213,7 +213,7 @@ std::ostream & operator<<(std::ostream &os, const bus_route &br)
 // Illustrates serialization of STL objects(pair) in a non-intrusive way.
 // See definition of operator<< <pair<F, S> >(ar, pair) and others in
 // serialization.hpp
-// 
+//
 // illustrates nesting of serializable classes
 //
 // illustrates use of version number to automatically grandfather older
@@ -299,7 +299,7 @@ restore_schedule(bus_schedule &s, const char * filename)
 }
 
 int main(int argc, char *argv[])
-{   
+{
     // make the schedule
     bus_schedule original_schedule;
 
@@ -351,7 +351,7 @@ int main(int argc, char *argv[])
     // display the complete schedule
     std::cout << "original schedule";
     std::cout << original_schedule;
-    
+
     std::string filename(boost::archive::tmpdir());
     filename += "/demofile.txt";
 

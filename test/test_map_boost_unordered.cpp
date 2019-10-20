@@ -1,7 +1,7 @@
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // test_map.cpp
 
-// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com . 
+// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
 // (C) Copyright 2014 Jim Bell
 // Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
@@ -19,8 +19,8 @@
 
 #include <cstdio>
 #if defined(BOOST_NO_STDC_NAMESPACE)
-namespace std{ 
-    using ::rand; 
+namespace std{
+    using ::rand;
     using ::size_t;
 }
 #endif
@@ -40,7 +40,7 @@ struct random_key {
     friend class boost::serialization::access;
     template<class Archive>
     void serialize(
-        Archive & ar, 
+        Archive & ar,
         const unsigned int /* file_version */
     ){
         ar & boost::serialization::make_nvp("random_key", m_i);
@@ -56,7 +56,7 @@ struct random_key {
     operator std::size_t () const {    // required by hash_map
         return m_i;
     }
-};  
+};
 
 #include <boost/serialization/boost_unordered_map.hpp>
 #include <functional> // requires changeset [69520]; Ticket #5254
@@ -80,7 +80,7 @@ test_unordered_map(){
     boost::unordered_map<random_key, A> anunordered_map;
     anunordered_map.insert(std::make_pair(random_key(), A()));
     anunordered_map.insert(std::make_pair(random_key(), A()));
-    {   
+    {
         test_ostream os(testfile, TEST_STREAM_FLAGS);
         test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
         oa << boost::serialization::make_nvp("anunorderedmap",anunordered_map);
@@ -111,7 +111,7 @@ test_unordered_multimap(){
     boost::unordered_multimap<random_key, A> anunordered_multimap;
     anunordered_multimap.insert(std::make_pair(random_key(), A()));
     anunordered_multimap.insert(std::make_pair(random_key(), A()));
-    {   
+    {
         test_ostream os(testfile, TEST_STREAM_FLAGS);
         test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
         oa << boost::serialization::make_nvp("anunordered_multimap", anunordered_multimap);
