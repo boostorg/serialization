@@ -27,6 +27,7 @@
 #include <boost/serialization/type_info_implementation.hpp>
 #include <boost/serialization/extended_type_info.hpp>
 #include <boost/type_traits/is_virtual_base_of.hpp>
+#include <boost/type_traits/aligned_storage.hpp>
 #include <boost/serialization/void_cast_fwd.hpp>
 
 #include <boost/serialization/config.hpp>
@@ -174,6 +175,15 @@ class BOOST_SYMBOL_VISIBLE void_caster_primitive :
 public:
     void_caster_primitive();
     virtual ~void_caster_primitive();
+
+private:
+    static std::ptrdiff_t base_offset() {
+        typename boost::aligned_storage<sizeof(Derived)>::type data;
+        return reinterpret_cast<char*>(&data)
+             - reinterpret_cast<char*>(
+                   static_cast<Base*>(
+                       reinterpret_cast<Derived*>(&data)));
+    }
 };
 
 template <class Derived, class Base>
@@ -181,14 +191,7 @@ void_caster_primitive<Derived, Base>::void_caster_primitive() :
     void_caster(
         & type_info_implementation<Derived>::type::get_const_instance(),
         & type_info_implementation<Base>::type::get_const_instance(),
-        /* note about displacement:
-         * displace 0: at least one compiler treated 0 by not shifting it at all
-         * displace by small value (8): caused ICE on certain mingw gcc versions */
-        reinterpret_cast<std::ptrdiff_t>(
-            static_cast<Derived *>(
-                reinterpret_cast<Base *>(1 << 20)
-            )
-        ) - (1 << 20)
+        base_offset()
     )
 {
     recursive_register();
