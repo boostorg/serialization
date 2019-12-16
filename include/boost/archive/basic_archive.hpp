@@ -142,7 +142,7 @@ public:
     }
 };
 
-#define NULL_POINTER_TAG boost::archive::class_id_type(-1)
+#define BOOST_SERIALIZATION_NULL_POINTER_TAG boost::archive::class_id_type(-1)
 
 class object_id_type {
 private:

@@ -427,7 +427,7 @@ basic_iarchive_impl::load_pointer(
     class_id_type cid;
     load(ar, cid);
 
-    if(NULL_POINTER_TAG == cid){
+    if(BOOST_SERIALIZATION_NULL_POINTER_TAG == cid){
         t = NULL;
         return bpis_ptr;
     }

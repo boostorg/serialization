@@ -60,12 +60,12 @@ namespace std{
 #if !defined(BOOST_MSVC) && \
     (BOOST_WORKAROUND(__IBMCPP__, < 1210) || \
     defined(__SUNPRO_CC) && (__SUNPRO_CC < 0x590))
-    #define DONT_USE_HAS_NEW_OPERATOR 1
+    #define BOOST_SERIALIZATION_DONT_USE_HAS_NEW_OPERATOR 1
 #else
-    #define DONT_USE_HAS_NEW_OPERATOR 0
+    #define BOOST_SERIALIZATION_DONT_USE_HAS_NEW_OPERATOR 0
 #endif
 
-#if ! DONT_USE_HAS_NEW_OPERATOR
+#if ! BOOST_SERIALIZATION_DONT_USE_HAS_NEW_OPERATOR
 #include <boost/type_traits/has_new_operator.hpp>
 #endif
 
@@ -208,7 +208,7 @@ BOOST_DLLEXPORT void iserializer<Archive, T>::load_object_data(
 template<class T>
 struct heap_allocation {
     // boost::has_new_operator< T > doesn't work on these compilers
-    #if DONT_USE_HAS_NEW_OPERATOR
+    #if BOOST_SERIALIZATION_DONT_USE_HAS_NEW_OPERATOR
         // This doesn't handle operator new overload for class T
         static T * invoke_new(){
             return static_cast<T *>(operator new(sizeof(T)));
