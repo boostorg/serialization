@@ -185,6 +185,7 @@ inline void save(
 template<
     class Archive,
     class Key,
+    class T,
     class HashFcn,
     class EqualKey,
     class Allocator
@@ -215,6 +216,7 @@ inline void load(
 template<
     class Archive,
     class Key,
+    class T,
     class HashFcn,
     class EqualKey,
     class Allocator
