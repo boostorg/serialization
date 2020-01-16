@@ -101,10 +101,7 @@ protected:
             0 != (flags & no_codecvt)
         ),
         basic_text_oarchive<Archive>(flags)
-    {
-        if(0 == (flags & no_header))
-            basic_text_oarchive<Archive>::init();
-    }
+    {}
 public:
     void save_binary(const void *address, std::size_t count){
         put(static_cast<wchar_t>('\n'));
@@ -135,7 +132,10 @@ class BOOST_SYMBOL_VISIBLE text_woarchive :
 public:
     text_woarchive(std::wostream & os, unsigned int flags = 0) :
         text_woarchive_impl<text_woarchive>(os, flags)
-    {}
+    {
+        if(0 == (flags & no_header))
+            init();
+    }
     ~text_woarchive(){}
 };
 

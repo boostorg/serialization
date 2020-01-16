@@ -132,7 +132,10 @@ class BOOST_SYMBOL_VISIBLE xml_wiarchive :
 public:
     xml_wiarchive(std::wistream & is, unsigned int flags = 0) :
         xml_wiarchive_impl<xml_wiarchive>(is, flags)
-    {}
+    {
+    if(0 == (flags & no_header))
+        init();
+    }
     ~xml_wiarchive(){}
 };
 

@@ -42,12 +42,16 @@ public:
         binary_oarchive_impl<
             binary_oarchive, std::ostream::char_type, std::ostream::traits_type
         >(os, flags)
-    {}
+    {
+        init(flags);
+    }
     binary_oarchive(std::streambuf & bsb, unsigned int flags = 0) :
         binary_oarchive_impl<
             binary_oarchive, std::ostream::char_type, std::ostream::traits_type
         >(bsb, flags)
-    {}
+    {
+        init(flags);
+    }
 };
 
 } // namespace archive

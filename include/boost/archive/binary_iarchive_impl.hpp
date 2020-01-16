@@ -78,9 +78,7 @@ protected:
             0 != (flags & no_codecvt)
         ),
         basic_binary_iarchive<Archive>(flags)
-    {
-        init(flags);
-    }
+    {}
     binary_iarchive_impl(
         std::basic_istream<Elem, Tr> & is,
         unsigned int flags
@@ -90,9 +88,7 @@ protected:
             0 != (flags & no_codecvt)
         ),
         basic_binary_iarchive<Archive>(flags)
-    {
-        init(flags);
-    }
+    {}
 };
 
 } // namespace archive

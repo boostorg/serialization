@@ -102,7 +102,10 @@ public:
     text_oarchive(std::ostream & os_, unsigned int flags = 0) :
         // note: added _ to suppress useless gcc warning
         text_oarchive_impl<text_oarchive>(os_, flags)
-    {}
+    {
+        if(0 == (flags & no_header))
+            init();
+    }
     ~text_oarchive(){}
 };
 

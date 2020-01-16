@@ -79,9 +79,7 @@ protected:
             0 != (flags & no_codecvt)
         ),
         basic_binary_oarchive<Archive>(flags)
-    {
-        init(flags);
-    }
+    {}
     binary_oarchive_impl(
         std::basic_ostream<Elem, Tr> & os,
         unsigned int flags
@@ -91,9 +89,7 @@ protected:
             0 != (flags & no_codecvt)
         ),
         basic_binary_oarchive<Archive>(flags)
-    {
-        init(flags);
-    }
+    {}
 };
 
 } // namespace archive

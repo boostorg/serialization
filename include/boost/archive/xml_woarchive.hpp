@@ -114,7 +114,10 @@ class BOOST_SYMBOL_VISIBLE xml_woarchive :
 public:
     xml_woarchive(std::wostream & os, unsigned int flags = 0) :
         xml_woarchive_impl<xml_woarchive>(os, flags)
-    {}
+    {
+    if(0 == (flags & no_header))
+        init();
+    }
     ~xml_woarchive(){}
 };
 

@@ -119,7 +119,10 @@ class BOOST_SYMBOL_VISIBLE text_wiarchive :
 public:
     text_wiarchive(std::wistream & is, unsigned int flags = 0) :
         text_wiarchive_impl<text_wiarchive>(is, flags)
-    {}
+    {
+        if(0 == (flags & no_header))
+            init();
+    }
     ~text_wiarchive(){}
 };
 

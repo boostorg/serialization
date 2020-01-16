@@ -120,7 +120,10 @@ class BOOST_SYMBOL_VISIBLE xml_oarchive :
 public:
     xml_oarchive(std::ostream & os, unsigned int flags = 0) :
         xml_oarchive_impl<xml_oarchive>(os, flags)
-    {}
+    {
+        if(0 == (flags & no_header))
+            init();
+    }
     ~xml_oarchive(){}
 };
 
