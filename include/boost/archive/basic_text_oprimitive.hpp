@@ -154,10 +154,11 @@ protected:
     template<class T>
     void save_impl(const T &t, boost::mpl::bool_<true> &){
         // must be a user mistake - can't serialize un-initialized data
-        if(os.fail())
+        if(os.fail()){
             boost::serialization::throw_exception(
                 archive_exception(archive_exception::output_stream_error)
             );
+        }
         // The formulae for the number of decimla digits required is given in
         // http://www2.open-std.org/JTC1/SC22/WG21/docs/papers/2005/n1822.pdf
         // which is derived from Kahan's paper:
@@ -166,9 +167,9 @@ protected:
         // note: I've commented out the above because I didn't get good results.  e.g.
         // in one case I got a difference of 19 units.
         #ifndef BOOST_NO_CXX11_NUMERIC_LIMITS
-        const unsigned int digits = std::numeric_limits<T>::max_digits10;
+            const unsigned int digits = std::numeric_limits<T>::max_digits10;
         #else
-        const unsigned int digits = std::numeric_limits<T>::digits10 + 2;
+            const unsigned int digits = std::numeric_limits<T>::digits10 + 2;
         #endif
         os << std::setprecision(digits) << std::scientific << t;
     }
