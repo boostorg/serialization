@@ -154,10 +154,11 @@ protected:
     template<class T>
     void save_impl(const T &t, boost::mpl::bool_<true> &){
         // must be a user mistake - can't serialize un-initialized data
-        if(os.fail())
+        if(os.fail()){
             boost::serialization::throw_exception(
                 archive_exception(archive_exception::output_stream_error)
             );
+        }
         // The formulae for the number of decimla digits required is given in
         // http://www2.open-std.org/JTC1/SC22/WG21/docs/papers/2005/n1822.pdf
         // which is derived from Kahan's paper:
