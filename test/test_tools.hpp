@@ -66,7 +66,7 @@ namespace std{
     #define chdir _chdir
 //#endif  // defined win32
 
-#if defined(NDEBUG) && defined(__BORLANDC__)
+#if defined(NDEBUG) && defined(BOOST_BORLANDC)
     #define STRCPY strcpy
 #else
     #define STRCPY std::strcpy

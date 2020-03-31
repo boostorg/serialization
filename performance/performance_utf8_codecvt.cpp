@@ -113,7 +113,7 @@ test_main(int /* argc */, char * /* argv */[]) {
         ofs.open("test.dat", std::ios::binary);
         std::copy(
             td::utf8_encoding,
-            #if ! defined(__BORLANDC__)
+            #if ! defined(BOOST_BORLANDC)
                 // borland 5.60 complains about this
                 td::utf8_encoding + sizeof(td::utf8_encoding) / sizeof(unsigned char),
             #else
@@ -146,7 +146,7 @@ test_main(int /* argc */, char * /* argv */[]) {
     }
 
     // compare the data read back in with the orginal
-    #if ! defined(__BORLANDC__)
+    #if ! defined(BOOST_BORLANDC)
         // borland 5.60 complains about this
         BOOST_CHECK(from_file.size() == sizeof(td::wchar_encoding)/sizeof(wchar_t));
     #else
