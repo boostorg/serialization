@@ -62,9 +62,9 @@ namespace std{
 #include <direct.h>
 #include <boost/archive/tmpdir.hpp>
 
-//#if defined(__COMO__)
+#if ! defined(BOOST_EMBTC)
     #define chdir _chdir
-//#endif  // defined win32
+#endif  // defined win32
 
 #if defined(NDEBUG) && defined(BOOST_BORLANDC)
     #define STRCPY strcpy
