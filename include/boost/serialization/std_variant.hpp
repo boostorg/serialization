@@ -174,6 +174,11 @@ inline void serialize(
     split_free(ar,v,file_version);
 }
 
+// Specialization for std::monostate
+template<class Archive>
+void serialize(Archive &ar, std::monostate &, const unsigned int /*version*/)
+{}
+
 } // namespace serialization
 } // namespace boost
 
