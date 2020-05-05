@@ -44,6 +44,7 @@ struct D                                                                        
     operator const T&() const {return t;}                                                                        \
     operator T&() {return t;}                                                                                    \
     bool operator==(const D& rhs) const {return t == rhs.t;}                                                     \
+    bool operator==(const T& rhs) const {return t == rhs;}                                                       \
     bool operator<(const D& rhs) const {return t < rhs.t;}                                                       \
 };
 
