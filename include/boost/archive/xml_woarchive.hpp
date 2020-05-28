@@ -95,7 +95,7 @@ protected:
     BOOST_WARCHIVE_DECL
     xml_woarchive_impl(std::wostream & os, unsigned int flags);
     BOOST_WARCHIVE_DECL
-    ~xml_woarchive_impl();
+    ~xml_woarchive_impl() BOOST_OVERRIDE;
 public:
     BOOST_WARCHIVE_DECL void
     save_binary(const void *address, std::size_t count);
@@ -106,7 +106,7 @@ public:
 // typedef xml_woarchive_impl<xml_woarchive_impl<...> > xml_woarchive;
 
 // do not derive from this class.  If you want to extend this functionality
-// via inhertance, derived from xml_woarchive_impl instead.  This will
+// via inheritance, derived from xml_woarchive_impl instead.  This will
 // preserve correct static polymorphism.
 class BOOST_SYMBOL_VISIBLE xml_woarchive :
     public xml_woarchive_impl<xml_woarchive>
@@ -118,7 +118,7 @@ public:
     if(0 == (flags & no_header))
         init();
     }
-    ~xml_woarchive(){}
+    ~xml_woarchive() BOOST_OVERRIDE {}
 };
 
 } // namespace archive

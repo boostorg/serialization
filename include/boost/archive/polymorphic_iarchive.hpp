@@ -116,7 +116,7 @@ public:
         load_end(t.name());
     }
 protected:
-    virtual ~polymorphic_iarchive_impl(){};
+    virtual ~polymorphic_iarchive_impl() {}
 public:
     // utility function implemented by all legal archives
     virtual void set_library_version(library_version_type archive_library_version) = 0;
@@ -156,7 +156,7 @@ class BOOST_SYMBOL_VISIBLE polymorphic_iarchive :
     public polymorphic_iarchive_impl
 {
 public:
-    virtual ~polymorphic_iarchive(){};
+    ~polymorphic_iarchive() BOOST_OVERRIDE {}
 };
 
 } // namespace archive

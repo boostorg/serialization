@@ -105,9 +105,9 @@ protected:
     BOOST_WARCHIVE_DECL void
     init();
     BOOST_WARCHIVE_DECL
-    xml_wiarchive_impl(std::wistream & is, unsigned int flags) ;
+    xml_wiarchive_impl(std::wistream & is, unsigned int flags);
     BOOST_WARCHIVE_DECL
-    ~xml_wiarchive_impl();
+    ~xml_wiarchive_impl() BOOST_OVERRIDE;
 };
 
 } // namespace archive
@@ -136,7 +136,7 @@ public:
     if(0 == (flags & no_header))
         init();
     }
-    ~xml_wiarchive(){}
+    ~xml_wiarchive() BOOST_OVERRIDE {}
 };
 
 } // namespace archive

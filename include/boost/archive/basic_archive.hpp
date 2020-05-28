@@ -42,7 +42,7 @@ private:
     typedef uint_least16_t base_type;
     base_type t;
 public:
-    library_version_type(): t(0) {};
+    library_version_type(): t(0) {}
     explicit library_version_type(const unsigned int & t_) : t(t_){
         BOOST_ASSERT(t_ <= boost::integer_traits<base_type>::const_max);
     }
@@ -78,7 +78,7 @@ private:
     base_type t;
 public:
     // should be private - but MPI fails if it's not!!!
-    version_type(): t(0) {};
+    version_type(): t(0) {}
     explicit version_type(const unsigned int & t_) : t(t_){
         BOOST_ASSERT(t_ <= boost::integer_traits<base_type>::const_max);
     }
@@ -111,7 +111,7 @@ private:
     base_type t;
 public:
     // should be private - but then can't use BOOST_STRONG_TYPE below
-    class_id_type() : t(0) {};
+    class_id_type() : t(0) {}
     explicit class_id_type(const int t_) : t(t_){
         BOOST_ASSERT(t_ <= boost::integer_traits<base_type>::const_max);
     }
@@ -149,11 +149,11 @@ private:
     typedef uint_least32_t base_type;
     base_type t;
 public:
-    object_id_type(): t(0) {};
+    object_id_type(): t(0) {}
     // note: presumes that size_t >= unsigned int.
     // use explicit cast to silence useless warning
     explicit object_id_type(const std::size_t & t_) : t(static_cast<base_type>(t_)){
-        // make quadriple sure that we haven't lost any real integer
+        // make quadruple sure that we haven't lost any real integer
         // precision
         BOOST_ASSERT(t_ <= boost::integer_traits<base_type>::const_max);
     }
@@ -188,16 +188,16 @@ struct tracking_type {
     bool t;
     explicit tracking_type(const bool t_ = false)
         : t(t_)
-    {};
+    {}
     tracking_type(const tracking_type & t_)
         : t(t_.t)
     {}
     operator bool () const {
         return t;
-    };
+    }
     operator bool & () {
         return t;
-    };
+    }
     tracking_type & operator=(const bool t_){
         t = t_;
         return *this;
