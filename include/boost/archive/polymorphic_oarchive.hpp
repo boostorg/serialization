@@ -118,7 +118,7 @@ public:
         save_end(t.name());
     }
 protected:
-    virtual ~polymorphic_oarchive_impl(){};
+    virtual ~polymorphic_oarchive_impl() {}
 public:
     // utility functions implemented by all legal archives
     virtual unsigned int get_flags() const = 0;
@@ -140,7 +140,7 @@ class BOOST_SYMBOL_VISIBLE polymorphic_oarchive :
     public polymorphic_oarchive_impl
 {
 public:
-    virtual ~polymorphic_oarchive(){};
+    ~polymorphic_oarchive() BOOST_OVERRIDE {}
 };
 
 } // namespace archive

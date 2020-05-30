@@ -52,21 +52,21 @@ class codecvt_null;
 template<>
 class codecvt_null<char> : public std::codecvt<char, char, std::mbstate_t>
 {
-    virtual bool do_always_noconv() const throw() {
+    bool do_always_noconv() const throw() BOOST_OVERRIDE {
         return true;
     }
 public:
     explicit codecvt_null(std::size_t no_locale_manage = 0) :
         std::codecvt<char, char, std::mbstate_t>(no_locale_manage)
     {}
-    virtual ~codecvt_null(){};
+    ~codecvt_null() BOOST_OVERRIDE {}
 };
 
 template<>
 class BOOST_WARCHIVE_DECL codecvt_null<wchar_t> :
     public std::codecvt<wchar_t, char, std::mbstate_t>
 {
-    virtual std::codecvt_base::result
+    std::codecvt_base::result
     do_out(
         std::mbstate_t & state,
         const wchar_t * first1,
@@ -75,8 +75,8 @@ class BOOST_WARCHIVE_DECL codecvt_null<wchar_t> :
         char * first2,
         char * last2,
         char * & next2
-    ) const;
-    virtual std::codecvt_base::result
+    ) const BOOST_OVERRIDE;
+    std::codecvt_base::result
     do_in(
         std::mbstate_t & state,
         const char * first1,
@@ -85,11 +85,11 @@ class BOOST_WARCHIVE_DECL codecvt_null<wchar_t> :
         wchar_t * first2,
         wchar_t * last2,
         wchar_t * & next2
-    ) const;
-    virtual int do_encoding( ) const throw( ){
+    ) const BOOST_OVERRIDE;
+    int do_encoding( ) const throw( ) BOOST_OVERRIDE {
         return sizeof(wchar_t) / sizeof(char);
     }
-    virtual int do_max_length( ) const throw( ){
+    int do_max_length( ) const throw( ) BOOST_OVERRIDE {
         return do_encoding();
     }
 public:
