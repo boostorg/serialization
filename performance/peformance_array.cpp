@@ -26,7 +26,7 @@ namespace std{
 // just copy over the files from the test directory
 #include BOOST_PP_STRINGIZE(BOOST_ARCHIVE_TEST)
 
-#include <boost/detail/no_exceptions_support.hpp>
+#include <boost/core/no_exceptions_support.hpp>
 #include <boost/archive/archive_exception.hpp>
 
 #include <boost/serialization/nvp.hpp>
