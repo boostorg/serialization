@@ -105,7 +105,7 @@ int test_main( int /* argc */, char* /* argv */[] ) {
         std::wofstream ofs("testfile2");
         ofs.imbue(null_locale);
         int i = 10;
-        ofs << i;
+        ofs << i << '\n';
         ofs.close();
 
         std::wifstream ifs("testfile2");

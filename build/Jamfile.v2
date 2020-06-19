@@ -53,6 +53,7 @@ rule include-spirit ( properties * )
 }
 
 SOURCES = 
+    archive_exception
     basic_archive
     basic_iarchive
     basic_iserializer
@@ -81,7 +82,6 @@ SOURCES =
     polymorphic_xml_iarchive
     polymorphic_xml_oarchive
     void_cast
-    archive_exception
     xml_grammar
     xml_iarchive
     xml_oarchive

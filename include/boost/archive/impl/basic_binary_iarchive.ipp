@@ -84,7 +84,7 @@ basic_binary_iarchive<Archive>::init() {
 
     // make sure the version of the reading archive library can
     // support the format of the archive being read
-    library_version_type input_library_version;
+    boost::serialization::library_version_type input_library_version;
     //* this->This() >> input_library_version;
     {
         int v = 0;
@@ -115,7 +115,7 @@ basic_binary_iarchive<Archive>::init() {
         if(v == 0)
             v = this->This()->m_sb.sbumpc();
         #endif
-        input_library_version = static_cast<library_version_type>(v);
+        input_library_version = static_cast<boost::serialization::library_version_type>(v);
     }
     
     #if BOOST_WORKAROUND(__MWERKS__, BOOST_TESTED_AT(0x3205))

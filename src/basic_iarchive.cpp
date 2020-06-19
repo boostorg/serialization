@@ -586,7 +586,7 @@ basic_iarchive::delete_created_pointers()
     pimpl->delete_created_pointers();
 }
 
-BOOST_ARCHIVE_DECL boost::archive::library_version_type
+BOOST_ARCHIVE_DECL boost::serialization::library_version_type
 basic_iarchive::get_library_version() const{
     return pimpl->m_archive_library_version;
 }

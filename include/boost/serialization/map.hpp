@@ -43,14 +43,14 @@ template<class Archive, class Container>
 inline void load_map_collection(Archive & ar, Container &s)
 {
     s.clear();
-    const boost::archive::library_version_type library_version(
+    const boost::serialization::library_version_type library_version(
         ar.get_library_version()
     );
     // retrieve number of elements
     item_version_type item_version(0);
     collection_size_type count;
     ar >> BOOST_SERIALIZATION_NVP(count);
-    if(boost::archive::library_version_type(3) < library_version){
+    if(boost::serialization::library_version_type(3) < library_version){
         ar >> BOOST_SERIALIZATION_NVP(item_version);
     }
     typename Container::iterator hint;

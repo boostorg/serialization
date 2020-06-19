@@ -200,7 +200,6 @@ int main() {
 #include <vector>
 #include <iostream>
 
-//#include <boost/shared_ptr.hpp>
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/shared_ptr.hpp>
@@ -697,7 +696,6 @@ int main(int argc, char** argv)
 
 #elif 1
 // submitted as https://github.com/boostorg/serialization/issues/154
-#include <boost/version.hpp>
 
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
