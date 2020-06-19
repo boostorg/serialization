@@ -16,8 +16,6 @@
 
 #include <boost/config.hpp>
 
-#include <boost/archive/detail/basic_iarchive.hpp>
-
 #include <boost/optional.hpp>
 #include <boost/move/utility_core.hpp>
 
