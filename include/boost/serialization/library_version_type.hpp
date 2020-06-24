@@ -18,6 +18,7 @@
 #include <cstring> // count
 #include <boost/assert.hpp>
 #include <boost/config.hpp>
+#include <boost/cstdint.hpp>
 #include <boost/integer_traits.hpp>
 
 namespace boost {
