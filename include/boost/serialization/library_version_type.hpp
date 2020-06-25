@@ -16,6 +16,7 @@
 
 //  See http://www.boost.org for updates, documentation, and revision history.
 #include <cstring> // count
+#include <cstdint> // uint_least16_t
 #include <boost/assert.hpp>
 #include <boost/config.hpp>
 #include <boost/integer_traits.hpp>
