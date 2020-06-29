@@ -66,7 +66,7 @@ template<>
 class BOOST_SYMBOL_VISIBLE codecvt_null<wchar_t> :
     public std::codecvt<wchar_t, char, std::mbstate_t>
 {
-    std::codecvt_base::result
+    BOOST_SYMBOL_EXPORT std::codecvt_base::result
     do_out(
         std::mbstate_t & state,
         const wchar_t * first1,
@@ -77,7 +77,7 @@ class BOOST_SYMBOL_VISIBLE codecvt_null<wchar_t> :
         char * & next2
     ) const BOOST_OVERRIDE;
 
-    std::codecvt_base::result
+    BOOST_SYMBOL_EXPORT std::codecvt_base::result
     do_in(
         std::mbstate_t & state,
         const char * first1,
@@ -88,22 +88,22 @@ class BOOST_SYMBOL_VISIBLE codecvt_null<wchar_t> :
         wchar_t * & next2
     ) const BOOST_OVERRIDE;
 
-    int do_encoding( ) const throw( ) BOOST_OVERRIDE {
+    BOOST_SYMBOL_EXPORT int do_encoding( ) const throw( ) BOOST_OVERRIDE {
         return sizeof(wchar_t) / sizeof(char);
     }
 
-    bool do_always_noconv() const throw() BOOST_OVERRIDE {
+    BOOST_SYMBOL_EXPORT bool do_always_noconv() const throw() BOOST_OVERRIDE {
         return false;
     }
 
-    int do_max_length( ) const throw( ) BOOST_OVERRIDE {
+    BOOST_SYMBOL_EXPORT int do_max_length( ) const throw( ) BOOST_OVERRIDE {
         return do_encoding();
     }
 public:
-    explicit codecvt_null(std::size_t no_locale_manage = 0) :
+    BOOST_SYMBOL_EXPORT explicit codecvt_null(std::size_t no_locale_manage = 0) :
         std::codecvt<wchar_t, char, std::mbstate_t>(no_locale_manage)
     {}
-    ~codecvt_null() BOOST_OVERRIDE {};
+    BOOST_SYMBOL_EXPORT ~codecvt_null() BOOST_OVERRIDE {};
 };
 
 } // namespace archive

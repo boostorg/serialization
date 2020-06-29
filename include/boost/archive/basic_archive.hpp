@@ -36,6 +36,9 @@ namespace archive {
 BOOST_ARCHIVE_DECL boost::serialization::library_version_type
 BOOST_ARCHIVE_VERSION();
 
+// create alias in boost::archive for older user code.
+typedef boost::serialization::library_version_type library_version_type;
+
 class version_type {
 private:
     typedef uint_least32_t base_type;
