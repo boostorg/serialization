@@ -71,10 +71,10 @@ private:
     ) BOOST_OVERRIDE {
         return ArchiveImplementation::load_pointer(t, bpis_ptr, finder);
     }
-    void set_library_version(library_version_type archive_library_version) BOOST_OVERRIDE {
+    void set_library_version(boost::serialization::library_version_type archive_library_version) BOOST_OVERRIDE {
         ArchiveImplementation::set_library_version(archive_library_version);
     }
-    library_version_type get_library_version() const BOOST_OVERRIDE {
+    boost::serialization::library_version_type get_library_version() const BOOST_OVERRIDE {
         return ArchiveImplementation::get_library_version();
     }
     unsigned int get_flags() const BOOST_OVERRIDE {

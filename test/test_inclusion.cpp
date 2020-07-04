@@ -18,7 +18,6 @@
 #include <boost/serialization/tracking_enum.hpp>
 #include <boost/serialization/traits.hpp>
 #include <boost/serialization/type_info_implementation.hpp>
-#include <boost/serialization/version.hpp>
 #include <boost/serialization/singleton.hpp>
 
 struct foo

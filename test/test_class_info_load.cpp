@@ -19,7 +19,6 @@
 #include <boost/static_assert.hpp>
 #include <boost/serialization/level.hpp>
 #include <boost/serialization/tracking.hpp>
-#include <boost/serialization/version.hpp>
 #include <boost/serialization/nvp.hpp>
 
 class A

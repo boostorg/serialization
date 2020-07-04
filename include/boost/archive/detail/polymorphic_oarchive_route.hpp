@@ -138,7 +138,7 @@ private:
         ArchiveImplementation::save(t);
     }
     #endif
-    library_version_type get_library_version() const BOOST_OVERRIDE {
+    boost::serialization::library_version_type get_library_version() const BOOST_OVERRIDE {
         return ArchiveImplementation::get_library_version();
     }
     unsigned int get_flags() const BOOST_OVERRIDE {

@@ -84,9 +84,9 @@ BOOST_ARCHIVE_SIGNATURE(){
 //     init() called from base wrote archive header before archive
 //     was fully constructed.
 
-BOOST_SYMBOL_VISIBLE library_version_type
+BOOST_SYMBOL_VISIBLE boost::serialization::library_version_type
 BOOST_ARCHIVE_VERSION(){
-    return library_version_type(18);
+    return boost::serialization::library_version_type(18);
 }
 
 } // namespace archive

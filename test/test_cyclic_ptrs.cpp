@@ -23,7 +23,6 @@ namespace std{
 #include <boost/core/no_exceptions_support.hpp>
 
 #include <boost/serialization/nvp.hpp>
-#include <boost/serialization/version.hpp>
 #include <boost/serialization/base_object.hpp>
 
 #include "A.hpp"

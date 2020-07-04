@@ -24,7 +24,7 @@
 #include <boost/config.hpp>
 #include <boost/serialization/force_include.hpp>
 #include <boost/archive/detail/auto_link_archive.hpp>
-#include <boost/archive/detail/abi_prefix.hpp> // must be the last header
+//#include <boost/archive/detail/abi_prefix.hpp> // must be the last header
 
 #if defined(BOOST_NO_STDC_NAMESPACE)
 namespace std {
@@ -63,10 +63,10 @@ public:
 };
 
 template<>
-class BOOST_WARCHIVE_DECL codecvt_null<wchar_t> :
+class BOOST_SYMBOL_VISIBLE codecvt_null<wchar_t> :
     public std::codecvt<wchar_t, char, std::mbstate_t>
 {
-    std::codecvt_base::result
+    BOOST_SYMBOL_EXPORT std::codecvt_base::result
     do_out(
         std::mbstate_t & state,
         const wchar_t * first1,
@@ -76,7 +76,8 @@ class BOOST_WARCHIVE_DECL codecvt_null<wchar_t> :
         char * last2,
         char * & next2
     ) const BOOST_OVERRIDE;
-    std::codecvt_base::result
+
+    BOOST_SYMBOL_EXPORT std::codecvt_base::result
     do_in(
         std::mbstate_t & state,
         const char * first1,
@@ -86,17 +87,23 @@ class BOOST_WARCHIVE_DECL codecvt_null<wchar_t> :
         wchar_t * last2,
         wchar_t * & next2
     ) const BOOST_OVERRIDE;
-    int do_encoding( ) const throw( ) BOOST_OVERRIDE {
+
+    BOOST_SYMBOL_EXPORT int do_encoding( ) const throw( ) BOOST_OVERRIDE {
         return sizeof(wchar_t) / sizeof(char);
     }
-    int do_max_length( ) const throw( ) BOOST_OVERRIDE {
+
+    BOOST_SYMBOL_EXPORT bool do_always_noconv() const throw() BOOST_OVERRIDE {
+        return false;
+    }
+
+    BOOST_SYMBOL_EXPORT int do_max_length( ) const throw( ) BOOST_OVERRIDE {
         return do_encoding();
     }
 public:
-    explicit codecvt_null(std::size_t no_locale_manage = 0) :
+    BOOST_SYMBOL_EXPORT explicit codecvt_null(std::size_t no_locale_manage = 0) :
         std::codecvt<wchar_t, char, std::mbstate_t>(no_locale_manage)
     {}
-    //virtual ~codecvt_null(){};
+    BOOST_SYMBOL_EXPORT ~codecvt_null() BOOST_OVERRIDE {};
 };
 
 } // namespace archive
@@ -105,6 +112,6 @@ public:
 #ifdef BOOST_MSVC
 #  pragma warning(pop)
 #endif
-#include <boost/archive/detail/abi_suffix.hpp> // pop pragmas
+//#include <boost/archive/detail/abi_suffix.hpp> // pop pragmas
 
 #endif //BOOST_ARCHIVE_CODECVT_NULL_HPP
