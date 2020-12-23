@@ -33,7 +33,7 @@ namespace serialization {
 
 namespace stl {
 
-// map input
+// hash_map input
 template<class Archive, class Container>
 struct archive_input_hash_map
 {
@@ -60,7 +60,7 @@ struct archive_input_hash_map
     }
 };
 
-// multimap input
+// hash_multimap input
 template<class Archive, class Container>
 struct archive_input_hash_multimap
 {
@@ -234,6 +234,11 @@ inline void serialize(
 
 } // namespace serialization
 } // namespace boost
+
+#include <boost/serialization/collection_traits.hpp>
+
+BOOST_SERIALIZATION_COLLECTION_TRAITS(BOOST_STD_EXTENSION_NAMESPACE::hash_map)
+BOOST_SERIALIZATION_COLLECTION_TRAITS(BOOST_STD_EXTENSION_NAMESPACE::hash_multimap)
 
 #endif // BOOST_HAS_HASH
 #endif // BOOST_SERIALIZATION_HASH_MAP_HPP
