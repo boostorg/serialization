@@ -7,8 +7,7 @@
 #endif
 
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
-// serialization/hash_map.hpp:
-// serialization for stl hash_map templates
+// hash_map.hpp: serialization for stl hash_map templates
 
 // (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
 // Use, modification and distribution is subject to the Boost Software
@@ -21,7 +20,7 @@
 #ifdef BOOST_HAS_HASH
 #include BOOST_HASH_MAP_HEADER
 
-#include <boost/serialization/utility.hpp>
+#include <boost/serialization/utility.hpp> // pair
 #include <boost/serialization/hash_collections_save_imp.hpp>
 #include <boost/serialization/hash_collections_load_imp.hpp>
 #include <boost/serialization/split_free.hpp>
@@ -234,11 +233,6 @@ inline void serialize(
 
 } // namespace serialization
 } // namespace boost
-
-#include <boost/serialization/collection_traits.hpp>
-
-BOOST_SERIALIZATION_COLLECTION_TRAITS(BOOST_STD_EXTENSION_NAMESPACE::hash_map)
-BOOST_SERIALIZATION_COLLECTION_TRAITS(BOOST_STD_EXTENSION_NAMESPACE::hash_multimap)
 
 #endif // BOOST_HAS_HASH
 #endif // BOOST_SERIALIZATION_HASH_MAP_HPP

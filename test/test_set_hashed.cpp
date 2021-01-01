@@ -17,25 +17,19 @@
 #include <vector>
 
 #include <boost/config.hpp>
-#if defined(BOOST_NO_STDC_NAMESPACE)
-namespace std{
-    using ::size_t;
-}
-#endif
 
 #include <boost/detail/workaround.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)
 namespace std{
     using ::remove;
+    using ::size_t;
 }
 #endif
-
-#include <boost/archive/archive_exception.hpp>
 
 #include "test_tools.hpp"
 
 #include <boost/serialization/nvp.hpp>
-#include <boost/serialization/set.hpp>
+#include <boost/serialization/hash_set.hpp>
 
 #include "A.hpp"
 #include "A.ipp"
