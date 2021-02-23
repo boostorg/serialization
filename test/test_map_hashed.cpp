@@ -9,18 +9,20 @@
 
 // should pass compilation and execution
 
+#include <cstddef> // NULL, size_t
+#include <cstdio> // remove
+#include <fstream>
+
 #include <algorithm> // std::copy
 #include <vector>
-#include <fstream>
-#include <cstddef> // size_t, NULL
 
 #include <boost/config.hpp>
-#include <boost/detail/workaround.hpp>
 
-#include <cstdio>
+#include <boost/detail/workaround.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)
 namespace std{
     using ::rand;
+    using ::remove;
     using ::size_t;
 }
 #endif
@@ -28,10 +30,16 @@ namespace std{
 #include "test_tools.hpp"
 
 #include <boost/serialization/nvp.hpp>
-#include <boost/serialization/map.hpp>
+#include <boost/serialization/hash_map.hpp>
 
 #include "A.hpp"
 #include "A.ipp"
+
+#ifndef BOOST_HAS_HASH
+#error "BOOST_HAS_HASH not defined!"
+#endif
+
+#include BOOST_HASH_MAP_HEADER
 
 ///////////////////////////////////////////////////////
 // a key value initialized with a random value for use
@@ -57,8 +65,6 @@ struct random_key {
         return m_i;
     }
 };
-
-#include <boost/serialization/hash_map.hpp>
 
 namespace BOOST_STD_EXTENSION_NAMESPACE {
     template<>
