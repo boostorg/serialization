@@ -6,12 +6,16 @@
 # pragma once
 #pragma inline_depth(255)
 #pragma inline_recursion(on)
-#endif
 
-#if defined(__MWERKS__)
+#elseif defined(__MWERKS__)
 #pragma inline_depth(255)
-#endif
 
+#elseif defined(__clang__)
+
+#else
+#pragma inline_depth(255)
+#pragma inline_recursion(on)
+#endif
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // oserializer.hpp: interface for serialization system.
 
