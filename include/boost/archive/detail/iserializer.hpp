@@ -7,14 +7,18 @@
 #pragma inline_depth(255)
 #pragma inline_recursion(on)
 
-#elseif defined(__MWERKS__)
+#else
+#if defined(__MWERKS__)
 #pragma inline_depth(255)
 
-#elseif defined(__clang__)
+#else
+#if defined(__clang__)
 
 #else
 #pragma inline_depth(255)
 #pragma inline_recursion(on)
+#endif
+#endif
 #endif
 
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
