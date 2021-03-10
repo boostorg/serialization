@@ -11,13 +11,6 @@
 #if defined(__MWERKS__)
 #pragma inline_depth(255)
 
-#else
-#if defined(__clang__)
-
-#else
-#pragma inline_depth(255)
-#pragma inline_recursion(on)
-#endif
 #endif
 #endif
 
