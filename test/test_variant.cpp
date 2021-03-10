@@ -82,7 +82,7 @@ public:
     bool operator()( const float & lhs, const float & rhs ) const
     {
         #if BOOST_CXX_VERSION > 199711L // only include floating point if C++ version >= C++11
-        return std::abs( boost::math::float_distance(w, rhs.w) ) < 2;
+        return std::abs( boost::math::float_distance(w, rhs) ) < 2;
         #else
         return true;
         #endif
@@ -90,7 +90,7 @@ public:
     bool operator()( const double & lhs, const double & rhs ) const
     {
         #if BOOST_CXX_VERSION > 199711L // only include floating point if C++ version >= C++11
-        return std::abs( boost::math::float_distance(w, rhs.w) ) < 2;
+        return std::abs( boost::math::float_distance(w, rhs) ) < 2;
         #else
         return true;
         #endif

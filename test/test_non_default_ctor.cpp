@@ -102,7 +102,7 @@ bool A::operator==(const A &rhs) const
         && v == rhs.v
         #if BOOST_CXX_VERSION > 199711L // only include floating point if C++ version >= C++11
             && std::abs( boost::math::float_distance(w, rhs.w)) < 2
-            && std::abs( boost::math::float_distance(x, rhs.x)) < 2
+            && std::abs( boost::math::float_distance(x, rhs.w)) < 2
         #endif
         ;
 }
