@@ -113,8 +113,8 @@ else()
   target_compile_definitions(boost_wserialization PUBLIC BOOST_SERIALIZATION_STATIC_LINK)
 endif()
 
-if(COMMAND boost_install)
-  boost_install(TARGETS boost_wserialization)
+if(BOOST_SUPERPROJECT_VERSION)
+  boost_install(TARGETS boost_serialization boost_wserialization VERSION ${BOOST_SUPERPROJECT_VERSION} HEADER_DIRECTORY include)
 endif()
 
 if(BUILD_TESTING AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/test/CMakeLists.txt")
@@ -122,4 +122,3 @@ if(BUILD_TESTING AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/test/CMakeLists.txt")
   add_subdirectory(test)
 
 endif()
-
