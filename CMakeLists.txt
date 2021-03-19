@@ -113,7 +113,7 @@ else()
   target_compile_definitions(boost_wserialization PUBLIC BOOST_SERIALIZATION_STATIC_LINK)
 endif()
 
-if(BOOST_SUPERPROJECT_VERSION)
+if(BOOST_SUPERPROJECT_VERSION AND NOT CMAKE_VERSION VERSION_LESS 3.13)
   boost_install(TARGETS boost_serialization boost_wserialization VERSION ${BOOST_SUPERPROJECT_VERSION} HEADER_DIRECTORY include)
 endif()
 
