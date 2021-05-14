@@ -18,8 +18,12 @@
 #include <cstddef> // NULL
 #include <cstdio> // remove
 #include <fstream>
+
 #include <boost/config.hpp>
-#include <boost/math/special_functions/next.hpp> // float_distance
+#if BOOST_CXX_VERSION > 199711L // only include floating point if C++ version >= C++11
+#include <boost/math/special_functions/next.hpp>
+#endif
+
 #if defined(BOOST_NO_STDC_NAMESPACE)
 namespace std{
     using ::remove;
@@ -77,11 +81,19 @@ public:
 
     bool operator()( const float & lhs, const float & rhs ) const
     {
-        return std::abs( boost::math::float_distance(lhs, rhs)) < 2;
+        #if BOOST_CXX_VERSION > 199711L // only include floating point if C++ version >= C++11
+        return std::abs( boost::math::float_distance(lhs, rhs) ) < 2;
+        #else
+        return true;
+        #endif
     }
     bool operator()( const double & lhs, const double & rhs ) const
     {
-        return std::abs( boost::math::float_distance(lhs, rhs)) < 2;
+        #if BOOST_CXX_VERSION > 199711L // only include floating point if C++ version >= C++11
+        return std::abs( boost::math::float_distance(lhs, rhs) ) < 2;
+        #else
+        return true;
+        #endif
     }
 };
 

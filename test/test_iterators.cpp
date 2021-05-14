@@ -186,6 +186,7 @@ void test_stream_iterators(
     boost::archive::iterators::ostream_iterator<CharType> osi =
         boost::archive::iterators::ostream_iterator<CharType>(ss);
     std::copy(test_data, test_data + size, osi);
+    ss.flush();
 
     BOOST_CHECK(size == ss.str().size());
 

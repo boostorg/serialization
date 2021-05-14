@@ -15,7 +15,9 @@
 #include <cstdio> // remove
 #include <boost/config.hpp>
 #include <boost/detail/workaround.hpp>
+#if BOOST_CXX_VERSION > 199711L // only include floating point if C++ version >= C++11
 #include <boost/math/special_functions/next.hpp>
+#endif
 
 #if defined(BOOST_NO_STDC_NAMESPACE)
 #include <boost/limits.hpp>
@@ -66,14 +68,16 @@ int test_main( int /* argc */, char* /* argv */[] )
         ia >> boost::serialization::make_nvp("adoublecomplex", b1);
     }
 
-    std::cerr << "a.real()-a1a.real() distance = " << std::abs( boost::math::float_distance(a.real(), a1.real())) << std::endl;
-    BOOST_CHECK(std::abs(boost::math::float_distance(a.real(), a1.real())) < 2);
-    std::cerr << "a.imag() - a1a.imag() distance = " << std::abs( boost::math::float_distance(a.imag(), a1.imag())) << std::endl;
-    BOOST_CHECK(std::abs(boost::math::float_distance(a.imag(), a1.imag())) < 2);
-    std::cerr << "b.real() - b1.real() distance = " << std::abs( boost::math::float_distance(b.real(), b1.real())) << std::endl;
-    BOOST_CHECK(std::abs(boost::math::float_distance(b.real(), b1.real())) < 2);
-    std::cerr << "b.imag() - b1.imag() distance = " << std::abs( boost::math::float_distance(b.imag(), b1.imag())) << std::endl;
-    BOOST_CHECK(std::abs(boost::math::float_distance(b.imag(), b1.imag())) < 2);
+    #if BOOST_CXX_VERSION > 199711L // only include floating point if C++ version >= C++11
+        std::cerr << "a.real()-a1a.real() distance = " << std::abs( boost::math::float_distance(a.real(), a1.real())) << std::endl;
+        BOOST_CHECK(std::abs(boost::math::float_distance(a.real(), a1.real())) < 2);
+        std::cerr << "a.imag() - a1a.imag() distance = " << std::abs( boost::math::float_distance(a.imag(), a1.imag())) << std::endl;
+        BOOST_CHECK(std::abs(boost::math::float_distance(a.imag(), a1.imag())) < 2);
+        std::cerr << "b.real() - b1.real() distance = " << std::abs( boost::math::float_distance(b.real(), b1.real())) << std::endl;
+        BOOST_CHECK(std::abs(boost::math::float_distance(b.real(), b1.real())) < 2);
+        std::cerr << "b.imag() - b1.imag() distance = " << std::abs( boost::math::float_distance(b.imag(), b1.imag())) << std::endl;
+        BOOST_CHECK(std::abs(boost::math::float_distance(b.imag(), b1.imag())) < 2);
+    #endif
 
     std::remove(testfile);
     return EXIT_SUCCESS;
