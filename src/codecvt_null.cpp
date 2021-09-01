@@ -80,12 +80,5 @@ codecvt_null<wchar_t>::do_in(
     return std::codecvt_base::ok;
 }
 
-BOOST_SYMBOL_EXPORT codecvt_null<wchar_t>::codecvt_null(std::size_t no_locale_manage) :
-    std::codecvt<wchar_t, char, std::mbstate_t>(no_locale_manage)
-{}
-
-BOOST_SYMBOL_EXPORT codecvt_null<wchar_t>::~codecvt_null()
-{}
-
 } // namespace archive
 } // namespace boost

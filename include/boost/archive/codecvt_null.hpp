@@ -100,9 +100,10 @@ class BOOST_SYMBOL_VISIBLE codecvt_null<wchar_t> :
         return do_encoding();
     }
 public:
-    BOOST_SYMBOL_EXPORT explicit codecvt_null(std::size_t no_locale_manage = 0);
-
-    BOOST_SYMBOL_EXPORT ~codecvt_null() BOOST_OVERRIDE ;
+    BOOST_SYMBOL_EXPORT explicit codecvt_null(std::size_t no_locale_manage = 0) :
+        std::codecvt<wchar_t, char, std::mbstate_t>(no_locale_manage)
+    {}
+    BOOST_SYMBOL_EXPORT ~codecvt_null() BOOST_OVERRIDE {};
 };
 
 } // namespace archive
