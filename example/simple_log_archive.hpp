@@ -91,7 +91,7 @@ class simple_log_archive {
     }
     #ifndef BOOST_NO_STD_WSTRING
     void save(const std::wstring &ws){
-        m_os << "wide string types not suported in log archive";
+        m_os << "wide string types not supported in log archive";
     }
     #endif
 
