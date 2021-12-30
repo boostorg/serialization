@@ -41,7 +41,7 @@ class must implement in order to be used to serialize
 Our discussion will focus on archives used for saving as the hierarchy is exactly analogous
 for archives used for loading data.
 
-<h4>Minimum Requirments</h4>
+<h4>Minimum Requirements</h4>
 
 The simplest class which will model the <a href="archives.html"><strong>Archive</strong></a> concept specifies the functions that a
 class will look like:
@@ -271,7 +271,7 @@ exception.
 Exhaustive testing of the library requires testing the different aspects of object
 serialization with each archive.  There are 46 different tests that can run with any archive.  
 There are 5 "standard archives" included with the system. 
-(3 in systems that don't support wide charactor i/o). 
+(3 in systems that don't support wide character i/o). 
 <p>
 In addition, there are 28 other tests which aren't related to any particular archive class.
 <p>
@@ -323,7 +323,7 @@ library_test --toolset=gcc -sBOOST_ARCHIVE_LIST=portable_binary_archive.hpp
 
 All archives described so far are implemented as templates.  Code to save and load
 data to archives is regenerated for each combination of archive class and data type.
-Under these cirumstances, a good optimizing compiler that can expand 
+Under these circumstances, a good optimizing compiler that can expand 
 <code>inline</code> functions to enough depth will generate fast code.  
 However:
 <ul>
@@ -400,7 +400,7 @@ dispatch table and there is no possibility for a compiler to <code style="white-
 archive functions.  This will result in a detectable degradation in performance for 
 saving and loading archives.
 <p>
-Note that the concept of polymophic archives is fundamentally incompatible with the
+Note that the concept of polymorphic archives is fundamentally incompatible with the
 serialization of new types that are marked "primitive" by the user with:
 <pre><code> 
 BOOST_CLASS_IMPLEMENTATION(my_primitive_type, boost::serialization::primitive_type)
@@ -408,7 +408,7 @@ BOOST_CLASS_IMPLEMENTATION(my_primitive_type, boost::serialization::primitive_ty
 
 Code to implement serialization for these types is instantiated "on the fly" in the user's program.
 But this conflicts with the whole purpose of the polymorphic archive. An attempt to
-serialize such a primitive type will result in a compilation error since the common polymorhic
+serialize such a primitive type will result in a compilation error since the common polymorphic
 interface is static and cannot instantiate code for a new type.
 
 <p>

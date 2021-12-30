@@ -49,7 +49,7 @@ the following functions
     The main function we require - <code style="white-space: normal">std::typeid()</code>
     is not available in all environments. Support for this function depends upon
     runtime typing(RTTI) support from the compiler.  This may be non-existent
-    or not enabled for reasons such as a percieved inefficiency.
+    or not enabled for reasons such as a perceived inefficiency.
   <li>
     <code style="white-space: normal">std::type_info</code> includes a string
     containing type name.  This would seem to satisfy 2) above.
@@ -133,7 +133,7 @@ Generally, there will be one and only one
 <code style="white-space: normal"><a target="extended_type_info.hpp" href = "../../../boost/serialization/extended_type_info.hpp">extended_type_info</a></code>
 instance created for each type.  However, this is enforced only at the executable
 module level.  That is, if a program includes some shared libraries or DLLS,
-there may be more than one instance of this class correponding to a particular type.
+there may be more than one instance of this class corresponding to a particular type.
 For this reason the comparison functions below can't just compare the addresses of 
 this instance but rather must be programmed to compare the actual information 
 the instances contain.
@@ -330,7 +330,7 @@ by the compiler.
 <code style="white-space: normal"><h4><a target="extended_type_info_no_rtti.hpp" href="../../../boost/serialization/extended_type_info_no_rtti.hpp">
 extended_type_info_no_rtti</a></h4></code>
 is implemented in a way that doesn't rely on the existence RTTI.
-Instead, it requires that all polymorphic types be explictly exported.
+Instead, it requires that all polymorphic types be explicitly exported.
 In addition, if the export facility is to be used to serialize types
 through base class pointers, those types are required to implement
 a virtual function with the signature:

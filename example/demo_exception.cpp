@@ -127,7 +127,7 @@ private:
 // case 1:
 template<class Archive>
 void School::serialize(Archive & ar, const unsigned int /* file_version */){
-    // if an exeception occurs while loading courses
+    // if an exception occurs while loading courses
     // the structure courses may have some courses each
     // with students
     ar & all_courses;
@@ -155,7 +155,7 @@ void School::save(Archive & ar, const unsigned int /* file_version */) const {
 
 template<class Archive>
 void School::load(Archive & ar, const unsigned int /* file_version */){
-    // if an exeception occurs while loading courses
+    // if an exception occurs while loading courses
     // the structure courses may have some courses each
     // with students
     try{
@@ -167,7 +167,7 @@ void School::load(Archive & ar, const unsigned int /* file_version */){
         ar >> all_students; // create students that have no courses
     }
     catch(std::exception){
-        // elminate any dangling references
+        // eliminate any dangling references
         all_courses.clear();
         all_students.clear();
         throw;

@@ -118,7 +118,7 @@ An example of a strong typedef is the <code>collection_size_type</code> in the
 header file
 <a href="../../../boost/serialization/collection_size_type.hpp" target="collection_size_type_hpp">
 collection_size_type.hpp
-</a>. This type should be used for serializaing the size of a C++ collection, so
+</a>. This type should be used for serializing the size of a C++ collection, so
 that the archive can pick the best integral representation for the serialization
 of collection sizes. This is necessary since, although <code>std::size_t</code>
 is guaranteed to be an integral type large enough to represent the size of
@@ -170,7 +170,7 @@ xml_oarchive & operator&(const boost::serialization::nvp<T> & t)
     end_tag(t.name());
 }
 </code></pre>
-The most obvious and convient name to assign to as the XML data item name
+The most obvious and convenient name to assign to as the XML data item name
 is - surprise! - the name of the C++ class data member.  So our serialization
 code will look like:
 <pre><code>

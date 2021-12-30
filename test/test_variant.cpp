@@ -53,8 +53,8 @@ class are_equal
     : public boost::static_visitor<bool>
 {
 public:
-    // note extra rigamorole for compilers which don't support
-    // partial function template ordering - specfically msvc 6.x
+    // note extra rigamarole for compilers which don't support
+    // partial function template ordering - specifically msvc 6.x
     struct same {
         template<class T, class U>
         static bool invoke(const T & t, const U & u){
@@ -121,7 +121,7 @@ void test_type(const T& gets_written){
 // this verifies that if you try to read in a variant from a file
 // whose "which" is illegal for the one in memory (that is, you're
 // reading in to a different variant than you wrote out to) the load()
-// operation will throw.  One could concievably add checking for
+// operation will throw.  One could conceivably add checking for
 // sequence length as well, but this would add size to the archive for
 // dubious benefit.
 //

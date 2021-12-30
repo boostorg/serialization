@@ -107,7 +107,7 @@ void load_derived(const char *testfile)
     polymorphic_base *rb1 = NULL;
     polymorphic_base *rb2 = NULL;
 
-    // the above opereration registers the derived classes as a side
+    // the above operation registers the derived classes as a side
     // effect.  Hence, instances can now be correctly serialized through
     // a base class pointer.
     std::cout << "loading polymorphic_derived1 (no_rtti) through base (no_rtti)\n";

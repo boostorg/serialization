@@ -69,7 +69,7 @@ void save_derived(const char *testfile)
     oa << BOOST_SERIALIZATION_NVP(rd1);
     oa << BOOST_SERIALIZATION_NVP(rd2);
 
-    // the above opereration registers the derived classes as a side
+    // the above operation registers the derived classes as a side
     // effect.  Hence, instances can now be correctly serialized through
     // a base class pointer.
     polymorphic_base *rb1 =  rd1;
@@ -125,7 +125,7 @@ void load_derived(const char *testfile)
     polymorphic_base *rb1 = NULL;
     polymorphic_base *rb2 = NULL;
 
-    // the above opereration registers the derived classes as a side
+    // the above operation registers the derived classes as a side
     // effect.  Hence, instances can now be correctly serialized through
     // a base class pointer.
     ia >> BOOST_SERIALIZATION_NVP(rb1);

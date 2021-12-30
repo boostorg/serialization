@@ -40,7 +40,7 @@ int main(int argc, char *argv[]){
         "Lincoln Memorial"
     );
 
-    // make a  routes
+    // make a route
     bus_route route0;
     route0.append(bs0);
     route0.append(bs1);
@@ -51,7 +51,7 @@ int main(int argc, char *argv[]){
     schedule.append("bob", 9, 57, &route0);
     schedule.append("alice", 11, 02, &route0);
 
-    // make aother routes
+    // make another route
     bus_route route1;
     route1.append(bs3);
     route1.append(bs2);

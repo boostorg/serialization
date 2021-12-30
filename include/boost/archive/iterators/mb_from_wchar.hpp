@@ -117,7 +117,7 @@ class mb_from_wchar
     bool m_full;
 
 public:
-    // make composible buy using templated constructor
+    // make composable by using templated constructor
     template<class T>
     mb_from_wchar(T start) :
         super_t(Base(static_cast< T >(start))),
