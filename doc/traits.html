@@ -387,9 +387,9 @@ file <a href="../../../boost/serialization/is_bitwise_serializable.hpp" target="
 is used:
 <pre><code>
 namespace boost { namespace serialization {
-    template<class T>
+    template&lt;class T&gt;
     struct is_bitwise_serializable
-     : public is_arithmetic<T>
+     : public is_arithmetic&lt;T&gt;
     {};
 } }
 </code></pre>
@@ -561,7 +561,7 @@ Likewise, the following code will trap at compile time:
 
 <code style="white-space: normal"><pre>
 T * t;
-ar >> t;
+ar &gt;&gt; t;
 </pre></code>
 
 if the tracking_level serialization trait is set to "track_never".
@@ -617,7 +617,7 @@ void main(){
 class K { 
     shared_ptr &lt;construct_from&gt; z; 
     template &lt;class Archive&gt; 
-    void serialize(Archive & ar, const unsigned version){ 
+    void serialize(Archive &amp; ar, const unsigned version){ 
         ar &lt;&lt; z; 
     } 
 }; 
@@ -759,18 +759,18 @@ a pointer:
 <ul>
 <li>A type doesn't save class information in the
 archive. That is, the serialization trait implementation
-level <= object_serializable.
+level &lt;= object_serializable.
 <li>Tracking for this type is set to "track selectively"
 in this case, indication that an object is tracked is
 not stored in the archive itself - see level == object_serializable.
 Since class information is not saved in the archive, the existence
-or absence of the operation ar << T * anywhere else in the 
+or absence of the operation <code style="white-space: normal">ar &lt;&lt; T *</code> anywhere else in the 
 program is used to infer that an object of this type should be tracked.
 <p>
 A problem arises when a program which reads an archive
-includes the operation ar >> T * so that tracking information
+includes the operation <code style="white-space: normal">ar &gt;&gt; T *</code> so that tracking information
 will be included in the archive. When a program which
-creates the archive doesn't include ar << T it is presumed
+creates the archive doesn't include <code style="white-space: normal">ar &lt;&lt; T</code> it is presumed
 that the archive doesn't include tracking information and
 the archive will fail to load.  Also the reverse situation could 
 trigger a similar problem.

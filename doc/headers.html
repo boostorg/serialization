@@ -364,19 +364,19 @@ archive class.
 the archive hierarchy.
 
 <pre><code>
-template<class T>
-void save_override(T & t, BOOST_PFTO int){
+template&lt;class T&gt;
+void save_override(T &amp; t, BOOST_PFTO int){
     // All for otherwise unhandled types are forwarded to the base class.
     // This emulates behavior for function overloading.
-    this->base::save_override(t, 0);
+    this-&gt;base::save_override(t, 0);
 }
-void save_override(const some_type & t, int){
+void save_override(const some_type &amp; t, int){
     // any special handling for some type
     // this will usually entail forwarding some other operation
     // in the most derived class.
-    this->This()->...
+    this-&gt;This()-&gt;...
     // or in one of its parents basic_text_oprimitive
-    this->This()->save(static_cast&lt;int&gt;(t));
+    this-&gt;This()-&gt;save(static_cast&lt;int&gt;(t));
 }
 ... // other special type handling
 </code></pre>

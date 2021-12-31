@@ -219,7 +219,7 @@ base_object.hpp
 includes the template:
 <pre><code>
 template&lt;class Base, class Derived&gt;
-Base & base_object(Derived &d);
+Base &amp; base_object(Derived &amp;d);
 </code></pre>
 which should be used to create a reference to an object of the base
 which can be used as an argument to the archive serialization operators.
@@ -755,7 +755,7 @@ can be used.
 In order to properly translate between base and derived pointers
 at runtime, the system requires each base/derived pair be found
 in a table.  A side effect of serializing a base object with
-<code style="white-space: normal">boost::serialization::base_object&lt;Base&gt;(Derived &)</code>
+<code style="white-space: normal">boost::serialization::base_object&lt;Base&gt;(Derived &amp;)</code>
 is to ensure that the base/derived pair is added to the table
 before the <code style="white-space: normal">main</code> function is entered.
 This is very convenient and results in a clean syntax.  The only
@@ -789,7 +789,7 @@ class derived : public base {
     template&lt;class Archive&gt;
     void serialize(Archive &amp; ar, const unsigned int file_version){
         // method 1 : invoke base class serialization
-        ar & boost::serialization::base_object&lt;base&gt;(*this);
+        ar &amp; boost::serialization::base_object&lt;base&gt;(*this);
         // method 2 : explicitly register base/derived relationship
         boost::serialization::void_cast_register&lt;derived, base&gt;(
             static_cast&lt;derived *&gt;(NULL),

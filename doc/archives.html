@@ -319,7 +319,7 @@ class text_oarchive : ...
     ...
 public:
     ... // implementation of the <strong>Saving Archive</strong> concept
-    text_oarchive(std::ostream & os, unsigned int flags = 0);
+    text_oarchive(std::ostream &amp; os, unsigned int flags = 0);
     ~text_oarchive();
 };
 
@@ -330,7 +330,7 @@ public:
 <dl>
 
 <dt><h4><code>
-text_oarchive(std::ostream & os, unsigned int flags = 0);
+text_oarchive(std::ostream &amp; os, unsigned int flags = 0);
 </code></h4></dt>
 <dd>
 Constructs an archive given an open <code style="white-space: normal">stream</code> as 
@@ -379,7 +379,7 @@ class text_iarchive : ...
     ...
 public:
     ... // implementation of the <strong>Loading Archive</strong> concept
-    text_iarchive(std::istream & is, unsigned int flags = 0);
+    text_iarchive(std::istream &amp; is, unsigned int flags = 0);
     ~text_iarchive();
 };
 
@@ -391,7 +391,7 @@ public:
 <dl>
 
 <dt><h4><code>
-text_iarchive(std::istream & is, unsigned int flags = 0);
+text_iarchive(std::istream &amp; is, unsigned int flags = 0);
 </code></h4></dt>
 <dd>
 Constructs an archive given an open <code style="white-space: normal">stream</code> as 
@@ -418,11 +418,11 @@ to the common class interface described above, they include the following
 constructors:
 <dl>
 <dt><h4><code>
-binary_oarchive(std::streambuf & bsb, unsigned int flags = 0);
+binary_oarchive(std::streambuf &amp; bsb, unsigned int flags = 0);
 </code></h4></dt>
 and
 <dt><h4><code>
-binary_iarchive(std::streambuf & bsb, unsigned int flags = 0);
+binary_iarchive(std::streambuf &amp; bsb, unsigned int flags = 0);
 </code></h4></dt>
 </dl>
 

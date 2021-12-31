@@ -94,12 +94,12 @@ This singleton implementation has the following features:
 namespace boost { 
 namespace serialization {
 
-template <class T>
+template &lt;class T&gt;
 class singleton : public boost::noncopyable
 {
 public:
-    static const T & get_const_instance();
-    static T & get_mutable_instance();
+    static const T &amp; get_const_instance();
+    static T &amp; get_mutable_instance();
     static bool is_destroyed();
 };
 
@@ -110,14 +110,14 @@ public:
 <dl>
 
 <dt><h4><pre><code>
-static const T & get_const_instance();
+static const T &amp; get_const_instance();
 </code></pre></h4></dt>
 <dd>
 Retrieve a constant reference to the singleton for this type.
 </dd>
 
 <dt><h4><pre><code>
-static T & get_mutable_instance();
+static T &amp; get_mutable_instance();
 </code></pre></h4></dt>
 <dd>
 Retrieve a mutable reference to the singleton for this type.

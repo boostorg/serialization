@@ -57,7 +57,7 @@ This could cause problems in
 programs where the copies of different objects are saved from the same address.
 <pre><code>
 template&lt;class Archive&gt;
-void save(boost::basic_oarchive  &amp; ar, const unsigned int version) const
+void save(boost::basic_oarchive &amp; ar, const unsigned int version) const
 {
     for(int i = 0; i &lt; 10; ++i){
         A x = a[i];
@@ -101,7 +101,7 @@ A similar problem can occur when different objects are loaded to an address
 which is different from the final location:
 <pre><code>
 template&lt;class Archive&gt;
-void load(boost::basic_oarchive  &amp; ar, const unsigned int version) const
+void load(boost::basic_oarchive &amp; ar, const unsigned int version) const
 {
     for(int i = 0; i &lt; 10; ++i){
         A x;
@@ -118,14 +118,14 @@ addressed by altering the above code thusly:
 
 <pre><code>
 template&lt;class Archive&gt;
-void load(boost::basic_iarchive  &amp; ar, const unsigned int version) const
+void load(boost::basic_iarchive &amp; ar, const unsigned int version) const
 {
     for(int i = 0; i &lt; 10; ++i){
         A x;
         ar &gt;&gt; x;
         std::pair&lt;std::set::const_iterator, bool&gt; result;
         result = std::m_set.insert(x);
-        ar.reset_object_address(& (*result.first), &x);
+        ar.reset_object_address(&amp; (*result.first), &amp;x);
     }
 }
 </code></pre>
@@ -170,7 +170,7 @@ associated to the current archive that can be used to store contextual
 information relevant to the particular type serialization algorithm.
 
 <pre><code>
-template<class T>
+template&lt;class T&gt;
 class shared_ptr
 {
    ...
@@ -182,9 +182,9 @@ class shared_ptr_serialization_helper
 {
   // table of previously loaded shared_ptr
   // lookup a shared_ptr from the object address
-  shared_ptr<T> lookup(const T *);
+  shared_ptr&lt;T&gt; lookup(const T *);
   // insert a new shared_ptr
-  void insert<shared_ptr<T> >(const shared_ptr<T> *);
+  void insert&lt;shared_ptr&lt;T&gt; &gt;(const shared_ptr&lt;T&gt; *);
 };
 
 namespace boost {
@@ -220,7 +220,7 @@ void load(Archive &amp; ar, shared_ptr &amp; x, const unsigned int /* version */
     // if found, return the one from the table
 
     // load the shared_ptr data
-    shared_ptr<T> sp = ...
+    shared_ptr&lt;T&gt; sp = ...
 
     // and add it to the table
     hlp.insert(sp);
@@ -322,7 +322,7 @@ Another potential problem is illustrated by the following example:
 template&lt;class T&gt;
 struct my_wrapper {
     template&lt;class Archive&gt;
-    Archive & serialize ...
+    Archive &amp; serialize ...
 };
 
 ...
@@ -331,9 +331,9 @@ class my_class {
     wchar_t a;
     short unsigned b;
     template&lt;class Archive&gt;
-    Archive & serialize(Archive & ar, unsigned int version){
-        ar & my_wrapper(a);
-        ar & my_wrapper(b);
+    Archive &amp; serialize(Archive &amp; ar, unsigned int version){
+        ar &amp; my_wrapper(a);
+        ar &amp; my_wrapper(b);
     }
 };
 </code></pre>
@@ -558,13 +558,13 @@ reproducible or easy to find. For class member templates use something like
 
 <pre><code>
 template&lt;class Archive&gt;
-void serialize(Archive & ar, const unsigned int version);
+void serialize(Archive &amp; ar, const unsigned int version);
 </code></pre>
 in the header, and
 
 <pre><code>
 template&lt;class Archive&gt;
-void myclass::serialize(Archive & ar, const unsigned int version){
+void myclass::serialize(Archive &amp; ar, const unsigned int version){
 	...
 }
 
@@ -572,8 +572,8 @@ BOOST_CLASS_EXPORT_IMPLEMENT(my_class)
 
 #include &lt;boost/archive/text_oarchive&gt;
 #include &lt;boost/archive/text_iarchive&gt;
-template myclass::serialize(boost::archive::text_oarchive & ar, const unsigned int version);
-template myclass::serialize(boost::archive::text_iarchive & ar, const unsigned int version);
+template myclass::serialize(boost::archive::text_oarchive &amp; ar, const unsigned int version);
+template myclass::serialize(boost::archive::text_iarchive &amp; ar, const unsigned int version);
 ... // repeat for each archive class to be used.
 </code></pre>
 in the implementation file.  This will result in generation of all code

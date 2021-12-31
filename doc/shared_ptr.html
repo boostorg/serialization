@@ -92,28 +92,28 @@ instance of <code style="white-space: normal">sp_counted_base_impl<T, ...></code
 doesn't have a default constructor, serialization requires
 specification of the following overload:
 <pre><code>
-template&lt;class Archive, class P, class D>
+template&lt;class Archive, class P, class D&gt;
 inline void save_construct_data(
     Archive &amp; ar,
-    const boost::detail::sp_counted_base_impl<P, D> * t, 
+    const boost::detail::sp_counted_base_impl&lt;P, D&gt; * t, 
     const unsigned int file_version
 ){
     // variables used for construction
-    ar &lt;&lt; t->ptr;
+    ar &lt;&lt; t-&gt;ptr;
     ar &lt;&lt; *t;
 }
 
-template<class Archive, class P, class D>
+template&lt;class Archive, class P, class D&gt;
 inline void load_construct_data(
     Archive &amp; ar,
-    boost::detail::sp_counted_base_impl<P, D> * t, 
+    boost::detail::sp_counted_base_impl&lt;P, D&gt; * t, 
     const unsigned int file_version
 ){
     P ptr_;
     ar &gt;&gt; ptr_;
     // placement new
-    ::new(t)boost::detail::sp_counted_base_impl<P, D>(ptr_,  D());
-    ar &gt;&gt;; *t;
+    ::new(t)boost::detail::sp_counted_base_impl&lt;P, D&gt;(ptr_,  D());
+    ar &gt;&gt; *t;
 }
 </code></pre>
 The statement <code style="white-space: normal">ar &gt;&gt; ptr_</code> is key. This deserializes
@@ -135,7 +135,7 @@ inline void serialize(
     const unsigned int file_version,
     int
 ){
-    ar & boost::serialization::base_object&lt;
+    ar &amp; boost::serialization::base_object&lt;
 	boost::detail::sp_counted_base
     &gt;(*this);
 }
