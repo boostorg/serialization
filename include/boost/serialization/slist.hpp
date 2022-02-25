@@ -20,8 +20,6 @@
 #ifdef BOOST_HAS_SLIST
 #include BOOST_SLIST_HEADER
 
-#include <boost/serialization/collections_save_imp.hpp>
-#include <boost/serialization/collections_load_imp.hpp>
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/collection_size_type.hpp>
 #include <boost/serialization/item_version_type.hpp>
