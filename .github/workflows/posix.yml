@@ -20,38 +20,43 @@ jobs:
         include:
           - toolset: gcc-4.7
             cxxstd: "03,11"
-            os: ubuntu-16.04
+            os: ubuntu-18.04
             install: g++-4.7
           - toolset: gcc-4.8
             cxxstd: "03,11"
-            os: ubuntu-16.04
+            os: ubuntu-18.04
             install: g++-4.8
           - toolset: gcc-4.9
             cxxstd: "03,11"
-            os: ubuntu-16.04
+            os: ubuntu-18.04
             install: g++-4.9
           - toolset: gcc-5
             cxxstd: "03,11,14,1z"
-            os: ubuntu-16.04
+            os: ubuntu-18.04
           - toolset: gcc-6
             cxxstd: "03,11,14,1z"
-            os: ubuntu-16.04
+            os: ubuntu-18.04
             install: g++-6
           - toolset: gcc-7
             cxxstd: "03,11,14,17"
             os: ubuntu-18.04
+            install: g++-7
           - toolset: gcc-8
             cxxstd: "03,11,14,17,2a"
             os: ubuntu-18.04
+            install: g++-8
           - toolset: gcc-9
             cxxstd: "03,11,14,17,2a"
             os: ubuntu-18.04
+            install: g++-9
           - toolset: gcc-10
             cxxstd: "03,11,14,17,2a"
             os: ubuntu-18.04
+            install: g++-10
           - toolset: clang
             cxxstd: "03,11,14,17,2a"
             os: ubuntu-18.04
+            install: clang
           - toolset: clang
             cxxstd: "03,11,14,17,2a"
             os: macos-11
