@@ -6,7 +6,7 @@
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
-// test of serialization library for diamond inheritence situations
+// test of serialization library for diamond inheritance situations
 
 #include <cstddef> // NULL
 #include <fstream>
@@ -80,8 +80,8 @@ private:
 // this shared base class.  This wouldn't cause an error, but it would
 // be a waste of time.  So set the tracking behavior trait of the base
 // class to always track serialized objects of that class.  This permits
-// the system to detect and elminate redundent save/load operations.
-// (It is concievable that this might someday be detected automatically
+// the system to detect and eliminate redundant save/load operations.
+// (It is conceivable that this might someday be detected automatically
 // but for now, this is not done so we have to rely on the programmer
 // to specify this trait)
 BOOST_CLASS_TRACKING(base, track_always)

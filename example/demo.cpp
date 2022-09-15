@@ -28,20 +28,20 @@
 // users of the serialization package.  An attempt has been made
 // to illustrate most of the facilities of the package.
 //
-// The intent is to create an example suffciently complete to
+// The intent is to create an example sufficiently complete to
 // illustrate the usage and utility of the package while
 // including a minimum of other code.
 //
 // This illustration models the bus system of a small city.
 // This includes, multiple bus stops,  bus routes and schedules.
-// There are different kinds of stops.  Bus stops in general will
+// There are different kinds of stops.  Bus stops in general
 // will appear on multiple routes.  A schedule will include
-// muliple trips on the same route.
+// multiple trips on the same route.
 
 /////////////////////////////////////////////////////////////
 // gps coordinate
 //
-// llustrates serialization for a simple type
+// illustrates serialization for a simple type
 //
 class gps_position
 {
@@ -162,7 +162,7 @@ public:
 //
 // illustrates serialization of STL collection templates.
 //
-// illustrates serialzation of polymorphic pointer (bus stop *);
+// illustrates serialization of polymorphic pointer (bus stop *);
 //
 // illustrates storage and recovery of shared pointers is correct
 // and efficient.  That is objects pointed to by more than one
@@ -233,7 +233,7 @@ public:
             if(file_version >= 2)
                 // read the drivers name
                 ar & driver;
-            // all versions have the follwing info
+            // all versions have the following info
             ar & hour & minute;
         }
 
@@ -326,7 +326,7 @@ int main(int argc, char *argv[])
         "Lincoln Memorial"
     );
 
-    // make a  routes
+    // make a route
     bus_route route0;
     route0.append(bs0);
     route0.append(bs1);
@@ -337,7 +337,7 @@ int main(int argc, char *argv[])
     original_schedule.append("bob", 9, 57, &route0);
     original_schedule.append("alice", 11, 02, &route0);
 
-    // make aother routes
+    // make another route
     bus_route route1;
     route1.append(bs3);
     route1.append(bs2);
@@ -359,7 +359,7 @@ int main(int argc, char *argv[])
     save_schedule(original_schedule, filename.c_str());
 
     // ... some time later
-    // make  a new schedule
+    // make a new schedule
     bus_schedule new_schedule;
 
     restore_schedule(new_schedule, filename.c_str());

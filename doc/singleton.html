@@ -51,7 +51,7 @@ requires consideration of the following issues:
   be taken to be sure that they are instantiated</li>
   <li>In a multi-threading system, its possible that these static variables
   will be accessed concurrently by separate threads.  This would create a
-  race condition with unpredictabe behavior</li>
+  race condition with unpredictable behavior</li>
 </ul>
 This singleton class addresses all of the above issues.
 
@@ -94,12 +94,12 @@ This singleton implementation has the following features:
 namespace boost { 
 namespace serialization {
 
-template <class T>
+template &lt;class T&gt;
 class singleton : public boost::noncopyable
 {
 public:
-    static const T & get_const_instance();
-    static T & get_mutable_instance();
+    static const T &amp; get_const_instance();
+    static T &amp; get_mutable_instance();
     static bool is_destroyed();
 };
 
@@ -110,14 +110,14 @@ public:
 <dl>
 
 <dt><h4><pre><code>
-static const T & get_const_instance();
+static const T &amp; get_const_instance();
 </code></pre></h4></dt>
 <dd>
 Retrieve a constant reference to the singleton for this type.
 </dd>
 
 <dt><h4><pre><code>
-static T & get_mutable_instance();
+static T &amp; get_mutable_instance();
 </code></pre></h4></dt>
 <dd>
 Retrieve a mutable reference to the singleton for this type.
@@ -139,7 +139,7 @@ In order to be used as
 <code style="white-space: normal">
 singleton&lt;T&gt;
 </code>
-</a>, the type T must be default constructable. 
+</a>, the type T must be default constructible. 
 It doesn't require static variables - though it may have them.
 Since the library guarantees that only one instance of 
 <a target="singleton.hpp" href = "../../../boost/serialization/singleton.hpp">
@@ -147,7 +147,7 @@ Since the library guarantees that only one instance of
 singleton&lt;T&gt;
 </code>
 </a> 
-exists and all accesss is through the above static interface
+exists and all access is through the above static interface
 functions, common member functions of T become
 the functional equivalent of 
 <code style="white-space: normal">static</code> functions.
@@ -242,7 +242,7 @@ The <code style="white-space: normal">lock()</code> and
 <code style="white-space: normal">unlock()</code> are "global"
 in that they affect ALL the singletons defined by this template.
 All serialization tests invoke <code style="white-space: normal">lock()</code>
-at the start of the progam.  For programs compiled in release
+at the start of the program.  For programs compiled in release
 mode these functions have no effect.
 
 <hr>

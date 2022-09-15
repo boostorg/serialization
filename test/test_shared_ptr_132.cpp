@@ -109,7 +109,7 @@ void save_and_load(const T & spa)
     save(testfile, spa);
 
     // note that we're loading to a current version of shared_ptr
-    // regardless of the orignal saved type - this tests backward
+    // regardless of the original saved type - this tests backward
     // archive compatibility
     boost::shared_ptr<A> spa1;
     load(testfile, spa1);
@@ -193,7 +193,7 @@ void load3(
     // note that we serialize the weak pointer first
     ia >> BOOST_SERIALIZATION_NVP(third);
     // inorder to test that a temporarily solitary weak pointer
-    // correcttly restored.
+    // correctly restored.
     ia >> BOOST_SERIALIZATION_NVP(first);
     ia >> BOOST_SERIALIZATION_NVP(second);
 }

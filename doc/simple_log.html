@@ -39,7 +39,7 @@ is trivially easy:
 ...
 // display the complete schedule
 simple_log_archive log(std::cout);
-log << schedule;
+log &lt;&lt; schedule;
 </code></pre>
 
 and it produces the following output
@@ -52,10 +52,10 @@ schedule
    driver bob
    hour 6
    minute 24
-  second -> 
+  second -&gt; 
    stops 
     count 3
-    item -> 
+    item -&gt; 
      latitude 
       degrees 34
       minutes 135

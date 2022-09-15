@@ -142,7 +142,7 @@ int test_main( int /* argc */, char* /* argv */[] ){
     if(EXIT_SUCCESS != test<ANew1>())
         return EXIT_FAILURE;
     // Note the following test fails.  To see why this is, look into the file
-    // iserializer line # 247. Feel free to send a patch to detect the absense
+    // iserializer line # 247. Feel free to send a patch to detect the absence
     // of a class specific delete.
     /*
     if(EXIT_SUCCESS != test<ANew2>())

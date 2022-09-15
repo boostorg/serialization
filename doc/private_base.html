@@ -37,27 +37,27 @@ classes and types. That is, the following program compiles and runs exactly as o
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
-#include <fstream>
-#include <boost/config.hpp>
+#include &lt;fstream&gt;
+#include &lt;boost/config.hpp&gt;
 #if defined(BOOST_NO_STDC_NAMESPACE)
 namespace std{ 
     using ::remove;
 }
 #endif
 
-#include <boost/serialization/access.hpp>
-#include <boost/serialization/base_object.hpp>
-#include <boost/serialization/export.hpp>
+#include &lt;boost/serialization/access.hpp&gt;
+#include &lt;boost/serialization/base_object.hpp&gt;
+#include &lt;boost/serialization/export.hpp&gt;
 
 class Base {
     friend class boost::serialization::access;
     int m_i;
-    template<class Archive>
-    void serialize(Archive & ar, const unsigned int version){
-        ar & BOOST_SERIALIZATION_NVP(m_i);
+    template&lt;class Archive&gt;
+    void serialize(Archive &amp; ar, const unsigned int version){
+        ar &amp; BOOST_SERIALIZATION_NVP(m_i);
     }
 protected:
-    bool equals(const Base &rhs) const {
+    bool equals(const Base &amp;rhs) const {
         return m_i == rhs.m_i;
     }
     Base(int i = 0) :
@@ -68,16 +68,16 @@ protected:
 class Derived : private Base {
     friend class boost::serialization::access;
 private:
-    Base & base_cast(){
-        return static_cast<Base &>(*this);
+    Base &amp; base_cast(){
+        return static_cast&lt;Base &amp;&gt;(*this);
     }
-    template<class Archive>
-    void serialize(Archive & ar, const unsigned int version){
-        ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(Base);
+    template&lt;class Archive&gt;
+    void serialize(Archive &amp; ar, const unsigned int version){
+        ar &amp; BOOST_SERIALIZATION_BASE_OBJECT_NVP(Base);
     }
 public:
-    bool operator==(const Derived &rhs) const {
-        return Base::equals(static_cast<const Base &>(rhs));
+    bool operator==(const Derived &amp;rhs) const {
+        return Base::equals(static_cast&lt;const Base &amp;&gt;(rhs));
     }
     Derived(int i = 0) :
         Base(i)
@@ -94,12 +94,12 @@ main( int /* argc */, char* /* argv */[] )
     {   
         test_ostream os(testfile);
         test_oarchive oa(os);
-        oa << boost::serialization::make_nvp("a", a);
+        oa &lt;&lt; boost::serialization::make_nvp("a", a);
     }
     {
         test_istream is(testfile, TEST_STREAM_FLAGS);
         test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
-        ia >> boost::serialization::make_nvp("a", a1);
+        ia &gt;&gt; boost::serialization::make_nvp("a", a1);
     }
     std::remove(testfile);
 
@@ -107,17 +107,17 @@ main( int /* argc */, char* /* argv */[] )
         return 1;
 
     // serialize Derived and Base
-    Derived *ta = &a;
+    Derived *ta = &amp;a;
     Derived *ta1 = NULL;
     {   
         test_ostream os(testfile);
         test_oarchive oa(os);
-        oa << boost::serialization::make_nvp("ta", ta);
+        oa &lt;&lt; boost::serialization::make_nvp("ta", ta);
     }
     {
         test_istream is(testfile, TEST_STREAM_FLAGS);
         test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
-        ia >> boost::serialization::make_nvp("ta", ta1);
+        ia &gt;&gt; boost::serialization::make_nvp("ta", ta1);
     }
     std::remove(testfile);
     if(*ta != *ta1)
@@ -134,10 +134,10 @@ a pointer to the base class.  Included in the macro
 BOOST_SERIALIZATION_BASE_OBJECT_NVP
 </code>
 is code which links derived and base class definitions in tables used to serialize
-derived classes through pointers to a polymorphinc base class.  This code requires
+derived classes through pointers to a polymorphic base class.  This code requires
 the ability to invoke
 <code>
-static_cast&lt;Base &&gt;(Derived &)
+static_cast&lt;Base &amp;&gt;(Derived &amp;)
 </code>
 which C++ will only permit from within the derived class if the base class is 
 private or protected. The program will fail to compile with an error message 
@@ -146,18 +146,18 @@ indicating invalid cast.
 In order for this
 code compiler the following alteration must be made:
 <pre><code>
-    template<class Archive>
-    void serialize(Archive & ar, const unsigned int version){
-        //ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(Base);
-        ar & boost::serialization::make_nvp(
+    template&lt;class Archive&gt;
+    void serialize(Archive &amp; ar, const unsigned int version){
+        //ar &amp; BOOST_SERIALIZATION_BASE_OBJECT_NVP(Base);
+        ar &amp; boost::serialization::make_nvp(
             "Base",
-            static_cast&lt;Base &&gt;(*this)
+            static_cast&lt;Base &amp;&gt;(*this)
         );
     }
 </code></pre>
 With this change the program will now compile.
 <p>
-If we made one of the functions of <code>Base></code> <code>virtual</code>
+If we made one of the functions of <code>Base</code> <code>virtual</code>
 in order to use the "export" functionality of the serialization library and permit serialization through
 a pointer the the base class, we'll be disappointed. Without the ability to
 cast to the base class, we can't use the functionality.

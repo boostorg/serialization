@@ -99,7 +99,7 @@ that the following equivalent works on more compilers.
 <pre><code>
     // default fall through for any types not specified here
     template&lt;class T&gt;
-    void save(const T & t){
+    void save(const T &amp; t){
         xml_oarchive_impl&lt;derived_t&gt;::save(t);
     }
     void save(const unsigned int t);
@@ -127,14 +127,14 @@ class log_archive_impl :
     public xml_oarchive_impl&lt;Archive&gt;
 {
     ...
-);
+};
 
 // do not derive from this class !!!
 class log_archive : 
     public log_archive_impl&lt;log_archive&gt;
 {
 public:
-    log_archive(std::ostream & os, unsigned int flags = 0) :
+    log_archive(std::ostream &amp; os, unsigned int flags = 0) :
         log_archive_impl&lt;xml_oarchive&gt;(os, flags)
     {}
 };

@@ -484,6 +484,6 @@ namespace xml {
 // * seconds and *decrement* the microseconds field.  Consequently
 // * when subtracting these unsigned microseconds fields a wrap-around
 // * error can occur.  For this reason elapsed(t1, t0) is used in a
-// * similar maner to cycle.h this preserves the sign of the
+// * similar manner to cycle.h this preserves the sign of the
 // * difference.
 //

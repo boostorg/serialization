@@ -61,7 +61,7 @@ namespace boost {
 namespace archive {
 
 /////////////////////////////////////////////////////////////////////////
-// class basic_text_oprimitive - output of prmitives to stream
+// class basic_text_oprimitive - output of primitives to stream
 template<class OStream>
 class BOOST_SYMBOL_VISIBLE basic_text_oprimitive
 {
@@ -159,7 +159,7 @@ protected:
                 archive_exception(archive_exception::output_stream_error)
             );
         }
-        // The formulae for the number of decimla digits required is given in
+        // The formulae for the number of decimal digits required is given in
         // http://www2.open-std.org/JTC1/SC22/WG21/docs/papers/2005/n1822.pdf
         // which is derived from Kahan's paper:
         // www.eecs.berkeley.edu/~wkahan/ieee754status/ieee754.ps

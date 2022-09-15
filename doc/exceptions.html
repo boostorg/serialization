@@ -78,7 +78,7 @@ public:
         unregistered_cast,      // base - derived relationship not registered with 
                                 // void_cast_register
         unsupported_class_version, // type saved with a version # greater than the 
-                            // one used by the program.  This indicates that the proggram
+                            // one used by the program.  This indicates that the program
                             // needs to be rebuilt.
         multiple_code_instantiation, // code for implementing serialization for some
                             // type has been instantiated in more than one module.
@@ -141,23 +141,23 @@ exception will be thrown.
 To understand what this exception means consider the following scenario
 <pre><code>
 template&lt;class Archive&gt;
-void T::save(Archive &ar) const
+void T::save(Archive &amp;ar) const
 {
-    const A * aptr = &a;
-    ar << aptr;          // save an instance of object of class A through a pointer
+    const A * aptr = &amp;a;
+    ar &lt;&lt; aptr;          // save an instance of object of class A through a pointer
     ...
-    ar << a;             // save an instance of an object of class A
-    assert(aptr == &a);  // this must be true
+    ar &lt;&lt; a;             // save an instance of an object of class A
+    assert(aptr == &amp;a);  // this must be true
 }
 
 template&lt;class Archive&gt;
-void T::load(Archive &ar)
+void T::load(Archive &amp;ar)
 {
     A * aptr;
-    ar >> aptr;          // create and initialize a new instance of class A
+    ar &gt;&gt; aptr;          // create and initialize a new instance of class A
     ...
-    ar >> a;             // restore state of on object of class A
-    assert(aptr == &a);  // this won't be true
+    ar &gt;&gt; a;             // restore state of on object of class A
+    assert(aptr == &amp;a);  // this won't be true
 }
 </pre></code>
 An object is saved first through a pointer then directly.  Upon loading back
@@ -184,7 +184,7 @@ archive has already been created.
 <br>
 <a name="output_stream_error"><code style="white-space: normal">output_stream_error</code></a>
 </h3>
-An error has occured during stream input or ouput.  Aside from the common 
+An error has occurred during stream input or ouput.  Aside from the common 
 situations such as a corrupted or truncated input file, there are 
 several less obvious ones that sometimes occur.
 <p>

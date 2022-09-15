@@ -130,7 +130,7 @@ namespace archive {
 #else // defined(__hpux)
 
 // (C) Copyright 2010 Dean Michael Berris.
-// Instead of using the potentially dangrous tempnam function that's part
+// Instead of using the potentially dangerous tempnam function that's part
 // of the C standard library, on Unix/Linux we use the more portable and
 // "safe" unique_path function provided in the Boost.Filesystem library.
 

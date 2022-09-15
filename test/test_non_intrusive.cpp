@@ -37,7 +37,7 @@ namespace std{
 
 ///////////////////////////////////////////////////////
 // simple class test - using non-intrusive syntax
-// illustrates the usage of the non-intrusve syntax
+// illustrates the usage of the non-intrusive syntax
 class A
 {
 public:
