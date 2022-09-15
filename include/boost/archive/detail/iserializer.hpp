@@ -174,7 +174,7 @@ BOOST_DLLEXPORT void iserializer<Archive, T>::load_object_data(
     // readers of these old archives, we have to suppress this
     // code.  Perhaps in the future we might re-enable it but
     // permit its suppression with a runtime switch.
-    #if 0
+    #if 1
     // trap case where the program cannot handle the current version
     if(file_version > static_cast<const unsigned int>(version()))
         boost::serialization::throw_exception(
