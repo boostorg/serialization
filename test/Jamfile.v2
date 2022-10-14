@@ -159,6 +159,8 @@ if ! $(BOOST_ARCHIVE_LIST) {
         [ test-bsl-run test_singleton_inherited ]
         [ test-bsl-run test_singleton_plain ]
 
+        [ test-bsl-run test_string : : : <cxxstd>17 ]
+
         # [ test-bsl-run test_z ]
 
         # should fail compilation
