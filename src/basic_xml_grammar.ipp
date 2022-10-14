@@ -241,6 +241,21 @@ bool basic_xml_grammar<CharType>::parse_string(IStream & is, StringType & s){
     return result;
 }
 
+#ifndef BOOST_NO_CXX17_HDR_MEMORY_RESOURCE
+template<class CharType>
+bool basic_xml_grammar<CharType>::parse_string(IStream & is, PmrStringType & s){
+	rv.contents.resize(0);
+	bool result = my_parse(is, content, '<');
+	// note: unget caused a problem with dinkumware.  replace with
+	// is.unget();
+	// putback another delimiter instead
+	is.putback('<');
+	if(result)
+		s = rv.contents;
+	return result;
+}
+#endif
+
 template<class CharType>
 basic_xml_grammar<CharType>::basic_xml_grammar(){
     init_chset();

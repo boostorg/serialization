@@ -20,6 +20,10 @@ namespace std{
 } // namespace std
 #endif
 
+#ifndef BOOST_NO_CXX17_HDR_MEMORY_RESOURCE
+#include <memory_resource>
+#endif
+
 #ifndef BOOST_NO_CWCHAR
 #include <cwchar>
 #ifdef BOOST_NO_STDC_NAMESPACE
@@ -70,6 +74,17 @@ basic_binary_oprimitive<Archive, Elem, Tr>::save(const std::string &s)
     save_binary(s.data(), l);
 }
 
+#ifndef BOOST_NO_CXX17_HDR_MEMORY_RESOURCE
+template<class Archive, class Elem, class Tr>
+BOOST_ARCHIVE_OR_WARCHIVE_DECL void
+basic_binary_oprimitive<Archive, Elem, Tr>::save(const std::pmr::string &s)
+{
+	std::size_t l = static_cast<std::size_t>(s.size());
+	this->This()->save(l);
+	save_binary(s.data(), l);
+}
+#endif
+
 #ifndef BOOST_NO_CWCHAR
 #ifndef BOOST_NO_INTRINSIC_WCHAR_T
 template<class Archive, class Elem, class Tr>
@@ -91,6 +106,16 @@ basic_binary_oprimitive<Archive, Elem, Tr>::save(const std::wstring &ws)
     this->This()->save(l);
     save_binary(ws.data(), l * sizeof(wchar_t) / sizeof(char));
 }
+#ifndef BOOST_NO_CXX17_HDR_MEMORY_RESOURCE
+template<class Archive, class Elem, class Tr>
+BOOST_ARCHIVE_OR_WARCHIVE_DECL void
+basic_binary_oprimitive<Archive, Elem, Tr>::save(const std::pmr::wstring& ws)
+{
+    std::size_t l = ws.size();
+    this->This()->save(l);
+    save_binary(ws.data(), l * sizeof(wchar_t) / sizeof(char));
+}
+#endif
 #endif
 #endif // BOOST_NO_CWCHAR
 

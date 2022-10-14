@@ -58,6 +58,16 @@ xml_oarchive_impl<Archive>::save(const std::wstring & ws){
 //    save_iterator(os, ws.data(), ws.data() + std::wcslen(ws.data()));
     save_iterator(os, ws.data(), ws.data() + ws.size());
 }
+#ifndef BOOST_NO_CXX17_HDR_MEMORY_RESOURCE
+template<class Archive>
+BOOST_ARCHIVE_DECL void
+xml_oarchive_impl<Archive>::save(const std::pmr::wstring& ws) {
+    //  at least one library doesn't typedef value_type for strings
+    //  so rather than using string directly make a pointer iterator out of it
+    //    save_iterator(os, ws.data(), ws.data() + std::wcslen(ws.data()));
+    save_iterator(os, ws.data(), ws.data() + ws.size());
+}
+#endif
 #endif
 
 #ifndef BOOST_NO_INTRINSIC_WCHAR_T
@@ -84,6 +94,22 @@ xml_oarchive_impl<Archive>::save(const std::string & s){
         boost::archive::iterators::ostream_iterator<char>(os)
     );
 }
+#ifndef BOOST_NO_CXX17_HDR_MEMORY_RESOURCE
+template<class Archive>
+BOOST_ARCHIVE_DECL void
+xml_oarchive_impl<Archive>::save(const std::pmr::string& s) {
+    //  at least one library doesn't typedef value_type for strings
+    //  so rather than using string directly make a pointer iterator out of it
+    typedef boost::archive::iterators::xml_escape<
+        const char*
+    > xml_escape_translator;
+    std::copy(
+        xml_escape_translator(s.data()),
+        xml_escape_translator(s.data() + s.size()),
+        boost::archive::iterators::ostream_iterator<char>(os)
+    );
+}
+#endif
 
 template<class Archive>
 BOOST_ARCHIVE_DECL void

@@ -37,6 +37,10 @@ namespace std{
 } // namespace std
 #endif
 
+#ifndef BOOST_NO_CXX17_HDR_MEMORY_RESOURCE
+#include <memory_resource>
+#endif
+
 #include <boost/cstdint.hpp>
 #include <boost/integer.hpp>
 #include <boost/integer_traits.hpp>
@@ -101,9 +105,19 @@ public:
     }
     BOOST_ARCHIVE_OR_WARCHIVE_DECL void
     save(const std::string &s);
+
+    #ifndef BOOST_NO_CXX17_HDR_MEMORY_RESOURCE
+    BOOST_ARCHIVE_OR_WARCHIVE_DECL void
+    save(const std::pmr::string &s);
+    #endif
+
     #ifndef BOOST_NO_STD_WSTRING
     BOOST_ARCHIVE_OR_WARCHIVE_DECL void
     save(const std::wstring &ws);
+    #ifndef BOOST_NO_CXX17_HDR_MEMORY_RESOURCE
+    BOOST_ARCHIVE_OR_WARCHIVE_DECL void
+    save(const std::pmr::wstring& ws);
+    #endif
     #endif
     BOOST_ARCHIVE_OR_WARCHIVE_DECL void
     save(const char * t);

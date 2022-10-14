@@ -57,6 +57,10 @@
 #include <boost/serialization/tracking.hpp>
 #include <boost/serialization/version.hpp>
 
+#ifndef BOOST_NO_CXX17_HDR_MEMORY_RESOURCE
+#include <memory_resource>
+#endif
+
 namespace boost {
 namespace archive {
 
@@ -74,6 +78,9 @@ public:
 private:
     typedef typename std::basic_istream<CharType> IStream;
     typedef typename std::basic_string<CharType> StringType;
+    #ifndef BOOST_NO_CXX17_HDR_MEMORY_RESOURCE
+    typedef typename std::pmr::basic_string<CharType> PmrStringType;
+    #endif
     typedef typename boost::spirit::classic::chset<CharType> chset_t;
     typedef typename boost::spirit::classic::chlit<CharType> chlit_t;
     typedef typename boost::spirit::classic::scanner<
@@ -162,6 +169,9 @@ public:
     bool parse_start_tag(IStream & is) /*const*/;
     bool parse_end_tag(IStream & is) const;
     bool parse_string(IStream & is, StringType & s) /*const*/;
+    #ifndef BOOST_NO_CXX17_HDR_MEMORY_RESOURCE
+    bool parse_string(IStream & is, PmrStringType & s) /*const*/;
+    #endif
     void init(IStream & is);
     bool windup(IStream & is);
     basic_xml_grammar();

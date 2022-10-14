@@ -32,6 +32,10 @@ namespace std{
 #include <boost/archive/detail/register_archive.hpp>
 #include <boost/serialization/item_version_type.hpp>
 
+#ifndef BOOST_NO_CXX17_HDR_MEMORY_RESOURCE
+#include <memory_resource>
+#endif
+
 #include <boost/archive/detail/abi_prefix.hpp> // must be the last header
 
 #ifdef BOOST_MSVC
@@ -78,9 +82,17 @@ protected:
     #endif
     BOOST_ARCHIVE_DECL void
     save(const std::string &s);
+    #ifndef BOOST_NO_CXX17_HDR_MEMORY_RESOURCE
+    BOOST_ARCHIVE_DECL void
+    save(const std::pmr::string& s);
+    #endif
     #ifndef BOOST_NO_STD_WSTRING
     BOOST_ARCHIVE_DECL void
     save(const std::wstring &ws);
+    #ifndef BOOST_NO_CXX17_HDR_MEMORY_RESOURCE
+    BOOST_ARCHIVE_DECL void
+    save(const std::pmr::wstring& ws);
+    #endif
     #endif
     BOOST_ARCHIVE_DECL
     text_oarchive_impl(std::ostream & os, unsigned int flags);

@@ -114,6 +114,24 @@ basic_binary_iprimitive<Archive, Elem, Tr>::load(std::string & s)
         load_binary(&(*s.begin()), l);
 }
 
+#ifndef BOOST_NO_CXX17_HDR_MEMORY_RESOURCE
+template<class Archive, class Elem, class Tr>
+BOOST_ARCHIVE_OR_WARCHIVE_DECL void
+basic_binary_iprimitive<Archive, Elem, Tr>::load(std::pmr::string & s)
+{
+	std::size_t l;
+	this->This()->load(l);
+    // borland de-allocator fixup
+    #if BOOST_WORKAROUND(_RWSTD_VER, BOOST_TESTED_AT(20101))
+	if(NULL != s.data())
+    #endif
+		s.resize(l);
+	// note breaking a rule here - could be a problem on some platform
+	if(0 < l)
+		load_binary(&(*s.begin()), l);
+}
+#endif
+
 template<class Archive, class Elem, class Tr>
 BOOST_ARCHIVE_OR_WARCHIVE_DECL void
 basic_binary_iprimitive<Archive, Elem, Tr>::load(char * s)
@@ -139,6 +157,22 @@ basic_binary_iprimitive<Archive, Elem, Tr>::load(std::wstring & ws)
     // note breaking a rule here - is could be a problem on some platform
     load_binary(const_cast<wchar_t *>(ws.data()), l * sizeof(wchar_t) / sizeof(char));
 }
+#ifndef BOOST_NO_CXX17_HDR_MEMORY_RESOURCE
+template<class Archive, class Elem, class Tr>
+BOOST_ARCHIVE_OR_WARCHIVE_DECL void
+basic_binary_iprimitive<Archive, Elem, Tr>::load(std::pmr::wstring& ws)
+{
+    std::size_t l;
+    this->This()->load(l);
+    // borland de-allocator fixup
+    #if BOOST_WORKAROUND(_RWSTD_VER, BOOST_TESTED_AT(20101))
+    if (NULL != ws.data())
+    #endif
+        ws.resize(l);
+    // note breaking a rule here - is could be a problem on some platform
+    load_binary(const_cast<wchar_t*>(ws.data()), l * sizeof(wchar_t) / sizeof(char));
+}
+#endif
 #endif
 
 template<class Archive, class Elem, class Tr>

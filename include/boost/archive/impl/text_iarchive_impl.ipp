@@ -56,6 +56,24 @@ text_iarchive_impl<Archive>::load(std::string &s)
     if(0 < size)
         is.read(&(*s.begin()), size);
 }
+#ifndef BOOST_NO_CXX17_HDR_MEMORY_RESOURCE
+template<class Archive>
+BOOST_ARCHIVE_DECL void
+text_iarchive_impl<Archive>::load(std::pmr::string& s)
+{
+    std::size_t size;
+    *this->This() >> size;
+    // skip separating space
+    is.get();
+    // borland de-allocator fixup
+    #if BOOST_WORKAROUND(_RWSTD_VER, BOOST_TESTED_AT(20101))
+    if (NULL != s.data())
+    #endif
+        s.resize(size);
+    if (0 < size)
+        is.read(&(*s.begin()), size);
+}
+#endif
 
 #ifndef BOOST_NO_CWCHAR
 #ifndef BOOST_NO_INTRINSIC_WCHAR_T
@@ -88,7 +106,23 @@ text_iarchive_impl<Archive>::load(std::wstring &ws)
     is.get();
     is.read((char *)ws.data(), size * sizeof(wchar_t)/sizeof(char));
 }
-
+#ifndef BOOST_NO_CXX17_HDR_MEMORY_RESOURCE
+template<class Archive>
+BOOST_ARCHIVE_DECL void
+text_iarchive_impl<Archive>::load(std::pmr::wstring& ws)
+{
+    std::size_t size;
+    *this->This() >> size;
+    // borland de-allocator fixup
+    #if BOOST_WORKAROUND(_RWSTD_VER, BOOST_TESTED_AT(20101))
+    if (NULL != ws.data())
+    #endif
+        ws.resize(size);
+    // skip separating space
+    is.get();
+    is.read((char*)ws.data(), size * sizeof(wchar_t) / sizeof(char));
+}
+#endif // BOOST_NO_CXX17_HDR_MEMORY_RESOURCE
 #endif // BOOST_NO_STD_WSTRING
 #endif // BOOST_NO_CWCHAR
 

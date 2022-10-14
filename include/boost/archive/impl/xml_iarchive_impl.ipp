@@ -85,6 +85,40 @@ xml_iarchive_impl<Archive>::load(std::wstring &ws){
         ws += wc;
     }
 }
+#ifndef BOOST_NO_CXX17_HDR_MEMORY_RESOURCE
+template<class Archive>
+BOOST_ARCHIVE_DECL void
+xml_iarchive_impl<Archive>::load(std::pmr::wstring& ws) {
+    std::string s;
+    bool result = gimpl->parse_string(is, s);
+    if (!result)
+        boost::serialization::throw_exception(
+            xml_archive_exception(xml_archive_exception::xml_archive_parsing_error)
+        );
+
+    #if BOOST_WORKAROUND(_RWSTD_VER, BOOST_TESTED_AT(20101))
+    if (NULL != ws.data())
+    #endif
+        ws.resize(0);
+    std::mbstate_t mbs = std::mbstate_t();
+    const char* start = s.data();
+    const char* end = start + s.size();
+    while (start < end) {
+        wchar_t wc;
+        std::size_t count = std::mbrtowc(&wc, start, end - start, &mbs);
+        if (count == static_cast<std::size_t>(-1))
+            boost::serialization::throw_exception(
+                iterators::dataflow_exception(
+                    iterators::dataflow_exception::invalid_conversion
+                )
+            );
+        if (count == static_cast<std::size_t>(-2))
+            continue;
+        start += count;
+        ws += wc;
+    }
+}
+#endif // BOOST_NO_CXX17_HDR_MEMORY_RESOURCE
 #endif // BOOST_NO_STD_WSTRING
 
 #ifndef BOOST_NO_INTRINSIC_WCHAR_T
@@ -133,6 +167,18 @@ xml_iarchive_impl<Archive>::load(std::string &s){
             xml_archive_exception(xml_archive_exception::xml_archive_parsing_error)
         );
 }
+
+#ifndef BOOST_NO_CXX17_HDR_MEMORY_RESOURCE
+template<class Archive>
+BOOST_ARCHIVE_DECL void
+xml_iarchive_impl<Archive>::load(std::pmr::string &s){
+	bool result = gimpl->parse_string(is, s);
+	if(! result)
+		boost::serialization::throw_exception(
+			xml_archive_exception(xml_archive_exception::xml_archive_parsing_error)
+		);
+}
+#endif
 
 template<class Archive>
 BOOST_ARCHIVE_DECL void

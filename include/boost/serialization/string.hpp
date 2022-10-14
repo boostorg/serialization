@@ -27,4 +27,12 @@ BOOST_CLASS_IMPLEMENTATION(std::string, boost::serialization::primitive_type)
 BOOST_CLASS_IMPLEMENTATION(std::wstring, boost::serialization::primitive_type)
 #endif
 
+#ifndef BOOST_NO_CXX17_HDR_MEMORY_RESOURCE
+#include <memory_resource>
+BOOST_CLASS_IMPLEMENTATION(std::pmr::string, boost::serialization::primitive_type)
+#ifndef BOOST_NO_STD_WSTRING
+BOOST_CLASS_IMPLEMENTATION(std::pmr::wstring, boost::serialization::primitive_type)
+#endif
+#endif // BOOST_NO_CXX17_HDR_MEMORY_RESOURCE
+
 #endif // BOOST_SERIALIZATION_STRING_HPP

@@ -27,6 +27,10 @@
 
 #include <boost/archive/detail/abi_prefix.hpp> // must be the last header
 
+#ifndef BOOST_NO_CXX17_HDR_MEMORY_RESOURCE
+#include <memory_resource>
+#endif
+
 #ifdef BOOST_MSVC
 #  pragma warning(push)
 #  pragma warning(disable : 4511 4512)
@@ -84,11 +88,19 @@ protected:
     BOOST_ARCHIVE_DECL void
     load(wchar_t * t);
     #endif
+	BOOST_ARCHIVE_DECL void
+	load(std::string &s);
+    #ifndef BOOST_NO_CXX17_HDR_MEMORY_RESOURCE
     BOOST_ARCHIVE_DECL void
-    load(std::string &s);
+    load(std::pmr::string &s);
+    #endif
     #ifndef BOOST_NO_STD_WSTRING
     BOOST_ARCHIVE_DECL void
     load(std::wstring &ws);
+    #ifndef BOOST_NO_CXX17_HDR_MEMORY_RESOURCE
+    BOOST_ARCHIVE_DECL void
+    load(std::pmr::wstring &ws);
+    #endif
     #endif
     template<class T>
     void load_override(T & t){

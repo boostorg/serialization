@@ -43,6 +43,10 @@ namespace std{
 } // namespace std
 #endif
 
+#ifndef BOOST_NO_CXX17_HDR_MEMORY_RESOURCE
+#include <memory_resource>
+#endif
+
 #include <boost/cstdint.hpp>
 #include <boost/serialization/throw_exception.hpp>
 #include <boost/integer.hpp>
@@ -107,9 +111,17 @@ public:
     }
     BOOST_ARCHIVE_OR_WARCHIVE_DECL void
     load(std::string &s);
+    #ifndef BOOST_NO_CXX17_HDR_MEMORY_RESOURCE
+    BOOST_ARCHIVE_OR_WARCHIVE_DECL void
+    load(std::pmr::string &s);
+    #endif
     #ifndef BOOST_NO_STD_WSTRING
     BOOST_ARCHIVE_OR_WARCHIVE_DECL void
     load(std::wstring &ws);
+    #ifndef BOOST_NO_CXX17_HDR_MEMORY_RESOURCE
+    BOOST_ARCHIVE_OR_WARCHIVE_DECL void
+    load(std::pmr::wstring& ws);
+    #endif
     #endif
     BOOST_ARCHIVE_OR_WARCHIVE_DECL void
     load(char * t);

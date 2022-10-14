@@ -54,6 +54,17 @@ text_oarchive_impl<Archive>::save(const std::string &s)
     this->This()->newtoken();
     os << s;
 }
+#ifndef BOOST_NO_CXX17_HDR_MEMORY_RESOURCE
+template<class Archive>
+BOOST_ARCHIVE_DECL void
+text_oarchive_impl<Archive>::save(const std::pmr::string& s)
+{
+    const std::size_t size = s.size();
+    *this->This() << size;
+    this->This()->newtoken();
+    os << s;
+}
+#endif
 
 #ifndef BOOST_NO_CWCHAR
 #ifndef BOOST_NO_INTRINSIC_WCHAR_T
@@ -78,6 +89,17 @@ text_oarchive_impl<Archive>::save(const std::wstring &ws)
     this->This()->newtoken();
     os.write((const char *)(ws.data()), l * sizeof(wchar_t)/sizeof(char));
 }
+#ifndef BOOST_NO_CXX17_HDR_MEMORY_RESOURCE
+template<class Archive>
+BOOST_ARCHIVE_DECL void
+text_oarchive_impl<Archive>::save(const std::pmr::wstring& ws)
+{
+    const std::size_t l = ws.size();
+    *this->This() << l;
+    this->This()->newtoken();
+    os.write((const char*)(ws.data()), l * sizeof(wchar_t) / sizeof(char));
+}
+#endif
 #endif
 #endif // BOOST_NO_CWCHAR
 
