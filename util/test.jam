@@ -163,6 +163,17 @@ rule test-bsl-run_archive ( test-name : archive-name : sources * : libs * : requ
                 <define>BOOST_ARCHIVE_TEST=$(archive-name).hpp
                 $(requirements)
         ] ;
+    case "*xml_archive" :
+        tests +=  [
+            run-invoke $(test-name)_$(archive-name)
+            : # sources
+                $(sources).cpp $(libs)
+            : # input files
+            : # requirements
+                <define>BOOST_ARCHIVE_TEST=$(archive-name).hpp
+                $(requirements)
+                [ requires std_wstreambuf ]
+        ] ;
     case "*" :
         tests +=  [
             run-invoke $(test-name)_$(archive-name)
