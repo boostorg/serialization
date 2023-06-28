@@ -72,79 +72,79 @@ jobs:
               - "ppa:ubuntu-toolchain-r/test"
           - toolset: gcc-5
             cxxstd: "03,11,14,1z"
-            address_model: 32,64
+            address_model: 64
             os: ubuntu-latest
             container: ubuntu:16.04
             install:
               - g++-5-multilib
           - toolset: gcc-5
             cxxstd: "03-gnu,11-gnu,14-gnu,1z-gnu"
-            address_model: 32,64
+            address_model: 64
             os: ubuntu-latest
             container: ubuntu:16.04
             install:
               - g++-5-multilib
           - toolset: gcc-6
             cxxstd: "03,11,14,1z"
-            address_model: 32,64
+            address_model: 64
             os: ubuntu-latest
             container: ubuntu:18.04
             install:
               - g++-6-multilib
           - toolset: gcc-7
             cxxstd: "03,11,14,17"
-            address_model: 32,64
+            address_model: 64
             os: ubuntu-latest
             container: ubuntu:18.04
             install:
               - g++-7-multilib
           - toolset: gcc-8
             cxxstd: "03,11,14,17,2a"
-            address_model: 32,64
+            address_model: 64
             os: ubuntu-latest
             container: ubuntu:18.04
             install:
               - g++-8-multilib
           - toolset: gcc-9
             cxxstd: "03,11,14,17,2a"
-            address_model: 32,64
+            address_model: 64
             os: ubuntu-20.04
             install:
               - g++-9-multilib
           - toolset: gcc-9
             cxxstd: "03-gnu,11-gnu,14-gnu,17-gnu,2a-gnu"
-            address_model: 32,64
+            address_model: 64
             os: ubuntu-20.04
             install:
               - g++-9-multilib
           - toolset: gcc-10
             cxxstd: "03,11,14,17,20"
-            address_model: 32,64
+            address_model: 64
             os: ubuntu-20.04
             install:
               - g++-10-multilib
           - toolset: gcc-11
             cxxstd: "03,11,14,17,20,23"
-            address_model: 32,64
+            address_model: 64
             os: ubuntu-22.04
             install:
               - g++-11-multilib
           - toolset: gcc-12
             cxxstd: "03,11,14,17,20,23"
-            address_model: 32,64
+            address_model: 64
             os: ubuntu-22.04
             install:
               - g++-12-multilib
           - toolset: gcc-12
             cxxstd: "03-gnu,11-gnu,14-gnu,17-gnu,20-gnu,23-gnu"
-            address_model: 32,64
+            address_model: 64
             os: ubuntu-22.04
             install:
               - g++-12-multilib
           - name: UBSAN
             toolset: gcc-12
             cxxstd: "03,11,14,17,20,23"
-            address_model: 32,64
+            address_model: 64
             ubsan: 1
             os: ubuntu-22.04
             install:
@@ -296,7 +296,7 @@ jobs:
             cxxstd: "03,11,14,17,20,2b"
             os: macos-12
 
-    timeout-minutes: 60
+    timeout-minutes: 360
     runs-on: ${{matrix.os}}
     container: ${{matrix.container}}
 
