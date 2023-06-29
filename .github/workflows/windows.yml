@@ -8,6 +8,10 @@ on:
       - develop
       - feature/**
 
+concurrency:
+  group: ${{format('{0}:{1}', github.repository, github.ref)}}
+  cancel-in-progress: true
+
 env:
   LIBRARY: serialization
 
@@ -20,7 +24,7 @@ jobs:
           - toolset: msvc-14.1
             cxxstd: "14,17,latest"
             addrmd: 32,64
-            os: windows-2016
+            os: windows-2019
           - toolset: msvc-14.2
             cxxstd: "14,17,latest"
             addrmd: 32,64
@@ -54,4 +58,4 @@ jobs:
         shell: cmd
         run: |
           cd ../boost-root
-          b2 -j3 libs/%LIBRARY%/test toolset=${{matrix.toolset}} cxxstd=${{matrix.cxxstd}} address-model=${{matrix.addrmd}} variant=debug,release
+          b2 -j3 libs/%LIBRARY%/test toolset=${{matrix.toolset}} cxxstd=${{matrix.cxxstd}} address-model=${{matrix.addrmd}} variant=release
