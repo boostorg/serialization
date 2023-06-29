@@ -52,7 +52,7 @@ jobs:
             os: ubuntu-latest
             container: ubuntu:16.04
             install:
-              - g++-4.8
+              - g++-4.7
             sources:
               - "ppa:ubuntu-toolchain-r/test"
           - toolset: gcc-4.8
