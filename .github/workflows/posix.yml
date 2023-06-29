@@ -30,6 +30,9 @@ env:
 
 jobs:
   CI:
+    defaults:
+      run:
+        shell: bash
     strategy:
       fail-fast: false
       matrix:
