@@ -21,6 +21,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - toolset: msvc-14.0
+            cxxstd: "11,14"
+            addrmd: 32,64
+            ox: windows-2019
           - toolset: msvc-14.1
             cxxstd: "14,17,latest"
             addrmd: 32,64
@@ -37,14 +41,21 @@ jobs:
     runs-on: ${{matrix.os}}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Setup Boost
         shell: cmd
         run: |
+          echo GITHUB_REPOSITORY: %GITHUB_REPOSITORY%
+          for /f %%i in ("%GITHUB_REPOSITORY%") do set LIBRARY=%%~nxi
+          echo LIBRARY: %LIBRARY%
+          echo LIBRARY=%LIBRARY%>>%GITHUB_ENV%
+          echo GITHUB_BASE_REF: %GITHUB_BASE_REF%
+          echo GITHUB_REF: %GITHUB_REF%
           if "%GITHUB_BASE_REF%" == "" set GITHUB_BASE_REF=%GITHUB_REF%
           set BOOST_BRANCH=develop
-          if "%GITHUB_BASE_REF%" == "master" set BOOST_BRANCH=master
+          for /f %%i in ("%GITHUB_BASE_REF%") do if "%%~nxi" == "master" set BOOST_BRANCH=master
+          echo BOOST_BRANCH: %BOOST_BRANCH%
           cd ..
           git clone -b %BOOST_BRANCH% --depth 1 https://github.com/boostorg/boost.git boost-root
           cd boost-root
