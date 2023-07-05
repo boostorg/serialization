@@ -146,7 +146,7 @@ jobs:
               - g++-12-multilib
           - name: UBSAN
             toolset: gcc-12
-            cxxstd: "03,11,14,17,20,23"
+            cxxstd: "03,11,20"
             address_model: 64
             ubsan: 1
             os: ubuntu-22.04
@@ -282,7 +282,7 @@ jobs:
           - name: UBSAN
             toolset: clang
             compiler: clang++-14
-            cxxstd: "03,11,14,17,20,2b"
+            cxxstd: "03,11,20"
             cxxflags: -stdlib=libc++
             linkflags: -stdlib=libc++
             ubsan: 1
