@@ -18,7 +18,7 @@ on:
       - feature/**
 
 concurrency:
-  group: ${{format('{0}:{1}', github.repository, github.ref)}}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 env:
