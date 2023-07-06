@@ -26,6 +26,8 @@
 #include <boost/type_traits/is_polymorphic.hpp>
 #include <boost/type_traits/remove_const.hpp>
 
+#include <boost/detail/workaround.hpp>
+
 #include <boost/serialization/static_warning.hpp>
 #include <boost/serialization/singleton.hpp>
 #include <boost/serialization/extended_type_info.hpp>
@@ -98,6 +100,11 @@ class extended_type_info_no_rtti :
         }
     };
 public:
+    #if BOOST_WORKAROUND(BOOST_GCC_VERSION,>=40900)||\
+    BOOST_WORKAROUND(BOOST_CLANG,>=1)&&\
+    (__clang_major__>3 || __clang_major__==3 && __clang_minor__ >= 8)
+    __attribute__((no_sanitize("undefined")))
+    #endif
     extended_type_info_no_rtti() :
         no_rtti_system::extended_type_info_no_rtti_0(get_key())
     {
