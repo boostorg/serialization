@@ -44,7 +44,7 @@ public:
 
     // return a pointer to the most derived class
     Archive * This(){
-        return static_cast<Archive *>(this);
+        return reinterpret_cast<Archive*>(this);
     }
 
     template<class T>
