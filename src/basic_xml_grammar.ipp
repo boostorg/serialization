@@ -82,6 +82,9 @@ struct assign_impl<std::string> {
             ++b;
         }
     }
+    assign_impl(
+        const assign_impl<std::string> & rhs
+    );
     assign_impl<std::string> & operator=(
         assign_impl<std::string> & rhs
     );
