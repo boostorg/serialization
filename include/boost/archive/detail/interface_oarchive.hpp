@@ -18,6 +18,7 @@
 #include <cstddef> // NULL
 #include <boost/cstdint.hpp>
 #include <boost/mpl/bool.hpp>
+#include <boost/detail/workaround.hpp>
 
 #include <boost/archive/detail/auto_link_archive.hpp>
 #include <boost/archive/detail/oserializer.hpp>
@@ -43,6 +44,13 @@ public:
     typedef mpl::bool_<true> is_saving;
 
     // return a pointer to the most derived class
+    #if BOOST_WORKAROUND(BOOST_GCC_VERSION,>=40900)||\
+    BOOST_WORKAROUND(BOOST_CLANG,>=1)&&\
+    (__clang_major__>3 || __clang_major__==3 && __clang_minor__ >= 8)
+    /* https://github.com/boostorg/poly_collection/issues/15 */
+
+    __attribute__((no_sanitize("undefined")))
+    #endif
     Archive * This(){
         return static_cast<Archive *>(this);
     }
