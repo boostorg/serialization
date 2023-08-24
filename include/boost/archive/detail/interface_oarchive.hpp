@@ -52,7 +52,7 @@ public:
     __attribute__((no_sanitize("undefined")))
     #endif
     Archive * This(){
-        return reinterpret_cast<Archive*>(this);
+        return static_cast<Archive*>(this);
     }
 
     template<class T>

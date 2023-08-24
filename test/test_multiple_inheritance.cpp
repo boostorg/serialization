@@ -31,7 +31,7 @@ struct Base1 {
     Base1(){}
     Base1(int x) : m_x(1 + x) {}
     virtual ~Base1() {}
-    bool operator==(Base1 & rhs) const {
+    bool operator==(const Base1 & rhs) const {
         return m_x == rhs.m_x;
     }
     // serialize
@@ -49,7 +49,7 @@ struct Base2 {
     Base2(){}
     Base2(int x) : m_x(2 + x) {}
     virtual ~Base2() {}
-    bool operator==(Base2 & rhs) const {
+    bool operator==(const Base2 & rhs) const {
         return m_x == rhs.m_x;
     }
     // serialize

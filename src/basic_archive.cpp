@@ -84,10 +84,10 @@ BOOST_ARCHIVE_SIGNATURE(){
 //     init() called from base wrote archive header before archive
 //     was fully constructed.
 // 19- Boost 1.76 April 2021
-
+// 20- Boost 1.84 April 2021
 BOOST_SYMBOL_VISIBLE boost::serialization::library_version_type
 BOOST_ARCHIVE_VERSION(){
-    return boost::serialization::library_version_type(19);
+    return boost::serialization::library_version_type(20);
 }
 
 } // namespace archive
