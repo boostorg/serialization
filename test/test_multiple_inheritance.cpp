@@ -73,7 +73,7 @@ struct Sub :
         Base2(x),
         m_x(x)
     {}
-    bool operator==(Sub & rhs) const {
+    bool operator==(const Sub & rhs) const {
         if(! Base2::operator==(rhs))
             return false;
         if(! Base1::operator==(rhs))
