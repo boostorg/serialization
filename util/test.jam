@@ -205,7 +205,7 @@ rule test-bsl-run_files ( test-name : sources * : libs * : requirements * ) {
 rule test-bsl-run_polymorphic_files ( test-name : sources * : libs * : requirements * ) {
     local tests ;
     for local defn in $(BOOST_ARCHIVE_LIST) {
-        ECHO polymorphic_$(defn:LB) ;
+        #ECHO polymorphic_$(defn:LB) ;
         tests += [ 
             test-bsl-run_archive $(test-name) 
             : polymorphic_$(defn:LB)
