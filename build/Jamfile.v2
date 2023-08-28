@@ -107,7 +107,6 @@ WSOURCES =
     xml_woarchive
     polymorphic_xml_wiarchive
     polymorphic_xml_woarchive
-    $(SOURCES_HAS_STD_WSTREAMBUF)
 ;
 
 lib boost_serialization 
