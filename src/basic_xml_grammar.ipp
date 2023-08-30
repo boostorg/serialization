@@ -82,7 +82,9 @@ struct assign_impl<std::string> {
             ++b;
         }
     }
-    //assign_impl(const assign_impl & rhs);
+    assign_impl(const assign_impl & rhs)
+        : m_t(rhs.m_t)
+    {}
     assign_impl & operator=(assign_impl & rhs);
     assign_impl(std::string & rhs)
         : m_t(rhs)
