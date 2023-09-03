@@ -335,6 +335,7 @@ archive_test(test_unregistered)
 archive_test(test_unique_ptr)
 archive_test(test_valarray)
 archive_test(test_variant A)
+archive_test(test_std_variant A)
 archive_test(test_vector A)
 
 polymorphic_archive_test(test_dll_exported polymorphic_derived1)
