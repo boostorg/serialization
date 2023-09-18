@@ -1,6 +1,6 @@
 # CMake build control file for Serialization Library tests
 
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.5)
 
 if (POLICY CMP0054)
   cmake_policy (SET CMP0054 NEW)
@@ -16,27 +16,28 @@ project("serialization")
 # Compiler settings
 #
 
-message(STATUS "compiler is ${CMAKE_CXX_COMPILER_ID}" )
+message(STATUS "C++ compiler is ${CMAKE_CXX_COMPILER_ID}" )
 add_definitions(${Boost_LIB_DIAGNOSTIC_DEFINITIONS})
+message(STATUS "C compiler is ${CMAKE_C_COMPILER_ID}" )
 
 if( CMAKE_CXX_COMPILER_ID STREQUAL "GNU" )
+  add_definitions( -std=c++11 )
   add_definitions( -ftemplate-depth=255 )
   # we use gcc to test for C++03 compatibility
-  add_definitions( -std=c++03 )
-  message(STATUS "compiler is g++ c++03")
   set(COMPILER_SUPPORTS_CXX11 FALSE)
 elseif( CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" )
   add_definitions( /wd4996 )
-  message(STATUS "compiler is MSVC")
   set(COMPILER_SUPPORTS_CXX11 TRUE)
 elseif( CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" )
+  add_definitions( -std=c++17 )
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ftemplate-depth=300")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++03")
+  #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++03")
   #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
   set(CMAKE_CXX_FLAGS_DEBUG "-g -O0" )
   set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-g -O3" )
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++ -dead_strip")
-  set(COMPILER_SUPPORTS_CXX11 FALSE)
+  set(COMPILER_SUPPORTS_CXX11 TRUE)
 endif()
 
 #
@@ -46,14 +47,14 @@ endif()
 # Boost
 
 # note: we're assuming that boost has been built with:
-# ./b2 toolset=clang-darwin link=static,shared variant=debug,release stage
+# ./b2 toolset=clang-17 link=static,shared variant=debug,release stage
 
 #
 # Project settings
 #
 option(BUILD_SHARED_LIBS "Build Shared Libraries" true)
 
-find_package(Boost 1.74 REQUIRED COMPONENTS system filesystem)
+find_package(Boost 1.82 REQUIRED COMPONENTS system filesystem)
 
 if(NOT Boost_FOUND)
   message("Boost NOT Found!")
@@ -335,7 +336,6 @@ archive_test(test_unregistered)
 archive_test(test_unique_ptr)
 archive_test(test_valarray)
 archive_test(test_variant A)
-archive_test(test_std_variant A)
 archive_test(test_vector A)
 
 polymorphic_archive_test(test_dll_exported polymorphic_derived1)

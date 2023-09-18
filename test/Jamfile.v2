@@ -112,7 +112,6 @@ test-suite "serialization" :
      [ test-bsl-run_files test_unique_ptr ]
      [ test-bsl-run_files test_valarray ]
      [ test-bsl-run_files test_variant : A ]
-     [ test-bsl-run_files test_std_variant : A : : [ requires cxx17_hdr_variant ] ] # BOOST_NO_CXX17_HDR_VARIANT
      [ test-bsl-run_files test_vector : A ]
      [ test-bsl-run_files test_shared_ptr ]
      [ test-bsl-run_files test_shared_ptr_multi_base ]

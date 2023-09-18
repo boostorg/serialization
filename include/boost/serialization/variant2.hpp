@@ -78,7 +78,7 @@ void save(
     std::visit(visitor, v);
 }
 
-template<std::size_t N, class Seq>
+template<class Seq>
 struct variant_impl
 {
     template<class Archive, class V>
@@ -103,12 +103,12 @@ struct variant_impl
         }
         //typedef typename mpl::pop_front<S>::type type;
         using types = mp11::mp_pop_front<Seq>;
-        variant_impl<N - 1, types>::load(ar, which - 1, v, version);
+        variant_impl<types>::load(ar, which - 1, v, version);
     }
 };
 
 template<class Seq>
-struct variant_impl<0, Seq>
+struct variant_impl<Seq>
 {
     template<class Archive, class V>
     static void load (
