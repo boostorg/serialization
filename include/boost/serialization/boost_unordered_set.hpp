@@ -17,11 +17,11 @@
 
 //  See http://www.boost.org for updates, documentation, and revision history.
 
-#include <boost/config/pragma_message.hpp>
-
-BOOST_PRAGMA_MESSAGE(
-  "Boost.Unordered now provides its own Serialization support. "
-  "This header is no longer necessary and is now deprecated."
+#include <boost/static_assert.hpp>
+BOOST_STATIC_ASSERT_MSG(
+    false,
+    "Boost.Unordered now provides its own Serialization support. "
+    "This header is no longer necessary and is now deprecated."
 )
 
 #endif // BOOST_SERIALIZATION_BOOST_UNORDERED_SET_HPP

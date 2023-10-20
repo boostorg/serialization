@@ -46,9 +46,6 @@ endif()
 
 # Boost
 
-# note: we're assuming that boost has been built with:
-# ./b2 toolset=clang-17 link=static,shared variant=debug,release stage
-
 #
 # Project settings
 #
@@ -285,9 +282,6 @@ CHECK_INCLUDE_FILE_CXX(hash_map HASH_MAP_FOUND)
 if(HASH_MAP_FOUND)
   archive_test(test_map_hashed A)
 endif()
-if(COMPILER_SUPPORTS_CXX11)
-  archive_test(test_map_unordered A)
-endif()
 archive_test(test_mi)
 archive_test(test_multiple_ptrs A)
 archive_test(test_multiple_inheritance)
@@ -312,9 +306,6 @@ CHECK_INCLUDE_FILE_CXX(hash_set HASH_SET_FOUND)
 if(HASH_SET_FOUND)
   archive_test(test_set_hashed A)
 endif()
-if(COMPILER_SUPPORTS_CXX11)
-  archive_test(test_set_unordered A)
-endif()
 
 archive_test(test_shared_ptr)
 archive_test(test_shared_ptr_multi_base)
@@ -336,10 +327,12 @@ archive_test(test_valarray)
 archive_test(test_variant A)
 archive_test(test_vector A)
 
-polymorphic_archive_test(test_dll_exported polymorphic_derived1)
-foreach(test_name IN ITEMS ${test_list} )
+if(BUILD_SHARED_LIBS)
+  polymorphic_archive_test(test_dll_exported polymorphic_derived1)
+  foreach(test_name IN ITEMS ${test_list} )
     target_link_libraries(${test_name} dll_polymorphic_derived2 dll_polymorphic_base serialization wserialization)
-endforeach()
+  endforeach()
+endif()
 
 polymorphic_archive_test(test_no_rtti polymorphic_base polymorphic_derived1 polymorphic_derived2)
 polymorphic_archive_test(test_exported polymorphic_base polymorphic_derived1 polymorphic_derived2)
