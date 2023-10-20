@@ -100,13 +100,9 @@ class extended_type_info_no_rtti :
         }
     };
 public:
-    #if BOOST_WORKAROUND(BOOST_GCC_VERSION,>=40900)||\
-    BOOST_WORKAROUND(BOOST_CLANG,>=1)&&\
-    (__clang_major__>3 || __clang_major__==3 && __clang_minor__ >= 8)
-    __attribute__((no_sanitize("undefined")))
-    #endif
     extended_type_info_no_rtti() :
-        no_rtti_system::extended_type_info_no_rtti_0(get_key())
+        no_rtti_system::extended_type_info_no_rtti_0(
+            action<guid_defined< T >::value >::invoke())
     {
         key_register();
     }
