@@ -29,49 +29,49 @@ http://www.boost.org/LICENSE_1_0.txt)
 <pre><code>
 
 
-basic_oarchive <a href="../../../boost/archive/detail/basic_oarchive.hpp">-></a>
+basic_oarchive <a href="../../../boost/archive/detail/basic_oarchive.hpp">-&gt;</a>
       |
       |
-      |      interface_oarchive&lt;text_oarchive&gt; <a href="../../../boost/archive/detail/interface_oarchive.hpp">-></a>
+      |      interface_oarchive&lt;text_oarchive&gt; <a href="../../../boost/archive/detail/interface_oarchive.hpp">-&gt;</a>
       |                     /
       |                   /
       |        _________/
       |      /
       |    /
       |  /
-common_oarchive&lt;text_oarchive&gt; <a href="../../../boost/archive/detail/common_oarchive.hpp">-></a>
+common_oarchive&lt;text_oarchive&gt; <a href="../../../boost/archive/detail/common_oarchive.hpp">-&gt;</a>
       |
       |
-<font color="blue">basic_text_oarchive&lt;text_oarchive&gt;</font> <a href="../../../boost/archive/basic_text_oarchive.hpp">-></a>
+<font color="blue">basic_text_oarchive&lt;text_oarchive&gt;</font> <a href="../../../boost/archive/basic_text_oarchive.hpp">-&gt;</a>
       |
       |
-      |     <font color="blue">basic_text_oprimitive&lt;basic_ostream&gt;</font> <a href="../../../boost/archive/basic_text_oprimitive.hpp">-></a>
+      |     <font color="blue">basic_text_oprimitive&lt;basic_ostream&gt;</font> <a href="../../../boost/archive/basic_text_oprimitive.hpp">-&gt;</a>
       |                    /
       |                  /
-      |       _________/                  interface_oarchive&lt;polymorphic_oarchive&gt; <a href="../../../boost/archive/detail/interface_oarchive.hpp">-></a>
+      |       _________/                  interface_oarchive&lt;polymorphic_oarchive&gt; <a href="../../../boost/archive/detail/interface_oarchive.hpp">-&gt;</a>
       |     /                                                |
       |   /                                                  |
       | /                                                    |
-<font color="blue">text_oarchive_impl&lt;text_oarchive&gt;</font> <a href="../../../boost/archive/text_oarchive.hpp">-></a>              polymorphic_oarchive_impl <a href="../../../boost/archive/polymorphic_oarchive.hpp">-></a>
+<font color="blue">text_oarchive_impl&lt;text_oarchive&gt;</font> <a href="../../../boost/archive/text_oarchive.hpp">-&gt;</a>              polymorphic_oarchive_impl <a href="../../../boost/archive/polymorphic_oarchive.hpp">-&gt;</a>
       | \                                                    |
       |   \                                                  |
-      |     \_____________________________________    <font color="red">polymorphic_oarchive</font> <a href="../../../boost/archive/polymorphic_oarchive.hpp">-></a>
+      |     \_____________________________________    <font color="red">polymorphic_oarchive</font> <a href="../../../boost/archive/polymorphic_oarchive.hpp">-&gt;</a>
       |                                           \         /
       |                                             \     /
       |                                               \ /  
-<font color="red">text_oarchive</font> <a href="../../../boost/archive/text_oarchive.hpp">-></a>                 polymorphic_oarchive_route&lt;text_oarchive_impl&lt;text_oarchive&gt; &gt; <a href="../../../boost/archive/detail/polymorphic_oarchive_route.hpp">-></a>
+<font color="red">text_oarchive</font> <a href="../../../boost/archive/text_oarchive.hpp">-&gt;</a>                 polymorphic_oarchive_route&lt;text_oarchive_impl&lt;text_oarchive&gt; &gt; <a href="../../../boost/archive/detail/polymorphic_oarchive_route.hpp">-&gt;</a>
                                                        |
                                                        |
                                                        |
-                                             <font color="red">polymorphic_text_oarchive</font> <a href="../../../boost/archive/polymorphic_text_oarchive.hpp">-></a>
+                                             <font color="red">polymorphic_text_oarchive</font> <a href="../../../boost/archive/polymorphic_text_oarchive.hpp">-&gt;</a>
 
 
 </code></pre>
 This diagram shows the relationship between the various classes that implement saving (output
-serialization) for text archives.  The hierachy and organization is similar for loading and for
+serialization) for text archives.  The hierarchy and organization is similar for loading and for
 other types of archives as well.  In the diagram, classes written in <font color="blue">blue</font> 
-implement saving for a given archive type. (in this case its text archives).
-Users include classes in <font color="red">red</font> to save their data from a partcular
+implement saving for a given archive type. (in this case it's text archives).
+Users include classes in <font color="red">red</font> to save their data from a particular
 type of archive.  Other classes whose names are in black implement the library and should
 never change.  They are in <code>namespace boost::archive::detail</code>
 <dl>
@@ -141,7 +141,7 @@ never change.  They are in <code>namespace boost::archive::detail</code>
   <a href="../../../boost/archive/polymorphic_oarchive.hpp">polymorphic_oarchive</a>
   </code></dt>
   <dd>
-  A class with a list of virtual <code style="white-space: normal">save(T &t)</code>
+  A class with a list of virtual <code style="white-space: normal">save(T &amp;t)</code>
   for all primitive types T. This is the class that is used to do pre-compile serialization of classes
   for all archives present and future.
   
@@ -157,8 +157,8 @@ never change.  They are in <code>namespace boost::archive::detail</code>
   <a href="../../../boost/archive/polymorphic_text_oarchive.hpp">polymorphic_text_oarchive</a>
   </code></dt>
   <dd>
-  this is just a typedef so we can write polymorphic_text_archive rather than
-  <code style="white-space: normal">polymorphic_oarchive_route&lt;text_oarchive_impl&'t;text_oarchive&gt; &gt;</code>
+  this is just a typedef so we can write <code style="white-space: normal">polymorphic_text_archive</code> rather than
+  <code style="white-space: normal">polymorphic_oarchive_route&lt;text_oarchive_impl&lt;text_oarchive&gt; &gt;</code>
   
 </dl>
 <hr>

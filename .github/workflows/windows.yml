@@ -8,6 +8,10 @@ on:
       - develop
       - feature/**
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   LIBRARY: serialization
 
@@ -17,30 +21,45 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - toolset: msvc-14.1
-            cxxstd: "14,17,latest"
+          - toolset: msvc-14.0
+            cxxstd: "11,14"
             addrmd: 32,64
-            os: windows-2016
+            os: windows-2019
           - toolset: msvc-14.2
             cxxstd: "14,17,latest"
             addrmd: 32,64
             os: windows-2019
+          - toolset: msvc-14.3
+            cxxstd: "17,20,latest"
+            addrmd: 32,64
+            os: windows-2022
+          - toolset: clang-win
+            cxxstd: "14,17,latest"
+            addrmd: 32,64
+            os: windows-2022
           - toolset: gcc
-            cxxstd: "03,11,14,17,2a"
+            cxxstd: "11,14,17,2a"
             addrmd: 64
             os: windows-2019
 
     runs-on: ${{matrix.os}}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Setup Boost
         shell: cmd
         run: |
+          echo GITHUB_REPOSITORY: %GITHUB_REPOSITORY%
+          for /f %%i in ("%GITHUB_REPOSITORY%") do set LIBRARY=%%~nxi
+          echo LIBRARY: %LIBRARY%
+          echo LIBRARY=%LIBRARY%>>%GITHUB_ENV%
+          echo GITHUB_BASE_REF: %GITHUB_BASE_REF%
+          echo GITHUB_REF: %GITHUB_REF%
           if "%GITHUB_BASE_REF%" == "" set GITHUB_BASE_REF=%GITHUB_REF%
           set BOOST_BRANCH=develop
-          if "%GITHUB_BASE_REF%" == "master" set BOOST_BRANCH=master
+          for /f %%i in ("%GITHUB_BASE_REF%") do if "%%~nxi" == "master" set BOOST_BRANCH=master
+          echo BOOST_BRANCH: %BOOST_BRANCH%
           cd ..
           git clone -b %BOOST_BRANCH% --depth 1 https://github.com/boostorg/boost.git boost-root
           cd boost-root
@@ -54,4 +73,4 @@ jobs:
         shell: cmd
         run: |
           cd ../boost-root
-          b2 -j3 libs/%LIBRARY%/test toolset=${{matrix.toolset}} cxxstd=${{matrix.cxxstd}} address-model=${{matrix.addrmd}} variant=debug,release
+          b2 -j3 libs/%LIBRARY%/test toolset=${{matrix.toolset}} cxxstd=${{matrix.cxxstd}} address-model=${{matrix.addrmd}} variant=release

@@ -23,8 +23,6 @@ namespace std{
 #include <boost/archive/archive_exception.hpp>
 #include "test_tools.hpp"
 
-#include <boost/serialization/optional.hpp>
-#include <boost/serialization/string.hpp>
 
 struct A {
     int m_x;
@@ -44,18 +42,19 @@ struct A {
     {}
 };
 
-int test_main( int /* argc */, char* /* argv */[] )
-{
+// Optional is the class optional implementation you use
+template<template<class> class Optional>
+int test(){
     const char * testfile = boost::archive::tmpnam(NULL);
     BOOST_REQUIRE(NULL != testfile);
 
-    const boost::optional<int> aoptional1;
-    const boost::optional<int> aoptional2(123);
-    const boost::optional<A> aoptional3;
+    const Optional<int> aoptional1;
+    const Optional<int> aoptional2(123);
+    const Optional<A> aoptional3;
     A a(1);
-    const boost::optional<A> aoptional4(a);
-    const boost::optional<A *> aoptional5;
-    const boost::optional<A *> aoptional6(& a);
+    const Optional<A> aoptional4(a);
+    const Optional<A *> aoptional5;
+    const Optional<A *> aoptional6(& a);
     {
         test_ostream os(testfile, TEST_STREAM_FLAGS);
         test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
@@ -66,12 +65,12 @@ int test_main( int /* argc */, char* /* argv */[] )
         oa << boost::serialization::make_nvp("aoptional5",aoptional5);
         oa << boost::serialization::make_nvp("aoptional6",aoptional6);
     }
-    boost::optional<int> aoptional1a(999);
-    boost::optional<int> aoptional2a;
-    boost::optional<A> aoptional3a;
-    boost::optional<A> aoptional4a;
-    boost::optional<A *> aoptional5a;
-    boost::optional<A *> aoptional6a;
+    Optional<int> aoptional1a(999);
+    Optional<int> aoptional2a;
+    Optional<A> aoptional3a;
+    Optional<A> aoptional4a;
+    Optional<A *> aoptional5a;
+    Optional<A *> aoptional6a;
     {
         test_istream is(testfile, TEST_STREAM_FLAGS);
         test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
@@ -85,12 +84,23 @@ int test_main( int /* argc */, char* /* argv */[] )
     BOOST_CHECK(aoptional1 == aoptional1a);
     BOOST_CHECK(aoptional2 == aoptional2a);
     BOOST_CHECK(aoptional3 == aoptional3a);
-    BOOST_CHECK(aoptional4.get() == aoptional4a.get());
-    BOOST_CHECK(aoptional5 == aoptional5a);
-    BOOST_CHECK(*aoptional6.get() == *aoptional6a.get());
+    BOOST_CHECK(aoptional4 == aoptional4a);
+    BOOST_CHECK(aoptional5 == aoptional5a);  // not initialized
+    BOOST_CHECK(**aoptional6 == **aoptional6a);
 
     std::remove(testfile);
     return EXIT_SUCCESS;
 }
 
-// EOF
+#include <boost/serialization/optional.hpp>
+#ifndef BOOST_NO_CXX17_HDR_OPTIONAL
+#include <optional>
+#endif
+
+int test_main( int /* argc */, char* /* argv */[] ){
+    test<boost::optional>();
+    #ifndef BOOST_NO_CXX17_HDR_OPTIONAL
+    test<std::optional>();
+    #endif
+    return EXIT_SUCCESS;
+}

@@ -64,7 +64,7 @@ Its sole purpose is to pass the data size and address as a pair to the archive c
 
 <h3><a name="arrays">Arrays</a></h3>
 An array is a contiguous sequence of homogeneous data types, such as a builtin
-C-array, a <code>boost::array&lt;T></code> or a <code>std::vector&lt;T></code>. 
+C-array, a <code>boost::array&lt;T&gt;</code> or a <code>std::vector&lt;T&gt;</code>. 
 The purpose of this wrapper is to support archive types (such as binary
 archives) that provide optimized serialization for contiguous sequences of 
 objects of the same type. 
@@ -75,12 +75,12 @@ array.hpp
 </a>
 includes the function
 <pre><code>
-template &lt;T>
+template &lt;T&gt;
 boost::serialization::make_array(T* t, std::size_t size);
 </code></pre>
 which will construct a temporary <code>array</code> object
 <pre><code>
-template<class T>
+template&lt;class T&gt;
 class array
 {
 public:    
@@ -118,7 +118,7 @@ An example of a strong typedef is the <code>collection_size_type</code> in the
 header file
 <a href="../../../boost/serialization/collection_size_type.hpp" target="collection_size_type_hpp">
 collection_size_type.hpp
-</a>. This type should be used for serializaing the size of a C++ collection, so
+</a>. This type should be used for serializing the size of a C++ collection, so
 that the archive can pick the best integral representation for the serialization
 of collection sizes. This is necessary since, although <code>std::size_t</code>
 is guaranteed to be an integral type large enough to represent the size of
@@ -158,27 +158,27 @@ The xml archive classes contain code similar to:
 <pre><code>
 // special treatment for name-value pairs.
 template&lt;class T&gt;
-xml_oarchive & operator&(const boost::serialization::nvp<T> & t)
+xml_oarchive &amp; operator&amp;(const boost::serialization::nvp&lt;T&gt; &amp; t)
 {
     // write an xml start tag
     start_tag(t.name());
 
     // serialize the data as usual
-    *this & t.value();
+    *this &amp; t.value();
 
     // write an xml end tag
     end_tag(t.name());
 }
 </code></pre>
-The most obvious and convient name to assign to as the XML data item name
+The most obvious and convenient name to assign to as the XML data item name
 is - surprise! - the name of the C++ class data member.  So our serialization
 code will look like:
 <pre><code>
-ar & make_nvp("my_variable", my_variable);
+ar &amp; make_nvp("my_variable", my_variable);
 </code></pre>
 To simplify typing and enhance readability a macro is defined so we can write:
 <pre><code>
-ar & BOOST_SERIALIZATION_NVP(my_variable);
+ar &amp; BOOST_SERIALIZATION_NVP(my_variable);
 </code></pre>
 Similarly there exists a macro definition that permits us to write:
 <pre><code>
@@ -200,7 +200,7 @@ is example of the XML Archive corresponding to our tutorial example.
 Wrappers should be designed so that they can be composed as necessary.
 For example, to pass binary data as a name value pair use:
 <pre><code>
-ar & make_nvp("named_binary_object", make_binary_object(address, size));
+ar &amp; make_nvp("named_binary_object", make_binary_object(address, size));
 </code></pre>
 </html>
 <hr>

@@ -40,24 +40,24 @@ Unfortunately, this way of doing it suffered from some undesirable features
 <pre><code>
 template&lt;class Archive, class T&gt;
 inline void save(
-    Archive & ar,
-    const boost::shared_ptr&ltT&gt; &t,
+    Archive &amp; ar,
+    const boost::shared_ptr&lt;T&gt; &amp;t,
     const unsigned int /* file_version */
 ){
     const T * t_ptr = t.get();
     // just serialize the underlying raw pointer
-    ar &lt;&lt: boost::serialization::make_nvp("px", t_ptr);
+    ar &lt;&lt; boost::serialization::make_nvp("px", t_ptr);
 }
 
-template&lt;class Archive, class T&gt
+template&lt;class Archive, class T&gt;
 inline void load(
-    Archive & ar,
-    boost::shared_ptr&lt;T&gt; &t,
+    Archive &amp; ar,
+    boost::shared_ptr&lt;T&gt; &amp;t,
     const unsigned int file_version
 ){
     T* r;
     // recover the underlying raw pointer
-    ar >> boost::serialization::make_nvp("px", r);
+    ar &gt;&gt; boost::serialization::make_nvp("px", r);
 
     // To Do - match up with other shared pointers which 
     // use this same raw pointer.

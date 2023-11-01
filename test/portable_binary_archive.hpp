@@ -16,7 +16,7 @@ typedef portable_binary_oarchive test_oarchive;
 // and corresponding stream
 typedef std::ofstream test_ostream;
 
-// repeat the above for correspondng input archive
+// repeat the above for corresponding input archive
 #include "../example/portable_binary_iarchive.hpp"
 typedef portable_binary_iarchive test_iarchive;
 typedef std::ifstream test_istream;

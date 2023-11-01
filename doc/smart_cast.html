@@ -30,18 +30,18 @@ To cast from one type to another related type, C++ provides the following
 operators:
 
 <dl>
-  <dt><code>static_cast&lt;T *<&gt;(U *)<br>static_cast&lt;T &<&gt;(U &)</code></dt>
+  <dt><code>static_cast&lt;T *&gt;(U *)<br>static_cast&lt;T &amp;&gt;(U &amp;)</code></dt>
   <dd>
     <ul>
       <li>required if neither T nor U are polymorphic
       <li>permitted in other cases.
-      <li>fails to detect erroneous casts of polymophic pointers/references at runtime.
+      <li>fails to detect erroneous casts of polymorphic pointers/references at runtime.
       <li>does not permit "cross casting"
       <li>inline function calls can be optimized away during compile time.
     </ul>
   </dd>
   <p>
-  <dt><code>dynamic_cast&lt;T *<&gt;(U *)<br>dynamic_cast&lt;T &<&gt;(U &)</code></dt>
+  <dt><code>dynamic_cast&lt;T *&gt;(U *)<br>dynamic_cast&lt;T &amp;&gt;(U &amp;)</code></dt>
   <dd>
     <ul>
       <li>permitted if either T or U are polymorphic
@@ -127,16 +127,16 @@ situation exemplified above.
 The following syntax is supported:
 <pre><code>
 smart_cast&lt;Target *, Source *&gt;(Source * s);
-smart_cast&lt;Target *>(Source * s);
-smart_cast&lt;Target &, Source &amp;&gt(Source &amp; s);
+smart_cast&lt;Target *&gt;(Source * s);
+smart_cast&lt;Target &amp;, Source &amp;&gt;(Source &amp; s);
 </code></pre>
 Note that the above syntax doesn't include 
 <pre><code>
-smart_cast&lt;Target &amp; &gt(Source &amp; s)
+smart_cast&lt;Target &amp; &gt;(Source &amp; s)
 </code></pre>
 but the same functionality is supported with the following special syntax
 <pre><code>
-smart_cast_reference&lt;Target &amp;&gt(Source &amp; s)
+smart_cast_reference&lt;Target &amp;&gt;(Source &amp; s)
 </code></pre>
 
 <h3>Requirements</h3>

@@ -41,7 +41,7 @@ struct A {
     // class a contains a pointer to a "hidden" declaration
     B *pimpl;
     template&lt;class Archive&gt;
-    void serialize(Archive & ar, const unsigned int file_version);
+    void serialize(Archive &amp; ar, const unsigned int file_version);
     A();
 };
 </code></pre>
@@ -59,8 +59,8 @@ by:
 struct B {
     int b;
     template&lt;class Archive&gt;
-    void serialize(Archive & ar, const unsigned int file_version){
-        ar & b;
+    void serialize(Archive &amp; ar, const unsigned int file_version){
+        ar &amp; b;
     }
 };
 
@@ -74,8 +74,8 @@ A::~A(){
 
 // now we can define the serialization for class A
 template&lt;class Archive&gt;
-void A::serialize(Archive & ar, const unsigned int file_version){
-    ar & pimpl;
+void A::serialize(Archive &amp; ar, const unsigned int file_version){
+    ar &amp; pimpl;
 }
 </code></pre>
 As described in <a href="bibliography.html#10">[10]</a> this brings the
@@ -88,8 +88,8 @@ following advantages:
 So, we compile the modules and everything is fine.  However when we
 link, we get an error.  Two symbols are undefined:
 <pre><code>
-void A::serialize(boost::archive::text_oarchive & ar, const unsigned int file_version);
-void A::serialize(boost::archive::text_iarchive & ar, const unsigned int file_version);
+void A::serialize(boost::archive::text_oarchive &amp; ar, const unsigned int file_version);
+void A::serialize(boost::archive::text_iarchive &amp; ar, const unsigned int file_version);
 </code></pre>
 The problem is that when compiling the above code, 
 there is no instantiation of the <code style="white-space: normal">serialize</code> template.
@@ -103,11 +103,11 @@ example, including the the following code in any *.cpp file does just that:
 #include &lt;boost/archive/text_oarchive.hpp&gt;
 
 template void A::serialize&lt;boost::archive::text_iarchive&gt;(
-    boost::archive::text_iarchive & ar, 
+    boost::archive::text_iarchive &amp; ar, 
     const unsigned int file_version
 );
 template void A::serialize&lt;boost::archive::text_oarchive&gt;(
-    boost::archive::text_oarchive & ar, 
+    boost::archive::text_oarchive &amp; ar, 
     const unsigned int file_version
 );
 </code></pre>
@@ -115,7 +115,7 @@ The program should now link as well as compile.
 <p>
 The downside of this is that one has to know which archives are going 
 to be used with hidden serializations.  This is an effect of using template
-driven code.  One can invoke explicity instantiation for all known templates and
+driven code.  One can invoke explicitly instantiation for all known templates and
 presume that the linker will exclude unreferenced code.  This should
 work but is platform dependent.
 <hr>

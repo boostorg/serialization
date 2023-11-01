@@ -62,7 +62,7 @@ bool J::operator==(const J &rhs) const
 // When those objects are subsequently serialized, it is discovered
 // that have already been serialized through pointers.  This is
 // detected by the system and an exception - pointer_conflict -
-// is thrown.  Permiting this to go undetected would result in the
+// is thrown.  Permitting this to go undetected would result in the
 // creation of multiple equal objects rather than the original
 // structure.
 class K

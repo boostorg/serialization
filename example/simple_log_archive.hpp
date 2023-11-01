@@ -37,7 +37,7 @@ namespace std{
 #include <boost/serialization/access.hpp>
 
 /////////////////////////////////////////////////////////////////////////
-// log data to an output stream.  This illustrates a simpler implemenation
+// log data to an output stream.  This illustrates a simpler implementation
 // of text output which is useful for getting a formatted display of
 // any serializable class.  Intended to be useful as a debugging aid.
 class simple_log_archive {
@@ -91,7 +91,7 @@ class simple_log_archive {
     }
     #ifndef BOOST_NO_STD_WSTRING
     void save(const std::wstring &ws){
-        m_os << "wide string types not suported in log archive";
+        m_os << "wide string types not supported in log archive";
     }
     #endif
 

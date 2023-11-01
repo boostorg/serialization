@@ -101,8 +101,8 @@ For class/struct types, the template operators &amp;, &lt;&lt;, and &gt;&gt;
 will generate code that invokes the programmer's serialization code for the
 particular data type.  There is no default.  An attempt to serialize a
 class/struct for which no serialization has been explicitly specified
-will result in a compile time error.  The serialiation of a class can
-be specified via either a class member function or a free funcation which
+will result in a compile time error.  The serialization of a class can
+be specified via either a class member function or a free function which
 takes a reference to an instance of the class as an argument.
 
 <h3><a name="member">Member Function</a></h3>
@@ -180,7 +180,7 @@ possible to serialize them.  So in some instances, minor modifications to the
 class to be serialized will be necessary even when using this "non-intrusive"
 method.  In practice this may not be such a problem as many libraries 
 (E.G. STL) expose enough information to permit implementation of non-intrusive
-serialization with absolutly no changes to the library.
+serialization with absolutely no changes to the library.
 
 <h4><a name="namespaces">Namespaces for Free Function Overrides</a></h4>
 For maximum portability, include any free functions templates and definitions in the 
@@ -219,7 +219,7 @@ base_object.hpp
 includes the template:
 <pre><code>
 template&lt;class Base, class Derived&gt;
-Base & base_object(Derived &d);
+Base &amp; base_object(Derived &amp;d);
 </code></pre>
 which should be used to create a reference to an object of the base
 which can be used as an argument to the archive serialization operators.
@@ -255,7 +255,7 @@ Loading <code style="white-space: normal">const</code> members can be addressed 
     ar &amp; const_cast&lt;T &amp;&gt;(t);
 </code></pre>
 Note that this violates the spirit and intention of the <code style="white-space: normal">const</code>
-keyword. <code style="white-space: normal">const</code> members are intialized when a class instance
+keyword. <code style="white-space: normal">const</code> members are initialized when a class instance
 is constructed and not changed thereafter.  However, this may
 be most appropriate in many cases.  Ultimately, it comes down to 
 the question about what <code style="white-space: normal">const</code> means in the context
@@ -463,7 +463,7 @@ following situations must be addressed:
     be determined and saved. Upon restoration the correct type
     must be created and its address correctly cast to the base
     class. That is, polymorphic pointers have to be considered.
-    <li>NULL pointers must be dectected when saved and restored
+    <li>NULL pointers must be detected when saved and restored
     to NULL when deserialized.
 </ol>
 
@@ -543,7 +543,7 @@ private:
         ar &amp; m_state;
     }
 public:
-    // no default construct guarentees that no invalid object
+    // no default construct guarantees that no invalid object
     // ever exists
     my_class(int attribute) :
         m_attribute(attribute),
@@ -591,7 +591,7 @@ class derived_one : public base {
 class derived_two : public base {
     ...
 };
-main(){
+int main(){
     ...
     base *b;
     ...
@@ -604,7 +604,7 @@ Should it be an object of class <code style="white-space: normal">derived_one</c
 <code style="white-space: normal">derived_two</code>, or maybe <code style="white-space: normal">base</code>?
 <p>
 It turns out that the kind of object serialized depends upon whether the base class
-(<code style="white-space: normal">base</code> in this case) is polymophic or not.
+(<code style="white-space: normal">base</code> in this case) is polymorphic or not.
 If <code style="white-space: normal">base</code> is not polymorphic, that is if it has no
 virtual functions, then an object of the type <code style="white-space: normal">base</code>
 will be serialized. Information in any derived classes will be lost. If this is what is desired
@@ -630,7 +630,7 @@ the same sequence.  This includes "registration".
 <p>
 Expanding our previous example:
 <pre><code>
-main(){
+int main(){
     derived_one d1;
     derived_two d2:
     ...
@@ -659,11 +659,11 @@ This can be addressed by registering the derived class explicitly.  All archives
 derived from a base class which implements the following template:
 <pre><code>
 template&lt;class T&gt;
-register_type();
+register_type(T * = NULL);
 </code></pre>
 So our problem could just as well be addressed by writing:
 <pre><code>
-main(){
+int main(){
     ...
     ar.template register_type&lt;derived_one&gt;();
     ar.template register_type&lt;derived_two&gt;();
@@ -674,7 +674,7 @@ main(){
 </code></pre>
 Note that if the serialization function is split between save and load, both
 functions must include the registration.  This is required to keep the save
-and corresponding load in syncronization.
+and corresponding load in synchronization.
 
 <h4><a name="export">Export</a></h4>
 The above will work but may be inconvenient.  We don't always know which derived
@@ -690,7 +690,7 @@ So we have another method:
 BOOST_CLASS_EXPORT_GUID(derived_one, "derived_one")
 BOOST_CLASS_EXPORT_GUID(derived_two, "derived_two")
 
-main(){
+int main(){
     ...
     base *b;
     ...
@@ -719,7 +719,7 @@ This means that serialization code must be instantiated for each
 combination of archive and data type that is serialized in the program.
 <p>
 Polymorphic pointers of derived classes may never be referred to 
-explictly by the program so normally code to serialize such classes
+explicitly by the program so normally code to serialize such classes
 would never be instantiated.  So in addition to including export key
 strings in an archive, <code style="white-space: normal">BOOST_CLASS_EXPORT_GUID</code> explicitly
 instantiates the class serialization code for all archive classes used 
@@ -755,7 +755,7 @@ can be used.
 In order to properly translate between base and derived pointers
 at runtime, the system requires each base/derived pair be found
 in a table.  A side effect of serializing a base object with
-<code style="white-space: normal">boost::serialization::base_object&lt;Base&gt;(Derived &)</code>
+<code style="white-space: normal">boost::serialization::base_object&lt;Base&gt;(Derived &amp;)</code>
 is to ensure that the base/derived pair is added to the table
 before the <code style="white-space: normal">main</code> function is entered.
 This is very convenient and results in a clean syntax.  The only
@@ -789,7 +789,7 @@ class derived : public base {
     template&lt;class Archive&gt;
     void serialize(Archive &amp; ar, const unsigned int file_version){
         // method 1 : invoke base class serialization
-        ar & boost::serialization::base_object&lt;base&gt;(*this);
+        ar &amp; boost::serialization::base_object&lt;base&gt;(*this);
         // method 2 : explicitly register base/derived relationship
         boost::serialization::void_cast_register&lt;derived, base&gt;(
             static_cast&lt;derived *&gt;(NULL),
@@ -800,7 +800,7 @@ class derived : public base {
 
 BOOST_CLASS_EXPORT_GUID(derived, "derived")
 
-main(){
+int main(){
     //...
     std::stringstream ss;
     boost::archive::text_iarchive ar(ss);
@@ -919,6 +919,7 @@ As of this writing, the library contains serialization of the following boost cl
   <li>shared_ptr
   <li>auto_ptr (demo)
 </ul>
+C++17 <code style="white-space: normal">std::variant is supported as well</code>.
 Others are being added to the list so check the boost files section and headers for
 new implementations!
 <hr>

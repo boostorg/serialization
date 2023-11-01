@@ -49,7 +49,7 @@ the following functions
     The main function we require - <code style="white-space: normal">std::typeid()</code>
     is not available in all environments. Support for this function depends upon
     runtime typing(RTTI) support from the compiler.  This may be non-existent
-    or not enabled for reasons such as a percieved inefficiency.
+    or not enabled for reasons such as a perceived inefficiency.
   <li>
     <code style="white-space: normal">std::type_info</code> includes a string
     containing type name.  This would seem to satisfy 2) above.
@@ -95,7 +95,7 @@ corresponding type can be found.  This facility is used by the serialization lib
 in order to construct types serialized through a base class pointer.
 
 <h3><a name="runtime">Runtime Interface</a></h3>
-<pre><code">
+<pre><code>
 namespace boost { 
 namespace serialization {
 
@@ -114,9 +114,9 @@ protected:
     void key_unregister();
 public:
     const char * get_key() const;
-    bool operator<(const extended_type_info &rhs) const;
-    bool operator==(const extended_type_info &rhs) const;
-    bool operator!=(const extended_type_info &rhs) const {
+    bool operator&lt;(const extended_type_info &amp;rhs) const;
+    bool operator==(const extended_type_info &amp;rhs) const;
+    bool operator!=(const extended_type_info &amp;rhs) const {
         return !(operator==(rhs));
     }
     // for plugins
@@ -133,7 +133,7 @@ Generally, there will be one and only one
 <code style="white-space: normal"><a target="extended_type_info.hpp" href = "../../../boost/serialization/extended_type_info.hpp">extended_type_info</a></code>
 instance created for each type.  However, this is enforced only at the executable
 module level.  That is, if a program includes some shared libraries or DLLS,
-there may be more than one instance of this class correponding to a particular type.
+there may be more than one instance of this class corresponding to a particular type.
 For this reason the comparison functions below can't just compare the addresses of 
 this instance but rather must be programmed to compare the actual information 
 the instances contain.
@@ -188,9 +188,9 @@ instance.  If no key has been associated with the instance, then a NULL is retur
 </dd>
 
 <dt><h4><pre><code>
-bool operator<(const extended_type_info & rhs) const;
-bool operator==(const extended_type_info & rhs) const;
-bool operator!=(const extended_type_info & rhs) const;
+bool operator<(const extended_type_info &amp; rhs) const;
+bool operator==(const extended_type_info &amp; rhs) const;
+bool operator!=(const extended_type_info &amp; rhs) const;
 </code></pre></h4></dt>
 <dd>
 These functions are used to compare
@@ -261,7 +261,7 @@ and also implement the following:
 <dt><h4><code style="white-space: normal"><pre>
 template&lt;class ETI&gt;
 const extended_type_info *
-ETI::get_derived_extended_type_info(const T & t) const;
+ETI::get_derived_extended_type_info(const T &amp; t) const;
 </pre></code></h4></dt>
 <dd>
 Return a pointer to the 
@@ -275,7 +275,7 @@ with a particular <code style="white-space: normal">extended_type_info</code> im
 </dd>
 
 <dt><h4><code style="white-space: normal"><pre>
-virtual bool ETI::is_less_than(const extended_type_info &rhs) const;
+virtual bool ETI::is_less_than(const extended_type_info &amp;rhs) const;
 </pre></code></h4></dt>
 <dd>
 Compare this instance to another one using the same
@@ -283,7 +283,7 @@ Compare this instance to another one using the same
 </dd>
 
 <dt><h4><code style="white-space: normal"><pre>
-virtual bool ETI::is_equal(const extended_type_info &rhs) const;
+virtual bool ETI::is_equal(const extended_type_info &amp;rhs) const;
 </pre></code></h4></dt>
 <dd>
 Compare this instance to another one using the same
@@ -330,7 +330,7 @@ by the compiler.
 <code style="white-space: normal"><h4><a target="extended_type_info_no_rtti.hpp" href="../../../boost/serialization/extended_type_info_no_rtti.hpp">
 extended_type_info_no_rtti</a></h4></code>
 is implemented in a way that doesn't rely on the existence RTTI.
-Instead, it requires that all polymorphic types be explictly exported.
+Instead, it requires that all polymorphic types be explicitly exported.
 In addition, if the export facility is to be used to serialize types
 through base class pointers, those types are required to implement
 a virtual function with the signature:
@@ -354,16 +354,16 @@ inter-operability between two different implementations of
 <h3><a name="type_requirements">Requirements for Each Type</a></h3>
 Each type to be managed by the system must be
 "registered" individually. This is accomplished by instantiating
-templates.  For example, if the type T is to use the type_info system
+templates.  For example, if the type T is to use the <code style="white-space: normal">type_info</code> system
 one would include the following code:
 
 <code style="white-space: normal"><pre>
 namespace boost {
 namespace serialization {
 template
-struct extended_type_info_typeid&gt;T&gt;;
+struct extended_type_info_typeid&lt;T&gt;;
 template
-struct extended_type_info_typeid&gt;const T&gt;;
+struct extended_type_info_typeid&lt;const T&gt;;
 } // serialization
 } // boost
 </pre></code>
@@ -375,7 +375,7 @@ the macro:
 <code style="white-space: normal"><pre>
 BOOST_CLASS_TYPE_INFO(
     my_type, 
-    extended_type_info_typeid&gt;my_class&gt;
+    extended_type_info_typeid&lt;my_class&gt;
 )
 </pre></code>
 
@@ -399,7 +399,7 @@ struct derived : public base {
 };
 ...
 extended_type_info *eti = extended_type_info::find("my_class")
-base * b = eti->construct(...);
+base * b = eti-&gt;construct(...);
 </pre></code>
 <br>
 The <code>construct</code> takes an argument count and up to

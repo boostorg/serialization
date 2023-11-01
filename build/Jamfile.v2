@@ -12,6 +12,8 @@ project boost/serialization
       <conditional>@include-spirit
 ;
 
+import ../../config/checks/config : requires ;
+
 SPIRIT_ROOT = [ modules.peek : SPIRIT_ROOT ] ;
 rule include-spirit ( properties * )
 {
@@ -88,7 +90,7 @@ SOURCES =
     codecvt_null
  ;
 
-SOURCES_HAS_STD_LOCALE = 
+SOURCES_HAS_STD_WSTREAMBUF = 
     xml_oarchive
     utf8_codecvt_facet
 ;
@@ -107,49 +109,11 @@ WSOURCES =
     polymorphic_xml_woarchive
 ;
 
-rule has-config-flag ( flag : properties * )
-{
-    if ( "<define>$(flag)" in $(properties) || "<define>$(flag)=1" in $(properties) )
-    {
-        return 1 ;
-    }
-    else
-    {
-        return ;
-    }
-}
-
-rule select-define-specific-sources ( properties * )
-{
-    local result ;
-    if ! [ has-config-flag BOOST_NO_STD_LOCALE : $(properties) ]
-    {
-        result += <source>$(SOURCES_HAS_STD_LOCALE).cpp ;
-    }
-
-    #ECHO additional sources $(result) ;
-
-    return $(result) ;
-}
-
-rule should-build-wserialization ( properties * )
-{
-    local result ;
-    if [ has-config-flag BOOST_NO_STD_LOCALE : $(properties) ]
-    {
-        result += <build>no ;
-    }
-
-    #ECHO should build wserialization $(result) ;
-
-    return $(result) ;
-}
-
 lib boost_serialization 
     : ## sources ##
      $(SOURCES).cpp
     : ## requirements ##
-    <conditional>@select-define-specific-sources
+    [ check-target-builds ../../config/checks//std_wstreambuf : <source>../src/$(SOURCES_HAS_STD_WSTREAMBUF).cpp ]
     <toolset>msvc:<cxxflags>/Gy
     <toolset>msvc:<define>_SCL_SECURE_NO_WARNINGS
     <toolset>msvc:<define>_CRT_SECURE_NO_WARNINGS
@@ -165,7 +129,7 @@ lib boost_serialization
 lib boost_wserialization 
     : $(WSOURCES).cpp boost_serialization 
     : 
-    <conditional>@should-build-wserialization
+    [ requires std_wstreambuf ]
     <toolset>msvc:<cxxflags>/Gy 
     <toolset>msvc:<define>_SCL_SECURE_NO_WARNINGS
     <toolset>msvc:<define>_CRT_SECURE_NO_WARNINGS

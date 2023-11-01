@@ -73,14 +73,12 @@ test-suite "serialization" :
      [ test-bsl-run_files test_diamond_complex ]
      [ test-bsl-run_files test_forward_list : A  : :  [ requires cxx11_hdr_forward_list ] ] # BOOST_NO_CXX11_HDR_FORWARD_LIST
      [ test-bsl-run_files test_forward_list_ptrs : A  : :  [ requires cxx11_hdr_forward_list ] ] # BOOST_NO_CXX11_HDR_FORWARD_LIST
-     [ test-bsl-run_files test_helper_support ]
+     [ test-bsl-run_files test_helper_support : : : [ requires std_wstreambuf ] ]
      [ test-bsl-run_files test_interrupts ]
      [ test-bsl-run_files test_list : A ]
      [ test-bsl-run_files test_list_ptrs : A ]
      [ test-bsl-run_files test_map : A ]
      [ test-bsl-run_files test_map_hashed : A : : [ requires hash ] ] # BOOST_HAS_HASH
-     [ test-bsl-run_files test_map_unordered : A : :  [ requires cxx11_hdr_unordered_map ] ] # BOOST_NO_CXX11_HDR_UNORDERED_MAP
-     [ test-bsl-run_files test_map_boost_unordered : A ]
      [ test-bsl-run_files test_mi ]
      [ test-bsl-run_files test_multiple_ptrs : A ]
      [ test-bsl-run_files test_multiple_inheritance ]
@@ -99,8 +97,6 @@ test-suite "serialization" :
      [ test-bsl-run_files test_registered ]
      [ test-bsl-run_files test_set : A ]
      [ test-bsl-run_files test_set_hashed : A : : [ requires hash ] ] # BOOST_HAS_HASH
-     [ test-bsl-run_files test_set_unordered : A : :  [ requires cxx11_hdr_unordered_set ] ] # BOOST_NO_CXX11_HDR_UNORDERED_SET
-     [ test-bsl-run_files test_set_boost_unordered : A ]
      [ test-bsl-run_files test_simple_class : A ]
      [ test-bsl-run_files test_simple_class_ptr : A ]
      [ test-bsl-run_files test_slist : A : : [ requires slist ] ] # BOOST_HAS_SLIST ]
@@ -119,7 +115,7 @@ test-suite "serialization" :
 
      [ test-bsl-run_polymorphic_files test_polymorphic : test_polymorphic_A A ]
      [ test-bsl-run_polymorphic_files test_polymorphic2 : test_polymorphic2imp ]
-     [ test-bsl-run_polymorphic_files test_p_helper ]
+     [ test-bsl-run_polymorphic_files test_p_helper : : : [ requires std_wstreambuf ] ]
 
      # this test should pass with both shared and static linking.  But B2 get's mixed up with static linking
      # so we'll just run the shared version of the test, which is the one that we're most interested
@@ -150,8 +146,8 @@ if ! $(BOOST_ARCHIVE_LIST) {
         [ test-bsl-run test_private_ctor ]
         [ test-bsl-run test_reset_object_address : A ]
         [ test-bsl-run test_void_cast ]
-        [ test-bsl-run test_mult_archive_types ]
-        [ test-bsl-run test_iterators ]
+        [ test-bsl-run test_mult_archive_types : : : [ requires std_wstreambuf ] ]
+        [ test-bsl-run test_iterators : : : [ requires std_wstreambuf ] ]
         [ test-bsl-run test_iterators_base64 ]
         [ test-bsl-run test_smart_cast ]
         [ test-bsl-run test_codecvt_null ]
@@ -188,4 +184,3 @@ if ! $(BOOST_ARCHIVE_LIST) {
         [ compile test_const_pass.cpp ]
     ;
 }
-

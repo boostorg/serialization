@@ -232,7 +232,7 @@ equivalent to the original.
 
 There are archives based on text, binary and XML file
 formats but all have the above interface.  Given that all archives present
-the same public interface, specifcation of serialization is exactly the same
+the same public interface, specification of serialization is exactly the same
 for all archives.  Archive classes have other members not mentioned here.
 However they are related to the internal functioning of the library and
 are not meant to be called by users of an archive.  Implementation of new
@@ -303,7 +303,7 @@ namespace archive {
 enum archive_flags {
     no_header = 1,          // suppress archive header info
     no_codecvt = 2,         // suppress alteration of codecvt facet
-    no_xml_tag_checking = 4 // suppress checking of xml tags - igored on saving
+    no_xml_tag_checking = 4 // suppress checking of xml tags - ignored on saving
 };
 
 } // archive
@@ -319,7 +319,7 @@ class text_oarchive : ...
     ...
 public:
     ... // implementation of the <strong>Saving Archive</strong> concept
-    text_oarchive(std::ostream & os, unsigned int flags = 0);
+    text_oarchive(std::ostream &amp; os, unsigned int flags = 0);
     ~text_oarchive();
 };
 
@@ -330,7 +330,7 @@ public:
 <dl>
 
 <dt><h4><code>
-text_oarchive(std::ostream & os, unsigned int flags = 0);
+text_oarchive(std::ostream &amp; os, unsigned int flags = 0);
 </code></h4></dt>
 <dd>
 Constructs an archive given an open <code style="white-space: normal">stream</code> as 
@@ -343,7 +343,7 @@ output with initial data which helps identify them as archives produced by this 
 This permits a more graceful handling of the case where an attempt is made to load an archive
 from an invalid file format. In addition to this, each type of archive might have 
 its own information.  For example, native binary archives include information about 
-sizes of native types and endianess to gracefully handle the case where it has been
+sizes of native types and endianness to gracefully handle the case where it has been
 erroneously assumed that such an archive is portable across platforms.  In some cases, 
 where this extra overhead might be considered objectionable, it can be suppressed with the
 <code style="white-space: normal">no_header</code> flag.
@@ -379,7 +379,7 @@ class text_iarchive : ...
     ...
 public:
     ... // implementation of the <strong>Loading Archive</strong> concept
-    text_iarchive(std::istream & is, unsigned int flags = 0);
+    text_iarchive(std::istream &amp; is, unsigned int flags = 0);
     ~text_iarchive();
 };
 
@@ -391,10 +391,10 @@ public:
 <dl>
 
 <dt><h4><code>
-text_iarchive(std::istream & is, unsigned int flags = 0);
+text_iarchive(std::istream &amp; is, unsigned int flags = 0);
 </code></h4></dt>
 <dd>
-Contructs an archive given an open <code style="white-space: normal">stream</code> as 
+Constructs an archive given an open <code style="white-space: normal">stream</code> as 
 an argument and optional flags. If flags are used, they should be the same
 as those used when the archive was created. Function and usage of flags is described
 above.
@@ -418,11 +418,11 @@ to the common class interface described above, they include the following
 constructors:
 <dl>
 <dt><h4><code>
-binary_oarchive(std::streambuf & bsb, unsigned int flags = 0);
+binary_oarchive(std::streambuf &amp; bsb, unsigned int flags = 0);
 </code></h4></dt>
 and
 <dt><h4><code>
-binary_iarchive(std::streambuf & bsb, unsigned int flags = 0);
+binary_iarchive(std::streambuf &amp; bsb, unsigned int flags = 0);
 </code></h4></dt>
 </dl>
 

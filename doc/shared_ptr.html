@@ -92,32 +92,32 @@ instance of <code style="white-space: normal">sp_counted_base_impl<T, ...></code
 doesn't have a default constructor, serialization requires
 specification of the following overload:
 <pre><code>
-template&lt;class Archive, class P, class D>
+template&lt;class Archive, class P, class D&gt;
 inline void save_construct_data(
     Archive &amp; ar,
-    const boost::detail::sp_counted_base_impl<P, D> * t, 
+    const boost::detail::sp_counted_base_impl&lt;P, D&gt; * t, 
     const unsigned int file_version
 ){
     // variables used for construction
-    ar &lt;&lt; t->ptr;
+    ar &lt;&lt; t-&gt;ptr;
     ar &lt;&lt; *t;
 }
 
-template<class Archive, class P, class D>
+template&lt;class Archive, class P, class D&gt;
 inline void load_construct_data(
     Archive &amp; ar,
-    boost::detail::sp_counted_base_impl<P, D> * t, 
+    boost::detail::sp_counted_base_impl&lt;P, D&gt; * t, 
     const unsigned int file_version
 ){
     P ptr_;
     ar &gt;&gt; ptr_;
     // placement new
-    ::new(t)boost::detail::sp_counted_base_impl<P, D>(ptr_,  D());
-    ar &gt;&gt;; *t;
+    ::new(t)boost::detail::sp_counted_base_impl&lt;P, D&gt;(ptr_,  D());
+    ar &gt;&gt; *t;
 }
 </code></pre>
 The statement <code style="white-space: normal">ar &gt;&gt; ptr_</code> is key. This deserializes
-the same pointer deserialzed above.  Default object tracking will ensure
+the same pointer deserialized above.  Default object tracking will ensure
 that no more than one instance of the object is created and that the
 pointer returned by multiple deserializations are all the same. Hence,
 regardless of how many instances of <code style="white-space: normal">shared_ptr/shared_count</code>
@@ -135,7 +135,7 @@ inline void serialize(
     const unsigned int file_version,
     int
 ){
-    ar & boost::serialization::base_object&lt;
+    ar &amp; boost::serialization::base_object&lt;
 	boost::detail::sp_counted_base
     &gt;(*this);
 }
@@ -170,7 +170,7 @@ This indicates that we're not quite done.  Due to default object
 tracking, <code style="white-space: normal">sp_counted_base_impl&lt;P, D&gt;</code> is only
 created once regardless of how many shared pointers point to the
 same object.  Of course, it has to be this way. The reference
-count starts at 1 and is never incrememented.  Code must be added
+count starts at 1 and is never incremented.  Code must be added
 to the serialization functions to maintain the proper reference
 count.
 <p>
@@ -191,13 +191,13 @@ In this case we need only the latter function so we can replace the
 base object serialization with:
 <pre><code>
 // register the relationship between each derived class
-// its polymorphic base
+// and its polymorphic base
 void_cast_register&lt;
     boost::detail::sp_counted_base_impl&lt;P, D&gt;
     boost::detail::sp_counted_base, 
 &gt;();
 </code></pre>
-and we don't have to include a trival serializer for <code style="white-space: normal">sp_counted_base</code>.
+and we don't have to include a trivial serializer for <code style="white-space: normal">sp_counted_base</code>.
 <p>
 Finally we need to specify name-value pair wrappers if we want to be able
 to use this serialization with XML archives.

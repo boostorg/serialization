@@ -41,7 +41,7 @@ class must implement in order to be used to serialize
 Our discussion will focus on archives used for saving as the hierarchy is exactly analogous
 for archives used for loading data.
 
-<h4>Minimum Requirments</h4>
+<h4>Minimum Requirements</h4>
 
 The simplest class which will model the <a href="archives.html"><strong>Archive</strong></a> concept specifies the functions that a
 class will look like:
@@ -58,10 +58,10 @@ public:
     typedef boost::mpl::bool_&lt;true&gt; is_saving; 
     typedef boost::mpl::bool_&lt;false&gt; is_loading;
     template&lt;class T&gt; void register_type(){}
-    template&lt;class T&gt; trivial_oarchive & operator&lt;&lt;(const T & t){
+    template&lt;class T&gt; trivial_oarchive &amp; operator&lt;&lt;(const T &amp; t){
         return *this;
     }
-    template&lt;class T&gt; trivial_oarchive & operator&(const T & t){
+    template&lt;class T&gt; trivial_oarchive &amp; operator&amp;(const T &amp; t){
         return *this &lt;&lt; t;
     }
     void save_binary(void *address, std::size_t count){};
@@ -172,10 +172,10 @@ to be optimised away for archive classes that don't use it.
 <p>
 <dt><h4><code>
 template&lt;class T&gt;
-void save_override(T & t, int);
+void save_override(T &amp; t, int);
 </code></h4></dt>
 <dd>
-<strong>Default</strong>:Invokes <code style="white-space: normal">archive::save(Archive & ar, t)</code><br>
+<strong>Default</strong>:Invokes <code style="white-space: normal">archive::save(Archive &amp; ar, t)</code><br>
 This is the main entry into the serialization library.<br>
 <strong>Purpose</strong>:This can be specialized in cases where the data is to be written 
 to the archive in some special way.  For example, XML archives implement special handling for
@@ -190,7 +190,7 @@ with one appropriate for XML which writes out the start of an XML tag with the c
 The serialization library injects bookkeeping data into the serialization archive.
 This data includes things like object ids, version numbers, class names etc.  Each
 of these objects is included in a wrapper so that the archive class can override the
-implementation of <code style="white-space: normal">void save_override(T & t, int);</code>.
+implementation of <code style="white-space: normal">void save_override(T &amp; t, int);</code>.
 For example, in the XML archive, the override for this type renders an object_id equal to 23 as
 "object_id=_23".  The following table lists the types defined in the 
 <code style="white-space: normal">boost::archive namespace</code>
@@ -250,7 +250,7 @@ EXCEPT for one special case.
 <ul>
     <li>Instances of a derived class are serialized through a base class pointer.
     <li>Such instances are not "registered" neither implicitly nor explicitly. That
-    is, the macro <code style="white-space: normal">BOOT_CLASS_EXPORT</code> is used 
+    is, the macro <code style="white-space: normal">BOOST_CLASS_EXPORT</code> is used 
     to instantiate the serialization code for the included archives.
 </ul>
 
@@ -271,7 +271,7 @@ exception.
 Exhaustive testing of the library requires testing the different aspects of object
 serialization with each archive.  There are 46 different tests that can run with any archive.  
 There are 5 "standard archives" included with the system. 
-(3 in systems that don't support wide charactor i/o). 
+(3 in systems that don't support wide character i/o). 
 <p>
 In addition, there are 28 other tests which aren't related to any particular archive class.
 <p>
@@ -323,7 +323,7 @@ library_test --toolset=gcc -sBOOST_ARCHIVE_LIST=portable_binary_archive.hpp
 
 All archives described so far are implemented as templates.  Code to save and load
 data to archives is regenerated for each combination of archive class and data type.
-Under these cirumstances, a good optimizing compiler that can expand 
+Under these circumstances, a good optimizing compiler that can expand 
 <code>inline</code> functions to enough depth will generate fast code.  
 However:
 <ul>
@@ -400,7 +400,7 @@ dispatch table and there is no possibility for a compiler to <code style="white-
 archive functions.  This will result in a detectable degradation in performance for 
 saving and loading archives.
 <p>
-Note that the concept of polymophic archives is fundamentally incompatible with the
+Note that the concept of polymorphic archives is fundamentally incompatible with the
 serialization of new types that are marked "primitive" by the user with:
 <pre><code> 
 BOOST_CLASS_IMPLEMENTATION(my_primitive_type, boost::serialization::primitive_type)
@@ -408,7 +408,7 @@ BOOST_CLASS_IMPLEMENTATION(my_primitive_type, boost::serialization::primitive_ty
 
 Code to implement serialization for these types is instantiated "on the fly" in the user's program.
 But this conflicts with the whole purpose of the polymorphic archive. An attempt to
-serialize such a primitive type will result in a compilation error since the common polymorhic
+serialize such a primitive type will result in a compilation error since the common polymorphic
 interface is static and cannot instantiate code for a new type.
 
 <p>

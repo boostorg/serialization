@@ -54,10 +54,10 @@ can also be used to delete objects created during a loading process
 that has been interrupted by throwing of an exception.  
 <p>
 This could cause problems in 
-progams where the copies of different objects are saved from the same address.
+programs where the copies of different objects are saved from the same address.
 <pre><code>
 template&lt;class Archive&gt;
-void save(boost::basic_oarchive  &amp; ar, const unsigned int version) const
+void save(boost::basic_oarchive &amp; ar, const unsigned int version) const
 {
     for(int i = 0; i &lt; 10; ++i){
         A x = a[i];
@@ -101,7 +101,7 @@ A similar problem can occur when different objects are loaded to an address
 which is different from the final location:
 <pre><code>
 template&lt;class Archive&gt;
-void load(boost::basic_oarchive  &amp; ar, const unsigned int version) const
+void load(boost::basic_oarchive &amp; ar, const unsigned int version) const
 {
     for(int i = 0; i &lt; 10; ++i){
         A x;
@@ -118,14 +118,14 @@ addressed by altering the above code thusly:
 
 <pre><code>
 template&lt;class Archive&gt;
-void load(boost::basic_iarchive  &amp; ar, const unsigned int version) const
+void load(boost::basic_iarchive &amp; ar, const unsigned int version) const
 {
     for(int i = 0; i &lt; 10; ++i){
         A x;
         ar &gt;&gt; x;
         std::pair&lt;std::set::const_iterator, bool&gt; result;
         result = std::m_set.insert(x);
-        ar.reset_object_address(& (*result.first), &x);
+        ar.reset_object_address(&amp; (*result.first), &amp;x);
     }
 }
 </code></pre>
@@ -159,7 +159,7 @@ BOOST_CLASS_TRACKING(my_virtual_base_class, boost::serialization::track_always)
 <h3><a name="helpersupport">Helper Support</a></h3>
 Some types, specially those with complicated lifetime behavior or limited
 access to their internal state, might need or benefit from elaborate serialization
-algorithms.  The prinicple motivating case is that of shared_ptr.  As instances
+algorithms.  The principle motivating case is that of shared_ptr.  As instances
 are loaded, they have to be "matched up" with any other instances which have
 already been loaded.  Thus, a table of previously loaded instances has to be
 maintained while the archive containing the shared_ptr instances is being loaded.
@@ -170,7 +170,7 @@ associated to the current archive that can be used to store contextual
 information relevant to the particular type serialization algorithm.
 
 <pre><code>
-template<class T>
+template&lt;class T&gt;
 class shared_ptr
 {
    ...
@@ -182,9 +182,9 @@ class shared_ptr_serialization_helper
 {
   // table of previously loaded shared_ptr
   // lookup a shared_ptr from the object address
-  shared_ptr<T> lookup(const T *);
+  shared_ptr&lt;T&gt; lookup(const T *);
   // insert a new shared_ptr
-  void insert<shared_ptr<T> >(const shared_ptr<T> *);
+  void insert&lt;shared_ptr&lt;T&gt; &gt;(const shared_ptr&lt;T&gt; *);
 };
 
 namespace boost {
@@ -220,7 +220,7 @@ void load(Archive &amp; ar, shared_ptr &amp; x, const unsigned int /* version */
     // if found, return the one from the table
 
     // load the shared_ptr data
-    shared_ptr<T> sp = ...
+    shared_ptr&lt;T&gt; sp = ...
 
     // and add it to the table
     hlp.insert(sp);
@@ -322,7 +322,7 @@ Another potential problem is illustrated by the following example:
 template&lt;class T&gt;
 struct my_wrapper {
     template&lt;class Archive&gt;
-    Archive & serialize ...
+    Archive &amp; serialize ...
 };
 
 ...
@@ -331,9 +331,9 @@ class my_class {
     wchar_t a;
     short unsigned b;
     template&lt;class Archive&gt;
-    Archive & serialize(Archive & ar, unsigned int version){
-        ar & my_wrapper(a);
-        ar & my_wrapper(b);
+    Archive &amp; serialize(Archive &amp; ar, unsigned int version){
+        ar &amp; my_wrapper(a);
+        ar &amp; my_wrapper(b);
     }
 };
 </code></pre>
@@ -379,7 +379,7 @@ XML format has a nested structure that maps well to the "recursive class member 
 used by the serialization system. However, XML differs from other formats in that it 
 requires a name for each data member. Our goal is to add this information to the 
 class serialization specification while still permiting the the serialization code to be 
-used with any archive. This is achived by requiring that all data serialized to an XML archive
+used with any archive. This is archived by requiring that all data serialized to an XML archive
 be serialized as a <a target="detail" href="wrappers.html#nvp">name-value pair</a>.
 The first member is the name to be used as the XML tag for the
 data item while the second is a reference to the data item itself. Any attempt to serialize data
@@ -429,7 +429,7 @@ BOOST_CLASS_EXPORT(a)
 </code></pre>
 This will be true regardless of whether the code is part
 of a stand alone executable, a static library or
-a dyanmic or shared library.  
+a dynamic or shared library.  
 <p>
 Including
 <code style="white-space: normal">BOOST_CLASS_EXPORT</code>
@@ -451,12 +451,12 @@ in library code will have no effect unless archive class headers are
 also included.  So when building a library, one should include all headers
 for all the archive classes which he anticipates using. Alternatively,
 one can include headers for just the
-<a href="archive_reference.html#polymorphic">Polymoprhic Archives</a>.
+<a href="archive_reference.html#polymorphic">Polymorphic Archives</a>.
 
 <p>
 Strictly speaking, export should not be necessary if all pointer serialization
 occurs through the most derived class.  However, in order to detect
-what would be a catastophic error, the library traps ALL serializations through
+what would be a catastrophic error, the library traps ALL serializations through
 a pointer to a polymorphic class which are not exported or otherwise registered.
 So, in practice, be prepared to register or export all classes with one
 or more virtual functions which are serialized through a pointer. 
@@ -507,7 +507,7 @@ and
 <a href = "../example/demo_pimpl_A.hpp" target="demo_pimpl">
 <code style="white-space: normal">demo_pimpl_A.hpp</code>
 </a>
-where implementation of serializaton is in a static library 
+where implementation of serialization is in a static library 
 completely separate from the main program.
 
 <h3><a name="dlls">DLLS - Serialization and Runtime Linking</a></h3>
@@ -526,7 +526,7 @@ and
 <a href = "../test/dll_a.cpp" target="dll_a">
 <code style="white-space: normal">dll_a.cpp</code>
 </a>
-where implementation of serializaton is also completely separate
+where implementation of serialization is also completely separate
 from the main program but the code is loaded at runtime.  In this
 example, this code is loaded automatically when the program which
 uses it starts up, but it could just as well be loaded and unloaded 
@@ -552,19 +552,19 @@ needlessly duplicates code.  Worse, it makes is possible for
 different versions of the same code to exist simultaneously.  This
 type of error turns out to be excruciatingly difficult to debug.
 Finally, it opens the possibility that a module being referred to
-might be explictly unloaded which would (hopefully) result in
+might be explicitly unloaded which would (hopefully) result in
 a runtime error. This is another bug that is not always 
 reproducible or easy to find. For class member templates use something like
 
 <pre><code>
 template&lt;class Archive&gt;
-void serialize(Archive & ar, const unsigned int version);
+void serialize(Archive &amp; ar, const unsigned int version);
 </code></pre>
 in the header, and
 
 <pre><code>
 template&lt;class Archive&gt;
-void myclass::serialize(Archive & ar, const unsigned int version){
+void myclass::serialize(Archive &amp; ar, const unsigned int version){
 	...
 }
 
@@ -572,8 +572,8 @@ BOOST_CLASS_EXPORT_IMPLEMENT(my_class)
 
 #include &lt;boost/archive/text_oarchive&gt;
 #include &lt;boost/archive/text_iarchive&gt;
-template myclass::serialize(boost::archive::text_oarchive & ar, const unsigned int version);
-template myclass::serialize(boost::archive::text_iarchive & ar, const unsigned int version);
+template myclass::serialize(boost::archive::text_oarchive &amp; ar, const unsigned int version);
+template myclass::serialize(boost::archive::text_iarchive &amp; ar, const unsigned int version);
 ... // repeat for each archive class to be used.
 </code></pre>
 in the implementation file.  This will result in generation of all code
@@ -624,7 +624,7 @@ about which is known only the <b>GUID</b> and a base class.
 <h3><a name="multi_threading">Multi-Threading</a></h3>
 The fundamental purpose of serialization would conflict with multiple 
 threads concurrently writing/reading from/to a single open archive instance.
-The library implementation presumes that the application avoids such a situtation.
+The library implementation presumes that the application avoids such a situation.
 <p>
 However, Writing/Reading different archives simultaneously
 in different tasks is permitted as each archive instance is (almost) 

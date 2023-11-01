@@ -18,7 +18,9 @@
 #include <boost/config.hpp>
 #include <boost/detail/workaround.hpp>
 #include <boost/limits.hpp>
+#if BOOST_CXX_VERSION > 199711L // only include floating point if C++ version >= C++11
 #include <boost/math/special_functions/next.hpp>
+#endif
 
 #if defined(BOOST_NO_STDC_NAMESPACE)
 namespace std{
@@ -35,7 +37,7 @@ namespace std{
 
 ///////////////////////////////////////////////////////
 // simple class test - using non-intrusive syntax
-// illustrates the usage of the non-intrusve syntax
+// illustrates the usage of the non-intrusive syntax
 class A
 {
 public:
@@ -67,8 +69,10 @@ bool A::operator==(const A &rhs) const
         && t == rhs.t
         && u == rhs.u
         && v == rhs.v
-        && std::abs( boost::math::float_distance(w, rhs.w)) < 2
-        && std::abs( boost::math::float_distance(x, rhs.x)) < 2
+        #if BOOST_CXX_VERSION > 199711L // only include floating point if C++ version >= C++11
+            && std::abs( boost::math::float_distance(w, rhs.w)) < 2
+            && std::abs( boost::math::float_distance(x, rhs.x)) < 2
+        #endif
     ;
 }
 
@@ -82,10 +86,12 @@ bool A::operator<(const A &rhs) const
         return t < rhs.u;
     if(! (v == rhs.v) )
         return t < rhs.v;
-    if(std::abs( boost::math::float_distance(w, rhs.w)) > 1)
-        return false;
-    if(std::abs( boost::math::float_distance(x, rhs.x)) > 1)
-        return false;
+    #if BOOST_CXX_VERSION > 199711L // only include floating point if C++ version >= C++11
+        if(std::abs( boost::math::float_distance(w, rhs.w)) > 1)
+            return false;
+        if(std::abs( boost::math::float_distance(x, rhs.x)) > 1)
+            return false;
+    #endif
     return false;
 }
 

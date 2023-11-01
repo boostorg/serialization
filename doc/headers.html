@@ -58,7 +58,7 @@ is included with the following declaration
 <a name="userincludes">
 <h3>Files Included by User Programs</h3>
 Using this library entails including headers listed in this section.
-It should not be necessary to explictly include any other header files.
+It should not be necessary to explicitly include any other header files.
 
 <a name="archiveimplementations">
 <h4>Archive Implementations</h4>
@@ -185,7 +185,7 @@ boost/serialization/version.hpp
 <dt><a target="level" href="../../../boost/serialization/level.hpp">
 boost/serialization/level.hpp
 </a>
-<dd>To override the default implementaton level trait for a type.</dd>
+<dd>To override the default implementation level trait for a type.</dd>
 
 <dt><a target="tracking" href="../../../boost/serialization/tracking.hpp">
 boost/serialization/tracking.hpp
@@ -320,7 +320,7 @@ or wide character text streams. These classes specify archive type specific
 behavior on a type by type basis.  For example, <code style="white-space: normal">basic_xml_oarchive.hpp</code>
 includes code to guarantee that any object not attached to a name will 
 trap during compile time. On the other hand, <code style="white-space: normal">basic_text_oarchive.hpp</code>
-contains code to strip out and ingore any names attached to objects.
+contains code to strip out and ignore any names attached to objects.
 <p>
 <dt><a target="common_iarchive" href="../../../boost/archive/detail/common_iarchive.hpp">
 boost/archive/detail/common_iarchive.hpp
@@ -343,7 +343,7 @@ and implementation are factored out into separate classes to minimize code dupli
 
 These files are found in the directory
 <a target="boost_archive_detail" href="../../../boost/archive/detail">boost/archive/detail</a>.  
-These are included as necessary by the archive class implemenations listed above.
+These are included as necessary by the archive class implementations listed above.
 This has the unfortunate side effect of making the implementation less transparent.
 Users should never find it necessary to change these files.
 <p>
@@ -364,19 +364,19 @@ archive class.
 the archive hierarchy.
 
 <pre><code>
-template<class T>
-void save_override(T & t, BOOST_PFTO int){
+template&lt;class T&gt;
+void save_override(T &amp; t, BOOST_PFTO int){
     // All for otherwise unhandled types are forwarded to the base class.
     // This emulates behavior for function overloading.
-    this->base::save_override(t, 0);
+    this-&gt;base::save_override(t, 0);
 }
-void save_override(const some_type & t, int){
+void save_override(const some_type &amp; t, int){
     // any special handling for some type
     // this will usually entail forwarding some other operation
     // in the most derived class.
-    this->This()->...
+    this-&gt;This()-&gt;...
     // or in one of its parents basic_text_oprimitive
-    this->This()->save(static_cast&lt;int&gt;(t));
+    this-&gt;This()-&gt;save(static_cast&lt;int&gt;(t));
 }
 ... // other special type handling
 </code></pre>
@@ -408,7 +408,7 @@ Building of the library generates and compiles code for all archives implemented
   rather than each time a user's program is recompiled.  This can save much
   development time.
   <li>Headers which solely related to implementation need only be included
-  in the library code modules. This prevents a user program from accidently 
+  in the library code modules. This prevents a user program from accidentally 
   depending on an implementation feature of the serialization library.
   <li>In building the library I came to the conclusions that there can arise
   situations regarding static code/data instantiation that could not be 

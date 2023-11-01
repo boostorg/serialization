@@ -57,7 +57,7 @@ public:
 
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // "Portable" output binary archive.  This is a variation of the native binary
-// archive. it addresses integer size and endienness so that binary archives can
+// archive. it addresses integer size and endianness so that binary archives can
 // be passed across systems. Note:floating point types not addressed here
 
 class portable_binary_oarchive :

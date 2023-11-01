@@ -145,7 +145,7 @@ test_main(int /* argc */, char * /* argv */[]) {
         }
     }
 
-    // compare the data read back in with the orginal
+    // compare the data read back in with the original
     #if ! defined(BOOST_BORLANDC)
         // borland 5.60 complains about this
         BOOST_CHECK(from_file.size() == sizeof(td::wchar_encoding)/sizeof(wchar_t));

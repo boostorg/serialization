@@ -32,8 +32,8 @@ void A::serialize(Archive & ar, const unsigned int /* file_version */){
     ar & pimpl;
 }
 
-// without the explicit instantiations below, the program will
-// fail to link for lack of instantiantiation of the above function
+// without the explicit instantiation below, the program will
+// fail to link for lack of instantiation of the above function
 // note: the following failed to fix link errors for vc 7.0 !
 template void A::serialize<boost::archive::text_iarchive>(
     boost::archive::text_iarchive & ar,

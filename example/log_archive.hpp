@@ -27,7 +27,7 @@ namespace boost {
 } // boost
 
 /////////////////////////////////////////////////////////////////////////
-// log data to an output stream.  This illustrates a simpler implemenation
+// log data to an output stream.  This illustrates a simpler implementation
 // of text output which is useful for getting a formatted display of
 // any serializable class.  Intended to be useful as a debugging aid.
 class log_archive :
@@ -35,7 +35,7 @@ class log_archive :
     public boost::archive::xml_oarchive_impl<log_archive>
 {
     typedef boost::archive::xml_oarchive_impl<log_archive> base;
-    // give serialization implementation access to this clas
+    // give serialization implementation access to this class
     friend class boost::archive::detail::interface_oarchive<log_archive>;
     friend class boost::archive::basic_xml_oarchive<log_archive>;
     friend class boost::archive::save_access;

@@ -32,7 +32,7 @@ and resets the object's state at destruction time, undoing any change the object
 may have gone through.  Here is the interface:
 
 <pre><code>
-template<class T>
+template&lt;class T&gt;
 // T requirements:
 //  - POD or object semantic (cannot be reference, function, ...)
 //  - copy constructor
@@ -43,7 +43,7 @@ private:
     ... // implementation
 
 public:
-    state_saver(T & object);
+    state_saver(T &amp; object);
     ~state_saver();
 };
 </code></pre>
@@ -56,7 +56,7 @@ The following illustrates how this is expected to be used.
 <pre><code>
 #include &lt;boost/state_saver.hpp&gt;
 
-void func(A & a)
+void func(A &amp; a)
     boost::state_saver&lt;A&gt; s(a);
     ... // alter state of a by calling non-const functions
     ... // call other functions

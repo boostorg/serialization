@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
         // test with a text archive
         std::stringstream ss;
         {
-            // instantiate archive which inhertis polymorphic interface
+            // instantiate archive which inherits polymorphic interface
             // and the normal text archive implementation
             boost::archive::polymorphic_text_oarchive oa(ss);
             boost::archive::polymorphic_oarchive & oa_interface = oa;
@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
         //test with a binary archive
         std::stringstream ss;
         {
-            // instantiate archive which inhertis polymorphic interface
+            // instantiate archive which inherits polymorphic interface
             // and the normal binary archive implementation
             boost::archive::polymorphic_binary_oarchive oa(ss);
             oa << a;
