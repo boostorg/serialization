@@ -35,11 +35,11 @@ elseif( CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" )
   set(COMPILER_SUPPORTS_CXX11 TRUE)
 endif()
 
-add_definitions( -std=c++20 )
+add_definitions( -std=c++11 )
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++03")
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 #
 # Locate Project Prerequisites 
