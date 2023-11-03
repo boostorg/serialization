@@ -21,7 +21,6 @@ add_definitions(${Boost_LIB_DIAGNOSTIC_DEFINITIONS})
 message(STATUS "C compiler is ${CMAKE_C_COMPILER_ID}" )
 
 if( CMAKE_CXX_COMPILER_ID STREQUAL "GNU" )
-  add_definitions( -std=c++11 )
   add_definitions( -ftemplate-depth=255 )
   # we use gcc to test for C++03 compatibility
   set(COMPILER_SUPPORTS_CXX11 FALSE)
@@ -29,16 +28,18 @@ elseif( CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" )
   add_definitions( /wd4996 )
   set(COMPILER_SUPPORTS_CXX11 TRUE)
 elseif( CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" )
-  add_definitions( -std=c++17 )
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ftemplate-depth=300")
-  #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++03")
-  #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
   set(CMAKE_CXX_FLAGS_DEBUG "-g -O0" )
   set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-g -O3" )
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++ -dead_strip")
   set(COMPILER_SUPPORTS_CXX11 TRUE)
 endif()
+
+add_definitions( -std=c++20 )
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++03")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20")
 
 #
 # Locate Project Prerequisites 

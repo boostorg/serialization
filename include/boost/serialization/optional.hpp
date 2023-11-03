@@ -16,7 +16,7 @@
 
 #include <boost/config.hpp>
 #include <boost/optional.hpp>
-#ifdef BOOST_NO_CXX17_HDR_OPTIONAL
+#ifndef BOOST_NO_CXX17_HDR_OPTIONAL
 #include <optional>
 #endif
 
