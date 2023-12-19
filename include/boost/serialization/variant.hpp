@@ -237,7 +237,7 @@ void load(
     std::variant<Types...> & v,
     const unsigned int version
 ){
-    int which;
+    size_t which;
     typedef typename boost::variant<Types...>::types types;
     ar >> BOOST_SERIALIZATION_NVP(which);
     if(which >=  sizeof...(Types)){
