@@ -107,6 +107,7 @@ WSOURCES =
     xml_woarchive
     polymorphic_xml_wiarchive
     polymorphic_xml_woarchive
+    codecvt_null
 ;
 
 lib boost_serialization 

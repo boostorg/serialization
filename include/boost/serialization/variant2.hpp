@@ -7,7 +7,7 @@
 #endif
 
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
-// variant.hpp - non-intrusive serialization of variant types
+// variant2.hpp - non-intrusive serialization of variant types
 //
 // copyright (c) 2019 Samuel Debionne, ESRF
 //
@@ -21,8 +21,6 @@
 //
 
 #include <boost/serialization/throw_exception.hpp>
-
-#include <variant>
 
 #include <boost/archive/archive_exception.hpp>
 

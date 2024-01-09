@@ -160,40 +160,58 @@ void test(Variant & v)
 
 #include <boost/serialization/variant.hpp>
 
-int test_main( int /* argc */, char* /* argv */[] ){
+#include <boost/variant/variant.hpp>
 
-    // boost::variant - compatible with C++03
-    {
-        boost::variant<bool, int, float, double, A, std::string> v;
-        test(v);
-        const A a;
-        boost::variant<bool, int, float, double, const A *, std::string> v1 = & a;
-        test_type(v1);
-    }
+#include <cstdio>
 
-    // boost::variant2/variant requires C++ 11
-    #if BOOST_CXX_VERSION >= 201103L
-    {
-        boost::variant2::variant<bool, int, float, double, A, std::string> v;
-        test(v);
-        const A a;
-        boost::variant2::variant<bool, int, float, double, const A *, std::string> v1 = & a;
-        test_type(v1);
-    }
-    #endif
-
-    // std::variant reqires C++ 17 or more
-    #ifndef BOOST_NO_CXX17_HDR_VARIANT
-    {
-        std::variant<bool, int, float, double, A, std::string> v;
-        test(v);
-        const A a;
-        std::variant<bool, int, float, double, const A *, std::string> v1 = & a;
-        test_type(v1);
-    }
-    #endif
-
+int test_boost_variant(){
+    std::cerr << "Testing boost_variant\n";
+    boost::variant<bool, int, float, double, A, std::string> v;
+    test(v);
+    const A a;
+    boost::variant<bool, int, float, double, const A *, std::string> v1 = & a;
+    test_type(v1);
     return EXIT_SUCCESS;
+}
+
+// boost::variant2/variant requires C++ 11
+#if BOOST_CXX_VERSION >= 201103L
+#include <boost/variant2/variant.hpp>
+
+int test_boost_variant2(){
+    std::cerr << "Testing boost_variant2\n";
+    boost::variant2::variant<bool, int, float, double, A, std::string> v;
+    test(v);
+    const A a;
+    boost::variant2::variant<bool, int, float, double, const A *, std::string> v1 = & a;
+    test_type(v1);
+    return EXIT_SUCCESS;
+}
+#endif
+
+// std::variant reqires C++ 17 or more
+#ifndef BOOST_NO_CXX17_HDR_VARIANT
+#include <variant>
+int test_std_variant(){
+    std::cerr << "Testing Std Variant\n";
+    std::variant<bool, int, float, double, A, std::string> v;
+    test(v);
+    const A a;
+    std::variant<bool, int, float, double, const A *, std::string> v1 = & a;
+    test_type(v1);
+    return EXIT_SUCCESS;
+}
+#endif
+
+int test_main( int /* argc */, char* /* argv */[] ){
+    return test_boost_variant()
+    #if BOOST_CXX_VERSION >= 201103L
+    || test_boost_variant2()
+    #endif
+    #ifndef BOOST_NO_CXX17_HDR_VARIANT
+    || test_std_variant()
+    #endif
+    ;
 }
 
 // EOF

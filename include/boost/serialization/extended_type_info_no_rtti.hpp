@@ -130,7 +130,6 @@ public:
     void * construct(unsigned int count, ...) const BOOST_OVERRIDE {
         // count up the arguments
         std::va_list ap;
-        va_start(ap, count);
         switch(count){
         case 0:
             return factory<typename boost::remove_const< T >::type, 0>(ap);
