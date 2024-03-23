@@ -17,7 +17,7 @@
 //
 // See http://www.boost.org for updates, documentation, and revision history.
 //
-// Widely inspired form boost::variant serialization
+// Widely inspired from boost::variant serialization
 //
 
 #include <boost/serialization/throw_exception.hpp>
