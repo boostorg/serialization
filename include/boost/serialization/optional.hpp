@@ -83,7 +83,7 @@ void load_impl(
     }
     typename OT::value_type t;
     ar >> boost::serialization::make_nvp("value",t);
-    ot = t;
+    ot = std::move(t);
 }
 
 } // detail
