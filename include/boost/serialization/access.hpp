@@ -129,6 +129,10 @@ public:
         // class doesn't have a class-specific placement new defined.
         ::new(t)T;
     }
+    template<class T>
+    static T *construct_r(void * t) {
+        return ::new(t)T;
+    }
     template<class T, class U>
     static T & cast_reference(U & u){
         return static_cast<T &>(u);

@@ -57,6 +57,32 @@ namespace boost {
 #include "A.hpp"
 #include "A.ipp"
 
+class V {
+private:
+    friend class boost::serialization::access;
+    int m_i;
+    V() :
+        m_i(0)
+    {}
+    template<class Archive>
+    void serialize(Archive& ar, unsigned /*version*/)
+    {
+        ar & BOOST_SERIALIZATION_NVP(m_i);
+    }
+public:
+    V(int i) :
+        m_i(i)
+    {}
+    int get_i() const
+    {
+        return m_i;
+    }
+    bool operator==(const V& other) const
+    {
+        return m_i == other.m_i;
+    }
+};
+
 class are_equal
     : public boost::static_visitor<bool>
 {
@@ -156,6 +182,8 @@ void test(Variant & v)
     test_type(v);
     v = std::string("we can't stop here, this is Bat Country");
     test_type(v);
+    v = V(67);
+    test_type(v);
 }
 
 #include <boost/serialization/variant.hpp>
@@ -166,10 +194,10 @@ void test(Variant & v)
 
 int test_boost_variant(){
     std::cerr << "Testing boost_variant\n";
-    boost::variant<bool, int, float, double, A, std::string> v;
+    boost::variant<bool, int, float, double, A, std::string, V> v;
     test(v);
     const A a;
-    boost::variant<bool, int, float, double, const A *, std::string> v1 = & a;
+    boost::variant<bool, int, float, double, const A *, std::string, V> v1 = & a;
     test_type(v1);
     return EXIT_SUCCESS;
 }
@@ -180,10 +208,10 @@ int test_boost_variant(){
 
 int test_boost_variant2(){
     std::cerr << "Testing boost_variant2\n";
-    boost::variant2::variant<bool, int, float, double, A, std::string> v;
+    boost::variant2::variant<bool, int, float, double, A, std::string, V> v;
     test(v);
     const A a;
-    boost::variant2::variant<bool, int, float, double, const A *, std::string> v1 = & a;
+    boost::variant2::variant<bool, int, float, double, const A *, std::string, V> v1 = & a;
     test_type(v1);
     return EXIT_SUCCESS;
 }
@@ -194,10 +222,10 @@ int test_boost_variant2(){
 #include <variant>
 int test_std_variant(){
     std::cerr << "Testing Std Variant\n";
-    std::variant<bool, int, float, double, A, std::string> v;
+    std::variant<bool, int, float, double, A, std::string, V> v;
     test(v);
     const A a;
-    std::variant<bool, int, float, double, const A *, std::string> v1 = & a;
+    std::variant<bool, int, float, double, const A *, std::string, V> v1 = & a;
     test_type(v1);
     return EXIT_SUCCESS;
 }

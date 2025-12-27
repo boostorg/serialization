@@ -159,11 +159,19 @@ struct variant_impl {
                 // with an implementation that de-serialized to the address of the
                 // aligned storage included in the variant.
                 typedef typename mpl::front<S>::type head_type;
-                head_type value;
-                ar >> BOOST_SERIALIZATION_NVP(value);
-                v = std::move(value);;
+                struct ValueData {
+                    alignas(head_type) unsigned char data[sizeof(head_type)];
+                    head_type *ptr_;
+                    void * mem() { return static_cast<void *>(data); }
+                    head_type * ptr() { return ptr_; }
+                    ValueData() : ptr_(access::construct_r<head_type>(mem())) {}
+                    ~ValueData() { ptr()->~head_type(); }
+                } value;
+
+                ar >> BOOST_SERIALIZATION_NVP(*value.ptr());
+                v = std::move(*value.ptr());
                 head_type * new_address = & get<head_type>(v);
-                ar.reset_object_address(new_address, & value);
+                ar.reset_object_address(new_address, value.ptr());
                 return;
             }
             typedef typename mpl::pop_front<S>::type type;

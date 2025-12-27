@@ -122,11 +122,19 @@ struct variant_impl
             // with an implementation that de-serialized to the address of the
             // aligned storage included in the variant.
             using type = mp::front<Seq>;
-            type value;
-            ar >> BOOST_SERIALIZATION_NVP(value);
-            v = std::move(value);
+            struct ValueData {
+                alignas(type) unsigned char data[sizeof(type)];
+                type *ptr_;
+                void * mem() { return static_cast<void *>(data); }
+                type * ptr() { return ptr_; }
+                ValueData() : ptr_(access::construct_r<type>(mem())) {}
+                ~ValueData() { ptr()->~type(); }
+            } value;
+
+            ar >> BOOST_SERIALIZATION_NVP(*value.ptr());
+            v = std::move(*value.ptr());
             type * new_address = & std::get<type>(v);
-            ar.reset_object_address(new_address, & value);
+            ar.reset_object_address(new_address, value.ptr());
             return;
         }
         //typedef typename mpl::pop_front<S>::type type;
@@ -149,7 +157,7 @@ struct variant_impl<0, Seq>
 
 template<class Archive, class... Types>
 void load(
-    Archive & ar, 
+    Archive & ar,
     std::variant<Types...>& v,
     const unsigned int version
 ){
@@ -188,7 +196,7 @@ void serialize(Archive &, std::monostate &, const unsigned int /*version*/)
 
 namespace boost {
     namespace serialization {
-        
+
 template<class... Types>
 struct tracking_level<
     std::variant<Types...>
