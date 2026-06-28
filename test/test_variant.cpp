@@ -30,6 +30,11 @@
 #include <boost/math/special_functions/next.hpp>
 #endif
 
+#if !defined(BOOST_NO_CXX17_HDR_VARIANT) && defined(BOOST_CLANG) && BOOST_CLANG_VERSION < 70000
+// Clang 6.0 can't compile std::visit from libstdc++ 9
+# define BOOST_NO_CXX17_HDR_VARIANT
+#endif
+
 #if defined(BOOST_NO_STDC_NAMESPACE)
 namespace std {
     using ::remove;
