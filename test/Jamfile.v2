@@ -188,3 +188,6 @@ if ! $(BOOST_ARCHIVE_LIST) {
         [ compile test_const_pass.cpp ]
     ;
 }
+
+run quick.cpp
+  : : : <library>/boost/serialization//boost_serialization ;
