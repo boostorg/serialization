@@ -19,6 +19,8 @@
 // thanks to Robert Ramey and Peter Dimov.
 //
 
+#include <boost/serialization/variant.hpp>
+
 #include <cstddef> // NULL
 #include <cstdio> // remove
 #include <fstream>
@@ -48,16 +50,22 @@ namespace std {
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/throw_exception.hpp>
 
+#include <boost/variant/variant.hpp>
+#include <boost/variant/apply_visitor.hpp>
 #include <boost/variant/static_visitor.hpp>
 
-namespace boost {
-    template<typename ResultType> class static_visitor;
-}
+#if BOOST_CXX_VERSION >= 201103L
+# include <boost/variant2/variant.hpp>
+#endif
+
+#ifndef BOOST_NO_CXX17_HDR_VARIANT
+# include <variant>
+#endif
 
 #include "A.hpp"
 #include "A.ipp"
 
-class are_equal
+class are_equal_vis
     : public boost::static_visitor<bool>
 {
 public:
@@ -112,6 +120,29 @@ public:
     }
 };
 
+template<class... T> bool are_equal( boost::variant<T...> const& v1, boost::variant<T...> const& v2 )
+{
+    return boost::apply_visitor( are_equal_vis(), v1, v2 );
+}
+
+#if BOOST_CXX_VERSION >= 201103L
+
+template<class... T> bool are_equal( boost::variant2::variant<T...> const& v1, boost::variant2::variant<T...> const& v2 )
+{
+    return boost::variant2::visit( are_equal_vis(), v1, v2 );
+}
+
+#endif
+
+#ifndef BOOST_NO_CXX17_HDR_VARIANT
+
+template<class... T> bool are_equal( std::variant<T...> const& v1, std::variant<T...> const& v2 )
+{
+    return std::visit( are_equal_vis(), v1, v2 );
+}
+
+#endif
+
 template<class Variant>
 bool test_type(const Variant & v){
     const char * testfile = boost::archive::tmpnam(NULL);
@@ -128,7 +159,7 @@ bool test_type(const Variant & v){
         test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
         BOOST_TRY {
             ia >> boost::serialization::make_nvp("written", vx);
-            BOOST_CHECK(visit(are_equal(), v, vx));
+            BOOST_CHECK(are_equal(v, vx));
         }
         BOOST_CATCH(boost::archive::archive_exception const& e) {
             return false;
@@ -158,12 +189,6 @@ void test(Variant & v)
     test_type(v);
 }
 
-#include <boost/serialization/variant.hpp>
-
-#include <boost/variant/variant.hpp>
-
-#include <cstdio>
-
 int test_boost_variant(){
     std::cerr << "Testing boost_variant\n";
     boost::variant<bool, int, float, double, A, std::string> v;
@@ -176,7 +201,6 @@ int test_boost_variant(){
 
 // boost::variant2/variant requires C++ 11
 #if BOOST_CXX_VERSION >= 201103L
-#include <boost/variant2/variant.hpp>
 
 int test_boost_variant2(){
     std::cerr << "Testing boost_variant2\n";
@@ -191,7 +215,7 @@ int test_boost_variant2(){
 
 // std::variant reqires C++ 17 or more
 #ifndef BOOST_NO_CXX17_HDR_VARIANT
-#include <variant>
+
 int test_std_variant(){
     std::cerr << "Testing Std Variant\n";
     std::variant<bool, int, float, double, A, std::string> v;
