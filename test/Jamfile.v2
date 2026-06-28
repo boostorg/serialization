@@ -189,5 +189,5 @@ if ! $(BOOST_ARCHIVE_LIST) {
     ;
 }
 
-run quick.cpp
-  : : : <library>/boost/serialization//boost_serialization ;
+run quick.cpp ../build//boost_serialization ;
+compile quick.cpp : <exception-handling>off -<library>/boost/filesystem//boost_filesystem -<library>/boost/math//boost_math_tr1 : quick_nx ;
