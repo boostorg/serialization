@@ -16,6 +16,7 @@
 #include <iostream>
 #include <fstream>
 
+#include <boost/cstdint.hpp>
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/utility.hpp>
 #include <boost/serialization/list.hpp>
@@ -199,7 +200,7 @@ std::ostream & operator<<(std::ostream &os, const bus_route &br)
     // note: we're displaying the pointer to permit verification
     // that duplicated pointers are properly restored.
     for(it = br.stops.begin(); it != br.stops.end(); it++){
-        os << '\n' << std::hex << "0x" << *it << std::dec << ' ' << **it;
+        os << '\n' << "0x" << std::hex << reinterpret_cast<boost::uintptr_t>(*it) << std::dec << ' ' << **it;
     }
     return os;
 }
