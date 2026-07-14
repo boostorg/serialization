@@ -63,7 +63,7 @@ public:
 };
 std::ostream & operator<<(std::ostream &os, const gps_position &gp)
 {
-    return os << ' ' << gp.degrees << (unsigned char)186 << gp.minutes << '\'' << gp.seconds << '"';
+    return os << ' ' << gp.degrees << (unsigned char)176 << gp.minutes << '\'' << gp.seconds << '"';
 }
 
 /////////////////////////////////////////////////////////////
