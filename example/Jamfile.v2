@@ -31,7 +31,7 @@ test-suite "demo-suite" :
     [ test-bsl-run demo_auto_ptr : : : [ requires auto_ptr ] ]
     [ test-bsl-run demo_exception ]
     [ test-bsl-run demo_fast_archive ]
-    [ test-bsl-run demo_log : log_archive ]
+    [ test-bsl-run demo_log : log_archive : : <link>static ]
     [ test-bsl-run demo_pimpl : demo_pimpl_A ]
     [ test-bsl-run demo_polymorphic : demo_polymorphic_A ]
     [ test-bsl-run demo_portable_archive : portable_binary_iarchive portable_binary_oarchive ]
