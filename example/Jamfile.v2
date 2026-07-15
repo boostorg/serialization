@@ -34,7 +34,7 @@ test-suite "demo-suite" :
     [ test-bsl-run demo_log : log_archive : : <link>static ]
     [ test-bsl-run demo_pimpl : demo_pimpl_A ]
     [ test-bsl-run demo_polymorphic : demo_polymorphic_A ]
-    [ test-bsl-run demo_portable_archive : portable_binary_iarchive portable_binary_oarchive ]
+    [ test-bsl-run demo_portable_archive : portable_binary_iarchive portable_binary_oarchive : : <link>static ]
     [ test-bsl-run demo_shared_ptr ]
     [ test-bsl-run demo_simple_log ]
     [ test-bsl-run demo_trivial_archive ]
