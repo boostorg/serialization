@@ -21,10 +21,14 @@ import ../util/test :
     test-bsl-run_files
 ;
 
+# for [ requires auto_ptr ]
+import-search /boost/config/checks ;
+import config : requires ;
+
 test-suite "demo-suite" :
     # demos
     [ test-bsl-run demo ]
-    [ test-bsl-run demo_auto_ptr ]
+    [ test-bsl-run demo_auto_ptr : : : [ requires auto_ptr ] ]
     [ test-bsl-run demo_exception ]
     [ test-bsl-run demo_fast_archive ]
     [ test-bsl-run demo_log : log_archive ]
