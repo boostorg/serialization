@@ -11,8 +11,8 @@
 
 // (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
 // (C) Copyright 2016 Ashish Sadanandan
-// Use, modification and distribution is subject to the Boost Software
-// License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org/libs/serialization for updates, documentation, and revision history.

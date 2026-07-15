@@ -3,8 +3,8 @@
 
 // Copyright (c) 2004 Robert Ramey, Indiana University (garcia@osl.iu.edu)
 // Andrew Lumsdaine, Indiana University (lums@osl.iu.edu). 
-// Use, modification and distribution is subject to the Boost Software
-// License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
 #define BOOST_WARCHIVE_SOURCE
