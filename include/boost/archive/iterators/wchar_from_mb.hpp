@@ -100,6 +100,7 @@ class wchar_from_mb
         bool m_done;
         // default ctor
         sliding_buffer() :
+            m_buffer(),
             m_next_available(m_buffer.begin()),
             m_next(m_buffer.begin()),
             m_done(false)
