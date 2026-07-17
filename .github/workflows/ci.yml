@@ -243,7 +243,15 @@ jobs:
         run: |
           cd ../boost-root
           export ADDRMD=${{matrix.address-model}}
-          ./b2 -j3 libs/$LIBRARY/test libs/$LIBRARY/example toolset=${{matrix.toolset}} cxxstd=${{matrix.cxxstd}} ${ADDRMD:+address-model=$ADDRMD} variant=debug,release
+          ./b2 -j3 libs/$LIBRARY/test toolset=${{matrix.toolset}} cxxstd=${{matrix.cxxstd}} ${ADDRMD:+address-model=$ADDRMD} variant=debug,release
+
+      - name: Run examples
+        run: |
+          cd ../boost-root
+          export ADDRMD=${{matrix.address-model}}
+          # The demos use fixed temp filenames, so run them serially (-j1)
+          # to avoid concurrent runs clobbering each other's archive files.
+          ./b2 -j1 libs/$LIBRARY/example toolset=${{matrix.toolset}} cxxstd=${{matrix.cxxstd}} ${ADDRMD:+address-model=$ADDRMD} variant=debug,release
 
   windows:
     strategy:
@@ -298,7 +306,15 @@ jobs:
         shell: cmd
         run: |
           cd ../boost-root
-          b2 -j3 libs/%LIBRARY%/test libs/%LIBRARY%/example toolset=${{matrix.toolset}} cxxstd=${{matrix.cxxstd}} address-model=${{matrix.addrmd}} variant=debug,release embed-manifest-via=linker
+          b2 -j3 libs/%LIBRARY%/test toolset=${{matrix.toolset}} cxxstd=${{matrix.cxxstd}} address-model=${{matrix.addrmd}} variant=debug,release embed-manifest-via=linker
+
+      - name: Run examples
+        shell: cmd
+        run: |
+          cd ../boost-root
+          rem The demos use fixed temp filenames, so run them serially (-j1)
+          rem to avoid concurrent runs clobbering each other's archive files.
+          b2 -j1 libs/%LIBRARY%/example toolset=${{matrix.toolset}} cxxstd=${{matrix.cxxstd}} address-model=${{matrix.addrmd}} variant=debug,release embed-manifest-via=linker
 
   posix-cmake-subdir:
     strategy:
