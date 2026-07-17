@@ -11,6 +11,8 @@ project libs/serialization/example
     : requirements <library>../build//boost_serialization
     ;
 
+import testing ;
+
 import ../util/test :
     run-template
     run-invoke
