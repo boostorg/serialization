@@ -255,7 +255,7 @@ basic_oarchive_impl::save_object(
     if(bos.class_info()){
         if( ! co.m_initialized){
             ar.vsave(class_id_optional_type(co.m_class_id));
-            ar.vsave(tracking_type(bos.tracking(m_flags)));
+            ar.vsave(tracking_type(co.m_bos_ptr->tracking(m_flags)));
             ar.vsave(version_type(bos.version()));
             (const_cast<cobject_type &>(co)).m_initialized = true;
         }
@@ -343,7 +343,7 @@ basic_oarchive_impl::save_pointer(
             }
         }
         if(bos.class_info()){
-            ar.vsave(tracking_type(bos.tracking(m_flags)));
+            ar.vsave(tracking_type(co.m_bos_ptr->tracking(m_flags)));
             ar.vsave(version_type(bos.version()));
         }
         (const_cast<cobject_type &>(co)).m_initialized = true;
