@@ -7,6 +7,7 @@ on:
       - master
       - develop
       - feature/**
+  merge_group:
 
 env:
   UBSAN_OPTIONS: print_stacktrace=1
