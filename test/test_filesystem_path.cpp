@@ -17,8 +17,11 @@
 
 // `std::filesystem::path` is a C++17 feature; when it isn't available, this
 // test has nothing to exercise and simply succeeds.
+// Note the guard for GCC < 9, which matches the one in
+// boost/serialization/filesystem.hpp: see the comment there for the why.
 #if defined(__has_include)
-#  if __has_include(<filesystem>) && (BOOST_CXX_VERSION >= 201703L)
+#  if __has_include(<filesystem>) && (BOOST_CXX_VERSION >= 201703L) \
+      && ! (defined(__GNUC__) && ! defined(__clang__) && __GNUC__ < 9)
 #    define BOOST_SERIALIZATION_TEST_STD_FILESYSTEM
 #  endif
 #endif

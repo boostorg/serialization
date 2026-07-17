@@ -18,8 +18,12 @@
 
 #include <boost/config.hpp>
 
+// GCC's <filesystem> before version 9 is the initial, incomplete
+// implementation (shipped in a separate libstdc++fs and buggy at runtime),
+// so the feature is disabled there.
 #if defined(__has_include)
-#  if __has_include(<filesystem>) && (BOOST_CXX_VERSION >= 201703L)
+#  if __has_include(<filesystem>) && (BOOST_CXX_VERSION >= 201703L) \
+      && ! (defined(__GNUC__) && ! defined(__clang__) && __GNUC__ < 9)
 #    define BOOST_SERIALIZATION_HAS_STD_FILESYSTEM
 #  endif
 #endif
