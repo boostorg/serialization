@@ -189,7 +189,14 @@ xml_iarchive_impl<Archive>::~xml_iarchive_impl(){
     if(boost::core::uncaught_exceptions() > 0)
         return;
     if(0 == (this->get_flags() & no_header)){
-        gimpl->windup(is);
+        // windup() parses the trailing end tag; an exception must not escape
+        // this (implicitly noexcept) destructor and terminate the process.
+        // A stream error while consuming the trailer is not worth that.  #99
+        BOOST_TRY {
+            gimpl->windup(is);
+        }
+        BOOST_CATCH(...) {}
+        BOOST_CATCH_END
     }
 }
 } // namespace archive
