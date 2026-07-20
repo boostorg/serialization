@@ -20,6 +20,7 @@
 #include <optional>
 #endif
 
+#include <boost/move/utility_core.hpp>
 #include <boost/serialization/item_version_type.hpp>
 #include <boost/serialization/library_version_type.hpp>
 #include <boost/serialization/version.hpp>
@@ -83,7 +84,7 @@ void load_impl(
     }
     typename OT::value_type t;
     ar >> boost::serialization::make_nvp("value",t);
-    ot = t;
+    ot = boost::move(t);
 }
 
 } // detail
