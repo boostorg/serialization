@@ -146,6 +146,7 @@ if ! $(BOOST_ARCHIVE_LIST) {
         # we suppress tests of our dlls when using static libraries
 
         [ test-bsl-run test_dll_simple   : : dll_a :  <link>static:<build>no ]
+        [ test-bsl-run test_dll_base_pointer : : dll_polymorphic_base dll_polymorphic_derived2 : <link>static:<build>no ]
         # [ test-bsl-run test_dll_plugin : : dll_derived2 : <link>static:<build>no <target-os>linux:<linkflags>-ldl ]
 
         [ test-bsl-run test_private_ctor ]
