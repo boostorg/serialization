@@ -146,6 +146,77 @@ int test_move_only(){
 }
 #endif // move-only support available
 
+// A type without a default constructor.  It is reconstructed on load through
+// save_construct_data / load_construct_data, which is exactly what an
+// optional<ND> now relies on (see issue #121).  m_i is the constructor
+// argument, m_x is ordinary serialized state.
+struct ND {
+    int m_i;
+    int m_x;
+    ND(int i, int x) : m_i(i), m_x(x) {}
+    explicit ND(int i) : m_i(i), m_x(0) {}
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int /* version */){
+        ar & boost::serialization::make_nvp("x", m_x);
+    }
+    bool operator==(const ND & rhs) const {
+        return m_i == rhs.m_i && m_x == rhs.m_x;
+    }
+};
+
+namespace boost {
+namespace serialization {
+
+template<class Archive>
+void save_construct_data(
+    Archive & ar, const ND * p, const unsigned int /* version */
+){
+    ar << boost::serialization::make_nvp("i", p->m_i);
+}
+
+template<class Archive>
+void load_construct_data(
+    Archive & ar, ND * p, const unsigned int /* version */
+){
+    int i;
+    ar >> boost::serialization::make_nvp("i", i);
+    ::new(p) ND(i);
+}
+
+} // serialization
+} // boost
+
+template<template<class> class Optional>
+int test_non_default_ctor(){
+    const char * testfile = boost::archive::tmpnam(NULL);
+    BOOST_REQUIRE(NULL != testfile);
+
+    const Optional<ND> o_empty;
+    const Optional<ND> o_value(ND(7, 42));
+    {
+        test_ostream os(testfile, TEST_STREAM_FLAGS);
+        test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
+        oa << boost::serialization::make_nvp("o_empty", o_empty);
+        oa << boost::serialization::make_nvp("o_value", o_value);
+    }
+    // start each target in the opposite state, so load must both reset and
+    // reconstruct
+    Optional<ND> o_empty_a(ND(1, 1));
+    Optional<ND> o_value_a;
+    {
+        test_istream is(testfile, TEST_STREAM_FLAGS);
+        test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
+        ia >> boost::serialization::make_nvp("o_empty", o_empty_a);
+        ia >> boost::serialization::make_nvp("o_value", o_value_a);
+    }
+    BOOST_CHECK(! o_empty_a);
+    BOOST_CHECK(static_cast<bool>(o_value_a));
+    BOOST_CHECK(o_value_a && *o_value == *o_value_a);
+
+    std::remove(testfile);
+    return EXIT_SUCCESS;
+}
+
 #include <boost/serialization/optional.hpp>
 #ifndef BOOST_NO_CXX17_HDR_OPTIONAL
 #include <optional>
@@ -161,6 +232,10 @@ int test_main( int /* argc */, char* /* argv */[] ){
     #ifndef BOOST_NO_CXX17_HDR_OPTIONAL
     test_move_only<std::optional>();
     #endif
+    #endif
+    test_non_default_ctor<boost::optional>();
+    #ifndef BOOST_NO_CXX17_HDR_OPTIONAL
+    test_non_default_ctor<std::optional>();
     #endif
     return EXIT_SUCCESS;
 }
