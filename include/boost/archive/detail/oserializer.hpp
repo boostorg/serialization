@@ -18,6 +18,7 @@
 // oserializer.hpp: interface for serialization system.
 
 // (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
+// Copyright 2026 Gennaro Prota.
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -28,6 +29,8 @@
 #include <cstddef> // NULL
 
 #include <boost/config.hpp>
+
+#include <boost/core/underlying_type.hpp>
 
 #include <boost/static_assert.hpp>
 #include <boost/detail/workaround.hpp>
@@ -46,6 +49,7 @@
 #include <boost/serialization/assume_abstract.hpp>
 #include <boost/serialization/static_warning.hpp>
 
+#include <boost/type_traits/conditional.hpp>
 #include <boost/type_traits/is_pointer.hpp>
 #include <boost/type_traits/is_enum.hpp>
 #include <boost/type_traits/is_const.hpp>
@@ -488,9 +492,25 @@ struct save_enum_type
 {
     template<class T>
     static void invoke(Archive &ar, const T &t){
-        // convert enum to integers on save
-        const int i = static_cast<int>(t);
-        ar << boost::serialization::make_nvp(NULL, i);
+        // Save an enumerator as an integer wide enough to hold every value of
+        // the enum's underlying type.  An underlying type no wider than int
+        // keeps the historical layout (a plain int), so existing archives are
+        // unaffected; a wider underlying type is written at full width instead
+        // of being truncated to int.  Archives that need the wider layout carry
+        // library version 21 or greater (see load_enum_type).
+        #ifndef BOOST_NO_UNDERLYING_TYPE
+            typedef typename boost::underlying_type< T >::type underlying_type;
+            typedef typename boost::conditional<
+                sizeof(underlying_type) <= sizeof(int),
+                int,
+                underlying_type
+            >::type save_type;
+        #else
+            // no way to query the underlying type: keep the historical int
+            typedef int save_type;
+        #endif
+        const save_type st = static_cast< save_type >(t);
+        ar << boost::serialization::make_nvp(NULL, st);
     }
 };
 
