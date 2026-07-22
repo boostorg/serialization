@@ -92,6 +92,21 @@ so that instead of the above, we could write:
 BOOST_CLASS_VERSION(my_class, 2)
 </code></pre>
 which expands to the code above.
+<p>
+<code style="white-space: normal">BOOST_CLASS_VERSION</code> writes a full
+specialization, so it applies to a concrete class.  To assign a version to a
+class <i>template</i> a partial specialization is needed instead, which
+<code style="white-space: normal">BOOST_CLASS_TEMPLATE_VERSION</code>
+provides.  The template parameter list and the specialized type are each
+passed parenthesized, as they normally contain commas:
+<pre><code>
+BOOST_CLASS_TEMPLATE_VERSION((class T, class U), (my_class&lt;T, U&gt;), 2)
+</code></pre>
+This assigns version 2 to every instantiation of
+<code style="white-space: normal">my_class</code>.  Non-type template
+parameters are written the same way, for example
+<code style="white-space: normal">(class T, std::size_t N)</code> paired with
+<code style="white-space: normal">(my_class&lt;T, N&gt;)</code>.
 
 <h3><a name="level">Implementation Level</a></h3>
 In the same manner as the above, the "level" of implementation of serialization is
