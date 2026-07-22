@@ -22,6 +22,7 @@ namespace std{
 #endif
 
 #include <boost/archive/archive_exception.hpp>
+#include <boost/serialization/access.hpp>
 #include "test_tools.hpp"
 
 
@@ -217,6 +218,55 @@ int test_non_default_ctor(){
     return EXIT_SUCCESS;
 }
 
+// A type whose default constructor is private and reachable only through
+// boost::serialization::access.  Loading an optional<PD> must reconstruct
+// the value through access (that is, through load_construct_data, which
+// calls access::construct) rather than through a public default
+// constructor.  This is the regression reported in issue #165.
+class PD {
+public:
+    explicit PD(int x) : m_x(x) {}
+    int value() const { return m_x; }
+    bool operator==(const PD & rhs) const { return m_x == rhs.m_x; }
+private:
+    PD() : m_x(-1) {}
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int /* version */){
+        ar & boost::serialization::make_nvp("x", m_x);
+    }
+    int m_x;
+};
+
+template<template<class> class Optional>
+int test_private_default_ctor(){
+    const char * testfile = boost::archive::tmpnam(NULL);
+    BOOST_REQUIRE(NULL != testfile);
+
+    const Optional<PD> o_empty;
+    const Optional<PD> o_value(PD(2345));
+    {
+        test_ostream os(testfile, TEST_STREAM_FLAGS);
+        test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
+        oa << boost::serialization::make_nvp("o_empty", o_empty);
+        oa << boost::serialization::make_nvp("o_value", o_value);
+    }
+    Optional<PD> o_empty_a(PD(1));
+    Optional<PD> o_value_a;
+    {
+        test_istream is(testfile, TEST_STREAM_FLAGS);
+        test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
+        ia >> boost::serialization::make_nvp("o_empty", o_empty_a);
+        ia >> boost::serialization::make_nvp("o_value", o_value_a);
+    }
+    BOOST_CHECK(! o_empty_a);
+    BOOST_CHECK(static_cast<bool>(o_value_a));
+    BOOST_CHECK(o_value_a && o_value->value() == o_value_a->value());
+
+    std::remove(testfile);
+    return EXIT_SUCCESS;
+}
+
 #include <boost/serialization/optional.hpp>
 #ifndef BOOST_NO_CXX17_HDR_OPTIONAL
 #include <optional>
@@ -236,6 +286,10 @@ int test_main( int /* argc */, char* /* argv */[] ){
     test_non_default_ctor<boost::optional>();
     #ifndef BOOST_NO_CXX17_HDR_OPTIONAL
     test_non_default_ctor<std::optional>();
+    #endif
+    test_private_default_ctor<boost::optional>();
+    #ifndef BOOST_NO_CXX17_HDR_OPTIONAL
+    test_private_default_ctor<std::optional>();
     #endif
     return EXIT_SUCCESS;
 }
