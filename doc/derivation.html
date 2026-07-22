@@ -70,8 +70,28 @@ class log_archive :
     <li><i>Note the</i> <code style="white-space: normal">log_archive</code> <i>between the</i> &lt;&gt;
 This is required so that base classes can downcast their <code style="white-space: normal">this</code> pointer
 to the most derived class.  This is referred to as <b>C</b>uriously <b>R</b>ecurring
-<b>T</b>emplate <b>P</b>attern (<b>CRTP</b>) <a href="bibliography.html#11">[11]</a>.  
+<b>T</b>emplate <b>P</b>attern (<b>CRTP</b>) <a href="bibliography.html#11">[11]</a>.
 It is used to implement static polymorphism.
+    <li><i>The most derived class is responsible for calling</i> <code style="white-space: normal">init()</code>.
+The archive header (signature and version) is written by <code style="white-space: normal">init()</code>.
+Before Boost 1.73, the <b>CRTP</b> base called <code style="white-space: normal">init()</code> from its own
+constructor, but that downcast <code style="white-space: normal">this</code> to the most derived class
+while that class was still being constructed, which is undefined behavior.  As of 1.73, the base
+classes no longer do this, so a derived archive that wants the standard header must call
+<code style="white-space: normal">init()</code> itself, in its own constructor body, after the base
+sub-objects have been constructed, honoring the <code style="white-space: normal">no_header</code> flag:
+<pre><code>
+    log_archive(std::ostream &amp; os, unsigned int flags = 0) :
+        xml_oarchive_impl&lt;log_archive&gt;(os, flags)
+    {
+        if(0 == (flags &amp; boost::archive::no_header))
+            init();
+    }
+</code></pre>
+The <code style="white-space: normal">log_archive</code> shown in this example passes
+<code style="white-space: normal">no_header</code>, so it has no header to write and its constructor
+body is empty; see <code style="white-space: normal">xml_oarchive</code>, or the
+<code style="white-space: normal">portable_binary_oarchive</code> example, for archives that do write one.
     <li><i>Base classes need to be explicitly given access to the derived class.</i>
 This can be done by making members public or by including friend declarations for
 the base classes.
@@ -135,7 +155,7 @@ class log_archive :
 {
 public:
     log_archive(std::ostream &amp; os, unsigned int flags = 0) :
-        log_archive_impl&lt;xml_oarchive&gt;(os, flags)
+        log_archive_impl&lt;log_archive&gt;(os, flags)
     {}
 };
 </code></pre>
