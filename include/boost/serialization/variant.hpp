@@ -294,7 +294,7 @@ struct tracking_level<
     variant<BOOST_VARIANT_ENUM_PARAMS(T)>
 >{
     typedef mpl::integral_c_tag tag;
-    typedef mpl::int_< ::boost::serialization::track_always> type;
+    typedef mpl::int_< ::boost::serialization::track_selectively> type;
     BOOST_STATIC_CONSTANT(int, value = type::value);
 };
 
@@ -304,7 +304,7 @@ struct tracking_level<
     std::variant<Types...>
 >{
     typedef mpl::integral_c_tag tag;
-    typedef mpl::int_< ::boost::serialization::track_always> type;
+    typedef mpl::int_< ::boost::serialization::track_selectively> type;
     BOOST_STATIC_CONSTANT(int, value = type::value);
 };
 #endif
