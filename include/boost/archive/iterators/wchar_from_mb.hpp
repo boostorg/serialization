@@ -18,9 +18,7 @@
 
 #include <cctype>
 #include <cstddef> // size_t
-#ifndef BOOST_NO_CWCHAR
 #include <cwchar>  // mbstate_t
-#endif
 #include <algorithm> // copy
 
 #include <boost/config.hpp>
