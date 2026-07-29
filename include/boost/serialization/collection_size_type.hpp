@@ -2,11 +2,13 @@
 #define BOOST_SERIALIZATION_COLLECTION_SIZE_TYPE_HPP
 
 // (C) Copyright 2005 Matthias Troyer
+// Copyright 2026 Gennaro Prota
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
 #include <cstddef> // size_t
+#include <istream>
 #include <boost/serialization/strong_typedef.hpp>
 #include <boost/serialization/level.hpp>
 #include <boost/serialization/split_free.hpp>
@@ -41,9 +43,23 @@ public:
     operator base_type () const {
         return t;
     }
-    // used for text input
-    operator base_type & () {
-        return t;
+    collection_size_type & operator++(){
+        ++t;
+        return *this;
+    }
+    collection_size_type operator++(int){
+        collection_size_type old(*this);
+        ++t;
+        return old;
+    }
+    collection_size_type & operator--(){
+        --t;
+        return *this;
+    }
+    collection_size_type operator--(int){
+        collection_size_type old(*this);
+        --t;
+        return old;
     }
     bool operator==(const collection_size_type & rhs) const {
         return t == rhs.t;
@@ -53,6 +69,14 @@ public:
     }
 };
 
+template<class Ch, class Tr>
+std::basic_istream<Ch, Tr> &
+operator>>(std::basic_istream<Ch, Tr> & is, collection_size_type & t){
+    std::size_t x = 0;
+    is >> x;
+    t = collection_size_type(x);
+    return is;
+}
 
 } } // end namespace boost::serialization
 
