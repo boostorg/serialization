@@ -194,6 +194,32 @@ void test(Variant & v)
     test_type(v);
 }
 
+// Serializing the same variant twice by value must store two independent
+// values, not an object reference the loader cannot resolve into a separate
+// destination object. Regression test for issue #203.
+template<class Variant>
+void test_reuse(const Variant & v){
+    const char * testfile = boost::archive::tmpnam(NULL);
+    BOOST_REQUIRE(testfile != NULL);
+    {
+        test_ostream os(testfile, TEST_STREAM_FLAGS);
+        test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
+        oa << boost::serialization::make_nvp("first", v);
+        oa << boost::serialization::make_nvp("second", v);
+    }
+    Variant v1;
+    Variant v2;
+    {
+        test_istream is(testfile, TEST_STREAM_FLAGS);
+        test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
+        ia >> boost::serialization::make_nvp("first", v1);
+        ia >> boost::serialization::make_nvp("second", v2);
+    }
+    BOOST_CHECK(are_equal(v, v1));
+    BOOST_CHECK(are_equal(v, v2));
+    std::remove(testfile);
+}
+
 int test_boost_variant(){
     std::cerr << "Testing boost_variant\n";
     boost::variant<bool, int, float, double, A, std::string> v;
@@ -201,6 +227,8 @@ int test_boost_variant(){
     const A a;
     boost::variant<bool, int, float, double, const A *, std::string> v1 = & a;
     test_type(v1);
+    v = 1;
+    test_reuse(v);
     return EXIT_SUCCESS;
 }
 
@@ -214,6 +242,8 @@ int test_boost_variant2(){
     const A a;
     boost::variant2::variant<bool, int, float, double, const A *, std::string> v1 = & a;
     test_type(v1);
+    v = 1;
+    test_reuse(v);
     return EXIT_SUCCESS;
 }
 #endif
@@ -228,6 +258,8 @@ int test_std_variant(){
     const A a;
     std::variant<bool, int, float, double, const A *, std::string> v1 = & a;
     test_type(v1);
+    v = 1;
+    test_reuse(v);
     return EXIT_SUCCESS;
 }
 #endif
