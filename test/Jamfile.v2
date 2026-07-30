@@ -153,6 +153,7 @@ if ! $(BOOST_ARCHIVE_LIST) {
         [ test-bsl-run test_private_ctor ]
         [ test-bsl-run test_reset_object_address : A ]
         [ test-bsl-run test_void_cast ]
+        [ test-bsl-run test_xml_save_during_unwind ]
         [ test-bsl-run test_xml_trailing_whitespace ]
         [ test-bsl-run test_xml_missing_nvp ]
         [ test-bsl-run test_mult_archive_types : : : [ requires std_wstreambuf ] ]
