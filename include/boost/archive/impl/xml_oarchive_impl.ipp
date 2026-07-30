@@ -2,6 +2,7 @@
 // xml_oarchive_impl.ipp:
 
 // (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
+// Copyright 2026 Gennaro Prota.
 // Distributed under the Boost Software License, Version 1.0. (See
 // accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -20,6 +21,7 @@ namespace std{
 #endif
 
 #include <boost/core/uncaught_exceptions.hpp>
+#include <boost/core/no_exceptions_support.hpp>
 #include <boost/archive/iterators/xml_escape.hpp>
 #include <boost/archive/iterators/ostream_iterator.hpp>
 
@@ -129,10 +131,20 @@ xml_oarchive_impl<Archive>::save_binary(const void *address, std::size_t count){
 template<class Archive>
 BOOST_ARCHIVE_DECL
 xml_oarchive_impl<Archive>::~xml_oarchive_impl(){
-    if(boost::core::uncaught_exceptions() > 0)
+    // The closing root tag is written here, at destruction. Skip it only
+    // when serialization was genuinely interrupted, i.e. when an exception
+    // is unwinding the stack and an element is still open, so the document
+    // is already truncated. When the document is complete, we must still
+    // attempt to close it, even while unwinding.
+    if(boost::core::uncaught_exceptions() > 0 && ! this->document_complete()){
         return;
-    if(0 == (this->get_flags() & no_header)){
-        this->put("</boost_serialization>\n");
+    }
+    if(0 == (this->get_flags() & no_header) && os.good()){
+        BOOST_TRY {
+            this->put("</boost_serialization>\n");
+        }
+        BOOST_CATCH(...) {}
+        BOOST_CATCH_END
     }
 }
 

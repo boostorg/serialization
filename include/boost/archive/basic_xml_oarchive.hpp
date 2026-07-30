@@ -10,6 +10,7 @@
 // basic_xml_oarchive.hpp
 
 // (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
+// Copyright 2026 Gennaro Prota.
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -77,6 +78,15 @@ protected:
     save_end(const char *name);
     BOOST_ARCHIVE_OR_WARCHIVE_DECL void
     end_preamble();
+
+    // True once every element that was opened has been closed, i.e. the
+    // document is complete and its root element can be closed safely. Used
+    // by the derived destructor to tell an interrupted serialization (an
+    // element still open) apart from an unrelated exception unwinding past
+    // an already-complete archive.
+    bool document_complete() const {
+        return 0 == depth;
+    }
 
     // Anything not an attribute and not a name-value pair is an
     // error and should be trapped here.
