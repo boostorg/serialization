@@ -42,10 +42,6 @@ public:
     xml_escape(T start) :
         super_t(Base(static_cast< T >(start)))
     {}
-    // intel 7.1 doesn't like default copy constructor
-    xml_escape(const xml_escape & rhs) :
-        super_t(rhs.base_reference())
-    {}
 };
 
 template<class Base>
