@@ -154,10 +154,6 @@ public:
     remove_whitespace(T start) :
         super_t(Base(static_cast< T >(start)))
     {}
-    // intel 7.1 doesn't like default copy constructor
-    remove_whitespace(const remove_whitespace & rhs) :
-        super_t(rhs.base_reference())
-    {}
 };
 
 } // namespace iterators
