@@ -26,7 +26,7 @@
 
 #include <locale>
 #include <cstddef> // size_t
-#include <cstdlib> // itoa
+#include <stdio.h> // snprintf
 
 #include <boost/config.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)
@@ -90,11 +90,14 @@ protected:
         auto pos = is.tellg();
         if(is >> t)
             return;
-        static char at_offset[64] = "at offset ";
-        itoa(pos, &at_offset[10], 10);
+        char at_offset[64] = "at offset ";
+        if (std::streampos(-1) == pos)
+            snprintf&at_offset[10], 54, "%s", "<unknown>");
+        else
+            snprintf(&at_offset[10], 54, "%d", static_cast<std::streamoff>(pos));
         boost::serialization::throw_exception(
             archive_exception(archive_exception::input_stream_error, at_offset)
-        );
+            );
     }
 
     void load(char & t)
