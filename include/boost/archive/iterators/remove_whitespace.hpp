@@ -100,6 +100,13 @@ class filter_iterator
     typedef filter_iterator<Predicate, Base> this_t;
     typedef typename super_t::reference reference_type;
 
+    void satisfy_predicate(){
+        while(this->base_reference() != m_end
+        && ! m_predicate(* this->base_reference())){
+            ++(this->base_reference());
+        }
+    }
+
     reference_type dereference_impl(){
         if(! m_full){
             while(! m_predicate(* this->base_reference()))
@@ -110,23 +117,47 @@ class filter_iterator
     }
 
     reference_type dereference() const {
+        if(m_bounded){
+            return * this->base_reference();
+        }
         return const_cast<this_t *>(this)->dereference_impl();
     }
 
     Predicate m_predicate;
     bool m_full;
+    Base m_end;
+    bool m_bounded;
 public:
     // note: this function is public only because comeau compiler complained
     // I don't know if this is because the compiler is wrong or what
     void increment(){
-        m_full = false;
         ++(this->base_reference());
+        if(m_bounded){
+            satisfy_predicate();
+        }
+        else{
+            m_full = false;
+        }
     }
     filter_iterator(Base start) :
         super_t(start),
-        m_full(false)
+        m_full(false),
+        m_end(),
+        m_bounded(false)
     {}
-    filter_iterator(){}
+    filter_iterator(Base start, Base end) :
+        super_t(start),
+        m_full(false),
+        m_end(end),
+        m_bounded(true)
+    {
+        satisfy_predicate();
+    }
+    filter_iterator() :
+        m_full(false),
+        m_end(),
+        m_bounded(false)
+    {}
 };
 
 template<class Base>
@@ -153,6 +184,10 @@ public:
     template<class T>
     remove_whitespace(T start) :
         super_t(Base(static_cast< T >(start)))
+    {}
+    template<class T>
+    remove_whitespace(T start, T end) :
+        super_t(Base(static_cast< T >(start)), Base(static_cast< T >(end)))
     {}
 };
 
