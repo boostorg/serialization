@@ -92,9 +92,9 @@ protected:
             return;
         char at_offset[64] = "at offset ";
         if (std::streampos(-1) == pos)
-            snprintf&at_offset[10], 54, "%s", "<unknown>");
+            snprintf(&at_offset[10], 54, "%s", "<unknown>");
         else
-            snprintf(&at_offset[10], 54, "%d", static_cast<std::streamoff>(pos));
+            snprintf(&at_offset[10], 54, "%lld", static_cast<std::streamoff>(pos));
         boost::serialization::throw_exception(
             archive_exception(archive_exception::input_stream_error, at_offset)
             );
