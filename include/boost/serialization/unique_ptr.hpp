@@ -48,6 +48,7 @@ inline void load(
     ar >> BOOST_SERIALIZATION_NVP(tx);
     // note that the reset automagically maintains the reference count
     t.reset(tx);
+    ar.object_adopted();
 }
 
 // split non-intrusive serialization function member into separate

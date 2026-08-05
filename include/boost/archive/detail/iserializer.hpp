@@ -350,12 +350,17 @@ BOOST_DLLEXPORT void pointer_iserializer<Archive, T>::load_object_ptr(
         );
     }
     BOOST_CATCH(...){
-        // if we get here the load_construct failed.  The heap_allocation
-        // will be automatically deleted so we don't have to do anything
-        // special here.
+        // The load_construct failed, so the object was never constructed.
+        // Since heap_allocation() has already released its guard, free the
+        // raw storage here, without running a destructor on it.
+        detail::heap_allocation<T>::invoke_delete(static_cast<T *>(t));
         BOOST_RETHROW;
     }
     BOOST_CATCH_END
+
+    // The object exists from here on, so let the archive reclaim it if
+    // loading its members throws.
+    ar.object_constructed();
 
     ar_impl >> boost::serialization::make_nvp(NULL, * static_cast<T *>(t));
 }
