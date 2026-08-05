@@ -41,6 +41,7 @@ namespace serialization {
         T* r;
         ar >> boost::serialization::make_nvp("scoped_ptr", r);
         t.reset(r);
+        ar.object_adopted();
     }
 
     template<class Archive, class T>

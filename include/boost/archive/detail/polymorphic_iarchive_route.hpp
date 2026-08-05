@@ -83,6 +83,9 @@ private:
     void delete_created_pointers() BOOST_OVERRIDE {
         ArchiveImplementation::delete_created_pointers();
     }
+    void object_adopted() BOOST_OVERRIDE {
+        ArchiveImplementation::object_adopted();
+    }
     void reset_object_address(
         const void * new_address,
         const void * old_address

@@ -81,6 +81,7 @@ test-suite "serialization" :
      [ test-bsl-run_files test_forward_list : A  : :  [ requires cxx11_hdr_forward_list ] ] # BOOST_NO_CXX11_HDR_FORWARD_LIST
      [ test-bsl-run_files test_forward_list_ptrs : A  : :  [ requires cxx11_hdr_forward_list ] ] # BOOST_NO_CXX11_HDR_FORWARD_LIST
      [ test-bsl-run_files test_helper_support : : : [ requires std_wstreambuf ] ]
+     [ test-bsl-run_files test_interrupted_pointer_reclaim ]
      [ test-bsl-run_files test_interrupts ]
      [ test-bsl-run_files test_list : A ]
      [ test-bsl-run_files test_list_ptrs : A ]

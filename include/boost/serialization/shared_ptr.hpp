@@ -140,6 +140,7 @@ inline void load(
             shared_ptr_helper_id
         );
     h.reset(t,r);
+    ar.object_adopted();
 }
 #else
 
@@ -161,6 +162,7 @@ inline void load(
             shared_ptr_helper_id
         );
     h.reset(t,r);
+    ar.object_adopted();
 }
 #endif
 
@@ -256,6 +258,7 @@ inline void load(
             shared_ptr_helper_id
         );
     h.reset(t,r);
+    ar.object_adopted();
 }
 
 template<class Archive, class T>

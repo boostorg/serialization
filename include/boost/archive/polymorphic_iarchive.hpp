@@ -10,6 +10,7 @@
 // polymorphic_iarchive.hpp
 
 // (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
+// Copyright 2026 Gennaro Prota.
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -126,6 +127,11 @@ public:
     virtual boost::serialization::library_version_type get_library_version() const = 0;
     virtual unsigned int get_flags() const = 0;
     virtual void delete_created_pointers() = 0;
+    // Note: not pure, so that archives written against an earlier release
+    // still compile.  Such an archive keeps the old behaviour, in which
+    // delete_created_pointers also frees objects an owning smart pointer
+    // has taken over.
+    virtual void object_adopted() {}
     virtual void reset_object_address(
         const void * new_address,
         const void * old_address
