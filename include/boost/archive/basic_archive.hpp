@@ -46,7 +46,7 @@ private:
 public:
     // should be private - but MPI fails if it's not!!!
     version_type(): t(0) {}
-    explicit version_type(const unsigned int & t_) : t(t_){
+    explicit version_type(const unsigned int t_) : t(t_){
         BOOST_ASSERT(t_ <= boost::integer_traits<base_type>::const_max);
     }
     version_type(const version_type & t_) :
@@ -119,7 +119,7 @@ public:
     object_id_type(): t(0) {}
     // note: presumes that size_t >= unsigned int.
     // use explicit cast to silence useless warning
-    explicit object_id_type(const std::size_t & t_) : t(static_cast<base_type>(t_)){
+    explicit object_id_type(const std::size_t t_) : t(static_cast<base_type>(t_)){
         // make quadruple sure that we haven't lost any real integer
         // precision
         BOOST_ASSERT(t_ <= boost::integer_traits<base_type>::const_max);
