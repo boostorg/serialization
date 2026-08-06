@@ -111,6 +111,7 @@ test-suite "serialization" :
      [ test-bsl-run_files test_slist_ptrs : A : : [ requires slist ] ] # BOOST_HAS_SLIST ] ]
      [ test-bsl-run_files test_split ]
      [ test-bsl-run_files test_stack : A ]
+     [ test-bsl-run_files test_string_allocator ]
      [ test-bsl-run_files test_tracking ]
      [ test-bsl-run_files test_unregistered ]
      [ test-bsl-run_files test_unique_ptr ]

@@ -145,6 +145,22 @@ that <code style="white-space: normal">my_class</code> should be serialized alon
 <pre><code>
 BOOST_CLASS_IMPLEMENTATION(my_class, boost::serialization::object_class_info)
 </code></pre>
+Take care when assigning <code style="white-space: normal">primitive_type</code>.
+It states that the archive already handles the type itself; it is not a request
+to make it do so. Archives implement primitives for the fundamental types and
+for <code style="white-space: normal">std::string</code> and
+<code style="white-space: normal">std::wstring</code>. For any other type they
+fall back to stream extraction, in the text and xml archives, or to a copy of
+<code style="white-space: normal">sizeof(T)</code> raw bytes, in the binary
+ones. Assigning the level to a type an archive knows nothing about therefore
+compiles, but reads back a wrong value rather than failing: declared this way,
+a <code style="white-space: normal">std::pmr::string</code> stops at the first
+space. A string whose allocator is not
+<code style="white-space: normal">std::allocator</code> needs no such
+declaration, as
+<a href="../../../boost/serialization/string.hpp" target="string_hpp">string.hpp</a>
+serializes it just like <code style="white-space: normal">std::string</code>.
+<br><br>
 If implementation level is not explicitly assigned, the system uses
 a default according to the following rules.
 <ul>
