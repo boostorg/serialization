@@ -19,7 +19,7 @@ http://www.boost.org/LICENSE_1_0.txt)
       <h3><a href="../../../index.htm"><img height="86" width="277" alt="C++ Boost" src="../../../boost.png" border="0"></a></h3>
     </td>
     <td valign="top"> 
-      <h1 align="center">Serialization</h1>
+      <h1 align="center"><a href="index.html">Serialization</a></h1>
       <h2 align="center">Class Serialization Traits</h2>
     </td>
   </tr>
@@ -52,7 +52,7 @@ It is not generally necessary for the programmer to explicitly assign
 traits to his classes as there are default values for all traits.
 If the default values are not appropriate they can be assigned by the programmer.
 A template is used to associate a typename with a constant.  For example
-see <a href="../../../boost/serialization/version.hpp" target="version_hpp">
+see <a href="../../../boost/serialization/version.hpp">
 version.hpp</a>.  
 <h3><a name="version">Version</a></h3>
 This header file includes the following code:
@@ -111,7 +111,7 @@ parameters are written the same way, for example
 <h3><a name="level">Implementation Level</a></h3>
 In the same manner as the above, the "level" of implementation of serialization is
 specified.  The header file <a href="../../../boost/serialization/level.hpp" 
-target="level_hpp">level.hpp</a> defines the following.
+>level.hpp</a> defines the following.
 <pre><code>
 // names for each level
 enum level_type
@@ -161,7 +161,7 @@ change, efficiency can be gained by specifying <code style="white-space: normal"
 to override the default setting of <code style="white-space: normal">object_class_info</code>.  
 For example, 
 this has been done for the  
-<a href="../../../boost/serialization/binary_object.hpp" target="binary_object_hpp">
+<a href="../../../boost/serialization/binary_object.hpp">
 binary_object wrapper</a>
 
 <h3><a name="tracking">Object Tracking</a></h3>
@@ -170,7 +170,7 @@ track the address of objects saved and loaded.  For example, this is generally
 necessary while serializing objects through a pointer in order to be sure
 that multiple identical objects are not created when an archive is loaded.
 This "tracking behavior" is controlled by the type trait defined in the header
-file <a href="../../../boost/serialization/tracking.hpp" target="tracking_hpp">tracking.hpp</a>
+file <a href="../../../boost/serialization/tracking.hpp">tracking.hpp</a>
 which defines the following:
 <pre><code>
 // names for each tracking level
@@ -217,7 +217,7 @@ case where it might be convenient to override the default tracking
 trait. <i>(Note: in a future version the default will be reimplemented
 to automatically track classes used as virtual bases).</i> This 
 situation is demonstrated by 
-<a href="../test/test_diamond.cpp" target="test_diamond_cpp">test_diamond.cpp</a>
+<a href="../test/test_diamond.cpp">test_diamond.cpp</a>
 included with the library.
 
 <h3><a name="export">Export Key</a></h3>
@@ -267,11 +267,11 @@ in either the declaration header or definition.  These macros
 expand to invocation of both of the macros described above.
 <i>(<b>GUID</b> stands for <b>G</b>lobally <b>U</b>nique <b>ID</b>entifier.)</i>
 <p>
-<i>(<a target="detail" href="special.html#export">Elsewhere</a>
+<i>(<a href="special.html#export">Elsewhere</a>
 in this manual, the serialization of derived classes is addressed in detail.)</i>
 <p>
 The header file
-<a href="../../../boost/serialization/export.hpp" target="export_hpp">export.hpp</a>
+<a href="../../../boost/serialization/export.hpp">export.hpp</a>
 contains all macro definitions described here.
 The library will throw a runtime exception if
 <ul>
@@ -317,18 +317,18 @@ situations applies, one may substitute his own implementation of
 <p>
 The interface to facilities required to implement serialization is defined in
 <a href="../../../boost/serialization/extended_type_info.hpp" 
-target="extended_type_info_hpp">extended_type_info.hpp</a>.
+>extended_type_info.hpp</a>.
 
 Default implementation of these facilities based on <code style="white-space: normal">typeid(...)</code>
 is defined in
 
 <a href="../../../boost/serialization/extended_type_info_typeid.hpp" 
-target="extended_type_info_typeid_hpp">extended_type_info_typeid.hpp</a>.
+>extended_type_info_typeid.hpp</a>.
 
 An alternative implementation based on exported class identifiers
 is defined in
 <a href="../../../boost/serialization/extended_type_info_no_rtti.hpp" 
-target="extended_type_info_rtti_hpp">extended_type_info_no_rtti.hpp</a>.
+>extended_type_info_no_rtti.hpp</a>.
 <p>
 By invoking the macro:
 <pre><code>
@@ -344,7 +344,7 @@ that serialization of each class is specified "once and for all" in a header
 file that can be included in any project without change.
 <p>
 This is illustrated by the test program
-<a href="../test/test_no_rtti.cpp" target="test_no_rtti_cpp">test_no_rtti.cpp</a>.
+<a href="../test/test_no_rtti.cpp">test_no_rtti.cpp</a>.
 Other implementations are possible and might be necessary for
 certain special cases.
 
@@ -398,7 +398,7 @@ substantially speed up serialization.
 
 To indicate the possibility of bitwise serialization the type trait defined 
 in the header
-file <a href="../../../boost/serialization/is_bitwise_serializable.hpp" target="is_bitwise_serializable">is_bitwise_serializable.hpp</a>
+file <a href="../../../boost/serialization/is_bitwise_serializable.hpp">is_bitwise_serializable.hpp</a>
 is used:
 <pre><code>
 namespace boost { namespace serialization {
@@ -491,10 +491,10 @@ won't be loaded properly on another.  In other words, archives won't be portable
 <p>
 This problem is addressed by creating another method of assigning serialization traits
 to user classes.  This is illustrated by the serialization for a 
-<a target="nvp" href="../../../boost/serialization/nvp.hpp"><strong>name-value</strong> pair</a>.
+<a href="../../../boost/serialization/nvp.hpp"><strong>name-value</strong> pair</a>.
 <p>
 Specifically, this entails deriving the template from a special class
-<a target="traits" href="../../../boost/serialization/traits.hpp">
+<a href="../../../boost/serialization/traits.hpp">
 <code style="white-space: normal">boost::serialization::traits</code></a> which is specialized for a specific
 combination of serialization traits.  
 When looking up the serialization traits, the library first checks to see if this class has been

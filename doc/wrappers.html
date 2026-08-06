@@ -19,7 +19,7 @@ http://www.boost.org/LICENSE_1_0.txt)
       <h3><a href="../../../index.htm"><img height="86" width="277" alt="C++ Boost" src="../../../boost.png" border="0"></a></h3>
     </td>
     <td valign="top"> 
-      <h1 align="center">Serialization</h1>
+      <h1 align="center"><a href="index.html">Serialization</a></h1>
       <h2 align="center">Serialization Wrappers</h2>
     </td>
   </tr>
@@ -47,7 +47,7 @@ A binary object is just a sequence of bytes stored as raw
 binary data.  This would most likely be used for a large amount
 of "light weight" data such as a pixel map or embedded binary file.
 The header file 
-<a href="../../../boost/serialization/binary_object.hpp" target="binary_object_hpp">
+<a href="../../../boost/serialization/binary_object.hpp">
 binary_object.hpp
 </a>
 includes the constructors:
@@ -70,7 +70,7 @@ archives) that provide optimized serialization for contiguous sequences of
 objects of the same type. 
 
 The header file 
-<a href="../../../boost/serialization/array.hpp" target="array_hpp">
+<a href="../../../boost/serialization/array.hpp">
 array.hpp
 </a>
 includes the function
@@ -116,7 +116,7 @@ special overrides used for XML archives aren't needed for other archives.
 <h3><a name="collection_size_type">Collection Sizes</h3>
 An example of a strong typedef is the <code>collection_size_type</code> in the
 header file
-<a href="../../../boost/serialization/collection_size_type.hpp" target="collection_size_type_hpp">
+<a href="../../../boost/serialization/collection_size_type.hpp">
 collection_size_type.hpp
 </a>. This type should be used for serializing the size of a C++ collection, so
 that the archive can pick the best integral representation for the serialization
@@ -141,7 +141,7 @@ still permiting the the serialization code to be used with any archive.
 <p>
 Our solution is to wrap class members to be serialized in a
 <strong>name-value-pair</strong>. This structure is defined in
-<a href="../../../boost/serialization/nvp.hpp" target="nvp_hpp">nvp.hpp</a>.
+<a href="../../../boost/serialization/nvp.hpp">nvp.hpp</a>.
 It is just a reference to the data member coupled with a pointer to
 to a <code style="white-space: normal">const char *</code> which 
 corresponds to the XML name.  It implements the default
@@ -189,11 +189,11 @@ Note that these macros must be used in the namespace of the class,
 and without qualifying the namespace in the argument. 
 
 <p>
-<a href="../example/demo_gps.hpp" target="demo_gps_hpp">demo_gps.hpp<a>
+<a href="../example/demo_gps.hpp">demo_gps.hpp<a>
 includes NVP wrappers or all data members.
-<a href="../example/demo_xml.cpp" target="demo_xml_cpp">demo_xml.cpp<a>
+<a href="../example/demo_xml.cpp">demo_xml.cpp<a>
 saves and loads data to an XML archive.
-<a href="../example/demo_save.xml" target="demo_save_xml">Here</a>
+<a href="../example/demo_save.xml">Here</a>
 is example of the XML Archive corresponding to our tutorial example.
 
 <h3><a name="composition">Composition</h3>

@@ -19,7 +19,7 @@ http://www.boost.org/LICENSE_1_0.txt)
       <h3><a href="../../../index.htm"><img height="86" width="277" alt="C++ Boost" src="../../../boost.png" border="0"></a></h3>
     </td>
     <td valign="top"> 
-      <h1 align="center">Serialization</h1>
+      <h1 align="center"><a href="index.html">Serialization</a></h1>
       <h2 align="center">Dataflow Iterators</h2>
     </td>
   </tr>
@@ -67,7 +67,7 @@ std::copy(
 Indeed, this seems to be exactly the kind of problem that iterator adaptors are 
 intended to address.  The Iterator Adaptor library already includes
 modules which can be configured to implement some of the operations above.  For example,
-included is <a target="transform_iterator" href="../../iterator/doc/transform_iterator.html">
+included is <a href="../../iterator/doc/transform_iterator.html">
 transform_iterator</a>, which can be used to implement 6 bit integer =&gt; base64 code.
 
 <h3>Dataflow Iterators</h3>
@@ -118,7 +118,7 @@ Dereferencing some iterators can cause problems.  For example, a natural
 way to write a <code style="white-space: normal">remove_whitespace</code> iterator is to increment past the initial 
 whitespaces when the iterator is constructed.  This will fail if the iterator passed to the
 constructor "points" to  the end of a string.  The 
-<a target="filter_iterator" href="../../iterator/doc/filter_iterator.html">
+<a href="../../iterator/doc/filter_iterator.html">
 <code style="white-space: normal">filter_iterator</code></a> is implemented
 in this way so it can't be used in our context. So, for implementation of this iterator, 
 space removal is deferred until the iterator actually is dereferenced.
@@ -138,41 +138,41 @@ code should implement our binary to base64 conversion.
 Dataflow iterators for the serialization library are all defined in the namespace
 <code style="white-space: normal">boost::archive::iterators</code> included here are:
 <dl class="index">
-  <dt><a target="base64_from_binary" href="../../../boost/archive/iterators/base64_from_binary.hpp">
+  <dt><a href="../../../boost/archive/iterators/base64_from_binary.hpp">
   base64_from_binary</a></dt>
   <dd>transforms a sequence of integers to base64 text</dd>
 
-  <dt><a target="base64_from_binary" href="../../../boost/archive/iterators/binary_from_base64.hpp">
+  <dt><a href="../../../boost/archive/iterators/binary_from_base64.hpp">
   binary_from_base64</a></dt>
   <dd>transforms a sequence of base64 characters to a sequence of integers</dd>
 
-  <dt><a target="insert_linebreaks" href="../../../boost/archive/iterators/insert_linebreaks.hpp">
+  <dt><a href="../../../boost/archive/iterators/insert_linebreaks.hpp">
   insert_linebreaks</a></dt>
   <dd>given a sequence, creates a sequence with newline characters inserted</dd>
 
-  <dt><a target="mb_from_wchar" href="../../../boost/archive/iterators/mb_from_wchar.hpp">
+  <dt><a href="../../../boost/archive/iterators/mb_from_wchar.hpp">
   mb_from_wchar</a></dt>
   <dd>transforms a sequence of wide characters to a sequence of multi-byte characters</dd>
 
-  <dt><a target="remove_whitespace" href="../../../boost/archive/iterators/remove_whitespace.hpp">
+  <dt><a href="../../../boost/archive/iterators/remove_whitespace.hpp">
   remove_whitespace</a></dt>
   <dd>given a sequence of characters, returns  a sequence with the white characters
   removed.  This is  a derivation from the <code style="white-space: normal">boost::filter_iterator</code></dd>
 
-  <dt><a target="transform_width" href="../../../boost/archive/iterators/transform_width.hpp">
+  <dt><a href="../../../boost/archive/iterators/transform_width.hpp">
   transform_width</a></dt>
   <dd>transforms a sequence of x bit elements into a sequence of y bit elements.  This
   is a key component in iterators which translate to and from base64 text.</dd>
 
-  <dt><a target="wchar_from_mb" href="../../../boost/archive/iterators/wchar_from_mb.hpp">
+  <dt><a href="../../../boost/archive/iterators/wchar_from_mb.hpp">
   wchar_from_mb</a></dt>
   <dd>transform a sequence of multi-byte characters in the current locale to wide characters.</dd>
 
-  <dt><a target="xml_escape" href="../../../boost/archive/iterators/xml_escape.hpp">
+  <dt><a href="../../../boost/archive/iterators/xml_escape.hpp">
   xml_escape</a></dt>
   <dd>escapes xml meta-characters from xml text</dd>
 
-  <dt><a target="xml_unescape" href="../../../boost/archive/iterators/xml_unescape.hpp">
+  <dt><a href="../../../boost/archive/iterators/xml_unescape.hpp">
   xml_unescape</a></dt>
   <dd>unescapes xml escape sequences to create a sequence of normal text<dd>
 </dl>
@@ -183,9 +183,9 @@ adjustments to be consistent with our concept of Dataflow Iterators.  Like the r
 iterators, they are found in the namespace <code style="white-space: normal">boost::archive::interators</code> to avoid
 conflicts with the standard library versions.
 <dl class = "index">
-  <dt><a target="istream_iterator" href="../../../boost/archive/iterators/istream_iterator.hpp">
+  <dt><a href="../../../boost/archive/iterators/istream_iterator.hpp">
   istream_iterator</a></dt>
-  <dt><a target="ostream_iterator" href="../../../boost/archive/iterators/ostream_iterator.hpp">
+  <dt><a href="../../../boost/archive/iterators/ostream_iterator.hpp">
   ostream_iterator</a></dt>
 </dl>
 
