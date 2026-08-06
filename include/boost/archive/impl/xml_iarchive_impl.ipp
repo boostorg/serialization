@@ -9,23 +9,19 @@
 //  See http://www.boost.org for updates, documentation, and revision history.
 
 #include <boost/config.hpp>
+#include <algorithm> // copy
 #include <cstring> // memcpy
 #include <cstddef> // NULL
+#include <iterator> // back_inserter
 
 #if defined(BOOST_NO_STDC_NAMESPACE)
-namespace std{ 
+namespace std{
     using ::memcpy;
 } // namespace std
 #endif
 
 #ifndef BOOST_NO_CWCHAR
-#include <cwchar> // mbstate_t and mbrtowc
-#if defined(BOOST_NO_STDC_NAMESPACE)
-namespace std{ 
-    using ::mbstate_t;
-    using ::mbrtowc;
- } // namespace std
-#endif
+#include <boost/archive/iterators/wchar_from_mb.hpp>
 #endif // BOOST_NO_CWCHAR
 
 #include <boost/detail/workaround.hpp> // RogueWave and Dinkumware
@@ -67,23 +63,14 @@ xml_iarchive_impl<Archive>::load(std::wstring &ws){
     if(NULL != ws.data())
     #endif
     ws.resize(0);
-    std::mbstate_t mbs = std::mbstate_t();
-    const char * start = s.data();
-    const char * end = start + s.size();
-    while(start < end){
-        wchar_t wc;
-        std::size_t count = std::mbrtowc(&wc, start, end - start, &mbs);
-        if(count == static_cast<std::size_t>(-1))
-            boost::serialization::throw_exception(
-                iterators::dataflow_exception(
-                    iterators::dataflow_exception::invalid_conversion
-                )
-            );
-        if(count == static_cast<std::size_t>(-2))
-            continue;
-        start += count;
-        ws += wc;
-    }
+    // The text was written as utf8 by mb_from_wchar, so decode it with the
+    // facet which matches, rather than with whatever the current locale is.
+    typedef iterators::wchar_from_mb<const char *> translator;
+    std::copy(
+        translator(s.data()),
+        translator(),
+        std::back_inserter(ws)
+    );
 }
 #endif // BOOST_NO_STD_WSTRING
 
@@ -100,24 +87,13 @@ xml_iarchive_impl<Archive>::load(wchar_t * ws){
             )
         );
         
-    std::mbstate_t mbs = std::mbstate_t();
-    const char * start = s.data();
-    const char * end = start + s.size();
-    while(start < end){
-        wchar_t wc;
-        std::size_t length = std::mbrtowc(&wc, start, end - start, &mbs);
-        if(static_cast<std::size_t>(-1) == length)
-            boost::serialization::throw_exception(
-                iterators::dataflow_exception(
-                    iterators::dataflow_exception::invalid_conversion
-                )
-            );
-        if(static_cast<std::size_t>(-2) == length)
-            continue;
-
-        start += length;
-        *ws++ = wc;
-    }
+    // see the comment in the std::wstring overload above
+    typedef iterators::wchar_from_mb<const char *> translator;
+    ws = std::copy(
+        translator(s.data()),
+        translator(),
+        ws
+    );
     *ws = L'\0';
 }
 #endif // BOOST_NO_INTRINSIC_WCHAR_T
