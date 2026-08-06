@@ -118,6 +118,7 @@ test-suite "serialization" :
      [ test-bsl-run_files test_valarray ]
      [ test-bsl-run_files test_variant : A ]
      [ test-bsl-run_files test_version_value_type ]
+     [ test-bsl-run_files test_wstring_utf8 ]
      [ test-bsl-run_files test_vector : A ]
      [ test-bsl-run_files test_shared_ptr ]
      [ test-bsl-run_files test_shared_ptr_coexistence ]
