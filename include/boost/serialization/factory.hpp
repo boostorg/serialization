@@ -21,6 +21,8 @@
 
 #include <boost/preprocessor/control/if.hpp>
 #include <boost/preprocessor/comparison/greater.hpp>
+#include <boost/preprocessor/facilities/empty.hpp>
+#include <boost/preprocessor/punctuation/comma.hpp>
 #include <boost/assert.hpp>
 
 namespace std{
@@ -59,15 +61,15 @@ namespace serialization {                                 \
         return new T(                                     \
             BOOST_PP_IF(BOOST_PP_GREATER(N, 0)            \
                 , a0, BOOST_PP_EMPTY())                   \
-            BOOST_PP_IF(BOOST_PP_GREATER(N, 1))           \
+            BOOST_PP_IF(BOOST_PP_GREATER(N, 1)            \
                 , BOOST_PP_COMMA, BOOST_PP_EMPTY)()       \
             BOOST_PP_IF(BOOST_PP_GREATER(N, 1)            \
                 , a1, BOOST_PP_EMPTY())                   \
-            BOOST_PP_IF(BOOST_PP_GREATER(N, 2))           \
+            BOOST_PP_IF(BOOST_PP_GREATER(N, 2)            \
                 , BOOST_PP_COMMA, BOOST_PP_EMPTY)()       \
             BOOST_PP_IF(BOOST_PP_GREATER(N, 2)            \
                 , a2, BOOST_PP_EMPTY())                   \
-            BOOST_PP_IF(BOOST_PP_GREATER(N, 3))           \
+            BOOST_PP_IF(BOOST_PP_GREATER(N, 3)            \
                 , BOOST_PP_COMMA, BOOST_PP_EMPTY)()       \
             BOOST_PP_IF(BOOST_PP_GREATER(N, 3)            \
                 , a3, BOOST_PP_EMPTY())                   \
