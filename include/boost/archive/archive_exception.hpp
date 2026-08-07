@@ -39,8 +39,11 @@ namespace archive {
 //////////////////////////////////////////////////////////////////////
 // exceptions thrown by archives
 //
+// The base is deliberately not virtual: a virtual one would give the
+// class an implicit vbase destructor, which cl and clang-cl expect to
+// find in different modules.  See issue #321.
 class BOOST_SYMBOL_VISIBLE archive_exception :
-    public virtual std::exception
+    public std::exception
 {
 private:
     char m_buffer[128];

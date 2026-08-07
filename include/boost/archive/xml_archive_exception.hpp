@@ -31,8 +31,10 @@ namespace archive {
 //////////////////////////////////////////////////////////////////////
 // exceptions thrown by xml archives
 //
+// The base is deliberately not virtual, for the reason given in
+// archive_exception.hpp.  See issue #321.
 class BOOST_SYMBOL_VISIBLE xml_archive_exception :
-    public virtual boost::archive::archive_exception
+    public boost::archive::archive_exception
 {
 public:
     typedef enum {
