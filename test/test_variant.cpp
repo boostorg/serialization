@@ -220,6 +220,57 @@ void test_reuse(const Variant & v){
     std::remove(testfile);
 }
 
+// An alternative whose default constructor is private, reachable only
+// through boost::serialization::access.  Loading a variant has to build its
+// alternative the way a container element is built, rather than declare one,
+// or such a type cannot be an alternative at all.  Reported by
+// KJTsanaktsidis in
+// https://github.com/boostorg/serialization/issues/338.  Thanks!
+class PD {
+    friend class boost::serialization::access;
+    PD() : m_x(0) {}
+    int m_x;
+public:
+    explicit PD(int x) : m_x(x) {}
+    int value() const {
+        return m_x;
+    }
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int /* version */){
+        ar & boost::serialization::make_nvp("x", m_x);
+    }
+};
+
+int pd_value(const boost::variant<int, PD> & v){
+    return boost::get<PD>(v).value();
+}
+
+#ifndef BOOST_NO_CXX17_HDR_VARIANT
+int pd_value(const std::variant<int, PD> & v){
+    return std::get<PD>(v).value();
+}
+#endif
+
+template<class Variant>
+void test_private_default_ctor(){
+    const char * testfile = boost::archive::tmpnam(NULL);
+    BOOST_REQUIRE(testfile != NULL);
+    const Variant v(PD(42));
+    {
+        test_ostream os(testfile, TEST_STREAM_FLAGS);
+        test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
+        oa << boost::serialization::make_nvp("v", v);
+    }
+    Variant v1;
+    {
+        test_istream is(testfile, TEST_STREAM_FLAGS);
+        test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
+        ia >> boost::serialization::make_nvp("v", v1);
+    }
+    BOOST_CHECK(42 == pd_value(v1));
+    std::remove(testfile);
+}
+
 int test_boost_variant(){
     std::cerr << "Testing boost_variant\n";
     boost::variant<bool, int, float, double, A, std::string> v;
@@ -229,6 +280,7 @@ int test_boost_variant(){
     test_type(v1);
     v = 1;
     test_reuse(v);
+    test_private_default_ctor<boost::variant<int, PD> >();
     return EXIT_SUCCESS;
 }
 
@@ -260,6 +312,7 @@ int test_std_variant(){
     test_type(v1);
     v = 1;
     test_reuse(v);
+    test_private_default_ctor<std::variant<int, PD> >();
     return EXIT_SUCCESS;
 }
 #endif
