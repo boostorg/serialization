@@ -137,6 +137,7 @@ test-suite "serialization" :
      [ test-bsl-run_polymorphic_files test_exported : polymorphic_base polymorphic_derived1 polymorphic_derived2 ]
 
      # should compile
+     [ compile test_public_base_type.cpp ]
      [ compile test_strong_typedef.cpp ]
     ;
 

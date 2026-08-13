@@ -18,8 +18,12 @@ namespace serialization {
 //BOOST_STRONG_TYPEDEF(std::size_t, collection_size_type)
 
 class collection_size_type {
-private:
+public:
+    // The wrapped type is part of the interface, since the conversion
+    // operators below return it and user code has no other way to name
+    // it.  See issue #326.
     typedef std::size_t base_type;
+private:
     base_type t;
 public:
     collection_size_type(): t(0) {}
