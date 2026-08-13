@@ -247,8 +247,11 @@ referred to.  Such code will never be instantiated.
 This is addressed by invoking 
 <code style="white-space: normal">BOOST_CLASS_EXPORT_IMPLEMENT(T)</code>
 in the file which defines (implements) the class T.
-This ensures that code for the derived class T will
-be explicitly instantiated.
+That instantiates the code for the archive classes whose headers the file
+includes, so the file has to include them before the macro is invoked.
+See
+<a href="special.html#export">Exporting Class Serialization</a>
+for the details, and for what happens when it includes none of them.
 <li> There needs to be some sort of identifier which can
 be used to select the code to be invoked when the object
 is loaded.

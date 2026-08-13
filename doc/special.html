@@ -445,6 +445,17 @@ in the header declarations and
 in the class definition file.
 
 <p>
+This makes the rule easy to follow but does not remove it.  The definition
+file has to include the archive class headers itself, before
+<code style="white-space: normal">BOOST_CLASS_EXPORT_IMPLEMENT</code>
+is invoked, just as it would for
+<code style="white-space: normal">BOOST_CLASS_EXPORT</code>.
+A definition file which includes none of them instantiates no serialization
+code at all, and serializing a pointer to such a class then throws
+<code style="white-space: normal">unregistered_class</code>
+when the program is run.
+
+<p>
 This system has certain implications for placing code in static or shared
 libraries.  Placing <code style="white-space: normal">BOOST_CLASS_EXPORT</code>
 in library code will have no effect unless archive class headers are
