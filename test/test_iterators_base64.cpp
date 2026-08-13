@@ -7,7 +7,9 @@
 // http://www.boost.org/LICENSE_1_0.txt)
 
 #include <algorithm>
+#include <iterator>
 #include <list>
+#include <string>
 
 #if (defined _MSC_VER) && (_MSC_VER == 1200)
 #  pragma warning (disable : 4786) // too long name, harmless warning
@@ -86,9 +88,38 @@ void test_base64(unsigned int size){
 
 }
 
+// A base64 sequence whose length is not a whole number of four character
+// groups carries some bits which do not make up a byte.  Decoding must drop
+// them and stop, rather than look for the byte's remaining bits beyond the
+// end of the input.  Reported by ROCKFAL1 in
+// https://github.com/boostorg/serialization/issues/324.  Thanks!
+void test_base64_partial_group(){
+    typedef boost::archive::iterators::transform_width<
+        boost::archive::iterators::binary_from_base64<const char *>, 8, 6
+    > decoder;
+
+    // "1234567890" encoded, less the padding
+    const std::string encoded("MTIzNDU2Nzg5MA");
+    const std::string decoded("1234567890");
+
+    for(std::size_t n = 0; n <= encoded.size(); ++n){
+        const char * const first = encoded.data();
+        const char * const last = first + n;
+        std::string result;
+        std::copy(
+            decoder(first, last),
+            decoder(last),
+            std::back_inserter(result)
+        );
+        // six bits in, eight bits out, and no partial byte at the end
+        BOOST_CHECK(result == decoded.substr(0, n * 6 / 8));
+    }
+}
+
 int
 test_main( int /*argc*/, char* /*argv*/[] )
 {
+    test_base64_partial_group();
     test_base64<char>(1);
     test_base64<char>(2);
     test_base64<char>(3);
