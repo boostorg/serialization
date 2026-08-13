@@ -126,9 +126,28 @@ space removal is deferred until the iterator actually is dereferenced.
 <h4>Comparison</h4>
 The default implementation of iterator equality of <code style="white-space: normal">iterator_adaptor</code> just
 invokes the equality operator on the base iterators.  Generally this is satisfactory.
-However, this implies that other operations (E. G. dereference) do not prematurely 
+However, this implies that other operations (E. G. dereference) do not prematurely
 increment the base iterator.  Avoiding this can be surprisingly tricky in some cases.
 (E.G. transform_width)
+
+<p>
+An iterator whose output elements do not line up with its input ones cannot
+always avoid it.  <code style="white-space: normal">transform_width</code>
+learns that the input is over only by reading past the end of it, which is
+undefined behaviour, and it does so whenever the length of the input is not a
+common multiple of the two widths.  Decoding base64, any length of the form
+4n + 1 ends in six bits which do not make up a byte, and those six bits send
+the iterator looking for the two it is missing.
+
+<p>
+Passing the end of the input as a second constructor argument avoids this.
+The iterator then stops there, discarding whatever is left over rather than
+reading on for it.  Both
+<code style="white-space: normal">transform_width</code> and
+<code style="white-space: normal">remove_whitespace</code> accept it.  The one
+argument form behaves as it always has, and remains the one to use for a
+composed sequence whose length divides evenly, which is how the archives
+themselves use these iterators.
 
 <p>
 Iterators which fulfill the above requirements should be composable and the above sample
