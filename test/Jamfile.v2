@@ -155,6 +155,7 @@ if ! $(BOOST_ARCHIVE_LIST) {
         [ test-bsl-run test_dll_base_pointer : : dll_polymorphic_base dll_polymorphic_derived2 : <link>static:<build>no ]
         # [ test-bsl-run test_dll_plugin : : dll_derived2 : <link>static:<build>no <target-os>linux:<linkflags>-ldl ]
 
+        [ test-bsl-run test_duplicate_type_registration ]
         [ test-bsl-run test_private_ctor ]
         [ test-bsl-run test_reset_object_address : A ]
         [ test-bsl-run test_void_cast ]
