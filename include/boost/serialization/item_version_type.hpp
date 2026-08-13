@@ -23,8 +23,12 @@ namespace serialization {
 #endif
 
 class item_version_type {
-private:
+public:
+    // The wrapped type is part of the interface, since the conversion
+    // operators below return it and user code has no other way to name
+    // it.  See issue #326.
     typedef unsigned int base_type;
+private:
     base_type t;
 public:
     // should be private - but MPI fails if it's not!!!

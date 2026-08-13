@@ -40,8 +40,12 @@ BOOST_ARCHIVE_VERSION();
 typedef boost::serialization::library_version_type library_version_type;
 
 class version_type {
-private:
+public:
+    // The wrapped type is part of the interface, since the conversion
+    // operators below return it and user code has no other way to name
+    // it.  See issue #326.  The same goes for the classes which follow.
     typedef uint_least32_t base_type;
+private:
     base_type t;
 public:
     // should be private - but MPI fails if it's not!!!
@@ -73,8 +77,9 @@ public:
 };
 
 class class_id_type {
-private:
+public:
     typedef int_least16_t base_type;
+private:
     base_type t;
 public:
     // should be private - but then can't use BOOST_STRONG_TYPE below
@@ -112,8 +117,9 @@ public:
 #define BOOST_SERIALIZATION_NULL_POINTER_TAG boost::archive::class_id_type(-1)
 
 class object_id_type {
-private:
+public:
     typedef uint_least32_t base_type;
+private:
     base_type t;
 public:
     object_id_type(): t(0) {}
@@ -152,7 +158,8 @@ public:
 #endif
 
 struct tracking_type {
-    bool t;
+    typedef bool base_type;
+    base_type t;
     explicit tracking_type(const bool t_ = false)
         : t(t_)
     {}
