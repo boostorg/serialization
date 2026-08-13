@@ -139,6 +139,7 @@ test-suite "serialization" :
 
      # should compile
      [ compile test_public_base_type.cpp ]
+     [ compile test_std_variant_forwarding.cpp ]
      [ compile test_strong_typedef.cpp ]
     ;
 
