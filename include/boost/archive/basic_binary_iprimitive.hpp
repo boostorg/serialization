@@ -55,6 +55,7 @@ namespace std{
 #include <boost/archive/codecvt_null.hpp>
 #include <boost/archive/archive_exception.hpp>
 #include <boost/archive/detail/auto_link_archive.hpp>
+#include <boost/archive/detail/stream_position_message.hpp>
 #include <boost/archive/detail/abi_prefix.hpp> // must be the last header
 
 namespace boost {
@@ -167,10 +168,15 @@ basic_binary_iprimitive<Archive, Elem, Tr>::load_binary(
         static_cast<Elem *>(address),
         s
     );
-    if(scount != s)
+    if(scount != s){
+        const std::string message = detail::stream_position_message(& m_sb);
         boost::serialization::throw_exception(
-            archive_exception(archive_exception::input_stream_error)
+            archive_exception(
+                archive_exception::input_stream_error,
+                message.c_str()
+            )
         );
+    }
     // note: an optimizer should eliminate the following for char files
     BOOST_ASSERT(count % sizeof(Elem) <= boost::integer_traits<std::streamsize>::const_max);
     s = static_cast<std::streamsize>(count % sizeof(Elem));
@@ -181,10 +187,16 @@ basic_binary_iprimitive<Archive, Elem, Tr>::load_binary(
 //        );
         Elem t;
         scount = m_sb.sgetn(& t, 1);
-        if(scount != 1)
+        if(scount != 1){
+            const std::string message =
+                detail::stream_position_message(& m_sb);
             boost::serialization::throw_exception(
-                archive_exception(archive_exception::input_stream_error)
+                archive_exception(
+                    archive_exception::input_stream_error,
+                    message.c_str()
+                )
             );
+        }
         std::memcpy(static_cast<char*>(address) + (count - s), &t, static_cast<std::size_t>(s));
     }
 }

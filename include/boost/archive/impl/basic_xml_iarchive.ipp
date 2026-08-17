@@ -16,6 +16,7 @@
 #include <boost/serialization/throw_exception.hpp>
 #include <boost/archive/xml_archive_exception.hpp>
 #include <boost/archive/basic_xml_iarchive.hpp>
+#include <boost/archive/detail/stream_position_message.hpp>
 #include <boost/serialization/tracking.hpp>
 
 namespace boost {
@@ -32,8 +33,14 @@ basic_xml_iarchive<Archive>::load_start(const char *name){
         return;
     bool result = this->This()->gimpl->parse_start_tag(this->This()->get_is());
     if(true != result){
+        const std::string message = detail::stream_position_message(
+            this->This()->get_is().rdbuf()
+        );
         boost::serialization::throw_exception(
-            archive_exception(archive_exception::input_stream_error)
+            archive_exception(
+                archive_exception::input_stream_error,
+                message.c_str()
+            )
         );
     }
     // don't check start tag at highest level
@@ -48,8 +55,14 @@ basic_xml_iarchive<Archive>::load_end(const char *name){
         return;
     bool result = this->This()->gimpl->parse_end_tag(this->This()->get_is());
     if(true != result){
+        const std::string message = detail::stream_position_message(
+            this->This()->get_is().rdbuf()
+        );
         boost::serialization::throw_exception(
-            archive_exception(archive_exception::input_stream_error)
+            archive_exception(
+                archive_exception::input_stream_error,
+                message.c_str()
+            )
         );
     }
     
