@@ -25,6 +25,7 @@
 // use two template parameters
 
 #include <locale>
+#include <string>
 #include <cstddef> // size_t
 
 #include <boost/config.hpp>
@@ -48,6 +49,7 @@ namespace std{
 #include <boost/archive/codecvt_null.hpp>
 #include <boost/archive/archive_exception.hpp>
 #include <boost/archive/basic_streambuf_locale_saver.hpp>
+#include <boost/archive/detail/stream_position_message.hpp>
 #include <boost/archive/detail/abi_prefix.hpp> // must be the last header
 
 namespace boost {
@@ -88,8 +90,13 @@ protected:
     {
         if(is >> t)
             return;
+        const std::string message =
+            detail::stream_position_message(is.rdbuf());
         boost::serialization::throw_exception(
-            archive_exception(archive_exception::input_stream_error)
+            archive_exception(
+                archive_exception::input_stream_error,
+                message.c_str()
+            )
         );
     }
 
