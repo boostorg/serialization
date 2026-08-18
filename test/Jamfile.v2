@@ -165,6 +165,7 @@ if ! $(BOOST_ARCHIVE_LIST) {
         [ test-bsl-run test_xml_save_during_unwind ]
         [ test-bsl-run test_xml_escape_boundary : : ../build//boost_wserialization : [ requires std_wstreambuf ] ]
         [ test-bsl-run test_xml_trailing_whitespace ]
+        [ test-bsl-run test_xml_destroy_after_caught_error ]
         [ test-bsl-run test_xml_missing_nvp ]
         [ test-bsl-run test_mult_archive_types : : : [ requires std_wstreambuf ] ]
         [ test-bsl-run test_iterators : : : [ requires std_wstreambuf ] ]
