@@ -412,6 +412,15 @@ serialize such a primitive type will result in a compilation error since the com
 interface is static and cannot instantiate code for a new type.
 
 <p>
+Note also that every value written through a polymorphic archive has to be given a name, with
+<code style="white-space: normal">BOOST_SERIALIZATION_NVP</code> or
+<code style="white-space: normal">make_nvp</code>.  Which archive is on the other end is settled
+at run time, and it may turn out to be an XML one, where a value is written as an element and so
+must be named.  A templated XML archive rejects an unnamed value where it is written; the
+polymorphic interface cannot, because at that point the archive type is not yet known, and the
+value is written without an element around it.  The resulting document cannot be read back.
+
+<p>
 The main utility of polymorphic archives will be to permit the building of class DLLs that will
 include serialization code for all present and future archives with no redundant code.
 <hr>
