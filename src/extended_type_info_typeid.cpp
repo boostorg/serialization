@@ -3,8 +3,8 @@
 // that is based on typeid
 
 // (C) Copyright 2002 Robert Ramey - http://www.rrsd.com . 
-// Use, modification and distribution is subject to the Boost Software
-// License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org for updates, documentation, and revision history.
@@ -102,14 +102,16 @@ extended_type_info_typeid_0::type_unregister()
         // BOOST_ASSERT(! singleton<tkmap>::is_destroyed());
         if(! singleton<tkmap>::is_destroyed()){
             tkmap & x = singleton<tkmap>::get_mutable_instance();
-
-            // remove all entries in map which corresponds to this type
-            // make sure that we don't use any invalidated iterators
-            while(true){
-                const tkmap::iterator & it = x.find(this);
-                if(it == x.end())
+            tkmap::iterator start = x.lower_bound(this);
+            const tkmap::iterator end = x.upper_bound(this);
+            // Entries compare equal when they describe the same type, and
+            // another module may well have registered that same type.  Erase
+            // this entry alone, as key_unregister does.
+            for(; start != end; ++start){
+                if(this == *start){
+                    x.erase(start);
                     break;
-                x.erase(it);
+                }
             }
         }
     }

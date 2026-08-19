@@ -10,8 +10,8 @@
 // archive/archive_exception.hpp:
 
 // (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
-// Use, modification and distribution is subject to the Boost Software
-// License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org for updates, documentation, and revision history.
@@ -39,8 +39,11 @@ namespace archive {
 //////////////////////////////////////////////////////////////////////
 // exceptions thrown by archives
 //
+// The base is deliberately not virtual: a virtual one would give the
+// class an implicit vbase destructor, which cl and clang-cl expect to
+// find in different modules.  See issue #321.
 class BOOST_SYMBOL_VISIBLE archive_exception :
-    public virtual std::exception
+    public std::exception
 {
 private:
     char m_buffer[128];

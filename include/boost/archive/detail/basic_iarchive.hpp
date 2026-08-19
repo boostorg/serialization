@@ -10,8 +10,9 @@
 // basic_iarchive.hpp:
 
 // (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
-// Use, modification and distribution is subject to the Boost Software
-// License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+// Copyright 2026 Gennaro Prota.
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org for updates, documentation, and revision history.
@@ -68,6 +69,14 @@ public:
     virtual BOOST_ARCHIVE_DECL ~basic_iarchive();
     // note: NOT part of the public API.
     BOOST_ARCHIVE_DECL void next_object_pointer(void *t);
+    // Note: *not* part of the public API.  Called by load_object_ptr once the
+    // object has been constructed, so that a throw while loading its members
+    // leaves it reclaimable by delete_created_pointers.
+    BOOST_ARCHIVE_DECL void object_constructed();
+    // Note: *not* part of the public API.  Called when an owning smart pointer
+    // takes over the object just loaded, so that delete_created_pointers
+    // leaves it to that smart pointer instead of freeing it as well.
+    BOOST_ARCHIVE_DECL void object_adopted();
     BOOST_ARCHIVE_DECL void register_basic_serializer(
         const basic_iserializer & bis
     );

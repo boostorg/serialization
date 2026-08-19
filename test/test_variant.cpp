@@ -10,14 +10,16 @@
 // Robert Ramey <ramey@rrsd.com>
 // http://www.rrsd.com
 //
-// Use, modification and distribution is subject to the Boost Software
-// License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 //
 // See http://www.boost.org for updates, documentation, and revision history.
 //
 // thanks to Robert Ramey and Peter Dimov.
 //
+
+#include <boost/serialization/variant.hpp>
 
 #include <cstddef> // NULL
 #include <cstdio> // remove
@@ -26,6 +28,11 @@
 #include <boost/config.hpp>
 #if BOOST_CXX_VERSION > 199711L // only include floating point if C++ version >= C++11
 #include <boost/math/special_functions/next.hpp>
+#endif
+
+#if !defined(BOOST_NO_CXX17_HDR_VARIANT) && defined(BOOST_CLANG) && BOOST_CLANG_VERSION < 70000
+// Clang 6.0 can't compile std::visit from libstdc++ 9
+# define BOOST_NO_CXX17_HDR_VARIANT
 #endif
 
 #if defined(BOOST_NO_STDC_NAMESPACE)
@@ -48,16 +55,22 @@ namespace std {
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/throw_exception.hpp>
 
+#include <boost/variant/variant.hpp>
+#include <boost/variant/apply_visitor.hpp>
 #include <boost/variant/static_visitor.hpp>
 
-namespace boost {
-    template<typename ResultType> class static_visitor;
-}
+#if BOOST_CXX_VERSION >= 201103L
+# include <boost/variant2/variant.hpp>
+#endif
+
+#ifndef BOOST_NO_CXX17_HDR_VARIANT
+# include <variant>
+#endif
 
 #include "A.hpp"
 #include "A.ipp"
 
-class are_equal
+class are_equal_vis
     : public boost::static_visitor<bool>
 {
 public:
@@ -112,6 +125,29 @@ public:
     }
 };
 
+template<class... T> bool are_equal( boost::variant<T...> const& v1, boost::variant<T...> const& v2 )
+{
+    return boost::apply_visitor( are_equal_vis(), v1, v2 );
+}
+
+#if BOOST_CXX_VERSION >= 201103L
+
+template<class... T> bool are_equal( boost::variant2::variant<T...> const& v1, boost::variant2::variant<T...> const& v2 )
+{
+    return boost::variant2::visit( are_equal_vis(), v1, v2 );
+}
+
+#endif
+
+#ifndef BOOST_NO_CXX17_HDR_VARIANT
+
+template<class... T> bool are_equal( std::variant<T...> const& v1, std::variant<T...> const& v2 )
+{
+    return std::visit( are_equal_vis(), v1, v2 );
+}
+
+#endif
+
 template<class Variant>
 bool test_type(const Variant & v){
     const char * testfile = boost::archive::tmpnam(NULL);
@@ -128,7 +164,7 @@ bool test_type(const Variant & v){
         test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
         BOOST_TRY {
             ia >> boost::serialization::make_nvp("written", vx);
-            BOOST_CHECK(visit(are_equal(), v, vx));
+            BOOST_CHECK(are_equal(v, vx));
         }
         BOOST_CATCH(boost::archive::archive_exception const& e) {
             return false;
@@ -158,11 +194,82 @@ void test(Variant & v)
     test_type(v);
 }
 
-#include <boost/serialization/variant.hpp>
+// Serializing the same variant twice by value must store two independent
+// values, not an object reference the loader cannot resolve into a separate
+// destination object. Regression test for issue #203.
+template<class Variant>
+void test_reuse(const Variant & v){
+    const char * testfile = boost::archive::tmpnam(NULL);
+    BOOST_REQUIRE(testfile != NULL);
+    {
+        test_ostream os(testfile, TEST_STREAM_FLAGS);
+        test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
+        oa << boost::serialization::make_nvp("first", v);
+        oa << boost::serialization::make_nvp("second", v);
+    }
+    Variant v1;
+    Variant v2;
+    {
+        test_istream is(testfile, TEST_STREAM_FLAGS);
+        test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
+        ia >> boost::serialization::make_nvp("first", v1);
+        ia >> boost::serialization::make_nvp("second", v2);
+    }
+    BOOST_CHECK(are_equal(v, v1));
+    BOOST_CHECK(are_equal(v, v2));
+    std::remove(testfile);
+}
 
-#include <boost/variant/variant.hpp>
+// An alternative whose default constructor is private, reachable only
+// through boost::serialization::access.  Loading a variant has to build its
+// alternative the way a container element is built, rather than declare one,
+// or such a type cannot be an alternative at all.  Reported by
+// KJTsanaktsidis in
+// https://github.com/boostorg/serialization/issues/338.  Thanks!
+class PD {
+    friend class boost::serialization::access;
+    PD() : m_x(0) {}
+    int m_x;
+public:
+    explicit PD(int x) : m_x(x) {}
+    int value() const {
+        return m_x;
+    }
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int /* version */){
+        ar & boost::serialization::make_nvp("x", m_x);
+    }
+};
 
-#include <cstdio>
+int pd_value(const boost::variant<int, PD> & v){
+    return boost::get<PD>(v).value();
+}
+
+#ifndef BOOST_NO_CXX17_HDR_VARIANT
+int pd_value(const std::variant<int, PD> & v){
+    return std::get<PD>(v).value();
+}
+#endif
+
+template<class Variant>
+void test_private_default_ctor(){
+    const char * testfile = boost::archive::tmpnam(NULL);
+    BOOST_REQUIRE(testfile != NULL);
+    const Variant v(PD(42));
+    {
+        test_ostream os(testfile, TEST_STREAM_FLAGS);
+        test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
+        oa << boost::serialization::make_nvp("v", v);
+    }
+    Variant v1;
+    {
+        test_istream is(testfile, TEST_STREAM_FLAGS);
+        test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
+        ia >> boost::serialization::make_nvp("v", v1);
+    }
+    BOOST_CHECK(42 == pd_value(v1));
+    std::remove(testfile);
+}
 
 int test_boost_variant(){
     std::cerr << "Testing boost_variant\n";
@@ -171,12 +278,14 @@ int test_boost_variant(){
     const A a;
     boost::variant<bool, int, float, double, const A *, std::string> v1 = & a;
     test_type(v1);
+    v = 1;
+    test_reuse(v);
+    test_private_default_ctor<boost::variant<int, PD> >();
     return EXIT_SUCCESS;
 }
 
 // boost::variant2/variant requires C++ 11
 #if BOOST_CXX_VERSION >= 201103L
-#include <boost/variant2/variant.hpp>
 
 int test_boost_variant2(){
     std::cerr << "Testing boost_variant2\n";
@@ -185,13 +294,15 @@ int test_boost_variant2(){
     const A a;
     boost::variant2::variant<bool, int, float, double, const A *, std::string> v1 = & a;
     test_type(v1);
+    v = 1;
+    test_reuse(v);
     return EXIT_SUCCESS;
 }
 #endif
 
 // std::variant reqires C++ 17 or more
 #ifndef BOOST_NO_CXX17_HDR_VARIANT
-#include <variant>
+
 int test_std_variant(){
     std::cerr << "Testing Std Variant\n";
     std::variant<bool, int, float, double, A, std::string> v;
@@ -199,6 +310,9 @@ int test_std_variant(){
     const A a;
     std::variant<bool, int, float, double, const A *, std::string> v1 = & a;
     test_type(v1);
+    v = 1;
+    test_reuse(v);
+    test_private_default_ctor<std::variant<int, PD> >();
     return EXIT_SUCCESS;
 }
 #endif

@@ -2,8 +2,9 @@
 // test_optional.cpp
 
 // (C) Copyright 2004 Pavel Vozenilek
-// Use, modification and distribution is subject to the Boost Software
-// License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+// Copyright 2026 Gennaro Prota
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
 // should pass compilation and execution
@@ -21,6 +22,7 @@ namespace std{
 #endif
 
 #include <boost/archive/archive_exception.hpp>
+#include <boost/serialization/access.hpp>
 #include "test_tools.hpp"
 
 
@@ -92,6 +94,179 @@ int test(){
     return EXIT_SUCCESS;
 }
 
+// A move-only value type: deleted copy, defaulted move.  Loading an
+// optional<M> must move the deserialized value into place rather than copy
+// it.
+#if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES) \
+    && !defined(BOOST_NO_CXX11_DELETED_FUNCTIONS) \
+    && !defined(BOOST_NO_CXX11_DEFAULTED_FUNCTIONS)
+#define BOOST_SERIALIZATION_TEST_OPTIONAL_MOVE_ONLY
+
+struct M {
+    int m_x;
+    M() : m_x(0) {}
+    explicit M(int x) : m_x(x) {}
+    M(const M &) = delete;
+    M & operator=(const M &) = delete;
+    M(M &&) = default;
+    M & operator=(M &&) = default;
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int /* version */){
+        ar & boost::serialization::make_nvp("x", m_x);
+    }
+};
+
+template<template<class> class Optional>
+int test_move_only(){
+    const char * testfile = boost::archive::tmpnam(NULL);
+    BOOST_REQUIRE(NULL != testfile);
+
+    Optional<M> o_empty;
+    Optional<M> o_value(M(42));
+    {
+        test_ostream os(testfile, TEST_STREAM_FLAGS);
+        test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
+        oa << boost::serialization::make_nvp("o_empty", o_empty);
+        oa << boost::serialization::make_nvp("o_value", o_value);
+    }
+    // start each target in the opposite state, so load must both reset and
+    // assign
+    Optional<M> o_empty_a(M(7));
+    Optional<M> o_value_a;
+    {
+        test_istream is(testfile, TEST_STREAM_FLAGS);
+        test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
+        ia >> boost::serialization::make_nvp("o_empty", o_empty_a);
+        ia >> boost::serialization::make_nvp("o_value", o_value_a);
+    }
+    BOOST_CHECK(! o_empty_a);
+    BOOST_CHECK(static_cast<bool>(o_value_a) && 42 == o_value_a->m_x);
+
+    std::remove(testfile);
+    return EXIT_SUCCESS;
+}
+#endif // move-only support available
+
+// A type without a default constructor.  It is reconstructed on load through
+// save_construct_data / load_construct_data, which is exactly what an
+// optional<ND> now relies on (see issue #121).  m_i is the constructor
+// argument, m_x is ordinary serialized state.
+struct ND {
+    int m_i;
+    int m_x;
+    ND(int i, int x) : m_i(i), m_x(x) {}
+    explicit ND(int i) : m_i(i), m_x(0) {}
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int /* version */){
+        ar & boost::serialization::make_nvp("x", m_x);
+    }
+    bool operator==(const ND & rhs) const {
+        return m_i == rhs.m_i && m_x == rhs.m_x;
+    }
+};
+
+namespace boost {
+namespace serialization {
+
+template<class Archive>
+void save_construct_data(
+    Archive & ar, const ND * p, const unsigned int /* version */
+){
+    ar << boost::serialization::make_nvp("i", p->m_i);
+}
+
+template<class Archive>
+void load_construct_data(
+    Archive & ar, ND * p, const unsigned int /* version */
+){
+    int i;
+    ar >> boost::serialization::make_nvp("i", i);
+    ::new(p) ND(i);
+}
+
+} // serialization
+} // boost
+
+template<template<class> class Optional>
+int test_non_default_ctor(){
+    const char * testfile = boost::archive::tmpnam(NULL);
+    BOOST_REQUIRE(NULL != testfile);
+
+    const Optional<ND> o_empty;
+    const Optional<ND> o_value(ND(7, 42));
+    {
+        test_ostream os(testfile, TEST_STREAM_FLAGS);
+        test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
+        oa << boost::serialization::make_nvp("o_empty", o_empty);
+        oa << boost::serialization::make_nvp("o_value", o_value);
+    }
+    // start each target in the opposite state, so load must both reset and
+    // reconstruct
+    Optional<ND> o_empty_a(ND(1, 1));
+    Optional<ND> o_value_a;
+    {
+        test_istream is(testfile, TEST_STREAM_FLAGS);
+        test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
+        ia >> boost::serialization::make_nvp("o_empty", o_empty_a);
+        ia >> boost::serialization::make_nvp("o_value", o_value_a);
+    }
+    BOOST_CHECK(! o_empty_a);
+    BOOST_CHECK(static_cast<bool>(o_value_a));
+    BOOST_CHECK(o_value_a && *o_value == *o_value_a);
+
+    std::remove(testfile);
+    return EXIT_SUCCESS;
+}
+
+// A type whose default constructor is private and reachable only through
+// boost::serialization::access.  Loading an optional<PD> must reconstruct
+// the value through access (that is, through load_construct_data, which
+// calls access::construct) rather than through a public default
+// constructor.  This is the regression reported in issue #165.
+class PD {
+public:
+    explicit PD(int x) : m_x(x) {}
+    int value() const { return m_x; }
+    bool operator==(const PD & rhs) const { return m_x == rhs.m_x; }
+private:
+    PD() : m_x(-1) {}
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int /* version */){
+        ar & boost::serialization::make_nvp("x", m_x);
+    }
+    int m_x;
+};
+
+template<template<class> class Optional>
+int test_private_default_ctor(){
+    const char * testfile = boost::archive::tmpnam(NULL);
+    BOOST_REQUIRE(NULL != testfile);
+
+    const Optional<PD> o_empty;
+    const Optional<PD> o_value(PD(2345));
+    {
+        test_ostream os(testfile, TEST_STREAM_FLAGS);
+        test_oarchive oa(os, TEST_ARCHIVE_FLAGS);
+        oa << boost::serialization::make_nvp("o_empty", o_empty);
+        oa << boost::serialization::make_nvp("o_value", o_value);
+    }
+    Optional<PD> o_empty_a(PD(1));
+    Optional<PD> o_value_a;
+    {
+        test_istream is(testfile, TEST_STREAM_FLAGS);
+        test_iarchive ia(is, TEST_ARCHIVE_FLAGS);
+        ia >> boost::serialization::make_nvp("o_empty", o_empty_a);
+        ia >> boost::serialization::make_nvp("o_value", o_value_a);
+    }
+    BOOST_CHECK(! o_empty_a);
+    BOOST_CHECK(static_cast<bool>(o_value_a));
+    BOOST_CHECK(o_value_a && o_value->value() == o_value_a->value());
+
+    std::remove(testfile);
+    return EXIT_SUCCESS;
+}
+
 #include <boost/serialization/optional.hpp>
 #ifndef BOOST_NO_CXX17_HDR_OPTIONAL
 #include <optional>
@@ -101,6 +276,20 @@ int test_main( int /* argc */, char* /* argv */[] ){
     test<boost::optional>();
     #ifndef BOOST_NO_CXX17_HDR_OPTIONAL
     test<std::optional>();
+    #endif
+    #ifdef BOOST_SERIALIZATION_TEST_OPTIONAL_MOVE_ONLY
+    test_move_only<boost::optional>();
+    #ifndef BOOST_NO_CXX17_HDR_OPTIONAL
+    test_move_only<std::optional>();
+    #endif
+    #endif
+    test_non_default_ctor<boost::optional>();
+    #ifndef BOOST_NO_CXX17_HDR_OPTIONAL
+    test_non_default_ctor<std::optional>();
+    #endif
+    test_private_default_ctor<boost::optional>();
+    #ifndef BOOST_NO_CXX17_HDR_OPTIONAL
+    test_private_default_ctor<std::optional>();
     #endif
     return EXIT_SUCCESS;
 }

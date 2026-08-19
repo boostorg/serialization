@@ -2,15 +2,14 @@
 #define BOOST_SERIALIZATION_STATIC_WARNING_HPP
 
 //  (C) Copyright Robert Ramey 2003. Jonathan Turkanis 2004.
-// Use, modification and distribution is subject to the Boost Software
-// License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt)
+
 // MS compatible compilers support #pragma once
 #if defined(_MSC_VER)
 # pragma once
 #endif
-
-// http://www.boost.org/LICENSE_1_0.txt)
-
 //  See http://www.boost.org/libs/static_assert for documentation.
 
 /*

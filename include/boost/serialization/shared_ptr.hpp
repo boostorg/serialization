@@ -10,8 +10,8 @@
 // shared_ptr.hpp: serialization for boost shared pointer
 
 // (C) Copyright 2004 Robert Ramey and Martin Ecker
-// Use, modification and distribution is subject to the Boost Software
-// License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org for updates, documentation, and revision history.
@@ -140,6 +140,7 @@ inline void load(
             shared_ptr_helper_id
         );
     h.reset(t,r);
+    ar.object_adopted();
 }
 #else
 
@@ -161,6 +162,7 @@ inline void load(
             shared_ptr_helper_id
         );
     h.reset(t,r);
+    ar.object_adopted();
 }
 #endif
 
@@ -256,6 +258,7 @@ inline void load(
             shared_ptr_helper_id
         );
     h.reset(t,r);
+    ar.object_adopted();
 }
 
 template<class Archive, class T>

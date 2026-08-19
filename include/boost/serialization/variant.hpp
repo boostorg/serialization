@@ -19,8 +19,8 @@
 // Robert Ramey <ramey@rrsd.com>
 // http://www.rrsd.com
 //
-// Use, modification and distribution is subject to the Boost Software
-// License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 //
 // See http://www.boost.org for updates, documentation, and revision history.
@@ -56,6 +56,7 @@
 #include <boost/serialization/split_free.hpp>
 #include <boost/serialization/serialization.hpp>
 #include <boost/serialization/nvp.hpp>
+#include <boost/serialization/detail/stack_constructor.hpp>
 
 // use visitor from boost::variant
 template<class Visitor, BOOST_VARIANT_ENUM_PARAMS(class T)>
@@ -159,11 +160,15 @@ struct variant_impl {
                 // with an implementation that de-serialized to the address of the
                 // aligned storage included in the variant.
                 typedef typename mpl::front<S>::type head_type;
-                head_type value;
-                ar >> BOOST_SERIALIZATION_NVP(value);
-                v = std::move(value);;
+                // The alternative is built the way a container element is,
+                // rather than declared, so that a type whose default
+                // constructor is private, or missing altogether, can be
+                // reached through boost::serialization::access.
+                detail::stack_construct<Archive, head_type> value(ar, version);
+                ar >> boost::serialization::make_nvp("value", value.reference());
+                v = std::move(value.reference());
                 head_type * new_address = & get<head_type>(v);
-                ar.reset_object_address(new_address, & value);
+                ar.reset_object_address(new_address, & value.reference());
                 return;
             }
             typedef typename mpl::pop_front<S>::type type;
@@ -294,7 +299,7 @@ struct tracking_level<
     variant<BOOST_VARIANT_ENUM_PARAMS(T)>
 >{
     typedef mpl::integral_c_tag tag;
-    typedef mpl::int_< ::boost::serialization::track_always> type;
+    typedef mpl::int_< ::boost::serialization::track_selectively> type;
     BOOST_STATIC_CONSTANT(int, value = type::value);
 };
 
@@ -304,7 +309,7 @@ struct tracking_level<
     std::variant<Types...>
 >{
     typedef mpl::integral_c_tag tag;
-    typedef mpl::int_< ::boost::serialization::track_always> type;
+    typedef mpl::int_< ::boost::serialization::track_selectively> type;
     BOOST_STATIC_CONSTANT(int, value = type::value);
 };
 #endif

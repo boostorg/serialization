@@ -2,8 +2,9 @@
 // basic_archive.cpp:
 
 // (C) Copyright 2002 Robert Ramey - http://www.rrsd.com . 
-// Use, modification and distribution is subject to the Boost Software
-// License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+// Copyright 2026 Gennaro Prota.
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org for updates, documentation, and revision history.
@@ -30,6 +31,8 @@ namespace std{
 // same modules are marked export and import.
 #define BOOST_SERIALIZATION_SOURCE
 #include <boost/serialization/config.hpp>
+
+#include <boost/core/no_exceptions_support.hpp>
 
 #include <boost/serialization/state_saver.hpp>
 #include <boost/serialization/throw_exception.hpp>
@@ -173,16 +176,44 @@ class basic_iarchive_impl {
         void * object;
         const basic_iserializer * bis;
         version_type version;
+        // The object currently being loaded through a pointer: its index in
+        // object_id_vector, whether delete_created_pointers may reclaim it
+        // and whether its constructor has run yet.
+        std::size_t pointer_object_id;
+        bool pointer_reclaimable;
+        bool pointer_constructed;
         pending() :
             object(NULL),
             bis(NULL),
-            version(0)
+            version(0),
+            pointer_object_id(0),
+            pointer_reclaimable(false),
+            pointer_constructed(false)
         {}
     } m_pending;
 
+    // Set while a created pointer is being loaded.  Only the outermost such
+    // load may be reclaimed by delete_created_pointers: anything created
+    // below it is reachable from it, so freeing it runs the destructors of
+    // the objects it owns.
+    bool m_loading_created_pointer;
+
+    // The object which the pointer load that just finished created and
+    // flagged for reclamation, if any.  Lets an owning smart pointer take
+    // that object over: see object_adopted().
+    struct last_created {
+        std::size_t object_id;
+        bool reclaimable;
+        last_created() :
+            object_id(0),
+            reclaimable(false)
+        {}
+    } m_last_created;
+
     basic_iarchive_impl(unsigned int flags) :
         m_archive_library_version(BOOST_ARCHIVE_VERSION()),
-        m_flags(flags)
+        m_flags(flags),
+        m_loading_created_pointer(false)
     {}
     void set_library_version(library_version_type archive_library_version){
         m_archive_library_version = archive_library_version;
@@ -211,6 +242,22 @@ class basic_iarchive_impl {
     void
     next_object_pointer(void * t){
         m_pending.object = t;
+    }
+    void
+    object_constructed(){
+        m_pending.pointer_constructed = true;
+        if(m_pending.pointer_reclaimable){
+            object_id_vector[m_pending.pointer_object_id].loaded_as_pointer
+                = true;
+        }
+    }
+    void
+    object_adopted(){
+        if(m_last_created.reclaimable){
+            object_id_vector[m_last_created.object_id].loaded_as_pointer
+                = false;
+            m_last_created.reclaimable = false;
+        }
     }
     void delete_created_pointers();
     class_id_type register_type(
@@ -424,6 +471,10 @@ basic_iarchive_impl::load_pointer(
     m_moveable_objects.is_pointer = true;
     serialization::state_saver<bool> w(m_moveable_objects.is_pointer);
 
+    // An adopting smart pointer may only take over an object which this very
+    // call creates, so forget any object the previous one left behind.
+    m_last_created.reclaimable = false;
+
     class_id_type cid;
     load(ar, cid);
 
@@ -480,39 +531,72 @@ basic_iarchive_impl::load_pointer(
     // save state
     serialization::state_saver<object_id_type> w_start(m_moveable_objects.start);
 
+    // An object created by an enclosing pointer load is owned by that
+    // object, so only the outermost one is a candidate for reclamation.
+    const bool root = ! m_loading_created_pointer;
+    serialization::state_saver<bool> n(m_loading_created_pointer);
+    serialization::state_saver<std::size_t> p_id(m_pending.pointer_object_id);
+    serialization::state_saver<bool> p_rec(m_pending.pointer_reclaimable);
+    serialization::state_saver<bool> p_con(m_pending.pointer_constructed);
+    m_loading_created_pointer = true;
+    m_pending.pointer_reclaimable = false;
+    m_pending.pointer_constructed = false;
+
     // allocate space on the heap for the object - to be constructed later
     t = bpis_ptr->heap_allocation();
     BOOST_ASSERT(NULL != t);
 
-    if(! tracking){
-        bpis_ptr->load_object_ptr(ar, t, co.file_version);
+    BOOST_TRY{
+        if(! tracking){
+            bpis_ptr->load_object_ptr(ar, t, co.file_version);
+        }
+        else{
+            serialization::state_saver<void *> x(m_pending.object);
+            serialization::state_saver<const basic_iserializer *> y(m_pending.bis);
+            serialization::state_saver<version_type> z(m_pending.version);
+
+            m_pending.bis = & bpis_ptr->get_basic_serializer();
+            m_pending.version = co.file_version;
+
+            // predict next object id to be created
+            const size_t ui = object_id_vector.size();
+
+            serialization::state_saver<object_id_type> w_end(m_moveable_objects.end);
+
+            // add to list of serialized objects so that we can properly handle
+            // cyclic structures
+            object_id_vector.push_back(aobject(t, cid));
+            m_pending.pointer_object_id = ui;
+            m_pending.pointer_reclaimable = root;
+
+            // remember that that the address of these elements could change
+            // when we make another call so don't use the address.  Once the
+            // object has been constructed load_object_ptr calls back through
+            // object_constructed(), which flags it for reclamation by
+            // delete_created_pointers should loading its members throw.
+            bpis_ptr->load_object_ptr(
+                ar,
+                t,
+                m_pending.version
+            );
+        }
     }
-    else{
-        serialization::state_saver<void *> x(m_pending.object);
-        serialization::state_saver<const basic_iserializer *> y(m_pending.bis);
-        serialization::state_saver<version_type> z(m_pending.version);
-
-        m_pending.bis = & bpis_ptr->get_basic_serializer();
-        m_pending.version = co.file_version;
-
-        // predict next object id to be created
-        const size_t ui = object_id_vector.size();
-
-        serialization::state_saver<object_id_type> w_end(m_moveable_objects.end);
-
-        // add to list of serialized objects so that we can properly handle
-        // cyclic structures
-        object_id_vector.push_back(aobject(t, cid));
-
-        // remember that that the address of these elements could change
-        // when we make another call so don't use the address
-        bpis_ptr->load_object_ptr(
-            ar,
-            t,
-            m_pending.version
-        );
-        object_id_vector[ui].loaded_as_pointer = true;
+    BOOST_CATCH(...){
+        // The constructor never ran, so load_object_ptr has freed the raw
+        // storage.  Clear the caller's pointer: otherwise the destructor of
+        // an enclosing object would delete storage which is already gone.
+        if(! m_pending.pointer_constructed){
+            t = NULL;
+        }
+        BOOST_RETHROW;
     }
+    BOOST_CATCH_END
+
+    // The load succeeded: remember what it flagged, so that a smart pointer
+    // adopting the object can take responsibility for freeing it.
+    m_last_created.object_id = m_pending.pointer_object_id;
+    m_last_created.reclaimable = m_pending.pointer_reclaimable
+        && m_pending.pointer_constructed;
 
     return bpis_ptr;
 }
@@ -530,6 +614,16 @@ namespace detail {
 BOOST_ARCHIVE_DECL void
 basic_iarchive::next_object_pointer(void *t){
     pimpl->next_object_pointer(t);
+}
+
+BOOST_ARCHIVE_DECL void
+basic_iarchive::object_constructed(){
+    pimpl->object_constructed();
+}
+
+BOOST_ARCHIVE_DECL void
+basic_iarchive::object_adopted(){
+    pimpl->object_adopted();
 }
 
 BOOST_ARCHIVE_DECL

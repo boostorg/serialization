@@ -2,8 +2,8 @@
 <html>
 <!--
 (C) Copyright 2002-4 Robert Ramey - http://www.rrsd.com . 
-Use, modification and distribution is subject to the Boost Software
-License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+Distributed under the Boost Software License, Version 1.0.
+(See accompanying file LICENSE_1_0.txt or copy at
 http://www.boost.org/LICENSE_1_0.txt)
 -->
 <head>
@@ -19,7 +19,7 @@ http://www.boost.org/LICENSE_1_0.txt)
       <h3><a href="../../../index.htm"><img height="86" width="277" alt="C++ Boost" src="../../../boost.png" border="0"></a></h3>
     </td>
     <td valign="top"> 
-      <h1 align="center">Serialization</h1>
+      <h1 align="center"><a href="index.html">Serialization</a></h1>
       <h2 align="center"><code style="white-space: normal">extended_type_info</code></h2>
     </td>
   </tr>
@@ -68,13 +68,13 @@ the following functions
     mechanism support inter-operability accross different type id systems.
 </ul>
 <h3>Features</h3>
-<code style="white-space: normal"><a target="extended_type_info.hpp" href = "../../../boost/serialization/extended_type_info.hpp">
+<code style="white-space: normal"><a href = "../../../boost/serialization/extended_type_info.hpp">
 extended_type_info</a></code> is an implementation
 of <code style="white-space: normal">std::type_info</code> functionality with the 
 following features:
 <ul>
   <li>
-    Builds a set of <a target="extended_type_info.hpp" href = "../../../boost/serialization/extended_type_info.hpp">
+    Builds a set of <a href = "../../../boost/serialization/extended_type_info.hpp">
     <code style="white-space: normal">extended_type_info</a></code> records - one for each type
     serialized.
   <li>
@@ -130,7 +130,7 @@ public:
 </code></pre>
 <p>
 Generally, there will be one and only one
-<code style="white-space: normal"><a target="extended_type_info.hpp" href = "../../../boost/serialization/extended_type_info.hpp">extended_type_info</a></code>
+<code style="white-space: normal"><a href = "../../../boost/serialization/extended_type_info.hpp">extended_type_info</a></code>
 instance created for each type.  However, this is enforced only at the executable
 module level.  That is, if a program includes some shared libraries or DLLS,
 there may be more than one instance of this class corresponding to a particular type.
@@ -183,7 +183,7 @@ to add and remove entries from this table.
 const char *get_key() const;
 </code></pre></h4></dt>
 <dd>
-Retrieves the key for <code style="white-space: normal"><a target="extended_type_info.hpp" href = "../../../boost/serialization/extended_type_info.hpp">extended_type_info</a></code>
+Retrieves the key for <code style="white-space: normal"><a href = "../../../boost/serialization/extended_type_info.hpp">extended_type_info</a></code>
 instance.  If no key has been associated with the instance, then a NULL is returned.
 </dd>
 
@@ -194,7 +194,7 @@ bool operator!=(const extended_type_info &amp; rhs) const;
 </code></pre></h4></dt>
 <dd>
 These functions are used to compare
-<a target="extended_type_info.hpp" href = "../../../boost/serialization/extended_type_info.hpp">
+<a href = "../../../boost/serialization/extended_type_info.hpp">
 <code style="white-space: normal">
 extended_type_info
 </code> 
@@ -208,7 +208,7 @@ virtual void * construct(unsigned int count = 0, ...) const;
 </code></pre></h4></dt>
 <dd>
 Construct a new instance of the type to which this
-<a target="extended_type_info.hpp" href = "../../../boost/serialization/extended_type_info.hpp">
+<a href = "../../../boost/serialization/extended_type_info.hpp">
 <code style="white-space: normal">
 extended_type_info
 </code>
@@ -240,7 +240,7 @@ static const extended_type_info * find(const char *key);
 </code></pre></h4></dt>
 <dd>
 Given a character string key or <strong>GUID</strong>, return the address of a 
-corresponding <code style="white-space: normal"><a target="extended_type_info.hpp" href = "../../../boost/serialization/extended_type_info.hpp">extended_type_info</a></code>
+corresponding <code style="white-space: normal"><a href = "../../../boost/serialization/extended_type_info.hpp">extended_type_info</a></code>
 object. 
 
 </dl>
@@ -249,7 +249,7 @@ object.
 In order to be used by the serialization library, an implementation of
 <code style="white-space: normal">extended_type_info</code>, 
 (referred to as ETI here), must be derived from 
-<a target="extended_type_info.hpp" href = "../../../boost/serialization/extended_type_info.hpp">
+<a href = "../../../boost/serialization/extended_type_info.hpp">
 <code style="white-space: normal">
 extended_type_info
 </code> 
@@ -320,14 +320,14 @@ proper destructor and recovers allocated memory.
 
 <h3><a name="models">Models</a></h3>
 The serialization library includes two distinct
-<code style="white-space: normal"><a target="extended_type_info.hpp" href="../../../boost/serialization/extended_type_info.hpp">extended_type_info</a></code>
+<code style="white-space: normal"><a href="../../../boost/serialization/extended_type_info.hpp">extended_type_info</a></code>
 implementations.
 <p>
-<code style="white-space: normal"><h4><a target="extended_type_info_typeid.hpp" href = "../../../boost/serialization/extended_type_info_typeid.hpp">
+<code style="white-space: normal"><h4><a href = "../../../boost/serialization/extended_type_info_typeid.hpp">
 extended_type_info_typeid</a></h4></code>is implemented in terms of the standard typeid(). It presumes that RTTI support is enabled
 by the compiler.
 <p>
-<code style="white-space: normal"><h4><a target="extended_type_info_no_rtti.hpp" href="../../../boost/serialization/extended_type_info_no_rtti.hpp">
+<code style="white-space: normal"><h4><a href="../../../boost/serialization/extended_type_info_no_rtti.hpp">
 extended_type_info_no_rtti</a></h4></code>
 is implemented in a way that doesn't rely on the existence RTTI.
 Instead, it requires that all polymorphic types be explicitly exported.
@@ -344,8 +344,8 @@ This function must be virtual in order to implement the functionality required b
 as described above.
 
 <h3><a name="example">Example</a></h3>
-The test program <code style="white-space: normal"><a target="test_no_rtti" href="../test/test_no_rtti.cpp">test_no_rtti</a></code>
-implements this function in terms of the <code style="white-space: normal"><a target="extended_type_info_no_rtti.hpp" href="../../../boost/serialization/extended_type_info_no_rtti.hpp">
+The test program <code style="white-space: normal"><a href="../test/test_no_rtti.cpp">test_no_rtti</a></code>
+implements this function in terms of the <code style="white-space: normal"><a href="../../../boost/serialization/extended_type_info_no_rtti.hpp">
 extended_type_info</a></code> API above to return the export key associated with the class.  
 This requires that non-abstract types be exported. It also demonstrates the
 inter-operability between two different implementations of
@@ -408,7 +408,7 @@ constructor of "my_class".
 
 
 A complete example of this can be found
-<a target="test_dll_plugin.cpp" href="../test/test_dll_plugin.cpp">here</a>
+<a href="../test/test_dll_plugin.cpp">here</a>
 <hr>
 <p><i>&copy; Copyright <a href="http://www.rrsd.com">Robert Ramey</a> 2005-2009. 
 Distributed under the Boost Software License, Version 1.0. (See

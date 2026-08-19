@@ -10,8 +10,8 @@
 // transform_width.hpp
 
 // (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
-// Use, modification and distribution is subject to the Boost Software
-// License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org for updates, documentation, and revision history.
@@ -72,8 +72,19 @@ class transform_width :
     }
 
     bool equal_impl(const this_t & rhs){
-        if(BitsIn < BitsOut) // discard any left over bits
+        if(BitsIn < BitsOut){ // discard any left over bits
+            if(m_bounded){
+                // Fill here rather than on dereference.  The bits left when
+                // the input runs out part way through an output value do not
+                // make a whole one, so the sequence has to end before that
+                // value is handed out.
+                if(! m_buffer_out_full && ! m_exhausted){
+                    fill();
+                }
+                return m_exhausted;
+            }
             return this->base_reference() == rhs.base_reference();
+        }
         else{
             // BitsIn > BitsOut  // zero fill
             if(this->base_reference() == rhs.base_reference()){
@@ -105,6 +116,12 @@ class transform_width :
     // flag to indicate we've reached end of data.
     bool m_end_of_sequence;
 
+    // end of the input, when one has been given
+    Base m_end;
+    bool m_bounded;
+    // set once the input can yield no further whole output value
+    bool m_exhausted;
+
 public:
     // make composable by using templated constructor
     template<class T>
@@ -117,16 +134,28 @@ public:
 	    //used because m_remaining_bits == 0)
         m_buffer_in(0),
         m_remaining_bits(0),
-        m_end_of_sequence(false)
+        m_end_of_sequence(false),
+        // m_end means nothing unless bounded.  It is built from start only
+        // because Base need not be default constructible: it is usually
+        // another adaptor of this family, and those have just the templated
+        // constructor below.
+        m_end(Base(static_cast< T >(start))),
+        m_bounded(false),
+        m_exhausted(false)
     {}
-    // intel 7.1 doesn't like default copy constructor
-    transform_width(const transform_width & rhs) :
-        super_t(rhs.base_reference()),
-        m_buffer_out_full(rhs.m_buffer_out_full),
-        m_buffer_out(rhs.m_buffer_out),
-        m_buffer_in(rhs.m_buffer_in),
-        m_remaining_bits(rhs.m_remaining_bits),
-        m_end_of_sequence(false)
+    // Knowing where the input ends is what lets the iterator stop before
+    // reading past it, which the form above cannot do.
+    template<class T>
+    transform_width(T start, T end) :
+        super_t(Base(static_cast< T >(start))),
+        m_buffer_out_full(false),
+        m_buffer_out(0),
+        m_buffer_in(0),
+        m_remaining_bits(0),
+        m_end_of_sequence(false),
+        m_end(Base(static_cast< T >(end))),
+        m_bounded(true),
+        m_exhausted(false)
     {}
 };
 
@@ -144,6 +173,12 @@ void transform_width<Base, BitsOut, BitsIn, CharType>::fill() {
             if(m_end_of_sequence){
                 m_buffer_in = 0;
                 m_remaining_bits = missing_bits;
+            }
+            else if(m_bounded && this->base_reference() == m_end){
+                // The input ended part way through an output value.  What is
+                // left cannot make a whole one, so drop it.
+                m_exhausted = true;
+                return;
             }
             else{
                 m_buffer_in = * this->base_reference()++;

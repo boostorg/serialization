@@ -10,8 +10,8 @@
 // basic_archive.hpp:
 
 // (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
-// Use, modification and distribution is subject to the Boost Software
-// License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org for updates, documentation, and revision history.
@@ -40,13 +40,17 @@ BOOST_ARCHIVE_VERSION();
 typedef boost::serialization::library_version_type library_version_type;
 
 class version_type {
-private:
+public:
+    // The wrapped type is part of the interface, since the conversion
+    // operators below return it and user code has no other way to name
+    // it.  See issue #326.  The same goes for the classes which follow.
     typedef uint_least32_t base_type;
+private:
     base_type t;
 public:
     // should be private - but MPI fails if it's not!!!
     version_type(): t(0) {}
-    explicit version_type(const unsigned int & t_) : t(t_){
+    explicit version_type(const unsigned int t_) : t(t_){
         BOOST_ASSERT(t_ <= boost::integer_traits<base_type>::const_max);
     }
     version_type(const version_type & t_) :
@@ -73,8 +77,9 @@ public:
 };
 
 class class_id_type {
-private:
+public:
     typedef int_least16_t base_type;
+private:
     base_type t;
 public:
     // should be private - but then can't use BOOST_STRONG_TYPE below
@@ -112,14 +117,15 @@ public:
 #define BOOST_SERIALIZATION_NULL_POINTER_TAG boost::archive::class_id_type(-1)
 
 class object_id_type {
-private:
+public:
     typedef uint_least32_t base_type;
+private:
     base_type t;
 public:
     object_id_type(): t(0) {}
     // note: presumes that size_t >= unsigned int.
     // use explicit cast to silence useless warning
-    explicit object_id_type(const std::size_t & t_) : t(static_cast<base_type>(t_)){
+    explicit object_id_type(const std::size_t t_) : t(static_cast<base_type>(t_)){
         // make quadruple sure that we haven't lost any real integer
         // precision
         BOOST_ASSERT(t_ <= boost::integer_traits<base_type>::const_max);
@@ -152,7 +158,8 @@ public:
 #endif
 
 struct tracking_type {
-    bool t;
+    typedef bool base_type;
+    base_type t;
     explicit tracking_type(const bool t_ = false)
         : t(t_)
     {}

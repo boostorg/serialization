@@ -1,3 +1,11 @@
+/////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
+// fix_six.cpp
+
+// Copyright 2010 Robert Ramey
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
+// https://www.boost.org/LICENSE_1_0.txt)
+
 #include <fstream>
 #include <ios>
 #include <iostream>

@@ -16,6 +16,8 @@ project
 import-search /boost/config/checks ;
 import config : requires ;
 
+import testing ;
+
 # import rules from the boost serialization test
 import ../util/test :
     run-template
@@ -62,6 +64,7 @@ test-suite "serialization" :
      [ test-bsl-run_files test_binary ]
      [ test-bsl-run_files test_class_info_save ]
      [ test-bsl-run_files test_class_info_load ]
+     [ test-bsl-run_files test_class_template_version ]
      [ test-bsl-run_files test_bitset ]
      [ test-bsl-run_files test_complex ]
      [ test-bsl-run_files test_contained_class : A ]
@@ -73,9 +76,12 @@ test-suite "serialization" :
      [ test-bsl-run_files test_derived_class_ptr : A ]
      [ test-bsl-run_files test_diamond ]
      [ test-bsl-run_files test_diamond_complex ]
+     [ test-bsl-run_files test_enum ]
+     [ test-bsl-run_files test_filesystem_path ]
      [ test-bsl-run_files test_forward_list : A  : :  [ requires cxx11_hdr_forward_list ] ] # BOOST_NO_CXX11_HDR_FORWARD_LIST
      [ test-bsl-run_files test_forward_list_ptrs : A  : :  [ requires cxx11_hdr_forward_list ] ] # BOOST_NO_CXX11_HDR_FORWARD_LIST
      [ test-bsl-run_files test_helper_support : : : [ requires std_wstreambuf ] ]
+     [ test-bsl-run_files test_interrupted_pointer_reclaim ]
      [ test-bsl-run_files test_interrupts ]
      [ test-bsl-run_files test_list : A ]
      [ test-bsl-run_files test_list_ptrs : A ]
@@ -105,13 +111,17 @@ test-suite "serialization" :
      [ test-bsl-run_files test_slist_ptrs : A : : [ requires slist ] ] # BOOST_HAS_SLIST ] ]
      [ test-bsl-run_files test_split ]
      [ test-bsl-run_files test_stack : A ]
+     [ test-bsl-run_files test_string_allocator ]
      [ test-bsl-run_files test_tracking ]
      [ test-bsl-run_files test_unregistered ]
      [ test-bsl-run_files test_unique_ptr ]
      [ test-bsl-run_files test_valarray ]
      [ test-bsl-run_files test_variant : A ]
+     [ test-bsl-run_files test_version_value_type ]
+     [ test-bsl-run_files test_wstring_utf8 ]
      [ test-bsl-run_files test_vector : A ]
      [ test-bsl-run_files test_shared_ptr ]
+     [ test-bsl-run_files test_shared_ptr_coexistence ]
      [ test-bsl-run_files test_shared_ptr_multi_base ]
      [ test-bsl-run_files test_shared_ptr_132 : : : [ requires auto_ptr  ] ] # BOOST_NO_AUTO_PTR
 
@@ -128,6 +138,8 @@ test-suite "serialization" :
      [ test-bsl-run_polymorphic_files test_exported : polymorphic_base polymorphic_derived1 polymorphic_derived2 ]
 
      # should compile
+     [ compile test_public_base_type.cpp ]
+     [ compile test_std_variant_forwarding.cpp ]
      [ compile test_strong_typedef.cpp ]
     ;
 
@@ -143,14 +155,23 @@ if ! $(BOOST_ARCHIVE_LIST) {
         # we suppress tests of our dlls when using static libraries
 
         [ test-bsl-run test_dll_simple   : : dll_a :  <link>static:<build>no ]
+        [ test-bsl-run test_dll_base_pointer : : dll_polymorphic_base dll_polymorphic_derived2 : <link>static:<build>no ]
         # [ test-bsl-run test_dll_plugin : : dll_derived2 : <link>static:<build>no <target-os>linux:<linkflags>-ldl ]
 
+        [ test-bsl-run test_duplicate_type_registration ]
+        [ test-bsl-run test_strong_typedef_move ]
         [ test-bsl-run test_private_ctor ]
         [ test-bsl-run test_reset_object_address : A ]
         [ test-bsl-run test_void_cast ]
+        [ test-bsl-run test_xml_save_during_unwind ]
+        [ test-bsl-run test_xml_escape_boundary : : ../build//boost_wserialization : [ requires std_wstreambuf ] ]
+        [ test-bsl-run test_xml_trailing_whitespace ]
+        [ test-bsl-run test_xml_missing_nvp ]
         [ test-bsl-run test_mult_archive_types : : : [ requires std_wstreambuf ] ]
         [ test-bsl-run test_iterators : : : [ requires std_wstreambuf ] ]
         [ test-bsl-run test_iterators_base64 ]
+        [ test-bsl-run test_iterators_copy ]
+        [ test-bsl-run test_factory ]
         [ test-bsl-run test_smart_cast ]
         [ test-bsl-run test_codecvt_null ]
         [ test-bsl-run test_singleton ]
@@ -186,3 +207,6 @@ if ! $(BOOST_ARCHIVE_LIST) {
         [ compile test_const_pass.cpp ]
     ;
 }
+
+run quick.cpp ../build//boost_serialization ;
+compile quick.cpp : <exception-handling>off -<library>/boost/filesystem//boost_filesystem -<library>/boost/math//boost_math_tr1 : quick_nx ;

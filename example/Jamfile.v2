@@ -11,6 +11,8 @@ project libs/serialization/example
     : requirements <library>../build//boost_serialization
     ;
 
+import testing ;
+
 import ../util/test :
     run-template
     run-invoke
@@ -21,16 +23,20 @@ import ../util/test :
     test-bsl-run_files
 ;
 
+# for [ requires auto_ptr ]
+import-search /boost/config/checks ;
+import config : requires ;
+
 test-suite "demo-suite" :
     # demos
     [ test-bsl-run demo ]
-    [ test-bsl-run demo_auto_ptr ]
+    [ test-bsl-run demo_auto_ptr : : : [ requires auto_ptr ] ]
     [ test-bsl-run demo_exception ]
     [ test-bsl-run demo_fast_archive ]
-    [ test-bsl-run demo_log : log_archive ]
+    [ test-bsl-run demo_log : log_archive : : <link>static ]
     [ test-bsl-run demo_pimpl : demo_pimpl_A ]
     [ test-bsl-run demo_polymorphic : demo_polymorphic_A ]
-    [ test-bsl-run demo_portable_archive : portable_binary_iarchive portable_binary_oarchive ]
+    [ test-bsl-run demo_portable_archive : portable_binary_iarchive portable_binary_oarchive : : <link>static ]
     [ test-bsl-run demo_shared_ptr ]
     [ test-bsl-run demo_simple_log ]
     [ test-bsl-run demo_trivial_archive ]

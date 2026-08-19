@@ -2,8 +2,8 @@
 <html>
 <!--
 (C) Copyright 2002-4 Robert Ramey - http://www.rrsd.com . 
-Use, modification and distribution is subject to the Boost Software
-License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+Distributed under the Boost Software License, Version 1.0.
+(See accompanying file LICENSE_1_0.txt or copy at
 http://www.boost.org/LICENSE_1_0.txt)
 -->
 <head>
@@ -19,7 +19,7 @@ http://www.boost.org/LICENSE_1_0.txt)
       <h3><a href="../../../index.htm"><img height="86" width="277" alt="C++ Boost" src="../../../boost.png" border="0"></a></h3>
     </td>
     <td valign="top"> 
-      <h1 align="center">Serialization</h1>
+      <h1 align="center"><a href="index.html">Serialization</a></h1>
       <h2 align="center">Template serialization - <code style="white-space: normal">shared_ptr&lt;class T&gt;</code></h2>
     </td>
   </tr>
@@ -29,7 +29,7 @@ All the code snippets included below are defined within the
 <code style="white-space: normal">boost::serialization</code> namespace.
 <p>
 <code style="white-space: normal">shared_ptr&lt;T&gt;</code> is defined in
-<a href="../../../boost/shared_ptr.hpp" target=shared_ptr.hpp>shared_ptr.hpp</a>.
+<a href="../../../boost/shared_ptr.hpp">shared_ptr.hpp</a>.
 <p>
 The general class outline for a <code style="white-space: normal">shared_ptr&lt;T&gt;</code> is:
 <dl>
@@ -151,7 +151,7 @@ inline void serialize(
 }
 </code></pre>
 It would seem we're done, but running the test program,
-<a href="../example/demo_shared_ptr.cpp" target="demo_shared_ptr_cpp">
+<a href="../example/demo_shared_ptr.cpp">
 demo_shared_ptr.cpp
 </a>,
 with this code produces the following output.
@@ -177,7 +177,7 @@ count.
 The process of serialization of an empty base class - 
 <code style="white-space: normal">sp_counted_base</code> - seems like additional overhead.
 Examination of code in 
-<a href="../../../boost/serialization/base_object.hpp" target="base_object_hpp">
+<a href="../../../boost/serialization/base_object.hpp">
 base_object.hpp
 </a>
 reveals that <code style="white-space: normal">base_object.hpp</code> provides two functions:

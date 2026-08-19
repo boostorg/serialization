@@ -2,8 +2,8 @@
 // demo.cpp
 //
 // (C) Copyright 2002-4 Robert Ramey - http://www.rrsd.com .
-// Use, modification and distribution is subject to the Boost Software
-// License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
 
@@ -17,7 +17,7 @@
 
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
-
+#include <boost/cstdint.hpp>
 #include <boost/serialization/base_object.hpp>
 #include <boost/serialization/utility.hpp>
 #include <boost/serialization/list.hpp>
@@ -63,7 +63,7 @@ public:
 };
 std::ostream & operator<<(std::ostream &os, const gps_position &gp)
 {
-    return os << ' ' << gp.degrees << (unsigned char)186 << gp.minutes << '\'' << gp.seconds << '"';
+    return os << ' ' << gp.degrees << (unsigned char)176 << gp.minutes << '\'' << gp.seconds << '"';
 }
 
 /////////////////////////////////////////////////////////////
@@ -202,7 +202,7 @@ std::ostream & operator<<(std::ostream &os, const bus_route &br)
     // note: we're displaying the pointer to permit verification
     // that duplicated pointers are properly restored.
     for(it = br.stops.begin(); it != br.stops.end(); it++){
-        os << '\n' << std::hex << "0x" << *it << std::dec << ' ' << **it;
+        os << '\n' << "0x" << std::hex << reinterpret_cast<boost::uintptr_t>(*it) << std::dec << ' ' << **it;
     }
     return os;
 }

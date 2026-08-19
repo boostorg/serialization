@@ -10,8 +10,8 @@
 // shared_ptr_helper.hpp: serialization for boost shared pointer
 
 // (C) Copyright 2004-2009 Robert Ramey, Martin Ecker and Takatoshi Kondo
-// Use, modification and distribution is subject to the Boost Software
-// License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org for updates, documentation, and revision history.
@@ -38,15 +38,6 @@ namespace boost_132 {
 namespace boost {
 namespace serialization {
 
-#ifndef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
-template<class Archive, template<class U> class SPT >
-void load(
-    Archive & ar,
-    SPT< class U > &t,
-    const unsigned int file_version
-);
-#endif
-
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // a common class for holding various types of shared pointers
 
@@ -68,18 +59,7 @@ class shared_ptr_helper {
         void operator()(void const *) const {}
     };
 
-#if defined(BOOST_NO_MEMBER_TEMPLATE_FRIENDS) \
-|| defined(BOOST_MSVC) \
-|| defined(__SUNPRO_CC)
 public:
-#else
-    template<class Archive, class U>
-    friend void boost::serialization::load(
-        Archive & ar,
-        SPT< U > &t,
-        const unsigned int file_version
-    );
-#endif
 
     #ifdef BOOST_SERIALIZATION_SHARED_PTR_132_HPP
     // list of loaded pointers.  This is used to be sure that the pointers

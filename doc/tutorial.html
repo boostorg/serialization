@@ -2,8 +2,8 @@
 <html>
 <!--
 (C) Copyright 2002-4 Robert Ramey - http://www.rrsd.com .
-Use, modification and distribution is subject to the Boost Software
-License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+Distributed under the Boost Software License, Version 1.0.
+(See accompanying file LICENSE_1_0.txt or copy at
 http://www.boost.org/LICENSE_1_0.txt)
 -->
 <head>
@@ -19,7 +19,7 @@ http://www.boost.org/LICENSE_1_0.txt)
        <h3><a href="../../../index.htm"><img height="86" width="277" alt="C++ Boost" src="../../../boost.png" border="0"></a></h3>
     </td>
     <td valign="top">
-      <h1 align="center">Serialization</h1>
+      <h1 align="center"><a href="index.html">Serialization</a></h1>
       <h2 align="center">Tutorial</h2>
     </td>
   </tr>
@@ -63,7 +63,7 @@ These operators are used inside the <code style="white-space: normal">serialize<
 function to save and load class data members.
 <p>
 Included in this library is a program called
-<a href="../example/demo.cpp" target="demo_cpp">demo.cpp</a> which illustrates how
+<a href="../example/demo.cpp">demo.cpp</a> which illustrates how
 to use this system. Below we excerpt code from this program to
 illustrate with the simplest possible case how this library is
 intended to be used.
@@ -321,7 +321,7 @@ must be constructed. Finally the data can be loaded to newly created
 instance of the correct type.
 
 As can be seen in 
-<a href="../example/demo.cpp" target="demo_cpp">demo.cpp</a>,
+<a href="../example/demo.cpp">demo.cpp</a>,
 serialization of pointers to derived classes through a base
 clas pointer may require explicit enumeration of the derived
 classes to be serialized. This is referred to as "registration" or "export"
@@ -519,7 +519,7 @@ This is described later in the manual.
 
 <h3><a name="examples">List of Examples</h3>
 <dl>
-    <dt><a href="../example/demo.cpp" target="demo_cpp">demo.cpp</a>
+    <dt><a href="../example/demo.cpp">demo.cpp</a>
     <dd>This is the completed example used in this tutorial.
     It does the following:
     <ol>
@@ -530,26 +530,26 @@ This is described later in the manual.
         <li>Restores to another structure
         <li>Displays the restored structure
     </ol>
-    <a href="../example/demo_output.txt" target="demo_output">Output of
+    <a href="../example/demo_output.txt">Output of
     this program</a> is sufficient to verify that all the
     originally stated requirements for a serialization system
     are met with this system. The <a href="../example/demofile.txt"
-    target="test_file">contents of the archive file</a> can
+   >contents of the archive file</a> can
     also be displayed as serialization files are ASCII text.
 
-    <dt><a href="../example/demo_xml.cpp" target="demo_xml_cpp">demo_xml.cpp</a>
+    <dt><a href="../example/demo_xml.cpp">demo_xml.cpp</a>
     <dd>This is a variation the original demo which supports xml archives in addition
     to the others. The extra wrapping macro, BOOST_SERIALIZATION_NVP(name), is 
     needed to associate a data item name with the corresponding xml 
     tag. It is important that 'name' be a valid xml tag, else it 
     will be impossible to restore the archive. 
     For more information see
-    <a target="detail" href="wrappers.html#nvp">Name-Value Pairs</a>.
-    <a href="../example/demo_save.xml" target="demo_save_xml">Here</a>
+    <a href="wrappers.html#nvp">Name-Value Pairs</a>.
+    <a href="../example/demo_save.xml">Here</a>
     is what an xml archive looks like.
 
-    <dt><a href="../example/demo_xml_save.cpp" target="demo_xml_save_cpp">demo_xml_save.cpp</a>
-    and <a href="../example/demo_xml_load.cpp" target="demo_xml_load_cpp">demo_xml_load.cpp</a>
+    <dt><a href="../example/demo_xml_save.cpp">demo_xml_save.cpp</a>
+    and <a href="../example/demo_xml_load.cpp">demo_xml_load.cpp</a>
     <dd>Note also that though our examples save and load the program data
     to an archive within the same program, this merely a convenience
     for purposes of illustration.  In general, the archive may or may

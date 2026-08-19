@@ -2,6 +2,7 @@
 // xml_woarchive_impl.ipp:
 
 // (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
+// Copyright 2026 Gennaro Prota.
 // Distributed under the Boost Software License, Version 1.0. (See
 // accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -32,6 +33,7 @@ namespace std{
 #endif
 
 #include <boost/core/uncaught_exceptions.hpp>
+#include <boost/core/no_exceptions_support.hpp>
 
 #include <boost/archive/xml_woarchive.hpp>
 #include <boost/archive/detail/utf8_codecvt_facet.hpp>
@@ -138,10 +140,16 @@ xml_woarchive_impl<Archive>::xml_woarchive_impl(
 template<class Archive>
 BOOST_WARCHIVE_DECL
 xml_woarchive_impl<Archive>::~xml_woarchive_impl(){
-    if(boost::core::uncaught_exceptions() > 0)
+    // See the note in xml_oarchive_impl::~xml_oarchive_impl.
+    if(boost::core::uncaught_exceptions() > 0 && ! this->document_complete()){
         return;
-    if(0 == (this->get_flags() & no_header)){
-        os << L"</boost_serialization>";
+    }
+    if(0 == (this->get_flags() & no_header) && os.good()){
+        BOOST_TRY {
+            os << L"</boost_serialization>";
+        }
+        BOOST_CATCH(...) {}
+        BOOST_CATCH_END
     }
 }
 

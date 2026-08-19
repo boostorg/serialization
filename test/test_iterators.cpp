@@ -2,14 +2,15 @@
 // test_iterators.cpp
 
 // (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
-// Use, modification and distribution is subject to the Boost Software
-// License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
 #include <vector>
 #include <cstdlib> // for rand
 #include <functional>
 #include <sstream> // used to test stream iterators
+#include <string>
 #include <clocale>
 #include <iterator> // begin
 #include <locale> // setlocale
@@ -32,6 +33,7 @@ namespace std{
 #endif
 #include <boost/archive/iterators/xml_escape.hpp>
 #include <boost/archive/iterators/xml_unescape.hpp>
+#include <boost/archive/iterators/remove_whitespace.hpp>
 #include <boost/archive/iterators/transform_width.hpp>
 #include <boost/archive/iterators/istream_iterator.hpp>
 #include <boost/archive/iterators/ostream_iterator.hpp>
@@ -195,6 +197,23 @@ void test_stream_iterators(
     BOOST_CHECK(std::equal(test_data, test_data + size,isi));
 }
 
+// Regression test for issue #254: the bounded (two-argument) filter form
+// must handle a range that ends in a non-matching element without running
+// past the end.
+void test_remove_whitespace(){
+    typedef boost::archive::iterators::remove_whitespace<const char *> translator;
+
+    const char with_ws[] = "  a b\tc \n"; // leading, embedded and trailing ws
+    const char * b = with_ws;
+    const char * e = with_ws + sizeof(with_ws) / sizeof(char) - 1;
+    BOOST_CHECK(std::string(translator(b, e), translator(e, e)) == "abc");
+
+    const char all_ws[] = "   ";          // filters to empty, must not overrun
+    const char * wb = all_ws;
+    const char * we = all_ws + sizeof(all_ws) / sizeof(char) - 1;
+    BOOST_CHECK(std::string(translator(wb, we), translator(we, we)).empty());
+}
+
 int
 test_main(int /* argc */, char* /* argv */ [] )
 {
@@ -252,6 +271,8 @@ test_main(int /* argc */, char* /* argv */ [] )
     test_transform_width<6, 8>(6);
     test_transform_width<6, 8>(7);
     test_transform_width<6, 8>(8);
+
+    test_remove_whitespace();
 
     return EXIT_SUCCESS;
 }

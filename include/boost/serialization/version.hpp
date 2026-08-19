@@ -10,8 +10,8 @@
 // version.hpp:
 
 // (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
-// Use, modification and distribution is subject to the Boost Software
-// License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org for updates, documentation, and revision history.
@@ -72,6 +72,7 @@ const int version<T>::value;
 
 #include <boost/mpl/less.hpp>
 #include <boost/mpl/comparison.hpp>
+#include <boost/preprocessor/punctuation/remove_parens.hpp>
 
 // specify the current version number for the class
 // version numbers limited to 8 bits !!!
@@ -98,6 +99,34 @@ struct version<T >                                                     \
         >::value                                                       \
     ));                                                                \
     */                                                                 \
+};                                                                     \
+}                                                                      \
+}
+
+// Specify the current version number for a class template.  Unlike
+// BOOST_CLASS_VERSION, which writes a full specialization, this writes a
+// partial one, so it works for a template rather than a concrete class.
+// The template parameter list and the specialized type are each passed
+// parenthesized (they usually contain commas):
+//
+//     BOOST_CLASS_TEMPLATE_VERSION((class T, class U), (my_class<T, U>), 2)
+//
+// version numbers limited to 8 bits !!!
+#define BOOST_CLASS_TEMPLATE_VERSION(TEMPLATE_PARAMETERS, TYPE, N)     \
+namespace boost {                                                      \
+namespace serialization {                                              \
+template< BOOST_PP_REMOVE_PARENS(TEMPLATE_PARAMETERS) >                \
+struct version< BOOST_PP_REMOVE_PARENS(TYPE) >                         \
+{                                                                      \
+    typedef mpl::int_<N> type;                                         \
+    typedef mpl::integral_c_tag tag;                                   \
+    BOOST_STATIC_CONSTANT(int, value = version::type::value);          \
+    BOOST_MPL_ASSERT((                                                 \
+        boost::mpl::less<                                              \
+            boost::mpl::int_<N>,                                       \
+            boost::mpl::int_<256>                                      \
+        >                                                              \
+    ));                                                                \
 };                                                                     \
 }                                                                      \
 }

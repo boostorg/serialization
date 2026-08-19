@@ -2,8 +2,8 @@
 // basic_xml_grammar.ipp:
 
 // (C) Copyright 2002 Robert Ramey - http://www.rrsd.com . 
-// Use, modification and distribution is subject to the Boost Software
-// License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org for updates, documentation, and revision history.
@@ -191,6 +191,15 @@ bool basic_xml_grammar<CharType>::my_parse(
     for(;;){
         CharType result;
         is.get(result);
+        // Reaching end of input while scanning for the next character is the
+        // normal way an archive ends (e.g. windup() consuming the trailer);
+        // it is not a stream error.  get() sets both eofbit and failbit at end
+        // of stream, so test eof() *before* fail() -- otherwise the normal
+        // termination is misreported as input_stream_error, which is fatal
+        // when it surfaces in the (noexcept) archive destructor via windup().
+        // See #99.
+        if(is.eof())
+            return false;
         if(is.fail()){
             boost::serialization::throw_exception(
                 boost::archive::archive_exception(
@@ -199,8 +208,6 @@ bool basic_xml_grammar<CharType>::my_parse(
                 )
             );
         }
-        if(is.eof())
-            return false;
         arg += result;
         if(result == delimiter)
             break;

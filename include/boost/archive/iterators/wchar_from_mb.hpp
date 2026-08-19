@@ -10,17 +10,15 @@
 // wchar_from_mb.hpp
 
 // (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
-// Use, modification and distribution is subject to the Boost Software
-// License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org for updates, documentation, and revision history.
 
 #include <cctype>
 #include <cstddef> // size_t
-#ifndef BOOST_NO_CWCHAR
 #include <cwchar>  // mbstate_t
-#endif
 #include <algorithm> // copy
 
 #include <boost/config.hpp>
@@ -100,6 +98,7 @@ class wchar_from_mb
         bool m_done;
         // default ctor
         sliding_buffer() :
+            m_buffer(),
             m_next_available(m_buffer.begin()),
             m_next(m_buffer.begin()),
             m_done(false)
@@ -166,8 +165,7 @@ void wchar_from_mb<Base>::drain(){
     const typename boost::iterators::iterator_value<Base>::type * input_new_start;
     typename iterator_value<this_t>::type * next_available;
 
-    BOOST_ATTRIBUTE_UNUSED // redundant with ignore_unused below but clarifies intention
-    std::codecvt_base::result r = m_codecvt_facet.in(
+    const std::codecvt_base::result r = m_codecvt_facet.in(
         m_mbs,
         m_input.m_buffer.begin(),
         m_input.m_next_available,
@@ -176,7 +174,15 @@ void wchar_from_mb<Base>::drain(){
         m_output.m_buffer.end(),
         next_available
     );
-    BOOST_ASSERT(std::codecvt_base::ok == r);
+    if(std::codecvt_base::error == r){
+        boost::serialization::throw_exception(
+            dataflow_exception(dataflow_exception::invalid_conversion)
+        );
+    }
+    // A partial result is normal here and not an error: the input buffer is
+    // filled without regard to character boundaries, so it can end in the
+    // middle of a multibyte character.  Its remaining bytes are kept by the
+    // shift below and decoded once the rest of them have been read.
     m_output.m_next_available = next_available;
     m_output.m_next = m_output.m_buffer.begin();
 

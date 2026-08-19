@@ -18,8 +18,9 @@
 // iserializer.hpp: interface for serialization system.
 
 // (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
-// Use, modification and distribution is subject to the Boost Software
-// License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+// Copyright 2026 Gennaro Prota.
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org for updates, documentation, and revision history.
@@ -35,6 +36,7 @@ namespace std{
 } // namespace std
 #endif
 
+#include <boost/core/underlying_type.hpp>
 #include <boost/static_assert.hpp>
 
 #include <boost/mpl/eval_if.hpp>
@@ -46,10 +48,12 @@ namespace std{
 #ifndef BOOST_SERIALIZATION_DEFAULT_TYPE_INFO
     #include <boost/serialization/extended_type_info_typeid.hpp>
 #endif
+#include <boost/serialization/library_version_type.hpp>
 #include <boost/serialization/throw_exception.hpp>
 #include <boost/serialization/smart_cast.hpp>
 #include <boost/serialization/static_warning.hpp>
 
+#include <boost/type_traits/conditional.hpp>
 #include <boost/type_traits/is_pointer.hpp>
 #include <boost/type_traits/is_enum.hpp>
 #include <boost/type_traits/is_const.hpp>
@@ -346,12 +350,17 @@ BOOST_DLLEXPORT void pointer_iserializer<Archive, T>::load_object_ptr(
         );
     }
     BOOST_CATCH(...){
-        // if we get here the load_construct failed.  The heap_allocation
-        // will be automatically deleted so we don't have to do anything
-        // special here.
+        // The load_construct failed, so the object was never constructed.
+        // Since heap_allocation() has already released its guard, free the
+        // raw storage here, without running a destructor on it.
+        detail::heap_allocation<T>::invoke_delete(static_cast<T *>(t));
         BOOST_RETHROW;
     }
     BOOST_CATCH_END
+
+    // The object exists from here on, so let the archive reclaim it if
+    // loading its members throws.
+    ar.object_constructed();
 
     ar_impl >> boost::serialization::make_nvp(NULL, * static_cast<T *>(t));
 }
@@ -560,10 +569,32 @@ template<class Archive>
 struct load_enum_type {
     template<class T>
     static void invoke(Archive &ar, T &t){
-        // convert integers to correct enum to load
-        int i;
-        ar >> boost::serialization::make_nvp(NULL, i);
-        t = static_cast< T >(i);
+        // Enumerators were always stored as int before archive library version
+        // 21; read that layout from any older archive so existing data keeps
+        // loading.  From version 21 on, an enumerator is stored as an int if it
+        // fits in an int; otherwise as the enum's underlying type (see
+        // save_enum_type).
+        if(ar.get_library_version()
+            < boost::serialization::library_version_type(21)
+        ){
+            int i;
+            ar >> boost::serialization::make_nvp(NULL, i);
+            t = static_cast< T >(i);
+            return;
+        }
+        #ifndef BOOST_NO_UNDERLYING_TYPE
+            typedef typename boost::underlying_type< T >::type underlying_type;
+            typedef typename boost::conditional<
+                sizeof(underlying_type) <= sizeof(int),
+                int,
+                underlying_type
+            >::type load_type;
+        #else
+            typedef int load_type;
+        #endif
+        load_type lt;
+        ar >> boost::serialization::make_nvp(NULL, lt);
+        t = static_cast< T >(lt);
     }
 };
 

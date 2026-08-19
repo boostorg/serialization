@@ -2,8 +2,8 @@
 <html>
 <!--
 (C) Copyright 2002-4 Robert Ramey - http://www.rrsd.com . 
-Use, modification and distribution is subject to the Boost Software
-License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+Distributed under the Boost Software License, Version 1.0.
+(See accompanying file LICENSE_1_0.txt or copy at
 http://www.boost.org/LICENSE_1_0.txt)
 -->
 <head>
@@ -19,7 +19,7 @@ http://www.boost.org/LICENSE_1_0.txt)
       <h3><a href="../../../index.htm"><img height="86" width="277" alt="C++ Boost" src="../../../boost.png" border="0"></a></h3>
     </td>
     <td valign="top"> 
-      <h1 align="center">Serialization</h1>
+      <h1 align="center"><a href="index.html">Serialization</a></h1>
       <h2 align="center">Special Considerations</h2>
     </td>
   </tr>
@@ -138,7 +138,7 @@ be eliminated by setting the object tracking class serialization trait
 appropriately.
 <p>
 By default, data types designated primitive by the
-<a target="detail" href="traits.html#level">Implementation Level</a>
+<a href="traits.html#level">Implementation Level</a>
 class serialization trait are never tracked. If it is desired to
 track a shared primitive object through a pointer (e.g. a
 <code style="white-space: normal">long</code> used as a reference count), It should be wrapped
@@ -257,7 +257,7 @@ since each class has to be checked to see if it has already had its
 class information included in the archive.  In some cases, even this
 might be considered too much.  This extra overhead can be eliminated
 by setting the 
-<a target="detail" href="traits.html#level">implementation level</a>
+<a href="traits.html#level">implementation level</a>
 class trait to: <code style="white-space: normal">boost::serialization::object_serializable</code>. 
 <p>
 <i>Turning off tracking and class information serialization will result
@@ -304,7 +304,7 @@ saved.  For example, the gcc compiler reserves 4 bytes to store a variable of ty
 <code style="white-space: normal">wchar_t</code> while other compilers reserve only 2 bytes.  
 So it's possible that   a value could be written that couldn't be represented by the loading program.  This is a
 fairly obvious situation and easily handled by using the numeric types in
-<a target="cstding" href="../../../boost/cstdint.hpp">&lt;boost/cstdint.hpp&gt;</a>
+<a href="../../../boost/cstdint.hpp">&lt;boost/cstdint.hpp&gt;</a>
 <P>
 A special integral type is <code>std::size_t</code> which is a typedef
 of an integral types guaranteed to be large enough
@@ -354,8 +354,8 @@ in a catastrophic way.
 One remedy for this is to assign serialization traits to the template
 <code style="white-space: normal">my_template</code> such that class
 information for instantiations of this template is never serialized.  This 
-process is described <a target="detail" href="traits.html#templates">above</a> and
-has been used for <a target="detail" href="wrappers.html#nvp"><strong>Name-Value Pairs</strong></a>.
+process is described <a href="traits.html#templates">above</a> and
+has been used for <a href="wrappers.html#nvp"><strong>Name-Value Pairs</strong></a>.
 Wrappers would typically be assigned such traits.
 <p>
 Another way to avoid this problem is to assign serialization traits
@@ -380,17 +380,17 @@ used by the serialization system. However, XML differs from other formats in tha
 requires a name for each data member. Our goal is to add this information to the 
 class serialization specification while still permiting the the serialization code to be 
 used with any archive. This is archived by requiring that all data serialized to an XML archive
-be serialized as a <a target="detail" href="wrappers.html#nvp">name-value pair</a>.
+be serialized as a <a href="wrappers.html#nvp">name-value pair</a>.
 The first member is the name to be used as the XML tag for the
 data item while the second is a reference to the data item itself. Any attempt to serialize data
-not wrapped in a in a <a target="detail" href="wrappers.html#nvp">name-value pair</a> will
+not wrapped in a in a <a href="wrappers.html#nvp">name-value pair</a> will
 be trapped at compile time. The system is implemented in such a way that for other archive classes,
 just the value portion of the data is serialized. The name portion is discarded during compilation.
-So by always using <a target="detail" href="wrappers.html#nvp">name-value pairs</a>, it will
+So by always using <a href="wrappers.html#nvp">name-value pairs</a>, it will
 be guaranteed that all data can be serialized to all archive classes with maximum efficiency.
 
 <h3><a name="export">Exporting Class Serialization</a></h3>
-<a target="detail" href="traits.html#export">Elsewhere</a> in this manual, we have described 
+<a href="traits.html#export">Elsewhere</a> in this manual, we have described 
 <code style="white-space: normal">BOOST_CLASS_EXPORT</code>. 
 Export implies two things:
 <ul>
@@ -445,6 +445,17 @@ in the header declarations and
 in the class definition file.
 
 <p>
+This makes the rule easy to follow but does not remove it.  The definition
+file has to include the archive class headers itself, before
+<code style="white-space: normal">BOOST_CLASS_EXPORT_IMPLEMENT</code>
+is invoked, just as it would for
+<code style="white-space: normal">BOOST_CLASS_EXPORT</code>.
+A definition file which includes none of them instantiates no serialization
+code at all, and serializing a pointer to such a class then throws
+<code style="white-space: normal">unregistered_class</code>
+when the program is run.
+
+<p>
 This system has certain implications for placing code in static or shared
 libraries.  Placing <code style="white-space: normal">BOOST_CLASS_EXPORT</code>
 in library code will have no effect unless archive class headers are
@@ -497,14 +508,14 @@ of a runtime exception.
 <li>Familiarize yourself with the <b>PIMPL</b> idiom.
 </ul>
 This is illustrated by
-<a href = "../example/demo_pimpl.cpp" target="demo_pimpl">
+<a href = "../example/demo_pimpl.cpp">
 <code style="white-space: normal">demo_pimpl.cpp</code>
 </a>,
-<a href = "../example/demo_pimpl_A.cpp" target="demo_pimpl">
+<a href = "../example/demo_pimpl_A.cpp">
 <code style="white-space: normal">demo_pimpl_A.cpp</code>
 </a>
 and
-<a href = "../example/demo_pimpl_A.hpp" target="demo_pimpl">
+<a href = "../example/demo_pimpl_A.hpp">
 <code style="white-space: normal">demo_pimpl_A.hpp</code>
 </a>
 where implementation of serialization is in a static library 
@@ -519,11 +530,11 @@ library test suite includes the following programs
 to illustrate how this works:
 <p>
 
-<a href = "../test/test_dll_simple.cpp" target="test_dll_simple">
+<a href = "../test/test_dll_simple.cpp">
 <code style="white-space: normal">test_dll_simple</code>
 </a>,
 and
-<a href = "../test/dll_a.cpp" target="dll_a">
+<a href = "../test/dll_a.cpp">
 <code style="white-space: normal">dll_a.cpp</code>
 </a>
 where implementation of serialization is also completely separate
@@ -533,11 +544,11 @@ uses it starts up, but it could just as well be loaded and unloaded
 with an OS dependent API call.
 <p>
 Also included are
-<a href = "../test/test_dll_exported.cpp" target="test_dll_exported">
+<a href = "../test/test_dll_exported.cpp">
 <code style="white-space: normal">test_dll_exported.cpp</code>
 </a>,
 and
-<a href = "../test/polymorphic_derived2.cpp" target="polymorphic_derived2">
+<a href = "../test/polymorphic_derived2.cpp">
 <code style="white-space: normal">polymorphic_derived2.cpp</code>
 </a>
 which are similar to the above but include tests of the export
@@ -588,13 +599,13 @@ above guideline hasn't been followed.
 <h3><a name="plugins">Plugins</a></h3>
 In order to implement the library, various facilities for runtime
 manipulation of types at runtime were required.  These
-are <a target="detail" href="extended_type_info.html"><code>extended_type_info</code></a>
+are <a href="extended_type_info.html"><code>extended_type_info</code></a>
 for associating classes with external identifying strings (<b>GUID</b>)
-and <a target="detail" href="void_cast.html"><code>void_cast</code></a>
+and <a href="void_cast.html"><code>void_cast</code></a>
 for casting between pointers of related types.
 
 To complete the functionality of 
-<a target="detail" href="extended_type_info.html"><code>extended_type_info</code></a>
+<a href="extended_type_info.html"><code>extended_type_info</code></a>
 the ability to construct and destroy corresponding types has been
 added.  In order to use this functionality, one must specify
 how each type is created.  This should be done at the time
@@ -631,7 +642,7 @@ in different tasks is permitted as each archive instance is (almost)
 completely independent from any other archive instance.  The only shared 
 information is some type tables which have been implemented using a 
 lock-free thread-safe 
-<a target="detail" href="singleton.html">
+<a href="singleton.html">
 <code style="white-space: normal">singleton</code>
 </a>
 described elsewhere in this documentation.

@@ -2,8 +2,8 @@
 // basic_archive.cpp:
 
 // (C) Copyright 2002 Robert Ramey - http://www.rrsd.com . 
-// Use, modification and distribution is subject to the Boost Software
-// License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org for updates, documentation, and revision history.
@@ -85,9 +85,11 @@ BOOST_ARCHIVE_SIGNATURE(){
 //     was fully constructed.
 // 19- Boost 1.76 April 2021
 // 20- Boost 1.84 April 2021
+// 21- enumerators are stored as int (if they fit) or as the enum's underlying
+//     type, instead of always as int
 BOOST_SYMBOL_VISIBLE boost::serialization::library_version_type
 BOOST_ARCHIVE_VERSION(){
-    return boost::serialization::library_version_type(20);
+    return boost::serialization::library_version_type(21);
 }
 
 } // namespace archive

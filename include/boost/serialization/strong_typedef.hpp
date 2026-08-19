@@ -11,8 +11,8 @@
 
 // (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
 // (C) Copyright 2016 Ashish Sadanandan
-// Use, modification and distribution is subject to the Boost Software
-// License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org/libs/serialization for updates, documentation, and revision history.
@@ -28,6 +28,10 @@
 #include <boost/type_traits/has_nothrow_assign.hpp>
 #include <boost/type_traits/has_nothrow_constructor.hpp>
 #include <boost/type_traits/has_nothrow_copy.hpp>
+#include <boost/type_traits/is_nothrow_move_assignable.hpp>
+#include <boost/type_traits/is_nothrow_move_constructible.hpp>
+
+#include <utility>
 
 #define BOOST_STRONG_TYPEDEF(T, D)                                                                               \
 struct D                                                                                                         \
@@ -39,7 +43,10 @@ struct D                                                                        
     explicit D(const T& t_) BOOST_NOEXCEPT_IF(boost::has_nothrow_copy_constructor<T>::value) : t(t_) {}          \
     D() BOOST_NOEXCEPT_IF(boost::has_nothrow_default_constructor<T>::value) : t() {}                             \
     D(const D & t_) BOOST_NOEXCEPT_IF(boost::has_nothrow_copy_constructor<T>::value) : t(t_.t) {}                \
+    D(D && t_) BOOST_NOEXCEPT_IF(boost::is_nothrow_move_constructible<T>::value) : t(std::move(t_.t)) {}         \
     D& operator=(const D& rhs) BOOST_NOEXCEPT_IF(boost::has_nothrow_assign<T>::value) {t = rhs.t; return *this;} \
+    D& operator=(D&& rhs) BOOST_NOEXCEPT_IF(boost::is_nothrow_move_assignable<T>::value)                         \
+        {t = std::move(rhs.t); return *this;}                                                                    \
     D& operator=(const T& rhs) BOOST_NOEXCEPT_IF(boost::has_nothrow_assign<T>::value) {t = rhs; return *this;}   \
     operator const T&() const {return t;}                                                                        \
     operator T&() {return t;}                                                                                    \
