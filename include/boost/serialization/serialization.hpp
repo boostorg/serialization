@@ -11,6 +11,7 @@
 #endif
 
 #include <boost/config.hpp>
+#include <boost/core/enable_if.hpp>
 #include <boost/serialization/strong_typedef.hpp>
 
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
@@ -51,9 +52,36 @@ namespace serialization {
 
 BOOST_STRONG_TYPEDEF(unsigned int, version_type)
 
-// default implementation - call the member function "serialize"
+// Check whether Type has a serialize() member function that accepts Archive
+template <class Archive, class Type>
+class has_serialize
+{
+    // This type won't compile if the second template parameter isn't of type T.
+    template <typename T, T> struct type_check;
+
+    typedef char yes;
+    typedef long no;
+
+    template <typename T> struct serialize
+    {
+        typedef void (T::* fptr)(Archive&, const unsigned int);
+    };
+
+    template <typename T>
+    static yes check_has_serialize(
+        type_check< typename serialize<T>::fptr,
+        &T::serialize/*<Archive>*/ >*);
+    template <typename T>
+    static no  check_has_serialize(...);
+
+public:
+    static bool const value = (sizeof(check_has_serialize<Type>(0)) == sizeof(yes));
+};
+
+// default implementation - call the member function "serialize" if it exists,
+// else removed from overload resolution.
 template<class Archive, class T>
-inline void serialize(
+inline typename boost::enable_if<has_serialize<Archive, T>::value>::type serialize(
     Archive & ar, T & t, const unsigned int file_version
 ){
     access::serialize(ar, t, static_cast<unsigned int>(file_version));
