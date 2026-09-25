@@ -24,9 +24,13 @@
 // in such cases.   So we can't use basic_ostream<IStream::char_type> but rather
 // use two template parameters
 
+#include <ios>
+#include <limits>
 #include <locale>
 #include <string>
 #include <cstddef> // size_t
+#include <streambuf>
+#include <string>
 
 #include <boost/config.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)
@@ -39,6 +43,7 @@ namespace std{
 #endif
 
 #include <boost/io/ios_state.hpp>
+#include <boost/mpl/bool.hpp>
 #include <boost/static_assert.hpp>
 
 #include <boost/detail/workaround.hpp>
@@ -85,9 +90,103 @@ protected:
     > locale_saver;
     #endif
 
+    // Whether a value of T can be an infinity or a NaN, and so may reach
+    // us written as letters rather than as digits.
     template<class T>
-    void load(T & t)
-    {
+    struct has_non_finite {
+        typedef typename mpl::bool_<
+            std::numeric_limits<T>::has_infinity
+            || std::numeric_limits<T>::has_quiet_NaN
+        >::type type;
+    };
+
+    // Takes a leading sign, if there is one, and says whether it was a
+    // minus.
+    bool take_minus_sign(){
+        typedef typename IStream::traits_type traits_type;
+        typedef typename IStream::char_type char_type;
+
+        std::basic_streambuf<char_type, traits_type> * const sb = is.rdbuf();
+        if(NULL == sb){
+            return false;
+        }
+        is >> std::ws;
+        const typename traits_type::int_type c = sb->sgetc();
+        if(traits_type::eq_int_type(c, traits_type::to_int_type(char_type('-')))
+        || traits_type::eq_int_type(c, traits_type::to_int_type(char_type('+')))){
+            return traits_type::eq_int_type(
+                sb->sbumpc(), traits_type::to_int_type(char_type('-'))
+            );
+        }
+        return false;
+    }
+
+    // Only the letters are taken, and not everything up to the next space,
+    // because an XML archive ends a value with a tag.  The terminator is
+    // left where it is for the same reason.  Lowered as it goes, since it is
+    // ASCII either way.
+    std::string take_letters(){
+        typedef typename IStream::traits_type traits_type;
+        typedef typename IStream::char_type char_type;
+
+        std::basic_streambuf<char_type, traits_type> * const sb = is.rdbuf();
+        std::string token;
+        for(;;){
+            const typename traits_type::int_type c = sb->sgetc();
+            if(traits_type::eq_int_type(c, traits_type::eof())){
+                break;
+            }
+            const char_type letter = traits_type::to_char_type(c);
+            if(! ((char_type('a') <= letter && letter <= char_type('z'))
+               || (char_type('A') <= letter && letter <= char_type('Z')))){
+                break;
+            }
+            token += char(char(letter) | 0x20);
+            sb->sbumpc();
+        }
+        return token;
+    }
+
+    // Before 2015, the Microsoft library wrote an infinity as "1.#INF", a NaN
+    // as "1.#QNAN" and an indeterminate as "-1.#IND".  The extraction takes
+    // the leading "1." for the value and stops at the '#', so an archive
+    // written then loads as 1 and the rest is left to derail the next read.
+    // Nothing else puts a '#' after a number, so seeing one settles it.
+    template<class T>
+    void take_legacy_non_finite(T & t){
+        typedef typename IStream::traits_type traits_type;
+        typedef typename IStream::char_type char_type;
+
+        std::basic_streambuf<char_type, traits_type> * const sb = is.rdbuf();
+        if(NULL == sb
+        || ! traits_type::eq_int_type(
+                 sb->sgetc(), traits_type::to_int_type(char_type('#'))
+             )){
+            return;
+        }
+        sb->sbumpc();
+        const std::string token = take_letters();
+        if("inf" == token && std::numeric_limits<T>::has_infinity){
+            t = std::numeric_limits<T>::infinity();
+        }
+        else if(("qnan" == token || "snan" == token || "ind" == token)
+        && std::numeric_limits<T>::has_quiet_NaN){
+            t = std::numeric_limits<T>::quiet_NaN();
+        }
+        else{
+            const std::string message =
+                detail::stream_position_message(is.rdbuf());
+            boost::serialization::throw_exception(
+                archive_exception(
+                    archive_exception::input_stream_error,
+                    message.c_str()
+                )
+            );
+        }
+    }
+
+    template<class T>
+    void load_impl(T & t, boost::mpl::bool_<false> &){
         if(is >> t)
             return;
         const std::string message =
@@ -98,6 +197,73 @@ protected:
                 message.c_str()
             )
         );
+    }
+
+    // An infinity is written as "inf" and a NaN as "nan", because that is
+    // what the stream writes, and the extraction of a floating point number
+    // then refuses both, so an archive the library wrote itself would not
+    // load.  Read the letters here rather than change what is written, so
+    // that archives already in existence start loading (issue #386).
+    template<class T>
+    void load_impl(T & t, boost::mpl::bool_<true> &){
+        typedef typename IStream::traits_type traits_type;
+        typedef typename IStream::char_type char_type;
+
+        const bool negative = take_minus_sign();
+        if(is >> t){
+            take_legacy_non_finite(t);
+            if(negative){
+                t = -t;
+            }
+            return;
+        }
+        is.clear();
+
+        std::basic_streambuf<char_type, traits_type> * const sb = is.rdbuf();
+        const std::string token = take_letters();
+        // A NaN may carry a parenthesised payload, as in the "nan(ind)" the
+        // Microsoft library writes, which has to come away with it.
+        if("nan" == token
+        && traits_type::eq_int_type(
+               sb->sgetc(), traits_type::to_int_type(char_type('('))
+           )
+        ){
+            while(! traits_type::eq_int_type(
+                      sb->sbumpc(), traits_type::to_int_type(char_type(')'))
+                  )){
+                if(traits_type::eq_int_type(sb->sgetc(), traits_type::eof())){
+                    break;
+                }
+            }
+        }
+
+        if(("inf" == token || "infinity" == token)
+        && std::numeric_limits<T>::has_infinity){
+            t = std::numeric_limits<T>::infinity();
+        }
+        else if("nan" == token && std::numeric_limits<T>::has_quiet_NaN){
+            t = std::numeric_limits<T>::quiet_NaN();
+        }
+        else{
+            const std::string message =
+                detail::stream_position_message(is.rdbuf());
+            boost::serialization::throw_exception(
+                archive_exception(
+                    archive_exception::input_stream_error,
+                    message.c_str()
+                )
+            );
+        }
+        if(negative){
+            t = -t;
+        }
+    }
+
+    template<class T>
+    void load(T & t)
+    {
+        typename has_non_finite<T>::type tag;
+        load_impl(t, tag);
     }
 
     void load(char & t)

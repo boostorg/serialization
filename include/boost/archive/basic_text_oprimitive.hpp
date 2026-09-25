@@ -25,6 +25,7 @@
 // use two template parameters
 
 #include <iomanip>
+#include <limits>
 #include <locale>
 #include <cstddef> // size_t
 
@@ -151,6 +152,31 @@ protected:
         >::type type;
     };
 
+    // An infinity and a NaN go out in a spelling the library fixes itself,
+    // rather than in whatever the stream would produce.  The latter would
+    // differ between implementations; e.g. the Microsoft library wrote
+    // "1.#INF" and "1.#QNAN" before 2015.  The read side accepts the older
+    // spellings too, so nothing written before this stops loading.
+    template<class T>
+    bool save_non_finite(const T & t){
+        if(std::numeric_limits<T>::has_infinity){
+            if(t == std::numeric_limits<T>::infinity()){
+                put("inf");
+                return true;
+            }
+            if(t == -std::numeric_limits<T>::infinity()){
+                put("-inf");
+                return true;
+            }
+        }
+        // Nothing equals a NaN, itself included.
+        if(std::numeric_limits<T>::has_quiet_NaN && t != t){
+            put("nan");
+            return true;
+        }
+        return false;
+    }
+
     template<class T>
     void save_impl(const T &t, boost::mpl::bool_<true> &){
         // must be a user mistake - can't serialize un-initialized data
@@ -158,6 +184,9 @@ protected:
             boost::serialization::throw_exception(
                 archive_exception(archive_exception::output_stream_error)
             );
+        }
+        if(save_non_finite(t)){
+            return;
         }
         // The formulae for the number of decimal digits required is given in
         // http://www2.open-std.org/JTC1/SC22/WG21/docs/papers/2005/n1822.pdf
