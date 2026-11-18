@@ -34,6 +34,10 @@ template<class Archive>
 class interface_iarchive
 {
 protected:
+    #if defined(_MSC_VER)
+    // See the same member of interface_oarchive.
+    char m_msvc_14_52_workaround;
+    #endif
     interface_iarchive() {}
 public:
     /////////////////////////////////////////////////////////
