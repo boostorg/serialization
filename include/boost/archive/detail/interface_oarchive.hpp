@@ -36,6 +36,22 @@ template<class Archive>
 class interface_oarchive
 {
 protected:
+    #if defined(_MSC_VER)
+    // MSVC 14.52, unlike earlier versions, converts a pointer to an empty
+    // base which ends its derived class with an offset one less than the
+    // layout says, so a static library and a program built by different
+    // versions disagree on where the archive is.  This member keeps the
+    // base from being empty.  Microsoft has fixed the bug for a later
+    // release, so the member can be removed once 14.52 is no longer in
+    // use; see
+    // <https://developercommunity.visualstudio.com/t/C-object-layout-places-empty-non-first/11175160>
+    // and <https://github.com/boostorg/serialization/issues/389>.
+    //
+    // Note that we test _MSC_VER, not BOOST_MSVC: clang-cl and the Intel
+    // compiler define it too, and as they use the same layout as MSVC and
+    // link with libraries built by it, they must agree on the member.
+    char m_msvc_14_52_workaround;
+    #endif
     interface_oarchive() {}
 public:
     /////////////////////////////////////////////////////////
