@@ -181,9 +181,6 @@ jobs:
             os: ubuntu-latest
             install: clang-22
           - toolset: clang
-            cxxstd: "11,14,17,20,2b"
-            os: macos-14
-          - toolset: clang
             cxxstd: "11,14,17,20,23,2c"
             os: macos-15
           - toolset: clang
