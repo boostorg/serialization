@@ -267,7 +267,7 @@ jobs:
           - toolset: clang-win
             cxxstd: "14,17,20,latest"
             addrmd: 32,64
-            os: windows-2025
+            os: windows-2025-vs2026
           - toolset: gcc
             cxxstd: "11,14,17,2a"
             addrmd: 64
@@ -299,6 +299,17 @@ jobs:
           python tools/boostdep/depinst/depinst.py -I benchmark --git_args "--jobs 3" %LIBRARY%
           cmd /c bootstrap
           b2 -d0 headers
+
+      - name: Use the clang-cl of Visual Studio
+        if: matrix.toolset == 'clang-win'
+        shell: pwsh
+        run: |
+          # The standalone LLVM of the image may be older than the Clang
+          # which the MSVC standard library requires.
+          $vs = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property installationPath
+          $bin = Join-Path $vs 'VC\Tools\Llvm\x64\bin'
+          & "$bin\clang-cl.exe" --version
+          Add-Content $env:GITHUB_PATH $bin
 
       - name: Run tests
         shell: cmd
