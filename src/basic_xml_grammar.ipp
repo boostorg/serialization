@@ -22,7 +22,7 @@
 #endif
 
 #include <cerrno>   // errno
-#include <cstring>  // strerror(errno)
+#include <cstring>  // strerror(errno), strlen
 
 // spirit stuff
 #include <boost/spirit/include/classic_operators.hpp>
@@ -461,10 +461,13 @@ void basic_xml_grammar<CharType>::init(IStream & is){
         boost::serialization::throw_exception(
             xml_archive_exception(xml_archive_exception::xml_archive_parsing_error)
         );
-    if(! std::equal(rv.class_name.begin(), rv.class_name.end(), BOOST_ARCHIVE_SIGNATURE()))
+    const char * const signature = BOOST_ARCHIVE_SIGNATURE();
+    if(rv.class_name.size() != std::strlen(signature)
+    || ! std::equal(rv.class_name.begin(), rv.class_name.end(), signature)){
         boost::serialization::throw_exception(
             archive_exception(archive_exception::invalid_signature)
         );
+    }
 }
 
 template<class CharType>
